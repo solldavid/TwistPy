@@ -59,9 +59,8 @@ class TimeFrequencyAnalysis:
 
 class TimeDomainAnalysis:
     def __init__(self, traN: Trace = None, traE: Trace = None, traZ: Trace = None, rotN: Trace = None,
-                 rotE: Trace = None,
-                 rotZ: Trace = None, window: dict = None, method: str = 'pca', scaling_velocity: float = 1.,
-                 free_surface: bool = True):
+                 rotE: Trace = None, rotZ: Trace = None, window: dict = None, method: str = 'pca',
+                 scaling_velocity: float = 1., free_surface: bool = True, verbose: bool = True):
 
         self.traN, self.traE, self.traZ, self.rotN, self.rotE, self.rotZ = traN, traE, traZ, rotN, rotE, rotZ
 
@@ -82,16 +81,41 @@ class TimeDomainAnalysis:
         self.method = method
         self.time = self.traN.times(type="utcdatetime")
         self.scaling_velocity = scaling_velocity
-        self.window_Length_samples = 2 * int((self.window['window_length_seconds'] / self.delta) / 2)
-        start, stop, incr = int(self.window_Length_samples / 2), -1 - int(self.window_Length_samples / 2), \
-                            np.max([1, int((1 - self.window['overlap']) * self.window_Length_samples)])
+        self.free_surface = free_surface
+        self.verbose = verbose
+        self.delta = self.traN.stats.delta
+        self.window_length_samples = 2 * int((self.window['window_length_seconds'] / self.delta) / 2)
+        start, stop, incr = int(self.window_length_samples / 2), -1 - int(self.window_length_samples / 2), \
+                            np.max([1, int((1 - self.window['overlap']) * self.window_length_samples)])
         self.time_polarization_analysis = self.time[start:stop:incr]
 
         # Compute the analytic signal
-        u1, u2, u3, u4, u5, u6 = np.array([hilbert(self.traN).T, hilbert(self.traE).T, hilbert(self.traZ).T, \
-                                           hilbert(self.rotN).T, hilbert(self.rotE).T, hilbert(self.rotZ).T])
-        u = np.array([u1.T, u2.T, u3.T, u4.T, u5.T, u6.T])
-        u.shape = (u.shape[0], u.shape[1], 1)
+        u: np.ndarray = np.array([hilbert(self.traN).T, hilbert(self.traE).T, hilbert(self.traZ).T, \
+                                           hilbert(self.rotN).T, hilbert(self.rotE).T, hilbert(self.rotZ).T]).T
+        # Compute covariance matrices
+        if self.verbose:
+            print('Computing covariance matrices...\n')
+        C: "np.ndarray[np.complex]" = np.einsum('...i,...j->...ij', np.conj(u), u).astype('complex')
+        w = hanning(self.window_length_samples+2)[1:-1] # Hann window for covariance matrix averaging
+        w /= np.sum(w)
+        for j in range(C.shape[2]):
+            for k in range(C.shape[1]):
+                C[..., j, k] = \
+                    convolve(C[..., j, k].real, w, mode='same') + convolve(C[..., j, k].imag, w, mode='same')*1j
+        self.C = C[start:stop:incr, :, :]
+        if self.verbose:
+            print('Ready to perform polarization analysis!')
+
+    def classify(self, svc: SupportVectorMachine = None):
+        eigenvalues, eigenvectors = np.linalg.eigh(self.C)
+        df = pd.DataFrame(np.concatenate((eigenvectors[:, :, -1].real, eigenvectors[:, :, -1].imag), axis=1),
+                          columns=['t1_real', 't2_real', 't3_real', 'r1_real', 'r2_real', 'r3_real',
+                                    't1_imag', 't2_imag', 't3_imag', 'r1_imag', 'r2_imag', 'r3_imag'])
+
+        df.loc[:] = eigenvectors[:, :, -1]
+
+        test = 1
+
 
 
 class EstimatorConfiguration:

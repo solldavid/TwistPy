@@ -24,7 +24,7 @@ setup(
         'Topic :: Scientific/Engineering',
         'Topic :: Scientific/Engineering :: Physics',
         'Natural Language :: English'],
-    install_requires=["numpy >= 1.15.0, 'scipy >= 1.4.0"],
+    install_requires=["numpy >= 1.15.0", "scipy >= 1.4.0"],
     test_suite="pytests",
     tests_require=["pytest"]
 )

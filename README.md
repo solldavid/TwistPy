@@ -1,2 +1,2 @@
-# Toolbox for wavefield inertial sensing
+# TwistPy: Toolbox for wavefield inertial sensing
 

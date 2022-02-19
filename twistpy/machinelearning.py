@@ -6,7 +6,7 @@
 """
 import pickle
 import sys
-from os.path import exists
+from os.path import exists, join
 
 import numpy as np
 import pandas as pd
@@ -26,7 +26,7 @@ class SupportVectorMachine:
     def train(self, N: int = 5000, scaling_velocity: float = 1., vp: tuple = (50., 2000.), vp_to_vs: tuple = (1.7, 2.4),
               vl: tuple = (50, 2000), vr: tuple = (50, 2000), phi: tuple = (0, 360), theta: tuple = (0, 90),
               xi: tuple = (-90, 90), free_surface: bool = True, C: float = 1, kernel: str = 'rbf'):
-        pkl_filename = sys.path[0] + "/SVC_models/" + self.name + ".pkl"
+        pkl_filename = join(sys.path[0], "SVC_models", self.name + ".pkl")
         if exists(pkl_filename):
             print(f"A trained model already exists with this name and is saved at '{pkl_filename}'\n")
             print('Nothing will be done! Please delete the file above if you want to retrain this model.')
@@ -102,7 +102,7 @@ class SupportVectorMachine:
         print(f"Model has been saved as '{pkl_filename}'! \n'")
 
     def load_model(self):
-        file_name = sys.path[0] + "/SVC_models/" + self.name + '.pkl'
+        file_name = join(sys.path[0], "SVC_models", self.name + '.pkl')
         if not exists(file_name):
             raise Exception(f"The model '{self.name}' has not been trained yet")
         else:

@@ -78,7 +78,7 @@ class TimeDomainAnalysis:
                                   hilbert(self.rotN).T, hilbert(self.rotE).T, hilbert(self.rotZ).T]).T
         # Compute covariance matrices
         if self.verbose:
-            print('Computing covariance matrices...\n')
+            print('Computing covariance matrices...')
         C: np.ndarray = np.einsum('...i,...j->...ij', np.conj(u), u).astype('complex')
         w = hanning(self.window_length_samples + 2)[1:-1]  # Hann window for covariance matrix averaging
         w /= np.sum(w)
@@ -88,16 +88,24 @@ class TimeDomainAnalysis:
                     convolve(C[..., j, k].real, w, mode='same') + convolve(C[..., j, k].imag, w, mode='same') * 1j
         self.C = C[start:stop:incr, :, :]
         if self.verbose:
-            print('Ready to perform polarization analysis!')
+            print('Covariance matrices computed!')
 
     def classify(self, svm: SupportVectorMachine = None):
+        if self.verbose:
+            print('Performing eigendecomposition of covariance matrices...')
         eigenvalues, eigenvectors = np.linalg.eigh(self.C)
+        if self.verbose:
+            print('Eigenvectors and eigenvalues have been computed!')
         df = pd.DataFrame(np.concatenate((eigenvectors[:, :, -1].real, eigenvectors[:, :, -1].imag), axis=1),
                           columns=['t1_real', 't2_real', 't3_real', 'r1_real', 'r2_real', 'r3_real',
                                    't1_imag', 't2_imag', 't3_imag', 'r1_imag', 'r2_imag', 'r3_imag'])
 
         model = svm.load_model()
+        if self.verbose:
+            print('Wave type classification in progress...')
         wave_types = model.predict(df)
+        if self.verbose:
+            print('Wave types have been classified!')
         test = 1
 
 

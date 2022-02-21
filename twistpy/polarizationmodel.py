@@ -228,8 +228,8 @@ class PolarizationModel:
             w_z = - 1. / (2 * self.vl)
             polarization = np.asarray([v_x, v_y, v_z, w_x, w_y, w_z]).astype('complex').squeeze()
 
-        else:
-            sys.exit("Invalid wave type specified in 'Wave' object!")
+        elif self.wave_type not in ['L', 'R', 'P', 'SV', 'SH']:
+            sys.exit(f"Invalid wave type '{self.wave_type}' specified!")
 
         polarization = np.divide(polarization, np.linalg.norm(polarization, axis=0))
         return polarization

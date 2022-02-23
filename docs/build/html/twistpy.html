@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>twistpy package &mdash; TwistPy</title>
+    <link href="_static/pygments.css" rel="stylesheet" type="text/css"/>
+    <link href="_static/css/theme.css" rel="stylesheet" type="text/css"/>
+    <link href="_static/plot_directive.css" rel="stylesheet" type="text/css"/>
+    <link href="_static/style.css" rel="stylesheet" type="text/css"/>
+    <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA="
+            src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link href="genindex.html" rel="index" title="Index"/>
+    <link href="search.html" rel="search" title="Search"/>
+</head>
+
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+    <nav class="wy-nav-side" data-toggle="wy-nav-shift">
+        <div class="wy-side-scroll">
+            <div class="wy-side-nav-search">
+                <a class="icon icon-home" href="index.html"> TwistPy
+                </a>
+                <div role="search">
+                    <form action="search.html" class="wy-form" id="rtd-search-form" method="get">
+                        <input name="q" placeholder="Search docs" type="text"/>
+                        <input name="check_keywords" type="hidden" value="yes"/>
+                        <input name="area" type="hidden" value="default"/>
+                    </form>
+                </div>
+            </div>
+            <div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+                <!-- Local TOC -->
+                <div class="local-toc">
+                    <ul>
+                        <li><a class="reference internal" href="#">twistpy package</a>
+                            <ul>
+                                <li><a class="reference internal" href="#submodules">Submodules</a></li>
+                                <li><a class="reference internal" href="#module-twistpy.DispersionAnalysis">twistpy.DispersionAnalysis
+                                    module</a></li>
+                                <li><a class="reference internal" href="#module-twistpy.EstimatorConfiguration">twistpy.EstimatorConfiguration
+                                    module</a></li>
+                                <li><a class="reference internal" href="#module-twistpy.MachineLearning">twistpy.MachineLearning
+                                    module</a></li>
+                                <li><a class="reference internal" href="#module-twistpy.PolarizationModel">twistpy.PolarizationModel
+                                    module</a></li>
+                                <li><a class="reference internal" href="#module-twistpy.TimeDomainAnalysis">twistpy.TimeDomainAnalysis
+                                    module</a></li>
+                                <li><a class="reference internal" href="#module-twistpy.TimeFrequencyAnalysis">twistpy.TimeFrequencyAnalysis
+                                    module</a></li>
+                                <li><a class="reference internal" href="#module-twistpy.utils">twistpy.utils module</a>
+                                </li>
+                                <li><a class="reference internal" href="#module-twistpy">Module contents</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
+        <nav aria-label="Mobile navigation menu" class="wy-nav-top">
+            <i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+            <a href="index.html">TwistPy</a>
+        </nav>
+
+        <div class="wy-nav-content">
+            <div class="rst-content">
+                <div aria-label="Page navigation" role="navigation">
+                    <ul class="wy-breadcrumbs">
+                        <li><a class="icon icon-home" href="index.html"></a> &raquo;</li>
+                        <li>twistpy package</li>
+                        <li class="wy-breadcrumbs-aside">
+                        </li>
+                    </ul>
+                    <hr/>
+                </div>
+                <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+                    <div itemprop="articleBody">
+
+
+                        <style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+
+                        </style>
+                        <div class="section" id="twistpy-package">
+                            <h1>twistpy package<a class="headerlink" href="#twistpy-package"
+                                                  title="Permalink to this headline"></a></h1>
+                            <div class="section" id="submodules">
+                                <h2>Submodules<a class="headerlink" href="#submodules"
+                                                 title="Permalink to this headline"></a></h2>
+                            </div>
+                            <div class="section" id="module-twistpy.DispersionAnalysis">
+                                <span id="twistpy-dispersionanalysis-module"></span>
+                                <h2>twistpy.DispersionAnalysis module<a class="headerlink"
+                                                                        href="#module-twistpy.DispersionAnalysis"
+                                                                        title="Permalink to this headline"></a></h2>
+                                <dl class="field-list simple">
+                                    <dt class="field-odd">copyright</dt>
+                                    <dd class="field-odd"><p>David Sollberger (<a class="reference external"
+                                                                                  href="mailto:david&#46;sollberger&#37;&#52;&#48;gmail&#46;com">david<span>&#46;</span>sollberger<span>&#64;</span>gmail<span>&#46;</span>com</a>),
+                                        2022</p>
+                                    </dd>
+                                    <dt class="field-even">license</dt>
+                                    <dd class="field-even"><p>None</p>
+                                    </dd>
+                                </dl>
+                                <dl class="py class">
+                                    <dt class="sig sig-object py" id="twistpy.DispersionAnalysis.DispersionAnalysis">
+                                        <em class="property"><span class="pre">class</span><span class="w"> </span></em><span
+                                            class="sig-prename descclassname"><span class="pre">twistpy.DispersionAnalysis.</span></span><span
+                                            class="sig-name descname"><span class="pre">DispersionAnalysis</span></span><span
+                                            class="sig-paren">(</span><em class="sig-param"><span class="n"><span
+                                            class="pre">traN</span></span><span class="p"><span
+                                            class="pre">:</span></span><span class="w"> </span><span class="n"><a
+                                            class="reference external"
+                                            href="https://docs.python.org/3/library/typing.html#typing.Optional"
+                                            title="(in Python v3.10)"><span class="pre">Optional</span></a><span
+                                            class="p"><span class="pre">[</span></span><a class="reference external"
+                                                                                          href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.html#obspy.core.trace.Trace"
+                                                                                          title="(in ObsPy Documentation (1.2.0) v1.2)"><span
+                                            class="pre">obspy.core.trace.Trace</span></a><span class="p"><span
+                                            class="pre">]</span></span></span><span class="w"> </span><span
+                                            class="o"><span class="pre">=</span></span><span class="w"> </span><span
+                                            class="default_value"><span class="pre">None</span></span></em>, <em
+                                            class="sig-param"><span class="n"><span class="pre">traE</span></span><span
+                                            class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                                            class="n"><a class="reference external"
+                                                         href="https://docs.python.org/3/library/typing.html#typing.Optional"
+                                                         title="(in Python v3.10)"><span class="pre">Optional</span></a><span
+                                            class="p"><span class="pre">[</span></span><a class="reference external"
+                                                                                          href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.html#obspy.core.trace.Trace"
+                                                                                          title="(in ObsPy Documentation (1.2.0) v1.2)"><span
+                                            class="pre">obspy.core.trace.Trace</span></a><span class="p"><span
+                                            class="pre">]</span></span></span><span class="w"> </span><span
+                                            class="o"><span class="pre">=</span></span><span class="w"> </span><span
+                                            class="default_value"><span class="pre">None</span></span></em>, <em
+                                            class="sig-param"><span class="n"><span class="pre">traZ</span></span><span
+                                            class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                                            class="n"><a class="reference external"
+                                                         href="https://docs.python.org/3/library/typing.html#typing.Optional"
+                                                         title="(in Python v3.10)"><span class="pre">Optional</span></a><span
+                                            class="p"><span class="pre">[</span></span><a class="reference external"
+                                                                                          href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.html#obspy.core.trace.Trace"
+                                                                                          title="(in ObsPy Documentation (1.2.0) v1.2)"><span
+                                            class="pre">obspy.core.trace.Trace</span></a><span class="p"><span
+                                            class="pre">]</span></span></span><span class="w"> </span><span
+                                            class="o"><span class="pre">=</span></span><span class="w"> </span><span
+                                            class="default_value"><span class="pre">None</span></span></em>, <em
+                                            class="sig-param"><span class="n"><span class="pre">rotN</span></span><span
+                                            class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                                            class="n"><a class="reference external"
+                                                         href="https://docs.python.org/3/library/typing.html#typing.Optional"
+                                                         title="(in Python v3.10)"><span class="pre">Optional</span></a><span
+                                            class="p"><span class="pre">[</span></span><a class="reference external"
+                                                                                          href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.html#obspy.core.trace.Trace"
+                                                                                          title="(in ObsPy Documentation (1.2.0) v1.2)"><span
+                                            class="pre">obspy.core.trace.Trace</span></a><span class="p"><span
+                                            class="pre">]</span></span></span><span class="w"> </span><span
+                                            class="o"><span class="pre">=</span></span><span class="w"> </span><span
+                                            class="default_value"><span class="pre">None</span></span></em>, <em
+                                            class="sig-param"><span class="n"><span class="pre">rotE</span></span><span
+                                            class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                                            class="n"><a class="reference external"
+                                                         href="https://docs.python.org/3/library/typing.html#typing.Optional"
+                                                         title="(in Python v3.10)"><span class="pre">Optional</span></a><span
+                                            class="p"><span class="pre">[</span></span><a class="reference external"
+                                                                                          href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.html#obspy.core.trace.Trace"
+                                                                                          title="(in ObsPy Documentation (1.2.0) v1.2)"><span
+                                            class="pre">obspy.core.trace.Trace</span></a><span class="p"><span
+                                            class="pre">]</span></span></span><span class="w"> </span><span
+                                            class="o"><span class="pre">=</span></span><span class="w"> </span><span
+                                            class="default_value"><span class="pre">None</span></span></em>, <em
+                                            class="sig-param"><span class="n"><span class="pre">rotZ</span></span><span
+                                            class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                                            class="n"><a class="reference external"
+                                                         href="https://docs.python.org/3/library/typing.html#typing.Optional"
+                                                         title="(in Python v3.10)"><span class="pre">Optional</span></a><span
+                                            class="p"><span class="pre">[</span></span><a class="reference external"
+                                                                                          href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.html#obspy.core.trace.Trace"
+                                                                                          title="(in ObsPy Documentation (1.2.0) v1.2)"><span
+                                            class="pre">obspy.core.trace.Trace</span></a><span class="p"><span
+                                            class="pre">]</span></span></span><span class="w"> </span><span
+                                            class="o"><span class="pre">=</span></span><span class="w"> </span><span
+                                            class="default_value"><span class="pre">None</span></span></em>, <em
+                                            class="sig-param"><span class="n"><span
+                                            class="pre">method</span></span><span class="p"><span
+                                            class="pre">:</span></span><span class="w"> </span><span class="n"><a
+                                            class="reference external"
+                                            href="https://docs.python.org/3/library/stdtypes.html#str"
+                                            title="(in Python v3.10)"><span class="pre">str</span></a></span><span
+                                            class="w"> </span><span class="o"><span class="pre">=</span></span><span
+                                            class="w"> </span><span class="default_value"><span class="pre">'pca'</span></span></em><span
+                                            class="sig-paren">)</span><a class="reference internal"
+                                                                         href="_modules/twistpy/DispersionAnalysis.html#DispersionAnalysis"><span
+                                            class="viewcode-link"><span class="pre">[source]</span></span></a><a
+                                            class="headerlink" href="#twistpy.DispersionAnalysis.DispersionAnalysis"
+                                            title="Permalink to this definition"></a></dt>
+                                    <dd><p>Bases: <a class="reference external"
+                                                     href="https://docs.python.org/3/library/functions.html#object"
+                                                     title="(in Python v3.10)"><code
+                                            class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a>
+                                    </p>
+                                    </dd>
+                                </dl>
+
+                            </div>
+                            <div class="section" id="module-twistpy.EstimatorConfiguration">
+                                <span id="twistpy-estimatorconfiguration-module"></span>
+                                <h2>twistpy.EstimatorConfiguration module<a class="headerlink"
+                                                                            href="#module-twistpy.EstimatorConfiguration"
+                                                                            title="Permalink to this headline"></a>
+                                </h2>
+                                <dl class="field-list simple">
+                                    <dt class="field-odd">copyright</dt>
+                                    <dd class="field-odd"><p>David Sollberger (<a class="reference external"
+                                                                                  href="mailto:david&#46;sollberger&#37;&#52;&#48;gmail&#46;com">david<span>&#46;</span>sollberger<span>&#64;</span>gmail<span>&#46;</span>com</a>),
+                                        2022</p>
+                                    </dd>
+                                    <dt class="field-even">license</dt>
+                                    <dd class="field-even"><p>None</p>
+                                    </dd>
+                                </dl>
+                                <dl class="py class">
+                                    <dt class="sig sig-object py"
+                                        id="twistpy.EstimatorConfiguration.EstimatorConfiguration">
+                                        <em class="property"><span class="pre">class</span><span class="w"> </span></em><span
+                                            class="sig-prename descclassname"><span class="pre">twistpy.EstimatorConfiguration.</span></span><span
+                                            class="sig-name descname"><span
+                                            class="pre">EstimatorConfiguration</span></span><span
+                                            class="sig-paren">(</span><em class="sig-param"><span class="n"><span
+                                            class="pre">wave_types</span></span><span class="p"><span
+                                            class="pre">:</span></span><span class="w"> </span><span class="n"><a
+                                            class="reference external"
+                                            href="https://docs.python.org/3/library/typing.html#typing.Optional"
+                                            title="(in Python v3.10)"><span class="pre">Optional</span></a><span
+                                            class="p"><span class="pre">[</span></span><a class="reference external"
+                                                                                          href="https://docs.python.org/3/library/typing.html#typing.List"
+                                                                                          title="(in Python v3.10)"><span
+                                            class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a
+                                            class="reference external"
+                                            href="https://docs.python.org/3/library/stdtypes.html#str"
+                                            title="(in Python v3.10)"><span class="pre">str</span></a><span
+                                            class="p"><span class="pre">]</span></span><span class="p"><span
+                                            class="pre">]</span></span></span><span class="w"> </span><span
+                                            class="o"><span class="pre">=</span></span><span class="w"> </span><span
+                                            class="default_value"><span class="pre">None</span></span></em>, <em
+                                            class="sig-param"><span class="n"><span
+                                            class="pre">method</span></span><span class="p"><span
+                                            class="pre">:</span></span><span class="w"> </span><span class="n"><a
+                                            class="reference external"
+                                            href="https://docs.python.org/3/library/stdtypes.html#str"
+                                            title="(in Python v3.10)"><span class="pre">str</span></a></span><span
+                                            class="w"> </span><span class="o"><span class="pre">=</span></span><span
+                                            class="w"> </span><span class="default_value"><span
+                                            class="pre">'MUSIC'</span></span></em>, <em class="sig-param"><span
+                                            class="n"><span class="pre">search</span></span><span class="p"><span
+                                            class="pre">:</span></span><span class="w"> </span><span class="n"><a
+                                            class="reference external"
+                                            href="https://docs.python.org/3/library/stdtypes.html#str"
+                                            title="(in Python v3.10)"><span class="pre">str</span></a></span><span
+                                            class="w"> </span><span class="o"><span class="pre">=</span></span><span
+                                            class="w"> </span><span class="default_value"><span
+                                            class="pre">'grid'</span></span></em><span class="sig-paren">)</span><a
+                                            class="reference internal"
+                                            href="_modules/twistpy/EstimatorConfiguration.html#EstimatorConfiguration"><span
+                                            class="viewcode-link"><span class="pre">[source]</span></span></a><a
+                                            class="headerlink"
+                                            href="#twistpy.EstimatorConfiguration.EstimatorConfiguration"
+                                            title="Permalink to this definition"></a></dt>
+                                    <dd><p>Bases: <a class="reference external"
+                                                     href="https://docs.python.org/3/library/functions.html#object"
+                                                     title="(in Python v3.10)"><code
+                                            class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a>
+                                    </p>
+                                        <dl class="field-list simple">
+                                            <dt class="field-odd">Parameters</dt>
+                                            <dd class="field-odd">
+                                                <ul class="simple">
+                                                    <li><p><strong>method</strong> – Specifies the way that the
+                                                        polarization fit is determined
+                                                        ‘MUSIC’: MUSIC algorithm
+                                                        ‘ML’: Maximum likelihood method
+                                                        ‘DOT’: Minimize great-circle distance / dot product
+                                                        (corresponding to the angle between the mode
+                                                        polarization vector and the polarization direction in the data)
+                                                        on the 5-sphere between the
+                                                        measured and tested polarization vector (DEFAULT)</p></li>
+                                                    <li><p><strong>search</strong> – Specifies the optimization
+                                                        procedure
+                                                        ‘grid’: Simple grid search across the parameter space (DEFAULT)
+                                                        ‘global’: Global optimization for speed-up using a differential
+                                                        evolution algorithm</p></li>
+                                                </ul>
+                                            </dd>
+                                        </dl>
+                                        <p>Range of parameters used to compute steering vectors. Tuple of the form
+                                            range=(range_min, range_max, range_increment)
+                                            If ‘search’ == ‘global’, the range_increment argument is ignored</p>
+                                        <dl class="field-list simple">
+                                            <dt class="field-odd">Parameters</dt>
+                                            <dd class="field-odd">
+                                                <ul class="simple">
+                                                    <li><p><strong>vl_range</strong> – Range of Love wave velocities (in
+                                                        m/s) to be tested.</p></li>
+                                                    <li><p><strong>vr_range</strong> – Range of Rayleigh wave velocities
+                                                        (in m/s) to be tested.</p></li>
+                                                    <li><p><strong>vp_range</strong> – Range of P-wave velocities (in
+                                                        m/s) to be tested.</p></li>
+                                                    <li><p><strong>vs_range</strong> – Range of S-wave velocities (in
+                                                        m/s) to be tested.</p></li>
+                                                    <li><p><strong>theta_range</strong> – Range of incidence angles (in
+                                                        degrees) to be tested.</p></li>
+                                                    <li><p><strong>phi_range</strong> – Range of azimuth angles (in
+                                                        degrees) to be tested.</p></li>
+                                                    <li><p><strong>xi_range</strong> – Range of Rayleigh wave
+                                                        ellipticity angles (in rad) to be tested.</p></li>
+                                                </ul>
+                                            </dd>
+                                        </dl>
+                                    </dd>
+                                </dl>
+
+                            </div>
+                            <div class="section" id="module-twistpy.MachineLearning">
+                                <span id="twistpy-machinelearning-module"></span>
+                                <h2>twistpy.MachineLearning module<a class="headerlink"
+                                                                     href="#module-twistpy.MachineLearning"
+                                                                     title="Permalink to this headline"></a></h2>
+                                <dl class="field-list simple">
+                                    <dt class="field-odd">copyright</dt>
+                                    <dd class="field-odd"><p>David Sollberger (<a class="reference external"
+                                                                                  href="mailto:david&#46;sollberger&#37;&#52;&#48;gmail&#46;com">david<span>&#46;</span>sollberger<span>&#64;</span>gmail<span>&#46;</span>com</a>),
+                                        2022</p>
+                                    </dd>
+                                    <dt class="field-even">license</dt>
+                                    <dd class="field-even"><p>None</p>
+                                    </dd>
+                                </dl>
+                                <dl class="py class">
+                                    <dt class="sig sig-object py" id="twistpy.MachineLearning.SupportVectorMachine">
+                                        <em class="property"><span class="pre">class</span><span class="w"> </span></em><span
+                                            class="sig-prename descclassname"><span
+                                            class="pre">twistpy.MachineLearning.</span></span><span
+                                            class="sig-name descname"><span
+                                            class="pre">SupportVectorMachine</span></span><span
+                                            class="sig-paren">(</span><em class="sig-param"><span class="n"><span
+                                            class="pre">name</span></span><span class="p"><span
+                                            class="pre">:</span></span><span class="w"> </span><span class="n"><a
+                                            class="reference external"
+                                            href="https://docs.python.org/3/library/typing.html#typing.Optional"
+                                            title="(in Python v3.10)"><span class="pre">Optional</span></a><span
+                                            class="p"><span class="pre">[</span></span><a class="reference external"
+                                                                                          href="https://docs.python.org/3/library/stdtypes.html#str"
+                                                                                          title="(in Python v3.10)"><span
+                                            class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span
+                                            class="w"> </span><span class="o"><span class="pre">=</span></span><span
+                                            class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span
+                                            class="sig-paren">)</span><a class="reference internal"
+                                                                         href="_modules/twistpy/MachineLearning.html#SupportVectorMachine"><span
+                                            class="viewcode-link"><span class="pre">[source]</span></span></a><a
+                                            class="headerlink" href="#twistpy.MachineLearning.SupportVectorMachine"
+                                            title="Permalink to this definition"></a></dt>
+                                    <dd><p>Bases: <a class="reference external"
+                                                     href="https://docs.python.org/3/library/functions.html#object"
+                                                     title="(in Python v3.10)"><code
+                                            class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a>
+                                    </p>
+                                        <p>Support vector machine for wave type classification based on six component
+                                            polarization analysis. This class is an
+                                            overload of the class sklearn.svm.SVC for convenience only.</p>
+                                        <dl class="py method">
+                                            <dt class="sig sig-object py"
+                                                id="twistpy.MachineLearning.SupportVectorMachine.train">
+                                                <span class="sig-name descname"><span
+                                                        class="pre">train</span></span><span
+                                                    class="sig-paren">(</span><em class="sig-param"><span
+                                                    class="n"><span class="pre">N</span></span><span class="p"><span
+                                                    class="pre">:</span></span><span class="w"> </span><span
+                                                    class="n"><a class="reference external"
+                                                                 href="https://docs.python.org/3/library/functions.html#int"
+                                                                 title="(in Python v3.10)"><span class="pre">int</span></a></span><span
+                                                    class="w"> </span><span class="o"><span
+                                                    class="pre">=</span></span><span class="w"> </span><span
+                                                    class="default_value"><span class="pre">5000</span></span></em>, <em
+                                                    class="sig-param"><span class="n"><span
+                                                    class="pre">scaling_velocity</span></span><span class="p"><span
+                                                    class="pre">:</span></span><span class="w"> </span><span
+                                                    class="n"><a class="reference external"
+                                                                 href="https://docs.python.org/3/library/functions.html#float"
+                                                                 title="(in Python v3.10)"><span
+                                                    class="pre">float</span></a></span><span class="w"> </span><span
+                                                    class="o"><span class="pre">=</span></span><span
+                                                    class="w"> </span><span class="default_value"><span
+                                                    class="pre">1.0</span></span></em>, <em class="sig-param"><span
+                                                    class="n"><span class="pre">vp</span></span><span class="p"><span
+                                                    class="pre">:</span></span><span class="w"> </span><span
+                                                    class="n"><a class="reference external"
+                                                                 href="https://docs.python.org/3/library/typing.html#typing.Tuple"
+                                                                 title="(in Python v3.10)"><span
+                                                    class="pre">Tuple</span></a><span class="p"><span
+                                                    class="pre">[</span></span><a class="reference external"
+                                                                                  href="https://docs.python.org/3/library/functions.html#float"
+                                                                                  title="(in Python v3.10)"><span
+                                                    class="pre">float</span></a><span class="p"><span
+                                                    class="pre">,</span></span><span class="w"> </span><a
+                                                    class="reference external"
+                                                    href="https://docs.python.org/3/library/functions.html#float"
+                                                    title="(in Python v3.10)"><span class="pre">float</span></a><span
+                                                    class="p"><span class="pre">]</span></span></span><span
+                                                    class="w"> </span><span class="o"><span
+                                                    class="pre">=</span></span><span class="w"> </span><span
+                                                    class="default_value"><span class="pre">(50.0,</span> <span
+                                                    class="pre">2000.0)</span></span></em>, <em class="sig-param"><span
+                                                    class="n"><span class="pre">vp_to_vs</span></span><span
+                                                    class="p"><span class="pre">:</span></span><span
+                                                    class="w"> </span><span class="n"><a class="reference external"
+                                                                                         href="https://docs.python.org/3/library/typing.html#typing.Tuple"
+                                                                                         title="(in Python v3.10)"><span
+                                                    class="pre">Tuple</span></a><span class="p"><span
+                                                    class="pre">[</span></span><a class="reference external"
+                                                                                  href="https://docs.python.org/3/library/functions.html#float"
+                                                                                  title="(in Python v3.10)"><span
+                                                    class="pre">float</span></a><span class="p"><span
+                                                    class="pre">,</span></span><span class="w"> </span><a
+                                                    class="reference external"
+                                                    href="https://docs.python.org/3/library/functions.html#float"
+                                                    title="(in Python v3.10)"><span class="pre">float</span></a><span
+                                                    class="p"><span class="pre">]</span></span></span><span
+                                                    class="w"> </span><span class="o"><span
+                                                    class="pre">=</span></span><span class="w"> </span><span
+                                                    class="default_value"><span class="pre">(1.7,</span> <span
+                                                    class="pre">2.4)</span></span></em>, <em class="sig-param"><span
+                                                    class="n"><span class="pre">vl</span></span><span class="p"><span
+                                                    class="pre">:</span></span><span class="w"> </span><span
+                                                    class="n"><a class="reference external"
+                                                                 href="https://docs.python.org/3/library/typing.html#typing.Tuple"
+                                                                 title="(in Python v3.10)"><span
+                                                    class="pre">Tuple</span></a><span class="p"><span
+                                                    class="pre">[</span></span><a class="reference external"
+                                                                                  href="https://docs.python.org/3/library/functions.html#float"
+                                                                                  title="(in Python v3.10)"><span
+                                                    class="pre">float</span></a><span class="p"><span
+                                                    class="pre">,</span></span><span class="w"> </span><a
+                                                    class="reference external"
+                                                    href="https://docs.python.org/3/library/functions.html#float"
+                                                    title="(in Python v3.10)"><span class="pre">float</span></a><span
+                                                    class="p"><span class="pre">]</span></span></span><span
+                                                    class="w"> </span><span class="o"><span
+                                                    class="pre">=</span></span><span class="w"> </span><span
+                                                    class="default_value"><span class="pre">(50,</span> <span
+                                                    class="pre">2000)</span></span></em>, <em class="sig-param"><span
+                                                    class="n"><span class="pre">vr</span></span><span class="p"><span
+                                                    class="pre">:</span></span><span class="w"> </span><span
+                                                    class="n"><a class="reference external"
+                                                                 href="https://docs.python.org/3/library/typing.html#typing.Tuple"
+                                                                 title="(in Python v3.10)"><span
+                                                    class="pre">Tuple</span></a><span class="p"><span
+                                                    class="pre">[</span></span><a class="reference external"
+                                                                                  href="https://docs.python.org/3/library/functions.html#float"
+                                                                                  title="(in Python v3.10)"><span
+                                                    class="pre">float</span></a><span class="p"><span
+                                                    class="pre">,</span></span><span class="w"> </span><a
+                                                    class="reference external"
+                                                    href="https://docs.python.org/3/library/functions.html#float"
+                                                    title="(in Python v3.10)"><span class="pre">float</span></a><span
+                                                    class="p"><span class="pre">]</span></span></span><span
+                                                    class="w"> </span><span class="o"><span
+                                                    class="pre">=</span></span><span class="w"> </span><span
+                                                    class="default_value"><span class="pre">(50,</span> <span
+                                                    class="pre">2000)</span></span></em>, <em class="sig-param"><span
+                                                    class="n"><span class="pre">phi</span></span><span class="p"><span
+                                                    class="pre">:</span></span><span class="w"> </span><span
+                                                    class="n"><a class="reference external"
+                                                                 href="https://docs.python.org/3/library/typing.html#typing.Tuple"
+                                                                 title="(in Python v3.10)"><span
+                                                    class="pre">Tuple</span></a><span class="p"><span
+                                                    class="pre">[</span></span><a class="reference external"
+                                                                                  href="https://docs.python.org/3/library/functions.html#float"
+                                                                                  title="(in Python v3.10)"><span
+                                                    class="pre">float</span></a><span class="p"><span
+                                                    class="pre">,</span></span><span class="w"> </span><a
+                                                    class="reference external"
+                                                    href="https://docs.python.org/3/library/functions.html#float"
+                                                    title="(in Python v3.10)"><span class="pre">float</span></a><span
+                                                    class="p"><span class="pre">]</span></span></span><span
+                                                    class="w"> </span><span class="o"><span
+                                                    class="pre">=</span></span><span class="w"> </span><span
+                                                    class="default_value"><span class="pre">(0,</span> <span
+                                                    class="pre">360)</span></span></em>, <em class="sig-param"><span
+                                                    class="n"><span class="pre">theta</span></span><span class="p"><span
+                                                    class="pre">:</span></span><span class="w"> </span><span
+                                                    class="n"><a class="reference external"
+                                                                 href="https://docs.python.org/3/library/typing.html#typing.Tuple"
+                                                                 title="(in Python v3.10)"><span
+                                                    class="pre">Tuple</span></a><span class="p"><span
+                                                    class="pre">[</span></span><a class="reference external"
+                                                                                  href="https://docs.python.org/3/library/functions.html#float"
+                                                                                  title="(in Python v3.10)"><span
+                                                    class="pre">float</span></a><span class="p"><span
+                                                    class="pre">,</span></span><span class="w"> </span><a
+                                                    class="reference external"
+                                                    href="https://docs.python.org/3/library/functions.html#float"
+                                                    title="(in Python v3.10)"><span class="pre">float</span></a><span
+                                                    class="p"><span class="pre">]</span></span></span><span
+                                                    class="w"> </span><span class="o"><span
+                                                    class="pre">=</span></span><span class="w"> </span><span
+                                                    class="default_value"><span class="pre">(0,</span> <span
+                                                    class="pre">90)</span></span></em>, <em class="sig-param"><span
+                                                    class="n"><span class="pre">xi</span></span><span class="p"><span
+                                                    class="pre">:</span></span><span class="w"> </span><span
+                                                    class="n"><a class="reference external"
+                                                                 href="https://docs.python.org/3/library/typing.html#typing.Tuple"
+                                                                 title="(in Python v3.10)"><span
+                                                    class="pre">Tuple</span></a><span class="p"><span
+                                                    class="pre">[</span></span><a class="reference external"
+                                                                                  href="https://docs.python.org/3/library/functions.html#float"
+                                                                                  title="(in Python v3.10)"><span
+                                                    class="pre">float</span></a><span class="p"><span
+                                                    class="pre">,</span></span><span class="w"> </span><a
+                                                    class="reference external"
+                                                    href="https://docs.python.org/3/library/functions.html#float"
+                                                    title="(in Python v3.10)"><span class="pre">float</span></a><span
+                                                    class="p"><span class="pre">]</span></span></span><span
+                                                    class="w"> </span><span class="o"><span
+                                                    class="pre">=</span></span><span class="w"> </span><span
+                                                    class="default_value"><span class="pre">(-</span> <span class="pre">90,</span> <span
+                                                    class="pre">90)</span></span></em>, <em class="sig-param"><span
+                                                    class="n"><span class="pre">free_surface</span></span><span
+                                                    class="p"><span class="pre">:</span></span><span
+                                                    class="w"> </span><span class="n"><a class="reference external"
+                                                                                         href="https://docs.python.org/3/library/functions.html#bool"
+                                                                                         title="(in Python v3.10)"><span
+                                                    class="pre">bool</span></a></span><span class="w"> </span><span
+                                                    class="o"><span class="pre">=</span></span><span
+                                                    class="w"> </span><span class="default_value"><span
+                                                    class="pre">True</span></span></em>, <em class="sig-param"><span
+                                                    class="n"><span class="pre">C</span></span><span class="p"><span
+                                                    class="pre">:</span></span><span class="w"> </span><span
+                                                    class="n"><a class="reference external"
+                                                                 href="https://docs.python.org/3/library/functions.html#float"
+                                                                 title="(in Python v3.10)"><span
+                                                    class="pre">float</span></a></span><span class="w"> </span><span
+                                                    class="o"><span class="pre">=</span></span><span
+                                                    class="w"> </span><span class="default_value"><span
+                                                    class="pre">1</span></span></em>, <em class="sig-param"><span
+                                                    class="n"><span class="pre">kernel</span></span><span
+                                                    class="p"><span class="pre">:</span></span><span
+                                                    class="w"> </span><span class="n"><a class="reference external"
+                                                                                         href="https://docs.python.org/3/library/stdtypes.html#str"
+                                                                                         title="(in Python v3.10)"><span
+                                                    class="pre">str</span></a></span><span class="w"> </span><span
+                                                    class="o"><span class="pre">=</span></span><span
+                                                    class="w"> </span><span class="default_value"><span class="pre">'rbf'</span></span></em>,
+                                                <em class="sig-param"><span class="n"><span
+                                                        class="pre">gamma</span></span><span class="p"><span
+                                                        class="pre">:</span></span><span class="w"> </span><span
+                                                        class="n"><a class="reference external"
+                                                                     href="https://docs.python.org/3/library/typing.html#typing.Union"
+                                                                     title="(in Python v3.10)"><span
+                                                        class="pre">Union</span></a><span class="p"><span
+                                                        class="pre">[</span></span><a class="reference external"
+                                                                                      href="https://docs.python.org/3/library/stdtypes.html#str"
+                                                                                      title="(in Python v3.10)"><span
+                                                        class="pre">str</span></a><span class="p"><span
+                                                        class="pre">,</span></span><span class="w"> </span><a
+                                                        class="reference external"
+                                                        href="https://docs.python.org/3/library/functions.html#float"
+                                                        title="(in Python v3.10)"><span
+                                                        class="pre">float</span></a><span class="p"><span
+                                                        class="pre">]</span></span></span><span class="w"> </span><span
+                                                        class="o"><span class="pre">=</span></span><span
+                                                        class="w"> </span><span class="default_value"><span class="pre">'scale'</span></span></em>,
+                                                <em class="sig-param"><span class="n"><span class="pre">plot_confusion_matrix</span></span><span
+                                                        class="p"><span class="pre">:</span></span><span
+                                                        class="w"> </span><span class="n"><a class="reference external"
+                                                                                             href="https://docs.python.org/3/library/functions.html#bool"
+                                                                                             title="(in Python v3.10)"><span
+                                                        class="pre">bool</span></a></span><span class="w"> </span><span
+                                                        class="o"><span class="pre">=</span></span><span
+                                                        class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span
+                                                    class="sig-paren">)</span> <span class="sig-return"><span
+                                                    class="sig-return-icon">&#x2192;</span> <span
+                                                    class="sig-return-typehint"><a class="reference external"
+                                                                                   href="https://docs.python.org/3/library/constants.html#None"
+                                                                                   title="(in Python v3.10)"><span
+                                                    class="pre">None</span></a></span></span><a
+                                                    class="reference internal"
+                                                    href="_modules/twistpy/MachineLearning.html#SupportVectorMachine.train"><span
+                                                    class="viewcode-link"><span class="pre">[source]</span></span></a><a
+                                                    class="headerlink"
+                                                    href="#twistpy.MachineLearning.SupportVectorMachine.train"
+                                                    title="Permalink to this definition"></a></dt>
+                                            <dd>
+                                                <dl class="field-list simple">
+                                                    <dt class="field-odd">Parameters</dt>
+                                                    <dd class="field-odd">
+                                                        <ul class="simple">
+                                                            <li><p><strong>N</strong> – Number of randomly generated
+                                                                models for each wave type that are used for training</p>
+                                                            </li>
+                                                            <li><p><strong>scaling_velocity</strong> – Scaling velocity
+                                                                in (m/s) applied to the translational components of the
+                                                                polarization
+                                                                models</p></li>
+                                                            <li><p><strong>vp</strong> – (vp_min, vp_max) The range of
+                                                                P-wave velocities in (m/s) that for training</p></li>
+                                                            <li><p><strong>vp_to_vs</strong> – (vp_to_vs_min,
+                                                                vp_to_vs_max) The range of vp to vs ratios used for
+                                                                training</p></li>
+                                                            <li><p><strong>vl</strong> – (vl_min, vl_max) The range of
+                                                                Love wave velocities (m/s) used for training</p></li>
+                                                            <li><p><strong>vr</strong> – (vr_min, vr_max) The range of
+                                                                Rayleigh wave velocities (m/s) used for training</p>
+                                                            </li>
+                                                            <li><p><strong>phi</strong> – (phi_min, phi_max) The range
+                                                                of azimuth angles (degrees) used for training</p></li>
+                                                            <li><p><strong>theta</strong> – (theta_min, theta_max) The
+                                                                range of incidence angles (degrees) used for training
+                                                            </p></li>
+                                                            <li><p><strong>xi</strong> – (xi_min, xi_max) The range of
+                                                                Rayleigh wave ellipticity angles (degrees) used for
+                                                                training</p></li>
+                                                            <li><p><strong>free_surface</strong> – True (Default) or
+                                                                False, specifies whether the Support Vector Machine is
+                                                                trained using
+                                                                free-surface polarization models</p></li>
+                                                            <li><p><strong>C</strong> – Regularization parameter for the
+                                                                support vector machine (defaults to 1)</p></li>
+                                                            <li><p><strong>kernel</strong> – Specifies the kernel type
+                                                                to be used in the SVC algorithm (defaults to ‘rbf’,
+                                                                radial basis function)</p></li>
+                                                            <li><p><strong>gamma</strong> – Kernel coefficient for SVC
+                                                            </p></li>
+                                                            <li><p><strong>plot_confusion_matrix</strong> – True
+                                                                (Default) or False. Specifies whether a confusion matrix
+                                                                is plotted after
+                                                                training</p></li>
+                                                        </ul>
+                                                    </dd>
+                                                </dl>
+                                            </dd>
+                                        </dl>
+
+                                        <dl class="py method">
+                                            <dt class="sig sig-object py"
+                                                id="twistpy.MachineLearning.SupportVectorMachine.load_model">
+                                                <span class="sig-name descname"><span
+                                                        class="pre">load_model</span></span><span
+                                                    class="sig-paren">(</span><span class="sig-paren">)</span> <span
+                                                    class="sig-return"><span
+                                                    class="sig-return-icon">&#x2192;</span> <span
+                                                    class="sig-return-typehint"><a class="reference external"
+                                                                                   href="https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC"
+                                                                                   title="(in scikit-learn v1.0)"><span
+                                                    class="pre">sklearn.svm._classes.SVC</span></a></span></span><a
+                                                    class="reference internal"
+                                                    href="_modules/twistpy/MachineLearning.html#SupportVectorMachine.load_model"><span
+                                                    class="viewcode-link"><span class="pre">[source]</span></span></a><a
+                                                    class="headerlink"
+                                                    href="#twistpy.MachineLearning.SupportVectorMachine.load_model"
+                                                    title="Permalink to this definition"></a></dt>
+                                            <dd><p>Loads a previously trained support vector machine from disk
+                                                :return: sklearn.svm.SVC object</p>
+                                            </dd>
+                                        </dl>
+
+                                    </dd>
+                                </dl>
+
+                            </div>
+                            <div class="section" id="module-twistpy.PolarizationModel">
+                                <span id="twistpy-polarizationmodel-module"></span>
+                                <h2>twistpy.PolarizationModel module<a class="headerlink"
+                                                                       href="#module-twistpy.PolarizationModel"
+                                                                       title="Permalink to this headline"></a></h2>
+                                <dl class="field-list simple">
+                                    <dt class="field-odd">copyright</dt>
+                                    <dd class="field-odd"><p>David Sollberger (<a class="reference external"
+                                                                                  href="mailto:david&#46;sollberger&#37;&#52;&#48;gmail&#46;com">david<span>&#46;</span>sollberger<span>&#64;</span>gmail<span>&#46;</span>com</a>),
+                                        2022</p>
+                                    </dd>
+                                    <dt class="field-even">license</dt>
+                                    <dd class="field-even"><p>None</p>
+                                    </dd>
+                                </dl>
+                                <dl class="py class">
+                                    <dt class="sig sig-object py" id="twistpy.PolarizationModel.PolarizationModel">
+                                        <em class="property"><span class="pre">class</span><span class="w"> </span></em><span
+                                            class="sig-prename descclassname"><span class="pre">twistpy.PolarizationModel.</span></span><span
+                                            class="sig-name descname"><span
+                                            class="pre">PolarizationModel</span></span><span
+                                            class="sig-paren">(</span><em class="sig-param"><span class="n"><span
+                                            class="pre">wave_type</span></span><span class="p"><span
+                                            class="pre">:</span></span><span class="w"> </span><span class="n"><a
+                                            class="reference external"
+                                            href="https://docs.python.org/3/library/stdtypes.html#str"
+                                            title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em
+                                            class="sig-param"><span class="n"><span class="pre">scaling_velocity</span></span><span
+                                            class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                                            class="n"><a class="reference external"
+                                                         href="https://docs.python.org/3/library/functions.html#float"
+                                                         title="(in Python v3.10)"><span
+                                            class="pre">float</span></a></span><span class="w"> </span><span
+                                            class="o"><span class="pre">=</span></span><span class="w"> </span><span
+                                            class="default_value"><span class="pre">1</span></span></em>, <em
+                                            class="sig-param"><span class="n"><span
+                                            class="pre">free_surface</span></span><span class="p"><span
+                                            class="pre">:</span></span><span class="w"> </span><span class="n"><a
+                                            class="reference external"
+                                            href="https://docs.python.org/3/library/functions.html#bool"
+                                            title="(in Python v3.10)"><span class="pre">bool</span></a></span><span
+                                            class="w"> </span><span class="o"><span class="pre">=</span></span><span
+                                            class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>,
+                                        <em class="sig-param"><span class="n"><span class="pre">vp</span></span><span
+                                                class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                                                class="n"><a class="reference external"
+                                                             href="https://docs.python.org/3/library/typing.html#typing.Optional"
+                                                             title="(in Python v3.10)"><span class="pre">Optional</span></a><span
+                                                class="p"><span class="pre">[</span></span><a class="reference external"
+                                                                                              href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray"
+                                                                                              title="(in NumPy v1.22)"><span
+                                                class="pre">numpy.ndarray</span></a><span class="p"><span
+                                                class="pre">]</span></span></span><span class="w"> </span><span
+                                                class="o"><span class="pre">=</span></span><span class="w"> </span><span
+                                                class="default_value"><span class="pre">None</span></span></em>, <em
+                                            class="sig-param"><span class="n"><span class="pre">vs</span></span><span
+                                            class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                                            class="n"><a class="reference external"
+                                                         href="https://docs.python.org/3/library/typing.html#typing.Optional"
+                                                         title="(in Python v3.10)"><span class="pre">Optional</span></a><span
+                                            class="p"><span class="pre">[</span></span><a class="reference external"
+                                                                                          href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray"
+                                                                                          title="(in NumPy v1.22)"><span
+                                            class="pre">numpy.ndarray</span></a><span class="p"><span
+                                            class="pre">]</span></span></span><span class="w"> </span><span
+                                            class="o"><span class="pre">=</span></span><span class="w"> </span><span
+                                            class="default_value"><span class="pre">None</span></span></em>, <em
+                                            class="sig-param"><span class="n"><span class="pre">vl</span></span><span
+                                            class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                                            class="n"><a class="reference external"
+                                                         href="https://docs.python.org/3/library/typing.html#typing.Optional"
+                                                         title="(in Python v3.10)"><span class="pre">Optional</span></a><span
+                                            class="p"><span class="pre">[</span></span><a class="reference external"
+                                                                                          href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray"
+                                                                                          title="(in NumPy v1.22)"><span
+                                            class="pre">numpy.ndarray</span></a><span class="p"><span
+                                            class="pre">]</span></span></span><span class="w"> </span><span
+                                            class="o"><span class="pre">=</span></span><span class="w"> </span><span
+                                            class="default_value"><span class="pre">None</span></span></em>, <em
+                                            class="sig-param"><span class="n"><span class="pre">vr</span></span><span
+                                            class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                                            class="n"><a class="reference external"
+                                                         href="https://docs.python.org/3/library/typing.html#typing.Optional"
+                                                         title="(in Python v3.10)"><span class="pre">Optional</span></a><span
+                                            class="p"><span class="pre">[</span></span><a class="reference external"
+                                                                                          href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray"
+                                                                                          title="(in NumPy v1.22)"><span
+                                            class="pre">numpy.ndarray</span></a><span class="p"><span
+                                            class="pre">]</span></span></span><span class="w"> </span><span
+                                            class="o"><span class="pre">=</span></span><span class="w"> </span><span
+                                            class="default_value"><span class="pre">None</span></span></em>, <em
+                                            class="sig-param"><span class="n"><span class="pre">theta</span></span><span
+                                            class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                                            class="n"><a class="reference external"
+                                                         href="https://docs.python.org/3/library/typing.html#typing.Optional"
+                                                         title="(in Python v3.10)"><span class="pre">Optional</span></a><span
+                                            class="p"><span class="pre">[</span></span><a class="reference external"
+                                                                                          href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray"
+                                                                                          title="(in NumPy v1.22)"><span
+                                            class="pre">numpy.ndarray</span></a><span class="p"><span
+                                            class="pre">]</span></span></span><span class="w"> </span><span
+                                            class="o"><span class="pre">=</span></span><span class="w"> </span><span
+                                            class="default_value"><span class="pre">None</span></span></em>, <em
+                                            class="sig-param"><span class="n"><span class="pre">phi</span></span><span
+                                            class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                                            class="n"><a class="reference external"
+                                                         href="https://docs.python.org/3/library/typing.html#typing.Optional"
+                                                         title="(in Python v3.10)"><span class="pre">Optional</span></a><span
+                                            class="p"><span class="pre">[</span></span><a class="reference external"
+                                                                                          href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray"
+                                                                                          title="(in NumPy v1.22)"><span
+                                            class="pre">numpy.ndarray</span></a><span class="p"><span
+                                            class="pre">]</span></span></span><span class="w"> </span><span
+                                            class="o"><span class="pre">=</span></span><span class="w"> </span><span
+                                            class="default_value"><span class="pre">None</span></span></em>, <em
+                                            class="sig-param"><span class="n"><span class="pre">xi</span></span><span
+                                            class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                                            class="n"><a class="reference external"
+                                                         href="https://docs.python.org/3/library/typing.html#typing.Optional"
+                                                         title="(in Python v3.10)"><span class="pre">Optional</span></a><span
+                                            class="p"><span class="pre">[</span></span><a class="reference external"
+                                                                                          href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray"
+                                                                                          title="(in NumPy v1.22)"><span
+                                            class="pre">numpy.ndarray</span></a><span class="p"><span
+                                            class="pre">]</span></span></span><span class="w"> </span><span
+                                            class="o"><span class="pre">=</span></span><span class="w"> </span><span
+                                            class="default_value"><span class="pre">None</span></span></em><span
+                                            class="sig-paren">)</span><a class="reference internal"
+                                                                         href="_modules/twistpy/PolarizationModel.html#PolarizationModel"><span
+                                            class="viewcode-link"><span class="pre">[source]</span></span></a><a
+                                            class="headerlink" href="#twistpy.PolarizationModel.PolarizationModel"
+                                            title="Permalink to this definition"></a></dt>
+                                    <dd><p>Bases: <a class="reference external"
+                                                     href="https://docs.python.org/3/library/functions.html#object"
+                                                     title="(in Python v3.10)"><code
+                                            class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a>
+                                    </p>
+                                        <p>Six-component pure-state polarization model.</p>
+                                        <p>This class computes the six-component pure-state polarization vector for the
+                                            specified wave-type
+                                            according to Equations 40 in Sollberger et al. (2018) [1], corrected in [2].
+                                            Polarization models can either be computed for recordings
+                                            at the free surface or inside the medium.</p>
+                                        <div class="line-block">
+                                            <div class="line">[1] <a class="reference external"
+                                                                     href="https://doi.org/10.1093/gji/ggx542">https://doi.org/10.1093/gji/ggx542</a>
+                                            </div>
+                                            <div class="line">[2] <a class="reference external"
+                                                                     href="https://doi.org/10.1093/gji/ggy205">https://doi.org/10.1093/gji/ggy205</a>
+                                            </div>
+                                        </div>
+                                        <dl class="field-list">
+                                            <dt class="field-odd">Parameters</dt>
+                                            <dd class="field-odd">
+                                                <dl>
+                                                    <dt><strong>wave_type</strong><span class="classifier"><a
+                                                            class="reference external"
+                                                            href="https://docs.python.org/3/library/stdtypes.html#str"
+                                                            title="(in Python v3.10)"><code
+                                                            class="xref py py-obj docutils literal notranslate"><span
+                                                            class="pre">str</span></code></a></span></dt>
+                                                    <dd><p>Wave type</p>
+                                                        <div class="line-block">
+                                                            <div class="line">‘P’: P-wave</div>
+                                                            <div class="line">‘SV’: SV-wave</div>
+                                                            <div class="line">‘SH’: SH-wave</div>
+                                                            <div class="line">‘L’: Love-wave</div>
+                                                            <div class="line">‘R’: Rayleigh-wave</div>
+                                                        </div>
+                                                    </dd>
+                                                    <dt><strong>vp</strong><span class="classifier"><a
+                                                            class="reference external"
+                                                            href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray"
+                                                            title="(in NumPy v1.22)"><code
+                                                            class="xref py py-class docutils literal notranslate"><span
+                                                            class="pre">numpy.ndarray</span></code></a></span></dt>
+                                                    <dd><p>P-wave velocity (m/s) at the receiver location</p>
+                                                    </dd>
+                                                    <dt><strong>vs</strong><span class="classifier"><a
+                                                            class="reference external"
+                                                            href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray"
+                                                            title="(in NumPy v1.22)"><code
+                                                            class="xref py py-obj docutils literal notranslate"><span
+                                                            class="pre">numpy.ndarray</span></code></a></span></dt>
+                                                    <dd><p>S-wave velocity (m/s) at the receiver location</p>
+                                                    </dd>
+                                                    <dt><strong>vl</strong><span class="classifier"><a
+                                                            class="reference external"
+                                                            href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray"
+                                                            title="(in NumPy v1.22)"><code
+                                                            class="xref py py-obj docutils literal notranslate"><span
+                                                            class="pre">numpy.ndarray</span></code></a></span></dt>
+                                                    <dd><p>Love-wave velocity (m/s) at the receiver location</p>
+                                                    </dd>
+                                                    <dt><strong>vr</strong><span class="classifier"><a
+                                                            class="reference external"
+                                                            href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray"
+                                                            title="(in NumPy v1.22)"><code
+                                                            class="xref py py-obj docutils literal notranslate"><span
+                                                            class="pre">numpy.ndarray</span></code></a></span></dt>
+                                                    <dd><p>Rayleigh-wave velocity (m/s) at the receiver location</p>
+                                                    </dd>
+                                                    <dt><strong>theta</strong><span class="classifier"><a
+                                                            class="reference external"
+                                                            href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray"
+                                                            title="(in NumPy v1.22)"><code
+                                                            class="xref py py-obj docutils literal notranslate"><span
+                                                            class="pre">numpy.ndarray</span></code></a></span></dt>
+                                                    <dd><p>Inclination angle (degree), only for body waves</p>
+                                                    </dd>
+                                                    <dt><strong>xi</strong><span class="classifier"><a
+                                                            class="reference external"
+                                                            href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray"
+                                                            title="(in NumPy v1.22)"><code
+                                                            class="xref py py-obj docutils literal notranslate"><span
+                                                            class="pre">numpy.ndarray</span></code></a></span></dt>
+                                                    <dd><p>Ellipticity angle (degree), for Rayleigh waves</p>
+                                                    </dd>
+                                                    <dt><strong>scaling_velocity</strong><span class="classifier"><a
+                                                            class="reference external"
+                                                            href="https://docs.python.org/3/library/functions.html#float"
+                                                            title="(in Python v3.10)"><code
+                                                            class="xref py py-obj docutils literal notranslate"><span
+                                                            class="pre">float</span></code></a></span></dt>
+                                                    <dd><p>Scaling velocity (m/s) applied to the translational
+                                                        components
+                                                        to convert translations to dimensionless units, Default: 1
+                                                        (m/s)</p>
+                                                    </dd>
+                                                    <dt><strong>free_surface</strong><span class="classifier"><a
+                                                            class="reference external"
+                                                            href="https://docs.python.org/3/library/functions.html#bool"
+                                                            title="(in Python v3.10)"><code
+                                                            class="xref py py-obj docutils literal notranslate"><span
+                                                            class="pre">bool</span></code></a></span></dt>
+                                                    <dd><p>True (default): the wave is recorded at the free surface,
+                                                        False: the wave is recorded inside
+                                                        the medium</p>
+                                                    </dd>
+                                                </dl>
+                                            </dd>
+                                        </dl>
+                                        <dl class="py property">
+                                            <dt class="sig sig-object py"
+                                                id="twistpy.PolarizationModel.PolarizationModel.polarization_vector">
+                                                <em class="property"><span class="pre">property</span><span
+                                                        class="w"> </span></em><span class="sig-name descname"><span
+                                                    class="pre">polarization_vector</span></span><em
+                                                    class="property"><span class="p"><span
+                                                    class="pre">:</span></span><span class="w"> </span><a
+                                                    class="reference external"
+                                                    href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray"
+                                                    title="(in NumPy v1.22)"><span class="pre">numpy.ndarray</span></a></em><a
+                                                    class="headerlink"
+                                                    href="#twistpy.PolarizationModel.PolarizationModel.polarization_vector"
+                                                    title="Permalink to this definition"></a></dt>
+                                            <dd><p>Pure state six-component polarization vector</p>
+                                            </dd>
+                                        </dl>
+
+                                    </dd>
+                                </dl>
+
+                            </div>
+                            <div class="section" id="module-twistpy.TimeDomainAnalysis">
+                                <span id="twistpy-timedomainanalysis-module"></span>
+                                <h2>twistpy.TimeDomainAnalysis module<a class="headerlink"
+                                                                        href="#module-twistpy.TimeDomainAnalysis"
+                                                                        title="Permalink to this headline"></a></h2>
+                                <dl class="field-list simple">
+                                    <dt class="field-odd">copyright</dt>
+                                    <dd class="field-odd"><p>David Sollberger (<a class="reference external"
+                                                                                  href="mailto:david&#46;sollberger&#37;&#52;&#48;gmail&#46;com">david<span>&#46;</span>sollberger<span>&#64;</span>gmail<span>&#46;</span>com</a>),
+                                        2022</p>
+                                    </dd>
+                                    <dt class="field-even">license</dt>
+                                    <dd class="field-even"><p>None</p>
+                                    </dd>
+                                </dl>
+                                <dl class="py class">
+                                    <dt class="sig sig-object py" id="twistpy.TimeDomainAnalysis.TimeDomainAnalysis">
+                                        <em class="property"><span class="pre">class</span><span class="w"> </span></em><span
+                                            class="sig-prename descclassname"><span class="pre">twistpy.TimeDomainAnalysis.</span></span><span
+                                            class="sig-name descname"><span class="pre">TimeDomainAnalysis</span></span><span
+                                            class="sig-paren">(</span><em class="sig-param"><span class="n"><span
+                                            class="pre">traN</span></span><span class="p"><span
+                                            class="pre">:</span></span><span class="w"> </span><span class="n"><a
+                                            class="reference external"
+                                            href="https://docs.python.org/3/library/typing.html#typing.Optional"
+                                            title="(in Python v3.10)"><span class="pre">Optional</span></a><span
+                                            class="p"><span class="pre">[</span></span><a class="reference external"
+                                                                                          href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.html#obspy.core.trace.Trace"
+                                                                                          title="(in ObsPy Documentation (1.2.0) v1.2)"><span
+                                            class="pre">obspy.core.trace.Trace</span></a><span class="p"><span
+                                            class="pre">]</span></span></span><span class="w"> </span><span
+                                            class="o"><span class="pre">=</span></span><span class="w"> </span><span
+                                            class="default_value"><span class="pre">None</span></span></em>, <em
+                                            class="sig-param"><span class="n"><span class="pre">traE</span></span><span
+                                            class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                                            class="n"><a class="reference external"
+                                                         href="https://docs.python.org/3/library/typing.html#typing.Optional"
+                                                         title="(in Python v3.10)"><span class="pre">Optional</span></a><span
+                                            class="p"><span class="pre">[</span></span><a class="reference external"
+                                                                                          href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.html#obspy.core.trace.Trace"
+                                                                                          title="(in ObsPy Documentation (1.2.0) v1.2)"><span
+                                            class="pre">obspy.core.trace.Trace</span></a><span class="p"><span
+                                            class="pre">]</span></span></span><span class="w"> </span><span
+                                            class="o"><span class="pre">=</span></span><span class="w"> </span><span
+                                            class="default_value"><span class="pre">None</span></span></em>, <em
+                                            class="sig-param"><span class="n"><span class="pre">traZ</span></span><span
+                                            class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                                            class="n"><a class="reference external"
+                                                         href="https://docs.python.org/3/library/typing.html#typing.Optional"
+                                                         title="(in Python v3.10)"><span class="pre">Optional</span></a><span
+                                            class="p"><span class="pre">[</span></span><a class="reference external"
+                                                                                          href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.html#obspy.core.trace.Trace"
+                                                                                          title="(in ObsPy Documentation (1.2.0) v1.2)"><span
+                                            class="pre">obspy.core.trace.Trace</span></a><span class="p"><span
+                                            class="pre">]</span></span></span><span class="w"> </span><span
+                                            class="o"><span class="pre">=</span></span><span class="w"> </span><span
+                                            class="default_value"><span class="pre">None</span></span></em>, <em
+                                            class="sig-param"><span class="n"><span class="pre">rotN</span></span><span
+                                            class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                                            class="n"><a class="reference external"
+                                                         href="https://docs.python.org/3/library/typing.html#typing.Optional"
+                                                         title="(in Python v3.10)"><span class="pre">Optional</span></a><span
+                                            class="p"><span class="pre">[</span></span><a class="reference external"
+                                                                                          href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.html#obspy.core.trace.Trace"
+                                                                                          title="(in ObsPy Documentation (1.2.0) v1.2)"><span
+                                            class="pre">obspy.core.trace.Trace</span></a><span class="p"><span
+                                            class="pre">]</span></span></span><span class="w"> </span><span
+                                            class="o"><span class="pre">=</span></span><span class="w"> </span><span
+                                            class="default_value"><span class="pre">None</span></span></em>, <em
+                                            class="sig-param"><span class="n"><span class="pre">rotE</span></span><span
+                                            class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                                            class="n"><a class="reference external"
+                                                         href="https://docs.python.org/3/library/typing.html#typing.Optional"
+                                                         title="(in Python v3.10)"><span class="pre">Optional</span></a><span
+                                            class="p"><span class="pre">[</span></span><a class="reference external"
+                                                                                          href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.html#obspy.core.trace.Trace"
+                                                                                          title="(in ObsPy Documentation (1.2.0) v1.2)"><span
+                                            class="pre">obspy.core.trace.Trace</span></a><span class="p"><span
+                                            class="pre">]</span></span></span><span class="w"> </span><span
+                                            class="o"><span class="pre">=</span></span><span class="w"> </span><span
+                                            class="default_value"><span class="pre">None</span></span></em>, <em
+                                            class="sig-param"><span class="n"><span class="pre">rotZ</span></span><span
+                                            class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                                            class="n"><a class="reference external"
+                                                         href="https://docs.python.org/3/library/typing.html#typing.Optional"
+                                                         title="(in Python v3.10)"><span class="pre">Optional</span></a><span
+                                            class="p"><span class="pre">[</span></span><a class="reference external"
+                                                                                          href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.html#obspy.core.trace.Trace"
+                                                                                          title="(in ObsPy Documentation (1.2.0) v1.2)"><span
+                                            class="pre">obspy.core.trace.Trace</span></a><span class="p"><span
+                                            class="pre">]</span></span></span><span class="w"> </span><span
+                                            class="o"><span class="pre">=</span></span><span class="w"> </span><span
+                                            class="default_value"><span class="pre">None</span></span></em>, <em
+                                            class="sig-param"><span class="n"><span
+                                            class="pre">window</span></span><span class="p"><span
+                                            class="pre">:</span></span><span class="w"> </span><span class="n"><a
+                                            class="reference external"
+                                            href="https://docs.python.org/3/library/typing.html#typing.Optional"
+                                            title="(in Python v3.10)"><span class="pre">Optional</span></a><span
+                                            class="p"><span class="pre">[</span></span><a class="reference external"
+                                                                                          href="https://docs.python.org/3/library/stdtypes.html#dict"
+                                                                                          title="(in Python v3.10)"><span
+                                            class="pre">dict</span></a><span class="p"><span class="pre">]</span></span></span><span
+                                            class="w"> </span><span class="o"><span class="pre">=</span></span><span
+                                            class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,
+                                        <em class="sig-param"><span class="n"><span class="pre">scaling_velocity</span></span><span
+                                                class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                                                class="n"><a class="reference external"
+                                                             href="https://docs.python.org/3/library/functions.html#float"
+                                                             title="(in Python v3.10)"><span
+                                                class="pre">float</span></a></span><span class="w"> </span><span
+                                                class="o"><span class="pre">=</span></span><span class="w"> </span><span
+                                                class="default_value"><span class="pre">1.0</span></span></em>, <em
+                                            class="sig-param"><span class="n"><span
+                                            class="pre">free_surface</span></span><span class="p"><span
+                                            class="pre">:</span></span><span class="w"> </span><span class="n"><a
+                                            class="reference external"
+                                            href="https://docs.python.org/3/library/functions.html#bool"
+                                            title="(in Python v3.10)"><span class="pre">bool</span></a></span><span
+                                            class="w"> </span><span class="o"><span class="pre">=</span></span><span
+                                            class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>,
+                                        <em class="sig-param"><span class="n"><span
+                                                class="pre">verbose</span></span><span class="p"><span
+                                                class="pre">:</span></span><span class="w"> </span><span class="n"><a
+                                                class="reference external"
+                                                href="https://docs.python.org/3/library/functions.html#bool"
+                                                title="(in Python v3.10)"><span class="pre">bool</span></a></span><span
+                                                class="w"> </span><span class="o"><span class="pre">=</span></span><span
+                                                class="w"> </span><span class="default_value"><span
+                                                class="pre">True</span></span></em><span class="sig-paren">)</span><a
+                                            class="reference internal"
+                                            href="_modules/twistpy/TimeDomainAnalysis.html#TimeDomainAnalysis"><span
+                                            class="viewcode-link"><span class="pre">[source]</span></span></a><a
+                                            class="headerlink" href="#twistpy.TimeDomainAnalysis.TimeDomainAnalysis"
+                                            title="Permalink to this definition"></a></dt>
+                                    <dd><p>Bases: <a class="reference external"
+                                                     href="https://docs.python.org/3/library/functions.html#object"
+                                                     title="(in Python v3.10)"><code
+                                            class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a>
+                                    </p>
+                                        <p>Time domain polarization analysis.</p>
+                                        <p>Single-station six degree-of-freedom polarization analysis in the time
+                                            domain. Polarization analysis is performed
+                                            in a sliding time window.</p>
+                                        <div class="admonition note">
+                                            <p class="admonition-title">Note</p>
+                                            <p>It is recommended to bandpass filter the data to a narrow frequency band
+                                                before attempting a time-domain
+                                                polarization analysis in order to avoid that dispersion effects and wave
+                                                type interference affect the
+                                                polarization.</p>
+                                        </div>
+                                        <dl class="field-list">
+                                            <dt class="field-odd">Parameters</dt>
+                                            <dd class="field-odd">
+                                                <dl>
+                                                    <dt><strong>traN</strong><span class="classifier"><a
+                                                            class="reference external"
+                                                            href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.html#obspy.core.trace.Trace"
+                                                            title="(in ObsPy Documentation (1.2.0) v1.2)"><code
+                                                            class="xref py py-obj docutils literal notranslate"><span
+                                                            class="pre">obspy.core.trace.Trace</span></code></a></span>
+                                                    </dt>
+                                                    <dd><p>North component of translation</p>
+                                                    </dd>
+                                                    <dt><strong>traE</strong><span class="classifier"><a
+                                                            class="reference external"
+                                                            href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.html#obspy.core.trace.Trace"
+                                                            title="(in ObsPy Documentation (1.2.0) v1.2)"><code
+                                                            class="xref py py-obj docutils literal notranslate"><span
+                                                            class="pre">obspy.core.trace.Trace</span></code></a></span>
+                                                    </dt>
+                                                    <dd><p>East component of translation</p>
+                                                    </dd>
+                                                    <dt><strong>traZ</strong><span class="classifier"><a
+                                                            class="reference external"
+                                                            href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.html#obspy.core.trace.Trace"
+                                                            title="(in ObsPy Documentation (1.2.0) v1.2)"><code
+                                                            class="xref py py-obj docutils literal notranslate"><span
+                                                            class="pre">obspy.core.trace.Trace</span></code></a></span>
+                                                    </dt>
+                                                    <dd><p>Vertical component of translation</p>
+                                                    </dd>
+                                                    <dt><strong>rotN</strong><span class="classifier"><a
+                                                            class="reference external"
+                                                            href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.html#obspy.core.trace.Trace"
+                                                            title="(in ObsPy Documentation (1.2.0) v1.2)"><code
+                                                            class="xref py py-obj docutils literal notranslate"><span
+                                                            class="pre">obspy.core.trace.Trace</span></code></a></span>
+                                                    </dt>
+                                                    <dd><p>North component of rotation</p>
+                                                    </dd>
+                                                    <dt><strong>rotE</strong><span class="classifier"><a
+                                                            class="reference external"
+                                                            href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.html#obspy.core.trace.Trace"
+                                                            title="(in ObsPy Documentation (1.2.0) v1.2)"><code
+                                                            class="xref py py-obj docutils literal notranslate"><span
+                                                            class="pre">obspy.core.trace.Trace</span></code></a></span>
+                                                    </dt>
+                                                    <dd><p>East component of rotation</p>
+                                                    </dd>
+                                                    <dt><strong>rotZ</strong><span class="classifier"><a
+                                                            class="reference external"
+                                                            href="https://docs.obspy.org/packages/autogen/obspy.core.trace.Trace.html#obspy.core.trace.Trace"
+                                                            title="(in ObsPy Documentation (1.2.0) v1.2)"><code
+                                                            class="xref py py-obj docutils literal notranslate"><span
+                                                            class="pre">obspy.core.trace.Trace</span></code></a></span>
+                                                    </dt>
+                                                    <dd><p>Vertical component of rotation</p>
+                                                    </dd>
+                                                    <dt><strong>window</strong><span class="classifier"><a
+                                                            class="reference external"
+                                                            href="https://docs.python.org/3/library/stdtypes.html#dict"
+                                                            title="(in Python v3.10)"><code
+                                                            class="xref py py-obj docutils literal notranslate"><span
+                                                            class="pre">dict</span></code></a></span></dt>
+                                                    <dd><p>Window parameters defined as:</p>
+                                                        <div class="line-block">
+                                                            <div class="line">window = {‘window_length_seconds’: <a
+                                                                    class="reference external"
+                                                                    href="https://docs.python.org/3/library/functions.html#float"
+                                                                    title="(in Python v3.10)"><code
+                                                                    class="xref py py-obj docutils literal notranslate"><span
+                                                                    class="pre">float</span></code></a>, ‘overlap’: <a
+                                                                    class="reference external"
+                                                                    href="https://docs.python.org/3/library/functions.html#float"
+                                                                    title="(in Python v3.10)"><code
+                                                                    class="xref py py-obj docutils literal notranslate"><span
+                                                                    class="pre">float</span></code></a>}
+                                                            </div>
+                                                        </div>
+                                                        <div class="line-block">
+                                                            <div class="line">Overlap should be on the interval 0 (no
+                                                                overlap between subsequent time windows) and 1
+                                                                (complete overlap, window is moved by 1 sample only).
+                                                            </div>
+                                                        </div>
+                                                    </dd>
+                                                    <dt><strong>scaling_velocity</strong><span class="classifier"><a
+                                                            class="reference external"
+                                                            href="https://docs.python.org/3/library/functions.html#float"
+                                                            title="(in Python v3.10)"><code
+                                                            class="xref py py-obj docutils literal notranslate"><span
+                                                            class="pre">float</span></code></a>, optional</span></dt>
+                                                    <dd><p>Scaling velocity (in m/s) to ensure numerical stability. The
+                                                        scaling velocity is
+                                                        applied to the translational data only (amplitudes are divided
+                                                        by scaling velocity) and ensures
+                                                        that both translation and rotation amplitudes are on the same
+                                                        order of magnitude and
+                                                        dimensionless. Ideally, v_scal is close to the S-Wave velocity
+                                                        at the receiver. After applying
+                                                        the scaling velocity, translation and rotation signals
+                                                        amplitudes should be similar. Defaults to 1.</p>
+                                                    </dd>
+                                                    <dt><strong>free_surface</strong><span class="classifier"><a
+                                                            class="reference external"
+                                                            href="https://docs.python.org/3/library/functions.html#bool"
+                                                            title="(in Python v3.10)"><code
+                                                            class="xref py py-obj docutils literal notranslate"><span
+                                                            class="pre">bool</span></code></a>, optional</span></dt>
+                                                    <dd><p>True (Default) or False. Specifies whether the recording
+                                                        station is located at the
+                                                        free surface and uses the corresponding polarization models.</p>
+                                                    </dd>
+                                                    <dt><strong>verbose</strong><span class="classifier"><a
+                                                            class="reference external"
+                                                            href="https://docs.python.org/3/library/functions.html#bool"
+                                                            title="(in Python v3.10)"><code
+                                                            class="xref py py-obj docutils literal notranslate"><span
+                                                            class="pre">bool</span></code></a>, optional</span></dt>
+                                                    <dd><p>True (Default) to run in verbose mode.</p>
+                                                    </dd>
+                                                </dl>
+                                            </dd>
+                                        </dl>
+                                        <dl class="py method">
+                                            <dt class="sig sig-object py"
+                                                id="twistpy.TimeDomainAnalysis.TimeDomainAnalysis.classify">
+                                                <span class="sig-name descname"><span class="pre">classify</span></span><span
+                                                    class="sig-paren">(</span><em class="sig-param"><span
+                                                    class="n"><span class="pre">svm</span></span><span class="p"><span
+                                                    class="pre">:</span></span><span class="w"> </span><span
+                                                    class="n"><a class="reference internal"
+                                                                 href="#twistpy.MachineLearning.SupportVectorMachine"
+                                                                 title="twistpy.MachineLearning.SupportVectorMachine"><span
+                                                    class="pre">twistpy.MachineLearning.SupportVectorMachine</span></a></span></em>,
+                                                <em class="sig-param"><span class="n"><span class="pre">eigenvector_to_classify</span></span><span
+                                                        class="p"><span class="pre">:</span></span><span
+                                                        class="w"> </span><span class="n"><a class="reference external"
+                                                                                             href="https://docs.python.org/3/library/functions.html#int"
+                                                                                             title="(in Python v3.10)"><span
+                                                        class="pre">int</span></a></span><span class="w"> </span><span
+                                                        class="o"><span class="pre">=</span></span><span
+                                                        class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span
+                                                    class="sig-paren">)</span> <span class="sig-return"><span
+                                                    class="sig-return-icon">&#x2192;</span> <span
+                                                    class="sig-return-typehint"><a class="reference external"
+                                                                                   href="https://docs.python.org/3/library/constants.html#None"
+                                                                                   title="(in Python v3.10)"><span
+                                                    class="pre">None</span></a></span></span><a
+                                                    class="reference internal"
+                                                    href="_modules/twistpy/TimeDomainAnalysis.html#TimeDomainAnalysis.classify"><span
+                                                    class="viewcode-link"><span class="pre">[source]</span></span></a><a
+                                                    class="headerlink"
+                                                    href="#twistpy.TimeDomainAnalysis.TimeDomainAnalysis.classify"
+                                                    title="Permalink to this definition"></a></dt>
+                                            <dd><p>Classify wave types using a support vector machine</p>
+                                                <dl class="field-list">
+                                                    <dt class="field-odd">Parameters</dt>
+                                                    <dd class="field-odd">
+                                                        <dl>
+                                                            <dt><strong>svm</strong><span class="classifier"><code
+                                                                    class="xref py py-obj docutils literal notranslate"><span
+                                                                    class="pre">twistpy.machinelearning.SupportVectorMachine</span></code></span>
+                                                            </dt>
+                                                            <dd><p>Trained support vector machine used for wave type
+                                                                classification</p>
+                                                            </dd>
+                                                            <dt><strong>eigenvector_to_classify</strong><span
+                                                                    class="classifier"><a class="reference external"
+                                                                                          href="https://docs.python.org/3/library/functions.html#int"
+                                                                                          title="(in Python v3.10)"><code
+                                                                    class="xref py py-obj docutils literal notranslate"><span
+                                                                    class="pre">int</span></code></a>, optional</span>
+                                                            </dt>
+                                                            <dd><p>(Default = 0) Integer value identifying the
+                                                                eigenvector that will be classified, where the
+                                                                eigenvectors are
+                                                                sorted in descending order of their corresponding
+                                                                eigenvalue</p>
+                                                                <div class="line-block">
+                                                                    <div class="line">If 0: first or principal
+                                                                        eigenvector, corresponding to the dominant
+                                                                        signal in
+                                                                        the time window (associated with the largest
+                                                                        eigenvalue)
+                                                                    </div>
+                                                                </div>
+                                                            </dd>
+                                                        </dl>
+                                                    </dd>
+                                                </dl>
+                                            </dd>
+                                        </dl>
+
+                                        <dl class="py method">
+                                            <dt class="sig sig-object py"
+                                                id="twistpy.TimeDomainAnalysis.TimeDomainAnalysis.save">
+                                                <span class="sig-name descname"><span
+                                                        class="pre">save</span></span><span
+                                                    class="sig-paren">(</span><em class="sig-param"><span
+                                                    class="n"><span class="pre">name</span></span><span class="p"><span
+                                                    class="pre">:</span></span><span class="w"> </span><span
+                                                    class="n"><a class="reference external"
+                                                                 href="https://docs.python.org/3/library/stdtypes.html#str"
+                                                                 title="(in Python v3.10)"><span class="pre">str</span></a></span></em><span
+                                                    class="sig-paren">)</span> <span class="sig-return"><span
+                                                    class="sig-return-icon">&#x2192;</span> <span
+                                                    class="sig-return-typehint"><a class="reference external"
+                                                                                   href="https://docs.python.org/3/library/constants.html#None"
+                                                                                   title="(in Python v3.10)"><span
+                                                    class="pre">None</span></a></span></span><a
+                                                    class="reference internal"
+                                                    href="_modules/twistpy/TimeDomainAnalysis.html#TimeDomainAnalysis.save"><span
+                                                    class="viewcode-link"><span class="pre">[source]</span></span></a><a
+                                                    class="headerlink"
+                                                    href="#twistpy.TimeDomainAnalysis.TimeDomainAnalysis.save"
+                                                    title="Permalink to this definition"></a></dt>
+                                            <dd><p>Save the current TimeDomainAnalysis object to a file on the disk in
+                                                the current working directory.</p>
+                                                <dl>
+                                                    <dt>name<span class="classifier"><a class="reference external"
+                                                                                        href="https://docs.python.org/3/library/stdtypes.html#str"
+                                                                                        title="(in Python v3.10)"><code
+                                                            class="xref py py-obj docutils literal notranslate"><span
+                                                            class="pre">str</span></code></a></span></dt>
+                                                    <dd><p>File name</p>
+                                                    </dd>
+                                                </dl>
+                                            </dd>
+                                        </dl>
+
+                                    </dd>
+                                </dl>
+
+                            </div>
+                            <div class="section" id="module-twistpy.TimeFrequencyAnalysis">
+                                <span id="twistpy-timefrequencyanalysis-module"></span>
+                                <h2>twistpy.TimeFrequencyAnalysis module<a class="headerlink"
+                                                                           href="#module-twistpy.TimeFrequencyAnalysis"
+                                                                           title="Permalink to this headline"></a></h2>
+                                <dl class="field-list simple">
+                                    <dt class="field-odd">copyright</dt>
+                                    <dd class="field-odd"><p>David Sollberger (<a class="reference external"
+                                                                                  href="mailto:david&#46;sollberger&#37;&#52;&#48;gmail&#46;com">david<span>&#46;</span>sollberger<span>&#64;</span>gmail<span>&#46;</span>com</a>),
+                                        2022</p>
+                                    </dd>
+                                    <dt class="field-even">license</dt>
+                                    <dd class="field-even"><p>None</p>
+                                    </dd>
+                                </dl>
+                                <dl class="py class">
+                                    <dt class="sig sig-object py"
+                                        id="twistpy.TimeFrequencyAnalysis.TimeFrequencyAnalysis">
+                                        <em class="property"><span class="pre">class</span><span class="w"> </span></em><span
+                                            class="sig-prename descclassname"><span class="pre">twistpy.TimeFrequencyAnalysis.</span></span><span
+                                            class="sig-name descname"><span
+                                            class="pre">TimeFrequencyAnalysis</span></span><a class="reference internal"
+                                                                                              href="_modules/twistpy/TimeFrequencyAnalysis.html#TimeFrequencyAnalysis"><span
+                                            class="viewcode-link"><span class="pre">[source]</span></span></a><a
+                                            class="headerlink"
+                                            href="#twistpy.TimeFrequencyAnalysis.TimeFrequencyAnalysis"
+                                            title="Permalink to this definition"></a></dt>
+                                    <dd><p>Bases: <a class="reference external"
+                                                     href="https://docs.python.org/3/library/functions.html#object"
+                                                     title="(in Python v3.10)"><code
+                                            class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a>
+                                    </p>
+                                        <p>Single-station six degree-of-freedom polarization analysis in the
+                                            time-frequency domain using the S-transform.</p>
+                                    </dd>
+                                </dl>
+
+                            </div>
+                            <div class="section" id="module-twistpy.utils">
+                                <span id="twistpy-utils-module"></span>
+                                <h2>twistpy.utils module<a class="headerlink" href="#module-twistpy.utils"
+                                                           title="Permalink to this headline"></a></h2>
+                                <dl class="field-list simple">
+                                    <dt class="field-odd">copyright</dt>
+                                    <dd class="field-odd"><p>David Sollberger (<a class="reference external"
+                                                                                  href="mailto:david&#46;sollberger&#37;&#52;&#48;gmail&#46;com">david<span>&#46;</span>sollberger<span>&#64;</span>gmail<span>&#46;</span>com</a>),
+                                        2022</p>
+                                    </dd>
+                                    <dt class="field-even">license</dt>
+                                    <dd class="field-even"><p>None</p>
+                                    </dd>
+                                </dl>
+                                <dl class="py function">
+                                    <dt class="sig sig-object py" id="twistpy.utils.load_analysis">
+                                        <span class="sig-prename descclassname"><span class="pre">twistpy.utils.</span></span><span
+                                            class="sig-name descname"><span class="pre">load_analysis</span></span><span
+                                            class="sig-paren">(</span><em class="sig-param"><span class="n"><span
+                                            class="pre">file</span></span><span class="p"><span
+                                            class="pre">:</span></span><span class="w"> </span><span class="n"><a
+                                            class="reference external"
+                                            href="https://docs.python.org/3/library/typing.html#typing.Optional"
+                                            title="(in Python v3.10)"><span class="pre">Optional</span></a><span
+                                            class="p"><span class="pre">[</span></span><a class="reference external"
+                                                                                          href="https://docs.python.org/3/library/stdtypes.html#str"
+                                                                                          title="(in Python v3.10)"><span
+                                            class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span
+                                            class="w"> </span><span class="o"><span class="pre">=</span></span><span
+                                            class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span
+                                            class="sig-paren">)</span> <span class="sig-return"><span
+                                            class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a
+                                            class="reference external"
+                                            href="https://docs.python.org/3/library/typing.html#typing.Union"
+                                            title="(in Python v3.10)"><span class="pre">Union</span></a><span class="p"><span
+                                            class="pre">[</span></span><a class="reference internal"
+                                                                          href="#twistpy.TimeDomainAnalysis.TimeDomainAnalysis"
+                                                                          title="twistpy.TimeDomainAnalysis.TimeDomainAnalysis"><span
+                                            class="pre">twistpy.TimeDomainAnalysis.TimeDomainAnalysis</span></a><span
+                                            class="p"><span class="pre">,</span></span><span class="w"> </span><a
+                                            class="reference internal"
+                                            href="#twistpy.TimeFrequencyAnalysis.TimeFrequencyAnalysis"
+                                            title="twistpy.TimeFrequencyAnalysis.TimeFrequencyAnalysis"><span
+                                            class="pre">twistpy.TimeFrequencyAnalysis.TimeFrequencyAnalysis</span></a><span
+                                            class="p"><span class="pre">,</span></span><span class="w"> </span><a
+                                            class="reference internal"
+                                            href="#twistpy.DispersionAnalysis.DispersionAnalysis"
+                                            title="twistpy.DispersionAnalysis.DispersionAnalysis"><span class="pre">twistpy.DispersionAnalysis.DispersionAnalysis</span></a><span
+                                            class="p"><span class="pre">]</span></span></span></span><a
+                                            class="reference internal" href="_modules/twistpy/utils.html#load_analysis"><span
+                                            class="viewcode-link"><span class="pre">[source]</span></span></a><a
+                                            class="headerlink" href="#twistpy.utils.load_analysis"
+                                            title="Permalink to this definition"></a></dt>
+                                    <dd><p>Read a TwistPy analysis object from the disk.</p>
+                                        <dl class="field-list">
+                                            <dt class="field-odd">Parameters</dt>
+                                            <dd class="field-odd">
+                                                <dl>
+                                                    <dt><strong>file</strong><span class="classifier"><a
+                                                            class="reference external"
+                                                            href="https://docs.python.org/3/library/stdtypes.html#str"
+                                                            title="(in Python v3.10)"><code
+                                                            class="xref py py-obj docutils literal notranslate"><span
+                                                            class="pre">str</span></code></a></span></dt>
+                                                    <dd><p>File name (include path if the file is not in the current
+                                                        working directory)</p>
+                                                    </dd>
+                                                </dl>
+                                            </dd>
+                                            <dt class="field-even">Returns</dt>
+                                            <dd class="field-even">
+                                                <dl>
+                                                    <dt><strong>obj</strong><span class="classifier"><a
+                                                            class="reference internal"
+                                                            href="#module-twistpy.TimeDomainAnalysis"
+                                                            title="twistpy.TimeDomainAnalysis"><code
+                                                            class="xref py py-obj docutils literal notranslate"><span
+                                                            class="pre">twistpy.TimeDomainAnalysis</span></code></a> or <code
+                                                            class="xref py py-obj docutils literal notranslate"><span
+                                                            class="pre">twistpy.TimeFrequencyAnalysis`or</span> <span
+                                                            class="pre">:obj:`twistpy.DispersionAnalysis</span></code></span>
+                                                    </dt>
+                                                    <dd></dd>
+                                                </dl>
+                                            </dd>
+                                        </dl>
+                                    </dd>
+                                </dl>
+
+                            </div>
+                            <div class="section" id="module-twistpy">
+                                <span id="module-contents"></span>
+                                <h2>Module contents<a class="headerlink" href="#module-twistpy"
+                                                      title="Permalink to this headline"></a></h2>
+                                <dl class="field-list simple">
+                                    <dt class="field-odd">copyright</dt>
+                                    <dd class="field-odd"><p>David Sollberger (<a class="reference external"
+                                                                                  href="mailto:david&#46;sollberger&#37;&#52;&#48;gmail&#46;com">david<span>&#46;</span>sollberger<span>&#64;</span>gmail<span>&#46;</span>com</a>),
+                                        2022</p>
+                                    </dd>
+                                    <dt class="field-even">license</dt>
+                                    <dd class="field-even"><p>None</p>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <footer>
+
+                    <hr/>
+
+                    <div role="contentinfo">
+                        <p>&#169; Copyright 2022, David Sollberger.
+                            <span class="lastupdated">Last updated on Feb 23, 2022.
+      </span></p>
+                    </div>
+
+                    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+                    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+                    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+                </footer>
+            </div>
+        </div>
+    </section>
+</div>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+
+</script>
+
+</body>
+</html>

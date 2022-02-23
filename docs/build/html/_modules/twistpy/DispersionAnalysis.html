@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>twistpy.DispersionAnalysis &mdash; TwistPy</title>
+    <link href="../../_static/pygments.css" rel="stylesheet" type="text/css"/>
+    <link href="../../_static/css/theme.css" rel="stylesheet" type="text/css"/>
+    <link href="../../_static/plot_directive.css" rel="stylesheet" type="text/css"/>
+    <link href="../../_static/style.css" rel="stylesheet" type="text/css"/>
+    <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA="
+            src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link href="../../genindex.html" rel="index" title="Index"/>
+    <link href="../../search.html" rel="search" title="Search"/>
+</head>
+
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+    <nav class="wy-nav-side" data-toggle="wy-nav-shift">
+        <div class="wy-side-scroll">
+            <div class="wy-side-nav-search">
+                <a class="icon icon-home" href="../../index.html"> TwistPy
+                </a>
+                <div role="search">
+                    <form action="../../search.html" class="wy-form" id="rtd-search-form" method="get">
+                        <input name="q" placeholder="Search docs" type="text"/>
+                        <input name="check_keywords" type="hidden" value="yes"/>
+                        <input name="area" type="hidden" value="default"/>
+                    </form>
+                </div>
+            </div>
+            <div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+                <!-- Local TOC -->
+                <div class="local-toc"></div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
+        <nav aria-label="Mobile navigation menu" class="wy-nav-top">
+            <i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+            <a href="../../index.html">TwistPy</a>
+        </nav>
+
+        <div class="wy-nav-content">
+            <div class="rst-content">
+                <div aria-label="Page navigation" role="navigation">
+                    <ul class="wy-breadcrumbs">
+                        <li><a class="icon icon-home" href="../../index.html"></a> &raquo;</li>
+                        <li><a href="../index.html">Module code</a> &raquo;</li>
+                        <li>twistpy.DispersionAnalysis</li>
+                        <li class="wy-breadcrumbs-aside">
+                        </li>
+                    </ul>
+                    <hr/>
+                </div>
+                <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+                    <div itemprop="articleBody">
+
+                        <h1>Source code for twistpy.DispersionAnalysis</h1>
+                        <div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">:copyright:</span>
+<span class="sd">    David Sollberger (david.sollberger@gmail.com), 2022</span>
+<span class="sd">:license:</span>
+<span class="sd">    None</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span
+                                class="p">(</span><span class="n">absolute_import</span><span class="p">,</span> <span
+                                class="n">division</span><span class="p">,</span> <span
+                                class="n">print_function</span><span class="p">,</span> <span
+                                class="n">unicode_literals</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">builtins</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="kn">from</span> <span class="nn">obspy</span> <span class="kn">import</span> <span class="n">Trace</span>
+
+
+<div class="viewcode-block" id="DispersionAnalysis"><a class="viewcode-back"
+                                                       href="../../twistpy.html#twistpy.DispersionAnalysis.DispersionAnalysis">[docs]</a><span
+        class="k">class</span> <span class="nc">DispersionAnalysis</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span
+            class="p">,</span> <span class="n">traN</span><span class="p">:</span> <span class="n">Trace</span> <span
+            class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">traE</span><span
+            class="p">:</span> <span class="n">Trace</span> <span class="o">=</span> <span class="kc">None</span><span
+            class="p">,</span> <span class="n">traZ</span><span class="p">:</span> <span class="n">Trace</span> <span
+            class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">rotN</span><span
+            class="p">:</span> <span class="n">Trace</span> <span class="o">=</span> <span class="kc">None</span><span
+            class="p">,</span>
+                 <span class="n">rotE</span><span class="p">:</span> <span class="n">Trace</span> <span
+            class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">rotZ</span><span class="p">:</span> <span class="n">Trace</span> <span
+            class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span
+            class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span
+            class="s1">&#39;pca&#39;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">traN</span><span class="p">,</span> <span
+            class="bp">self</span><span class="o">.</span><span class="n">traE</span><span class="p">,</span> <span
+            class="bp">self</span><span class="o">.</span><span class="n">traZ</span><span class="p">,</span> <span
+            class="bp">self</span><span class="o">.</span><span class="n">rotN</span><span class="p">,</span> <span
+            class="bp">self</span><span class="o">.</span><span class="n">rotE</span><span class="p">,</span> <span
+            class="bp">self</span><span class="o">.</span><span class="n">rotZ</span> <span class="o">=</span> <span
+            class="n">traN</span><span class="p">,</span> <span class="n">traE</span><span class="p">,</span> <span
+            class="n">traZ</span><span class="p">,</span> <span class="n">rotN</span><span class="p">,</span> <span
+            class="n">rotE</span><span class="p">,</span> <span class="n">rotZ</span>
+
+        <span class="c1"># Assert that input traces are ObsPy Trace objects</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span
+            class="bp">self</span><span class="o">.</span><span class="n">traN</span><span class="p">,</span> <span
+            class="n">Trace</span><span class="p">)</span> <span class="ow">and</span> <span
+            class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span
+            class="o">.</span><span class="n">traE</span><span class="p">,</span> <span class="n">Trace</span><span
+            class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span
+            class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">traZ</span><span
+            class="p">,</span> <span class="n">Trace</span><span class="p">)</span> \
+               <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span
+            class="o">.</span><span class="n">rotN</span><span class="p">,</span> <span class="n">Trace</span><span
+            class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span
+            class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rotE</span><span
+            class="p">,</span> <span class="n">Trace</span><span class="p">)</span> <span class="ow">and</span> <span
+            class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span
+            class="o">.</span><span class="n">rotZ</span><span class="p">,</span> <span class="n">Trace</span><span
+            class="p">),</span> \
+            <span class="s2">&quot;Input data must be of class obspy.core.Trace()!&quot;</span>
+
+        <span class="c1"># Assert that all traces have the same number of samples</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span
+            class="n">traN</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span
+            class="n">npts</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span
+            class="n">traE</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span
+            class="n">npts</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span
+            class="n">traN</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span
+            class="n">npts</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span
+            class="n">traZ</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span
+            class="n">npts</span> \
+               <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span
+            class="n">traN</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span
+            class="n">npts</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span
+            class="n">rotN</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span
+            class="n">npts</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span
+            class="n">traN</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span
+            class="n">npts</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span
+            class="n">rotE</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span
+            class="n">npts</span> \
+               <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span
+            class="n">traN</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span
+            class="n">npts</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span
+            class="n">rotZ</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span
+            class="n">npts</span><span class="p">,</span> \
+            <span class="s2">&quot;All six traces must have the same number of samples!&quot;</span></div>
+</pre>
+                        </div>
+
+                    </div>
+                </div>
+                <footer>
+
+                    <hr/>
+
+                    <div role="contentinfo">
+                        <p>&#169; Copyright 2022, David Sollberger.
+                            <span class="lastupdated">Last updated on Feb 23, 2022.
+      </span></p>
+                    </div>
+
+                    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+                    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+                    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+                </footer>
+            </div>
+        </div>
+    </section>
+</div>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+
+</script>
+
+</body>
+</html>

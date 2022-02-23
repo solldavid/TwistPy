@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>twistpy.MachineLearning &mdash; TwistPy</title>
+    <link href="../../_static/pygments.css" rel="stylesheet" type="text/css"/>
+    <link href="../../_static/css/theme.css" rel="stylesheet" type="text/css"/>
+    <link href="../../_static/plot_directive.css" rel="stylesheet" type="text/css"/>
+    <link href="../../_static/style.css" rel="stylesheet" type="text/css"/>
+    <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA="
+            src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link href="../../genindex.html" rel="index" title="Index"/>
+    <link href="../../search.html" rel="search" title="Search"/>
+</head>
+
+<body class="wy-body-for-nav">
+<div class="wy-grid-for-nav">
+    <nav class="wy-nav-side" data-toggle="wy-nav-shift">
+        <div class="wy-side-scroll">
+            <div class="wy-side-nav-search">
+                <a class="icon icon-home" href="../../index.html"> TwistPy
+                </a>
+                <div role="search">
+                    <form action="../../search.html" class="wy-form" id="rtd-search-form" method="get">
+                        <input name="q" placeholder="Search docs" type="text"/>
+                        <input name="check_keywords" type="hidden" value="yes"/>
+                        <input name="area" type="hidden" value="default"/>
+                    </form>
+                </div>
+            </div>
+            <div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+                <!-- Local TOC -->
+                <div class="local-toc"></div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
+        <nav aria-label="Mobile navigation menu" class="wy-nav-top">
+            <i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+            <a href="../../index.html">TwistPy</a>
+        </nav>
+
+        <div class="wy-nav-content">
+            <div class="rst-content">
+                <div aria-label="Page navigation" role="navigation">
+                    <ul class="wy-breadcrumbs">
+                        <li><a class="icon icon-home" href="../../index.html"></a> &raquo;</li>
+                        <li><a href="../index.html">Module code</a> &raquo;</li>
+                        <li>twistpy.MachineLearning</li>
+                        <li class="wy-breadcrumbs-aside">
+                        </li>
+                    </ul>
+                    <hr/>
+                </div>
+                <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+                    <div itemprop="articleBody">
+
+                        <h1>Source code for twistpy.MachineLearning</h1>
+                        <div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">:copyright:</span>
+<span class="sd">    David Sollberger (david.sollberger@gmail.com), 2022</span>
+<span class="sd">:license:</span>
+<span class="sd">    None</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span
+                                class="n">exists</span><span class="p">,</span> <span class="n">join</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span
+                                class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span
+                                class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span
+                                class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span
+                                class="n">SVC</span>
+
+<span class="kn">from</span> <span class="nn">twistpy.PolarizationModel</span> <span class="kn">import</span> <span
+                                class="n">PolarizationModel</span>
+
+
+<div class="viewcode-block" id="SupportVectorMachine"><a class="viewcode-back"
+                                                         href="../../twistpy.html#twistpy.MachineLearning.SupportVectorMachine">[docs]</a><span
+        class="k">class</span> <span class="nc">SupportVectorMachine</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Support vector machine for wave type classification based on six component polarization analysis. This class is an</span>
+<span class="sd">    overload of the class sklearn.svm.SVC for convenience only.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span
+            class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span
+            class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span
+            class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span
+            class="nb">str</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">C</span><span class="p">:</span> <span
+            class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kernel</span><span class="p">:</span> <span
+            class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">free_surface</span><span class="p">:</span> <span
+            class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="p">:</span> <span
+            class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scaling_veloctiy</span><span
+            class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vp</span><span class="p">:</span> <span
+            class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span
+            class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vp_to_vs</span><span
+            class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span
+            class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span
+            class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vl</span><span class="p">:</span> <span
+            class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span
+            class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vr</span><span class="p">:</span> <span
+            class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span
+            class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">:</span> <span
+            class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span
+            class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">theta</span><span class="p">:</span> <span
+            class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span
+            class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xi</span><span class="p">:</span> <span
+            class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span
+            class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plot_confusion_matrix</span><span class="p">:</span> <span
+            class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scaling_velocity</span><span
+            class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span
+            class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Please specify a name for this SupportVectorMachine!&#39;</span><span
+            class="p">)</span>
+
+<div class="viewcode-block" id="SupportVectorMachine.train"><a class="viewcode-back"
+                                                               href="../../twistpy.html#twistpy.MachineLearning.SupportVectorMachine.train">[docs]</a>    <span
+        class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span
+        class="p">,</span> <span class="n">N</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span
+        class="mi">5000</span><span class="p">,</span> <span class="n">scaling_velocity</span><span
+        class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.</span><span
+        class="p">,</span> <span class="n">vp</span><span class="p">:</span> <span class="n">Tuple</span><span
+        class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span
+        class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">50.</span><span
+        class="p">,</span> <span class="mf">2000.</span><span class="p">),</span>
+              <span class="n">vp_to_vs</span><span class="p">:</span> <span class="n">Tuple</span><span
+            class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span
+            class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.7</span><span
+            class="p">,</span> <span class="mf">2.4</span><span class="p">),</span> <span class="n">vl</span><span
+            class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span
+            class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span
+            class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">2000</span><span
+            class="p">),</span>
+              <span class="n">vr</span><span class="p">:</span> <span class="n">Tuple</span><span
+            class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span
+            class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">50</span><span
+            class="p">,</span> <span class="mi">2000</span><span class="p">),</span> <span class="n">phi</span><span
+            class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span
+            class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span
+            class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span
+            class="p">),</span>
+              <span class="n">theta</span><span class="p">:</span> <span class="n">Tuple</span><span
+            class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span
+            class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span
+            class="p">,</span> <span class="mi">90</span><span class="p">),</span> <span class="n">xi</span><span
+            class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span
+            class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span
+            class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span
+            class="mi">90</span><span class="p">),</span>
+              <span class="n">free_surface</span><span class="p">:</span> <span class="nb">bool</span> <span
+            class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">C</span><span
+            class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span
+            class="p">,</span> <span class="n">kernel</span><span class="p">:</span> <span class="nb">str</span> <span
+            class="o">=</span> <span class="s1">&#39;rbf&#39;</span><span class="p">,</span> <span
+            class="n">gamma</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span
+            class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span
+            class="o">=</span> <span class="s1">&#39;scale&#39;</span><span class="p">,</span>
+              <span class="n">plot_confusion_matrix</span><span class="p">:</span> <span class="nb">bool</span> <span
+            class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span
+            class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param N: Number of randomly generated models for each wave type that are used for training</span>
+<span class="sd">        :param scaling_velocity: Scaling velocity in (m/s) applied to the translational components of the polarization</span>
+<span class="sd">               models</span>
+<span class="sd">        :param vp: (vp_min, vp_max) The range of P-wave velocities in (m/s) that for training</span>
+<span class="sd">        :param vp_to_vs: (vp_to_vs_min, vp_to_vs_max) The range of vp to vs ratios used for training</span>
+<span class="sd">        :param vl: (vl_min, vl_max) The range of Love wave velocities (m/s) used for training</span>
+<span class="sd">        :param vr: (vr_min, vr_max) The range of Rayleigh wave velocities (m/s) used for training</span>
+<span class="sd">        :param phi: (phi_min, phi_max) The range of azimuth angles (degrees) used for training</span>
+<span class="sd">        :param theta: (theta_min, theta_max) The range of incidence angles (degrees) used for training</span>
+<span class="sd">        :param xi: (xi_min, xi_max) The range of Rayleigh wave ellipticity angles (degrees) used for training</span>
+<span class="sd">        :param free_surface: True (Default) or False, specifies whether the Support Vector Machine is trained using</span>
+<span class="sd">               free-surface polarization models</span>
+<span class="sd">        :param C: Regularization parameter for the support vector machine (defaults to 1)</span>
+<span class="sd">        :param kernel: Specifies the kernel type to be used in the SVC algorithm (defaults to &#39;rbf&#39;,</span>
+<span class="sd">               radial basis function)</span>
+<span class="sd">        :param gamma: Kernel coefficient for SVC</span>
+<span class="sd">        :param plot_confusion_matrix: True (Default) or False. Specifies whether a confusion matrix is plotted after</span>
+<span class="sd">               training</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Set class attributes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">C</span><span class="p">,</span> <span
+            class="bp">self</span><span class="o">.</span><span class="n">kernel</span><span class="p">,</span> <span
+            class="bp">self</span><span class="o">.</span><span class="n">free_surface</span> <span
+            class="o">=</span> <span class="n">C</span><span class="p">,</span> <span class="n">kernel</span><span
+            class="p">,</span> <span class="n">free_surface</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="p">,</span> <span
+            class="bp">self</span><span class="o">.</span><span class="n">scaling_velocity</span> <span
+            class="o">=</span> <span class="n">N</span><span class="p">,</span> <span class="n">scaling_velocity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vp</span><span class="p">,</span> <span
+            class="bp">self</span><span class="o">.</span><span class="n">vp_to_vs</span><span class="p">,</span> <span
+            class="bp">self</span><span class="o">.</span><span class="n">vl</span><span class="p">,</span> <span
+            class="bp">self</span><span class="o">.</span><span class="n">vr</span> <span class="o">=</span> <span
+            class="n">vp</span><span class="p">,</span> <span class="n">vp_to_vs</span><span class="p">,</span> <span
+            class="n">vl</span><span class="p">,</span> <span class="n">vr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <span
+            class="bp">self</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span> <span
+            class="bp">self</span><span class="o">.</span><span class="n">xi</span> <span class="o">=</span> <span
+            class="n">phi</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span
+            class="n">xi</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plot_confusion_matrix</span> <span
+            class="o">=</span> <span class="n">plot_confusion_matrix</span>
+
+        <span class="n">pkl_filename</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span
+            class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span
+            class="mi">0</span><span class="p">],</span> <span class="s2">&quot;SVC_models&quot;</span><span
+            class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span
+            class="o">+</span> <span class="s2">&quot;.pkl&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">exists</span><span class="p">(</span><span
+            class="n">pkl_filename</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;A trained model already exists with this name and is saved at &#39;</span><span
+            class="si">{</span><span class="n">pkl_filename</span><span class="si">}</span><span
+            class="s2">&#39;&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Nothing will be done! Please delete the file above if you want to re-train this model.&#39;</span><span
+            class="p">)</span>
+            <span class="k">return</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span
+            class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span
+            class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span
+            class="mi">0</span><span class="p">,</span> <span class="mi">6</span> <span class="o">*</span> <span
+            class="n">N</span><span class="p">),</span>
+                          <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span
+            class="s1">&#39;t1_real&#39;</span><span class="p">,</span> <span class="s1">&#39;t2_real&#39;</span><span
+            class="p">,</span> <span class="s1">&#39;t3_real&#39;</span><span class="p">,</span> <span class="s1">&#39;r1_real&#39;</span><span
+            class="p">,</span> <span class="s1">&#39;r2_real&#39;</span><span class="p">,</span> <span class="s1">&#39;r3_real&#39;</span><span
+            class="p">,</span>
+                                   <span class="s1">&#39;t1_imag&#39;</span><span class="p">,</span> <span class="s1">&#39;t2_imag&#39;</span><span
+            class="p">,</span> <span class="s1">&#39;t3_imag&#39;</span><span class="p">,</span> <span class="s1">&#39;r1_imag&#39;</span><span
+            class="p">,</span> <span class="s1">&#39;r2_imag&#39;</span><span class="p">,</span> <span class="s1">&#39;r3_imag&#39;</span><span
+            class="p">,</span> <span class="s1">&#39;wave_type&#39;</span><span class="p">])</span>
+        <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span
+            class="n">phi</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span
+            class="n">phi</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span
+            class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span
+            class="n">theta</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span
+            class="n">theta</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span
+            class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">xi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span
+            class="n">xi</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span
+            class="n">xi</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span
+            class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">vr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span
+            class="n">vr</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span
+            class="n">vr</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span
+            class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">vl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span
+            class="n">vl</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span
+            class="n">vl</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span
+            class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">vp_to_vs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span
+            class="n">vp_to_vs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span
+            class="n">vp_to_vs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span
+            class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">vp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span
+            class="n">vp</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span
+            class="n">vp</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span
+            class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Generating random polarization models for training! </span><span
+            class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="c1"># Generate random P-wave polarization models drawn from a uniform distribution</span>
+        <span class="c1"># Generate random Rayleigh-wave polarization models drawn from a uniform distribution</span>
+        <span class="n">pm_r</span> <span class="o">=</span> <span class="n">PolarizationModel</span><span
+            class="p">(</span><span class="n">wave_type</span><span class="o">=</span><span
+            class="s1">&#39;R&#39;</span><span class="p">,</span> <span class="n">vr</span><span class="o">=</span><span
+            class="n">vr</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span
+            class="n">phi</span><span class="p">,</span> <span class="n">xi</span><span class="o">=</span><span
+            class="n">xi</span><span class="p">,</span>
+                                 <span class="n">scaling_velocity</span><span class="o">=</span><span class="n">scaling_velocity</span><span
+            class="p">,</span> <span class="n">free_surface</span><span class="o">=</span><span
+            class="n">free_surface</span><span class="p">)</span>
+        <span class="n">pol_r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span
+            class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span
+            class="p">],</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span
+            class="n">N</span><span class="p">))</span> <span class="o">*</span> <span class="n">pm_r</span><span
+            class="o">.</span><span class="n">polarization_vector</span>
+
+        <span class="c1"># Generate random Love-wave polarization models drawn from a uniform distribution</span>
+        <span class="n">pm_l</span> <span class="o">=</span> <span class="n">PolarizationModel</span><span
+            class="p">(</span><span class="n">wave_type</span><span class="o">=</span><span
+            class="s1">&#39;L&#39;</span><span class="p">,</span> <span class="n">vl</span><span class="o">=</span><span
+            class="n">vl</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span
+            class="n">phi</span><span class="p">,</span>
+                                 <span class="n">scaling_velocity</span><span class="o">=</span><span class="n">scaling_velocity</span><span
+            class="p">,</span> <span class="n">free_surface</span><span class="o">=</span><span
+            class="n">free_surface</span><span class="p">)</span>
+        <span class="n">pol_l</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span
+            class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span
+            class="p">],</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span
+            class="n">N</span><span class="p">))</span> <span class="o">*</span> <span class="n">pm_l</span><span
+            class="o">.</span><span class="n">polarization_vector</span>
+
+        <span class="n">pm_p</span> <span class="o">=</span> <span class="n">PolarizationModel</span><span
+            class="p">(</span><span class="n">wave_type</span><span class="o">=</span><span
+            class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="n">vp</span><span class="o">=</span><span
+            class="n">vp</span><span class="p">,</span> <span class="n">vs</span><span class="o">=</span><span
+            class="n">vp</span> <span class="o">/</span> <span class="n">vp_to_vs</span><span class="p">,</span> <span
+            class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="p">,</span> <span
+            class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+                                 <span class="n">scaling_velocity</span><span class="o">=</span><span class="n">scaling_velocity</span><span
+            class="p">,</span> <span class="n">free_surface</span><span class="o">=</span><span
+            class="n">free_surface</span><span class="p">)</span>
+        <span class="n">pol_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span
+            class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span
+            class="p">],</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span
+            class="n">N</span><span class="p">))</span> <span class="o">*</span> <span class="n">pm_p</span><span
+            class="o">.</span><span class="n">polarization_vector</span>
+
+        <span class="c1"># Generate random SV-wave polarization models drawn from a uniform distribution</span>
+        <span class="n">pm_sv</span> <span class="o">=</span> <span class="n">PolarizationModel</span><span
+            class="p">(</span><span class="n">wave_type</span><span class="o">=</span><span
+            class="s1">&#39;SV&#39;</span><span class="p">,</span> <span class="n">vp</span><span
+            class="o">=</span><span class="n">vp</span><span class="p">,</span> <span class="n">vs</span><span
+            class="o">=</span><span class="n">vp</span> <span class="o">/</span> <span class="n">vp_to_vs</span><span
+            class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span
+            class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span
+            class="p">,</span>
+                                  <span class="n">scaling_velocity</span><span class="o">=</span><span class="n">scaling_velocity</span><span
+            class="p">,</span> <span class="n">free_surface</span><span class="o">=</span><span
+            class="n">free_surface</span><span class="p">)</span>
+        <span class="n">pol_sv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span
+            class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span
+            class="p">],</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span
+            class="n">N</span><span class="p">))</span> <span class="o">*</span> <span class="n">pm_sv</span><span
+            class="o">.</span><span class="n">polarization_vector</span>  <span class="c1"># direction can be positive or negative</span>
+
+        <span class="c1"># Generate random SH-wave polarization models drawn from a uniform distribution</span>
+        <span class="n">pm_sh</span> <span class="o">=</span> <span class="n">PolarizationModel</span><span
+            class="p">(</span><span class="n">wave_type</span><span class="o">=</span><span
+            class="s1">&#39;SH&#39;</span><span class="p">,</span> <span class="n">vs</span><span
+            class="o">=</span><span class="n">vp</span> <span class="o">/</span> <span class="n">vp_to_vs</span><span
+            class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span
+            class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span
+            class="p">,</span>
+                                  <span class="n">scaling_velocity</span><span class="o">=</span><span class="n">scaling_velocity</span><span
+            class="p">,</span> <span class="n">free_surface</span><span class="o">=</span><span
+            class="n">free_surface</span><span class="p">)</span>
+        <span class="n">pol_sh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span
+            class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span
+            class="p">],</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span
+            class="n">N</span><span class="p">))</span> <span class="o">*</span> <span class="n">pm_sh</span><span
+            class="o">.</span><span class="n">polarization_vector</span>
+
+        <span class="c1"># Generate random polarization vectors for Noise class</span>
+        <span class="n">u1_real</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">ndarray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span
+            class="mf">0.0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span
+            class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span
+            class="p">,</span> <span class="n">N</span><span class="p">))</span>
+        <span class="n">u1_imag</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">ndarray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span
+            class="mf">0.0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span
+            class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span
+            class="p">,</span> <span class="n">N</span><span class="p">))</span>
+        <span class="n">u1</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">ndarray</span> <span class="o">=</span> <span class="n">u1_real</span> <span
+            class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span
+            class="n">u1_imag</span>
+        <span class="n">u1</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">ndarray</span> <span class="o">=</span> <span class="p">(</span><span class="n">u1</span> <span
+            class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span
+            class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">u1</span><span
+            class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span
+            class="p">))</span>
+        <span class="n">u1</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">ndarray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span
+            class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span
+            class="p">])</span> <span class="o">*</span> <span class="n">u1</span>
+        <span class="n">gamma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">arctan2</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span
+            class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span
+            class="s1">&#39;ij,ij-&gt;j&#39;</span><span class="p">,</span> <span class="n">u1</span><span
+            class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">u1</span><span
+            class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="n">optimize</span><span
+            class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                           <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span
+            class="p">(</span><span class="s1">&#39;ij,ij-&gt;j&#39;</span><span class="p">,</span> <span
+            class="n">u1</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span
+            class="n">u1</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span
+            class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span
+            class="o">-</span>
+                           <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span
+            class="p">(</span><span class="s1">&#39;ij,ij-&gt;j&#39;</span><span class="p">,</span> <span
+            class="n">u1</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span
+            class="n">u1</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span
+            class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="n">phi1</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span
+            class="o">*</span> <span class="n">gamma</span>
+        <span class="n">pol_noise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span
+            class="o">*</span> <span class="n">phi1</span><span class="p">)</span> <span class="o">*</span> <span
+            class="n">u1</span>
+
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span
+            class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span
+            class="n">n</span> <span class="o">+</span> <span class="mi">0</span> <span class="o">*</span> <span
+            class="n">N</span><span class="p">]</span> <span class="o">=</span> <span class="n">pol_r</span><span
+            class="p">[:,</span> <span class="n">n</span><span class="p">]</span><span class="o">.</span><span
+            class="n">real</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span
+            class="o">+</span> <span class="n">pol_r</span><span class="p">[:,</span> <span class="n">n</span><span
+            class="p">]</span><span class="o">.</span><span class="n">imag</span><span class="o">.</span><span
+            class="n">tolist</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span
+            class="s1">&#39;R&#39;</span><span class="p">]</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span
+            class="n">n</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">*</span> <span
+            class="n">N</span><span class="p">]</span> <span class="o">=</span> <span class="n">pol_p</span><span
+            class="p">[:,</span> <span class="n">n</span><span class="p">]</span><span class="o">.</span><span
+            class="n">real</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span
+            class="o">+</span> <span class="n">pol_p</span><span class="p">[:,</span> <span class="n">n</span><span
+            class="p">]</span><span class="o">.</span><span class="n">imag</span><span class="o">.</span><span
+            class="n">tolist</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span
+            class="s1">&#39;P&#39;</span><span class="p">]</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span
+            class="n">n</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span
+            class="n">N</span><span class="p">]</span> <span class="o">=</span> <span class="n">pol_sv</span><span
+            class="p">[:,</span> <span class="n">n</span><span class="p">]</span><span class="o">.</span><span
+            class="n">real</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span
+            class="o">+</span> <span class="n">pol_sv</span><span class="p">[:,</span> <span class="n">n</span><span
+            class="p">]</span><span class="o">.</span><span class="n">imag</span><span class="o">.</span><span
+            class="n">tolist</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span
+            class="s1">&#39;SV&#39;</span><span class="p">]</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span
+            class="n">n</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">*</span> <span
+            class="n">N</span><span class="p">]</span> <span class="o">=</span> <span class="n">pol_l</span><span
+            class="p">[:,</span> <span class="n">n</span><span class="p">]</span><span class="o">.</span><span
+            class="n">real</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span
+            class="o">+</span> <span class="n">pol_l</span><span class="p">[:,</span> <span class="n">n</span><span
+            class="p">]</span><span class="o">.</span><span class="n">imag</span><span class="o">.</span><span
+            class="n">tolist</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span
+            class="s1">&#39;L&#39;</span><span class="p">]</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span
+            class="n">n</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span
+            class="n">N</span><span class="p">]</span> <span class="o">=</span> <span class="n">pol_sh</span><span
+            class="p">[:,</span> <span class="n">n</span><span class="p">]</span><span class="o">.</span><span
+            class="n">real</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span
+            class="o">+</span> <span class="n">pol_sh</span><span class="p">[:,</span> <span class="n">n</span><span
+            class="p">]</span><span class="o">.</span><span class="n">imag</span><span class="o">.</span><span
+            class="n">tolist</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span
+            class="s1">&#39;SH&#39;</span><span class="p">]</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span
+            class="n">n</span> <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span> <span
+            class="n">N</span><span class="p">]</span> <span class="o">=</span> <span class="n">pol_noise</span><span
+            class="p">[:,</span> <span class="n">n</span><span class="p">]</span><span class="o">.</span><span
+            class="n">real</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span
+            class="o">+</span> <span class="n">pol_noise</span><span class="p">[:,</span> <span class="n">n</span><span
+            class="p">]</span><span class="o">.</span><span class="n">imag</span><span class="o">.</span><span
+            class="n">tolist</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span
+            class="s1">&#39;Noise&#39;</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span
+            class="s1">&#39;Training Support Vector Machine!&#39;</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span
+            class="n">dropna</span><span class="p">()</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span
+            class="n">drop</span><span class="p">([</span><span class="s1">&#39;wave_type&#39;</span><span
+            class="p">],</span> <span class="n">axis</span><span class="o">=</span><span
+            class="s1">&#39;columns&#39;</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span
+            class="n">wave_type</span>
+        <span class="n">Xtrain</span><span class="p">,</span> <span class="n">Xtest</span><span class="p">,</span> <span
+            class="n">ytrain</span><span class="p">,</span> <span class="n">ytest</span> <span class="o">=</span> <span
+            class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span
+            class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span
+            class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span><span
+            class="n">kernel</span><span class="o">=</span><span class="n">kernel</span><span class="p">,</span> <span
+            class="n">C</span><span class="o">=</span><span class="n">C</span><span class="p">,</span> <span class="n">gamma</span><span
+            class="o">=</span><span class="n">gamma</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span
+            class="n">Xtrain</span><span class="p">,</span> <span class="n">ytrain</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span
+            class="n">pkl_filename</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span
+            class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span
+            class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">file</span><span
+            class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Training successfully completed. Model score on independent test data is &#39;</span><span
+            class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span
+            class="p">(</span><span class="n">Xtest</span><span class="p">,</span> <span class="n">ytest</span><span
+            class="p">)</span><span class="si">}</span><span class="s2">&#39;!&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Model has been saved as &#39;</span><span
+            class="si">{</span><span class="n">pkl_filename</span><span class="si">}</span><span class="s2">&#39;!&#39;&quot;</span><span
+            class="p">)</span>
+
+        <span class="k">if</span> <span class="n">plot_confusion_matrix</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span
+            class="n">ConfusionMatrixDisplay</span>
+            <span class="n">ConfusionMatrixDisplay</span><span class="o">.</span><span class="n">from_predictions</span><span
+            class="p">(</span><span class="n">ytest</span><span class="p">,</span> <span class="n">model</span><span
+            class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Xtest</span><span
+            class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="n">model</span><span
+            class="o">.</span><span class="n">classes_</span><span class="p">,</span>
+                                                    <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;binary&#39;</span><span
+            class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SupportVectorMachine.load_model"><a class="viewcode-back"
+                                                                    href="../../twistpy.html#twistpy.MachineLearning.SupportVectorMachine.load_model">[docs]</a>    <span
+        class="k">def</span> <span class="nf">load_model</span><span class="p">(</span><span class="bp">self</span><span
+        class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span
+        class="p">)</span> <span class="o">-&gt;</span> <span class="n">SVC</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Loads a previously trained support vector machine from disk</span>
+<span class="sd">        :return: sklearn.svm.SVC object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">file_name</span> <span class="o">=</span> <span class="n">join</span><span
+            class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span
+            class="p">[</span><span class="mi">0</span><span class="p">],</span> <span
+            class="s2">&quot;SVC_models&quot;</span><span class="p">,</span> <span class="bp">self</span><span
+            class="o">.</span><span class="n">name</span> <span class="o">+</span> <span
+            class="s1">&#39;.pkl&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">exists</span><span class="p">(</span><span
+            class="n">file_name</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span
+            class="sa">f</span><span class="s2">&quot;The model &#39;</span><span class="si">{</span><span class="bp">self</span><span
+            class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; has not been trained yet&quot;</span><span
+            class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span
+            class="n">file_name</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span
+            class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                <span class="n">model</span> <span class="o">=</span> <span class="n">pickle</span><span
+            class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span
+            class="p">)</span>
+        <span class="k">return</span> <span class="n">model</span></div></div>
+</pre>
+                        </div>
+
+                    </div>
+                </div>
+                <footer>
+
+                    <hr/>
+
+                    <div role="contentinfo">
+                        <p>&#169; Copyright 2022, David Sollberger.
+                            <span class="lastupdated">Last updated on Feb 23, 2022.
+      </span></p>
+                    </div>
+
+                    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+                    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+                    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+                </footer>
+            </div>
+        </div>
+    </section>
+</div>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+
+</script>
+
+</body>
+</html>

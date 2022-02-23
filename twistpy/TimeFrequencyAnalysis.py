@@ -9,7 +9,7 @@ from __future__ import (absolute_import, division, print_function, unicode_liter
 
 class TimeFrequencyAnalysis:
     """
-    Single-station six degree-of-freedom polarization analysis in the time-frequency domain using the S-transform.
+    Time-frequency domain six-component polarization analysis.
 
     """
 

@@ -1,9 +1,3 @@
-"""
-:copyright:
-    David Sollberger (david.sollberger@gmail.com), 2022
-:license:
-    None
-"""
 from __future__ import (absolute_import, division, print_function, unicode_literals)
 
 import pickle
@@ -20,7 +14,7 @@ from twistpy.MachineLearning import SupportVectorMachine
 
 
 class TimeDomainAnalysis:
-    """Time domain polarization analysis.
+    """Time domain six-component polarization analysis.
 
     Single-station six degree-of-freedom polarization analysis in the time domain. Polarization analysis is performed
     in a sliding time window.
@@ -61,10 +55,30 @@ class TimeDomainAnalysis:
         free surface and uses the corresponding polarization models.
     verbose : :obj:`bool`, optional
         True (Default) to run in verbose mode.
+
+    Attributes
+    ----------
+    classification : :obj:`dict`
+        Dictionary containing the labels of classified wave types at each position of the sliding time window. The
+        dictionary has up to six entries corresponding to classifications for each eigenvector.
+        
+        |  classification = {'0': list_with_classifications_of_first_eigenvector, '1':
+            list_with_classification_of_second_eigenvector, ... , '5': list_with_classification_of_last_eigenvector}
+    time_window : :obj:`list` of :obj:`obspy.core.utcdatetime.UTCDateTime`
+        Window positions of the sliding time window on the time axis (center point of the window)
+    C : :obj:`numpy.ndarray` of :obj:`numpy.complex128`
+        Complex covariance matrices at each window position
+    time : :obj:`list` of :obj:`obspy.core.utcdatetime.UTCDateTime`
+        Time axis of the input traces
+    delta : :obj:`float`
+        Sampling interval of the input data in seconds
+    window_length_samples : :obj:`int`
+        Window length in samples
+
     """
 
-    def __init__(self, traN: Trace = None, traE: Trace = None, traZ: Trace = None, rotN: Trace = None,
-                 rotE: Trace = None, rotZ: Trace = None, window: dict = None,
+    def __init__(self, traN: Trace, traE: Trace, traZ: Trace, rotN: Trace,
+                 rotE: Trace, rotZ: Trace, window: dict,
                  scaling_velocity: float = 1., free_surface: bool = True, verbose: bool = True) -> None:
 
         self.traN, self.traE, self.traZ, self.rotN, self.rotE, self.rotZ = traN, traE, traZ, rotN, rotE, rotZ
@@ -79,10 +93,7 @@ class TimeDomainAnalysis:
                and self.traN.stats.npts == self.rotN.stats.npts and self.traN.stats.npts == self.rotE.stats.npts \
                and self.traN.stats.npts == self.rotZ.stats.npts, "All six traces must have the same number of samples!"
 
-        if window is None:
-            self.window = {'window_length_seconds': 1., 'overlap': 0.5}
-        else:
-            self.window = window
+        self.window = window
         self.time = self.traN.times(type="utcdatetime")
         self.scaling_velocity = scaling_velocity
         self.free_surface = free_surface
@@ -93,7 +104,7 @@ class TimeDomainAnalysis:
         start, stop, incr = [int(self.window_length_samples / 2),
                              -1 - int(self.window_length_samples / 2),
                              np.max([1, int((1 - self.window['overlap']) * self.window_length_samples)])]
-        self.t_window = self.time[start:stop:incr]
+        self.time_window = self.time[start:stop:incr]
         # Compute the analytic signal
         u: np.ndarray = np.array([hilbert(self.traN).T, hilbert(self.traE).T, hilbert(self.traZ).T,
                                   hilbert(self.rotN).T, hilbert(self.rotE).T, hilbert(self.rotZ).T]).T
@@ -114,13 +125,13 @@ class TimeDomainAnalysis:
 
         Parameters
         ----------
-        svm : :obj:`twistpy.machinelearning.SupportVectorMachine`
+        svm : :obj:`~twistpy.MachineLearning.SupportVectorMachine`
             Trained support vector machine used for wave type classification
         eigenvector_to_classify : :obj:`int`, optional
             (Default = 0) Integer value identifying the eigenvector that will be classified, where the eigenvectors are
             sorted in descending order of their corresponding eigenvalue
 
-            |  If 0: first or principal eigenvector, corresponding to the dominant signal in
+            |  If 0: first eigenvector, corresponding to the dominant signal in
                the time window (associated with the largest eigenvalue)
 
         """

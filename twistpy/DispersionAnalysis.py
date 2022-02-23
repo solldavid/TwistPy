@@ -1,9 +1,3 @@
-"""
-:copyright:
-    David Sollberger (david.sollberger@gmail.com), 2022
-:license:
-    None
-"""
 from __future__ import (absolute_import, division, print_function, unicode_literals)
 
 from builtins import *
@@ -12,6 +6,9 @@ from obspy import Trace
 
 
 class DispersionAnalysis:
+    """
+    Single-station six-component surface wave dispersion estimation for Love and Rayleigh waves.
+    """
 
     def __init__(self, traN: Trace = None, traE: Trace = None, traZ: Trace = None, rotN: Trace = None,
                  rotE: Trace = None,

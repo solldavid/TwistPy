@@ -1,9 +1,3 @@
-"""
-:copyright:
-    David Sollberger (david.sollberger@gmail.com), 2022
-:license:
-    None
-"""
 import sys
 
 import numpy as np

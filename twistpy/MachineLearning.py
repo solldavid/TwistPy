@@ -1,9 +1,3 @@
-"""
-:copyright:
-    David Sollberger (david.sollberger@gmail.com), 2022
-:license:
-    None
-"""
 import pickle
 import sys
 from os.path import exists, join

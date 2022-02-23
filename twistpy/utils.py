@@ -1,9 +1,7 @@
 """
-:copyright:
-    David Sollberger (david.sollberger@gmail.com), 2022
-:license:
-    None
+TwistPy utility functions
 """
+
 import pickle
 from typing import Union
 
@@ -22,7 +20,7 @@ def load_analysis(file: str = None) -> Union[TimeDomainAnalysis, TimeFrequencyAn
 
     Returns
     -------
-    obj : :obj:`twistpy.TimeDomainAnalysis` or :obj:`twistpy.TimeFrequencyAnalysis`or :obj:`twistpy.DispersionAnalysis`
+    obj : :obj:`~twistpy.TimeDomainAnalysis.TimeDomainAnalysis` or :obj:`~twistpy.TimeFrequencyAnalysis.TimeFrequencyAnalysis` or :obj:`~twistpy.DispersionAnalysis.DispersionAnalysis`
     """
 
     if file is None:

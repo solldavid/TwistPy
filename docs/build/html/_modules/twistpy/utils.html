@@ -1,16 +1,31 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+
+<html>
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>twistpy.utils &mdash; TwistPy</title>
+    <title>twistpy.utils &#8212; TwistPy</title>
+
+    <link href="../../_static/css/theme.css" rel="stylesheet">
+    <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+
+    <link href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css"
+          rel="stylesheet">
+    <link as="font" crossorigin href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2" rel="preload"
+          type="font/woff2">
+    <link as="font" crossorigin href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2"
+          rel="preload"
+          type="font/woff2">
+
+
     <link href="../../_static/pygments.css" rel="stylesheet" type="text/css"/>
-    <link href="../../_static/css/theme.css" rel="stylesheet" type="text/css"/>
+    <link href="../../_static/sphinx-book-theme.css?digest=84ace793992934648b4de8eed757e5a2" rel="stylesheet"
+          type="text/css"/>
     <link href="../../_static/plot_directive.css" rel="stylesheet" type="text/css"/>
     <link href="../../_static/style.css" rel="stylesheet" type="text/css"/>
-    <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-    <![endif]-->
+
+    <link as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js" rel="preload">
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
@@ -18,62 +33,219 @@
     <script src="../../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA="
             src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="../../_static/js/theme.js"></script>
+    <script src="../../_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
     <link href="../../genindex.html" rel="index" title="Index"/>
     <link href="../../search.html" rel="search" title="Search"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <meta content="None" name="docsearch:language">
+
+
+    <!-- Google Analytics -->
+
 </head>
+<body data-offset="80" data-spy="scroll" data-target="#bd-toc-nav">
 
-<body class="wy-body-for-nav">
-<div class="wy-grid-for-nav">
-    <nav class="wy-nav-side" data-toggle="wy-nav-shift">
-        <div class="wy-side-scroll">
-            <div class="wy-side-nav-search">
-                <a class="icon icon-home" href="../../index.html"> TwistPy
+<div class="container-fluid" id="banner"></div>
+
+
+<div class="container-xl">
+    <div class="row">
+
+        <!-- Checkboxes to toggle the left sidebar -->
+        <input aria-label="Toggle navigation sidebar" class="sidebar-toggle" id="__navigation" name="__navigation"
+               type="checkbox">
+        <label class="overlay" for="__navigation">
+            <div class="visually-hidden">Toggle navigation sidebar</div>
+        </label>
+        <div class="col-12 col-md-3 bd-sidebar site-navigation " id="site-navigation">
+
+            <div class="navbar-brand-box">
+                <a class="navbar-brand text-wrap" href="../../index.html">
+
+
+                    <h1 class="site-logo" id="site-title">TwistPy</h1>
+
                 </a>
-                <div role="search">
-                    <form action="../../search.html" class="wy-form" id="rtd-search-form" method="get">
-                        <input name="q" placeholder="Search docs" type="text"/>
-                        <input name="check_keywords" type="hidden" value="yes"/>
-                        <input name="area" type="hidden" value="default"/>
-                    </form>
-                </div>
             </div>
-            <div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
-                <!-- Local TOC -->
-                <div class="local-toc"></div>
-            </div>
-        </div>
-    </nav>
-
-    <section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
-        <nav aria-label="Mobile navigation menu" class="wy-nav-top">
-            <i class="fa fa-bars" data-toggle="wy-nav-top"></i>
-            <a href="../../index.html">TwistPy</a>
-        </nav>
-
-        <div class="wy-nav-content">
-            <div class="rst-content">
-                <div aria-label="Page navigation" role="navigation">
-                    <ul class="wy-breadcrumbs">
-                        <li><a class="icon icon-home" href="../../index.html"></a> &raquo;</li>
-                        <li><a href="../index.html">Module code</a> &raquo;</li>
-                        <li>twistpy.utils</li>
-                        <li class="wy-breadcrumbs-aside">
+            <form action="../../search.html" class="bd-search d-flex align-items-center" method="get">
+                <i class="icon fas fa-search"></i>
+                <input aria-label="Search the docs ..." autocomplete="off" class="form-control" id="search-input"
+                       name="q" placeholder="Search the docs ..." type="search">
+            </form>
+            <nav aria-label="Main" class="bd-links" id="bd-docs-nav">
+                <div class="bd-toc-item active">
+                    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference documentation:
+ </span>
+                    </p>
+                    <ul class="nav bd-sidenav">
+                        <li class="toctree-l1 has-children">
+                            <a class="reference internal" href="../../api/index.html">
+                                TwistPy API
+                            </a>
+                            <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1"
+                                   type="checkbox"/>
+                            <label for="toctree-checkbox-1">
+                                <i class="fas fa-chevron-down">
+                                </i>
+                            </label>
+                            <ul>
+                                <li class="toctree-l2">
+                                    <a class="reference internal"
+                                       href="../../api/generated/twistpy.DispersionAnalysis.DispersionAnalysis.html">
+                                        twistpy.DispersionAnalysis.DispersionAnalysis
+                                    </a>
+                                </li>
+                                <li class="toctree-l2 has-children">
+                                    <a class="reference internal"
+                                       href="../../api/generated/twistpy.TimeDomainAnalysis.TimeDomainAnalysis.html">
+                                        twistpy.TimeDomainAnalysis.TimeDomainAnalysis
+                                    </a>
+                                    <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2"
+                                           type="checkbox"/>
+                                    <label for="toctree-checkbox-2">
+                                        <i class="fas fa-chevron-down">
+                                        </i>
+                                    </label>
+                                    <ul>
+                                        <li class="toctree-l3">
+                                            <a class="reference internal"
+                                               href="../../api/generated/twistpy.TimeDomainAnalysis.TimeDomainAnalysis.classify.html">
+                                                twistpy.TimeDomainAnalysis.TimeDomainAnalysis.classify
+                                            </a>
+                                        </li>
+                                        <li class="toctree-l3">
+                                            <a class="reference internal"
+                                               href="../../api/generated/twistpy.TimeDomainAnalysis.TimeDomainAnalysis.save.html">
+                                                twistpy.TimeDomainAnalysis.TimeDomainAnalysis.save
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="toctree-l2">
+                                    <a class="reference internal"
+                                       href="../../api/generated/twistpy.TimeFrequencyAnalysis.TimeFrequencyAnalysis.html">
+                                        twistpy.TimeFrequencyAnalysis.TimeFrequencyAnalysis
+                                    </a>
+                                </li>
+                                <li class="toctree-l2 has-children">
+                                    <a class="reference internal"
+                                       href="../../api/generated/twistpy.PolarizationModel.PolarizationModel.html">
+                                        twistpy.PolarizationModel.PolarizationModel
+                                    </a>
+                                    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3"
+                                           type="checkbox"/>
+                                    <label for="toctree-checkbox-3">
+                                        <i class="fas fa-chevron-down">
+                                        </i>
+                                    </label>
+                                    <ul>
+                                        <li class="toctree-l3">
+                                            <a class="reference internal"
+                                               href="../../api/generated/twistpy.PolarizationModel.PolarizationModel.polarization_vector.html">
+                                                twistpy.PolarizationModel.PolarizationModel.polarization_vector
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="toctree-l2 has-children">
+                                    <a class="reference internal" href="../../api/generated/twistpy.utils.html">
+                                        <code class="docutils literal notranslate">
+      <span class="pre">
+       twistpy.utils
+      </span>
+                                        </code>
+                                    </a>
+                                    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4"
+                                           type="checkbox"/>
+                                    <label for="toctree-checkbox-4">
+                                        <i class="fas fa-chevron-down">
+                                        </i>
+                                    </label>
+                                    <ul>
+                                        <li class="toctree-l3">
+                                            <a class="reference internal"
+                                               href="../../api/generated/twistpy.utils.load_analysis.html">
+                                                twistpy.utils.load_analysis
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
-                    <hr/>
+
                 </div>
-                <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
-                    <div itemprop="articleBody">
+            </nav> <!-- To handle the deprecated key -->
+
+            <div class="navbar_extra_footer">
+                Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+            </div>
+
+        </div>
+
+
+        <!-- This is an invisible pixel that we watch to see if we've scrolled. -->
+        <div class="sbt-scroll-pixel-helper"></div>
+        <main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+
+            <div class="topbar container-xl fixed-top">
+                <div class="topbar-contents row">
+                    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+                    <div class="col pl-md-4 topbar-main">
+                        <div class="topbar-left">
+
+                            <label class="nav-toggle-button" for="__navigation">
+                                <div class="visually-hidden">Toggle navigation</div>
+                                <i class="fas fa-bars"></i>
+                            </label>
+
+                        </div>
+
+                        <!-- Source interaction buttons -->
+
+                        <!-- Full screen (wrap in <a> to have style consistency -->
+
+                        <a class="full-screen-button">
+                            <button aria-label="Fullscreen mode" class="btn btn-secondary topbarbtn"
+                                    data-placement="bottom"
+                                    data-toggle="tooltip" onclick="toggleFullScreen()" title="Fullscreen mode"
+                                    type="button"><i
+                                    class="fas fa-expand"></i></button>
+                        </a>
+
+                        <!-- Launch buttons -->
+
+                    </div>
+
+                    <!-- Table of contents -->
+                    <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="main-content">
+                <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+                    <!-- Table of contents that is only displayed when printing the page -->
+                    <div class="onlyprint" id="jb-print-docs-body">
+                        <h1></h1>
+                        <!-- Table of contents -->
+                        <div id="print-main-content">
+                            <div id="jb-print-toc">
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
 
                         <h1>Source code for twistpy.utils</h1>
                         <div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">:copyright:</span>
-<span class="sd">    David Sollberger (david.sollberger@gmail.com), 2022</span>
-<span class="sd">:license:</span>
-<span class="sd">    None</span>
+<span class="sd">TwistPy utility functions</span>
 <span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
 
@@ -86,7 +258,7 @@
 
 
 <div class="viewcode-block" id="load_analysis"><a class="viewcode-back"
-                                                  href="../../twistpy.html#twistpy.utils.load_analysis">[docs]</a><span
+                                                  href="../../api/generated/twistpy.utils.load_analysis.html#twistpy.utils.load_analysis">[docs]</a><span
         class="k">def</span> <span class="nf">load_analysis</span><span class="p">(</span><span
         class="n">file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span
         class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span
@@ -97,11 +269,11 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    file : :obj:`str`</span>
-<span class="sd">        File name (include path if the file is not in the current working directory)</span>
+<span class="sd">        File name (include absolute path if the file is not in the current working directory)</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    obj : :obj:`twistpy.TimeDomainAnalysis` or :obj:`twistpy.TimeFrequencyAnalysis`or :obj:`twistpy.DispersionAnalysis`</span>
+<span class="sd">    obj : :obj:`~twistpy.TimeDomainAnalysis.TimeDomainAnalysis` or :obj:`~twistpy.TimeFrequencyAnalysis.TimeFrequencyAnalysis` or :obj:`~twistpy.DispersionAnalysis.DispersionAnalysis`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">file</span> <span class="ow">is</span> <span class="kc">None</span><span
@@ -118,33 +290,28 @@
                         </div>
 
                     </div>
-                </div>
-                <footer>
 
-                    <hr/>
 
-                    <div role="contentinfo">
-                        <p>&#169; Copyright 2022, David Sollberger.
-                            <span class="lastupdated">Last updated on Feb 23, 2022.
-      </span></p>
+                    <!-- Previous / next buttons -->
+                    <div class='prev-next-area'>
                     </div>
 
-                    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-                    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-                    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-
-
-                </footer>
+                </div>
             </div>
-        </div>
-    </section>
-</div>
-<script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
+            <footer class="footer">
+                <p>
 
-</script>
+                    &copy; Copyright 2022, David Sollberger.<br/>
+                    Last updated on Feb 23, 2022.<br/>
+                </p>
+            </footer>
+        </main>
+
+
+    </div>
+</div>
+
+<script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
 
 </body>
 </html>

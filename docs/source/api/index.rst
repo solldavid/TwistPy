@@ -3,8 +3,16 @@
 TwistPy API
 ===========
 
-Polarization Analysis
----------------------
+3C Polarization Analysis
+------------------------
+
+Tools for three-component polarization analysis and filtering.
+
+6C Polarization Analysis
+------------------------
+
+Tools for six-component polarization analysis and filtering.
+
 .. currentmodule:: twistpy
 
 .. autosummary::
@@ -12,20 +20,27 @@ Polarization Analysis
     :recursive:
     :nosignatures:
 
-    DispersionAnalysis.DispersionAnalysis
-    TimeDomainAnalysis.TimeDomainAnalysis
-    TimeFrequencyAnalysis.TimeFrequencyAnalysis
+    DispersionAnalysis
+    TimeDomainAnalysis
+    TimeFrequencyAnalysis
 
-Polarization Model
-------------------
+Polarization Models
+-------------------
 .. currentmodule:: twistpy
 
 .. autosummary::
     :toctree: generated/
-    :nosignatures:
     :recursive:
+    :nosignatures:
 
-    PolarizationModel.PolarizationModel
+
+    PolarizationModel
+
+Array Processing
+----------------
+
+Tools for array processing.
+
 
 Machine Learning
 ----------------
@@ -36,16 +51,16 @@ Machine Learning
     :nosignatures:
     :recursive:
 
-    MachineLearning.SupportVectorMachine
+    SupportVectorMachine
 
 
 Utility functions
 -----------------
-.. currentmodule:: twistpy
+.. currentmodule:: twistpy.utils
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
     :recursive:
 
-    utils
+    load_analysis

@@ -7,10 +7,13 @@
 import inspect
 import os
 
-from .EstimatorConfiguration import *
-from .PolarizationModel import *
-from .TimeDomainAnalysis import *
-from .TimeFrequencyAnalysis import *
+from .dispersion import *
+from .estimator import *
+from .machinelearning import *
+from .polarization import *
+from .time import *
+from .timefrequency import *
+from .utils import *
 
 LOCAL_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 sys.path.insert(0, LOCAL_PATH)

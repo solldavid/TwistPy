@@ -18,6 +18,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 
 extensions = [
     'sphinx.ext.autodoc',
+    # 'sphinx.ext.napoleon',
     'sphinx.ext.autosummary',
     'sphinx.ext.coverage',
     'sphinx.ext.mathjax',
@@ -79,6 +80,13 @@ autodoc_default_flags = ['members']
 numpydoc_show_class_members = False
 numpydoc_show_inherited_class_members = False
 numpydoc_class_members_toctree = False
+numpydoc_attributes_as_param_list = False
+
+html_theme_options = {
+    "repository_url": "https://github.com/solldavid/TwistPy",
+    "use_repository_button": True,
+    "logo_only": True,
+}
 
 # -- Project information -----------------------------------------------------
 year = datetime.date.today().year
@@ -91,8 +99,8 @@ release = '0.1'
 html_last_updated_fmt = '%b %d, %Y'
 html_title = 'TwistPy'
 html_short_title = 'TwistPy'
-# html_logo = '_static/twistpy.png'
-# html_favicon = '_static/favicon.ico'
+html_logo = '_static/logo_with_text.png'
+html_favicon = '_static/twistpy.ico'
 html_static_path = ['_static']
 html_extra_path = []
 pygments_style = 'default'
@@ -100,6 +108,10 @@ add_function_parentheses = False
 html_show_sourcelink = False
 html_show_sphinx = True
 html_show_copyright = True
+
+# If true, the current module name will be prepended to all description
+# unit titles (such as .. function::).
+add_module_names = False
 
 # -- General configuration ---------------------------------------------------
 

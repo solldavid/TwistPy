@@ -5,9 +5,9 @@ TwistPy utility functions
 import pickle
 from typing import Union
 
-from twistpy.DispersionAnalysis import DispersionAnalysis
-from twistpy.TimeDomainAnalysis import TimeDomainAnalysis
-from twistpy.TimeFrequencyAnalysis import TimeFrequencyAnalysis
+from twistpy.dispersion import DispersionAnalysis
+from twistpy.time import TimeDomainAnalysis
+from twistpy.timefrequency import TimeFrequencyAnalysis
 
 
 def load_analysis(file: str = None) -> Union[TimeDomainAnalysis, TimeFrequencyAnalysis, DispersionAnalysis]:
@@ -20,7 +20,7 @@ def load_analysis(file: str = None) -> Union[TimeDomainAnalysis, TimeFrequencyAn
 
     Returns
     -------
-    obj : :obj:`~twistpy.TimeDomainAnalysis.TimeDomainAnalysis` or :obj:`~twistpy.TimeFrequencyAnalysis.TimeFrequencyAnalysis` or :obj:`~twistpy.DispersionAnalysis.DispersionAnalysis`
+    obj : :obj:`~twistpy.TimeDomainAnalysis` or :obj:`~twistpy.TimeFrequencyAnalysis` or :obj:`~twistpy.DispersionAnalysis`
     """
 
     if file is None:

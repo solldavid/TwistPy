@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html>
@@ -33,6 +34,7 @@
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA="
             src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
+    <link href="_static/twistpy.ico" rel="shortcut icon"/>
     <link href="#" rel="index" title="Index"/>
     <link href="search.html" rel="search" title="Search"/>
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
@@ -61,8 +63,11 @@
             <div class="navbar-brand-box">
                 <a class="navbar-brand text-wrap" href="index.html">
 
+                    <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
 
-                    <h1 class="site-logo" id="site-title">TwistPy</h1>
+
+                    <img alt="logo" class="logo" src="_static/logo_with_text.png">
+
 
                 </a>
             </div>
@@ -73,6 +78,18 @@
             </form>
             <nav aria-label="Main" class="bd-links" id="bd-docs-nav">
                 <div class="bd-toc-item active">
+                    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Instructions:
+ </span>
+                    </p>
+                    <ul class="nav bd-sidenav">
+                        <li class="toctree-l1">
+                            <a class="reference internal" href="installation.html">
+                                Installation Instructions
+                            </a>
+                        </li>
+                    </ul>
                     <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Reference documentation:
@@ -91,15 +108,13 @@
                             </label>
                             <ul>
                                 <li class="toctree-l2">
-                                    <a class="reference internal"
-                                       href="api/generated/twistpy.DispersionAnalysis.DispersionAnalysis.html">
-                                        twistpy.DispersionAnalysis.DispersionAnalysis
+                                    <a class="reference internal" href="api/generated/twistpy.DispersionAnalysis.html">
+                                        twistpy.DispersionAnalysis
                                     </a>
                                 </li>
                                 <li class="toctree-l2 has-children">
-                                    <a class="reference internal"
-                                       href="api/generated/twistpy.TimeDomainAnalysis.TimeDomainAnalysis.html">
-                                        twistpy.TimeDomainAnalysis.TimeDomainAnalysis
+                                    <a class="reference internal" href="api/generated/twistpy.TimeDomainAnalysis.html">
+                                        twistpy.TimeDomainAnalysis
                                     </a>
                                     <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2"
                                            type="checkbox"/>
@@ -110,28 +125,27 @@
                                     <ul>
                                         <li class="toctree-l3">
                                             <a class="reference internal"
-                                               href="api/generated/twistpy.TimeDomainAnalysis.TimeDomainAnalysis.classify.html">
-                                                twistpy.TimeDomainAnalysis.TimeDomainAnalysis.classify
+                                               href="api/generated/twistpy.TimeDomainAnalysis.classify.html">
+                                                twistpy.TimeDomainAnalysis.classify
                                             </a>
                                         </li>
                                         <li class="toctree-l3">
                                             <a class="reference internal"
-                                               href="api/generated/twistpy.TimeDomainAnalysis.TimeDomainAnalysis.save.html">
-                                                twistpy.TimeDomainAnalysis.TimeDomainAnalysis.save
+                                               href="api/generated/twistpy.TimeDomainAnalysis.save.html">
+                                                twistpy.TimeDomainAnalysis.save
                                             </a>
                                         </li>
                                     </ul>
                                 </li>
                                 <li class="toctree-l2">
                                     <a class="reference internal"
-                                       href="api/generated/twistpy.TimeFrequencyAnalysis.TimeFrequencyAnalysis.html">
-                                        twistpy.TimeFrequencyAnalysis.TimeFrequencyAnalysis
+                                       href="api/generated/twistpy.TimeFrequencyAnalysis.html">
+                                        twistpy.TimeFrequencyAnalysis
                                     </a>
                                 </li>
                                 <li class="toctree-l2 has-children">
-                                    <a class="reference internal"
-                                       href="api/generated/twistpy.PolarizationModel.PolarizationModel.html">
-                                        twistpy.PolarizationModel.PolarizationModel
+                                    <a class="reference internal" href="api/generated/twistpy.PolarizationModel.html">
+                                        twistpy.PolarizationModel
                                     </a>
                                     <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3"
                                            type="checkbox"/>
@@ -142,16 +156,16 @@
                                     <ul>
                                         <li class="toctree-l3">
                                             <a class="reference internal"
-                                               href="api/generated/twistpy.PolarizationModel.PolarizationModel.polarization_vector.html">
-                                                twistpy.PolarizationModel.PolarizationModel.polarization_vector
+                                               href="api/generated/twistpy.PolarizationModel.polarization_vector.html">
+                                                twistpy.PolarizationModel.polarization_vector
                                             </a>
                                         </li>
                                     </ul>
                                 </li>
                                 <li class="toctree-l2 has-children">
                                     <a class="reference internal"
-                                       href="api/generated/twistpy.MachineLearning.SupportVectorMachine.html">
-                                        twistpy.MachineLearning.SupportVectorMachine
+                                       href="api/generated/twistpy.SupportVectorMachine.html">
+                                        twistpy.SupportVectorMachine
                                     </a>
                                     <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4"
                                            type="checkbox"/>
@@ -162,40 +176,22 @@
                                     <ul>
                                         <li class="toctree-l3">
                                             <a class="reference internal"
-                                               href="api/generated/twistpy.MachineLearning.SupportVectorMachine.load_model.html">
-                                                twistpy.MachineLearning.SupportVectorMachine.load_model
+                                               href="api/generated/twistpy.SupportVectorMachine.load_model.html">
+                                                twistpy.SupportVectorMachine.load_model
                                             </a>
                                         </li>
                                         <li class="toctree-l3">
                                             <a class="reference internal"
-                                               href="api/generated/twistpy.MachineLearning.SupportVectorMachine.train.html">
-                                                twistpy.MachineLearning.SupportVectorMachine.train
+                                               href="api/generated/twistpy.SupportVectorMachine.train.html">
+                                                twistpy.SupportVectorMachine.train
                                             </a>
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="toctree-l2 has-children">
-                                    <a class="reference internal" href="api/generated/twistpy.utils.html">
-                                        <code class="docutils literal notranslate">
-      <span class="pre">
-       twistpy.utils
-      </span>
-                                        </code>
+                                <li class="toctree-l2">
+                                    <a class="reference internal" href="api/generated/twistpy.utils.load_analysis.html">
+                                        twistpy.utils.load_analysis
                                     </a>
-                                    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5"
-                                           type="checkbox"/>
-                                    <label for="toctree-checkbox-5">
-                                        <i class="fas fa-chevron-down">
-                                        </i>
-                                    </label>
-                                    <ul>
-                                        <li class="toctree-l3">
-                                            <a class="reference internal"
-                                               href="api/generated/twistpy.utils.load_analysis.html">
-                                                twistpy.utils.load_analysis
-                                            </a>
-                                        </li>
-                                    </ul>
                                 </li>
                             </ul>
                         </li>
@@ -229,6 +225,22 @@
                         </div>
 
                         <!-- Source interaction buttons -->
+
+                        <div class="dropdown-buttons-trigger">
+                            <button aria-label="Connect with source repository" class="btn btn-secondary topbarbtn"
+                                    id="dropdown-buttons-trigger"><i class="fab fa-github"></i></button>
+                            <div class="dropdown-buttons sourcebuttons">
+                                <a class="repository-button"
+                                   href="https://github.com/solldavid/TwistPy">
+                                    <button class="btn btn-secondary topbarbtn" data-placement="left"
+                                            data-toggle="tooltip" title="Source repository" type="button"><i
+                                            class="fab fa-github"></i>repository
+                                    </button>
+                                </a>
+
+
+                            </div>
+                        </div>
 
                         <!-- Full screen (wrap in <a> to have style consistency -->
 
@@ -272,7 +284,6 @@
                             <a href="#C"><strong>C</strong></a>
                             | <a href="#D"><strong>D</strong></a>
                             | <a href="#L"><strong>L</strong></a>
-                            | <a href="#M"><strong>M</strong></a>
                             | <a href="#P"><strong>P</strong></a>
                             | <a href="#S"><strong>S</strong></a>
                             | <a href="#T"><strong>T</strong></a>
@@ -284,8 +295,8 @@
                                 <td style="width: 33%; vertical-align: top;">
                                     <ul>
                                         <li>
-                                            <a href="api/generated/twistpy.TimeDomainAnalysis.TimeDomainAnalysis.classify.html#twistpy.TimeDomainAnalysis.TimeDomainAnalysis.classify">classify()
-                                                (twistpy.TimeDomainAnalysis.TimeDomainAnalysis method)</a>
+                                            <a href="api/generated/twistpy.TimeDomainAnalysis.classify.html#twistpy.TimeDomainAnalysis.classify">classify()
+                                                (TimeDomainAnalysis method)</a>
                                         </li>
                                     </ul>
                                 </td>
@@ -298,8 +309,8 @@
                                 <td style="width: 33%; vertical-align: top;">
                                     <ul>
                                         <li>
-                                            <a href="api/generated/twistpy.DispersionAnalysis.DispersionAnalysis.html#twistpy.DispersionAnalysis.DispersionAnalysis">DispersionAnalysis
-                                                (class in twistpy.DispersionAnalysis)</a>
+                                            <a href="api/generated/twistpy.DispersionAnalysis.html#twistpy.DispersionAnalysis">DispersionAnalysis
+                                                (class in twistpy)</a>
                                         </li>
                                     </ul>
                                 </td>
@@ -320,26 +331,8 @@
                                 <td style="width: 33%; vertical-align: top;">
                                     <ul>
                                         <li>
-                                            <a href="api/generated/twistpy.MachineLearning.SupportVectorMachine.load_model.html#twistpy.MachineLearning.SupportVectorMachine.load_model">load_model()
-                                                (twistpy.MachineLearning.SupportVectorMachine method)</a>
-                                        </li>
-                                    </ul>
-                                </td>
-                            </tr>
-                        </table>
-
-                        <h2 id="M">M</h2>
-                        <table class="indextable genindextable" style="width: 100%">
-                            <tr>
-                                <td style="width: 33%; vertical-align: top;">
-                                    <ul>
-                                        <li>
-                                            module
-
-                                            <ul>
-                                                <li><a href="api/generated/twistpy.utils.html#module-twistpy.utils">twistpy.utils</a>
-                                                </li>
-                                            </ul>
+                                            <a href="api/generated/twistpy.SupportVectorMachine.load_model.html#twistpy.SupportVectorMachine.load_model">load_model()
+                                                (SupportVectorMachine method)</a>
                                         </li>
                                     </ul>
                                 </td>
@@ -352,16 +345,16 @@
                                 <td style="width: 33%; vertical-align: top;">
                                     <ul>
                                         <li>
-                                            <a href="api/generated/twistpy.PolarizationModel.PolarizationModel.polarization_vector.html#twistpy.PolarizationModel.PolarizationModel.polarization_vector">polarization_vector
-                                                (twistpy.PolarizationModel.PolarizationModel property)</a>
+                                            <a href="api/generated/twistpy.PolarizationModel.polarization_vector.html#twistpy.PolarizationModel.polarization_vector">polarization_vector
+                                                (PolarizationModel property)</a>
                                         </li>
                                     </ul>
                                 </td>
                                 <td style="width: 33%; vertical-align: top;">
                                     <ul>
                                         <li>
-                                            <a href="api/generated/twistpy.PolarizationModel.PolarizationModel.html#twistpy.PolarizationModel.PolarizationModel">PolarizationModel
-                                                (class in twistpy.PolarizationModel)</a>
+                                            <a href="api/generated/twistpy.PolarizationModel.html#twistpy.PolarizationModel">PolarizationModel
+                                                (class in twistpy)</a>
                                         </li>
                                     </ul>
                                 </td>
@@ -374,16 +367,16 @@
                                 <td style="width: 33%; vertical-align: top;">
                                     <ul>
                                         <li>
-                                            <a href="api/generated/twistpy.TimeDomainAnalysis.TimeDomainAnalysis.save.html#twistpy.TimeDomainAnalysis.TimeDomainAnalysis.save">save()
-                                                (twistpy.TimeDomainAnalysis.TimeDomainAnalysis method)</a>
+                                            <a href="api/generated/twistpy.TimeDomainAnalysis.save.html#twistpy.TimeDomainAnalysis.save">save()
+                                                (TimeDomainAnalysis method)</a>
                                         </li>
                                     </ul>
                                 </td>
                                 <td style="width: 33%; vertical-align: top;">
                                     <ul>
                                         <li>
-                                            <a href="api/generated/twistpy.MachineLearning.SupportVectorMachine.html#twistpy.MachineLearning.SupportVectorMachine">SupportVectorMachine
-                                                (class in twistpy.MachineLearning)</a>
+                                            <a href="api/generated/twistpy.SupportVectorMachine.html#twistpy.SupportVectorMachine">SupportVectorMachine
+                                                (class in twistpy)</a>
                                         </li>
                                     </ul>
                                 </td>
@@ -396,28 +389,20 @@
                                 <td style="width: 33%; vertical-align: top;">
                                     <ul>
                                         <li>
-                                            <a href="api/generated/twistpy.TimeDomainAnalysis.TimeDomainAnalysis.html#twistpy.TimeDomainAnalysis.TimeDomainAnalysis">TimeDomainAnalysis
-                                                (class in twistpy.TimeDomainAnalysis)</a>
-                                        </li>
-                                        <li>
-                                            <a href="api/generated/twistpy.TimeFrequencyAnalysis.TimeFrequencyAnalysis.html#twistpy.TimeFrequencyAnalysis.TimeFrequencyAnalysis">TimeFrequencyAnalysis
-                                                (class in twistpy.TimeFrequencyAnalysis)</a>
+                                            <a href="api/generated/twistpy.TimeDomainAnalysis.html#twistpy.TimeDomainAnalysis">TimeDomainAnalysis
+                                                (class in twistpy)</a>
                                         </li>
                                     </ul>
                                 </td>
                                 <td style="width: 33%; vertical-align: top;">
                                     <ul>
                                         <li>
-                                            <a href="api/generated/twistpy.MachineLearning.SupportVectorMachine.train.html#twistpy.MachineLearning.SupportVectorMachine.train">train()
-                                                (twistpy.MachineLearning.SupportVectorMachine method)</a>
+                                            <a href="api/generated/twistpy.TimeFrequencyAnalysis.html#twistpy.TimeFrequencyAnalysis">TimeFrequencyAnalysis
+                                                (class in twistpy)</a>
                                         </li>
                                         <li>
-                                            twistpy.utils
-
-                                            <ul>
-                                                <li><a href="api/generated/twistpy.utils.html#module-twistpy.utils">module</a>
-                                                </li>
-                                            </ul>
+                                            <a href="api/generated/twistpy.SupportVectorMachine.train.html#twistpy.SupportVectorMachine.train">train()
+                                                (SupportVectorMachine method)</a>
                                         </li>
                                     </ul>
                                 </td>
@@ -438,7 +423,7 @@
                 <p>
 
                     &copy; Copyright 2022, David Sollberger.<br/>
-                    Last updated on Feb 23, 2022.<br/>
+                    Last updated on Feb 24, 2022.<br/>
                 </p>
             </footer>
         </main>

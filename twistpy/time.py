@@ -41,7 +41,6 @@ class TimeDomainAnalysis:
         Window parameters defined as:
 
         |  window = {'window_length_seconds': :obj:`float`, 'overlap': :obj:`float`}
-
         |  Overlap should be on the interval 0 (no overlap between subsequent time windows) and 1
            (complete overlap, window is moved by 1 sample only).
     scaling_velocity : :obj:`float`, optional

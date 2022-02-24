@@ -67,7 +67,7 @@
                     <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
 
 
-                    <img alt="logo" class="logo" src="../../_static/logo_with_text.png">
+                    <img alt="logo" class="logo" src="../../_static/logo_textbelow_adobe.png">
 
 
                 </a>
@@ -81,7 +81,7 @@
                 <div class="bd-toc-item active">
                     <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Usage:
+  Instructions:
  </span>
                     </p>
                     <ul class="nav bd-sidenav">
@@ -194,6 +194,18 @@
                                 </li>
                                 <li class="toctree-l2">
                                     <a class="reference internal"
+                                       href="../../api/generated/twistpy.utils.s_transform.html">
+                                        twistpy.utils.s_transform
+                                    </a>
+                                </li>
+                                <li class="toctree-l2">
+                                    <a class="reference internal"
+                                       href="../../api/generated/twistpy.utils.i_s_transform.html">
+                                        twistpy.utils.i_s_transform
+                                    </a>
+                                </li>
+                                <li class="toctree-l2">
+                                    <a class="reference internal"
                                        href="../../api/generated/twistpy.utils.load_analysis.html">
                                         twistpy.utils.load_analysis
                                     </a>
@@ -236,7 +248,7 @@
                                     id="dropdown-buttons-trigger"><i class="fab fa-github"></i></button>
                             <div class="dropdown-buttons sourcebuttons">
                                 <a class="repository-button"
-                                   href="https://github.com/twistpy">
+                                   href="https://github.com/solldavid/TwistPy">
                                     <button class="btn btn-secondary topbarbtn" data-placement="left"
                                             data-toggle="tooltip" title="Source repository" type="button"><i
                                             class="fab fa-github"></i>repository
@@ -291,6 +303,8 @@
 <span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
 <span class="kn">from</span> <span class="nn">twistpy.dispersion</span> <span class="kn">import</span> <span class="n">DispersionAnalysis</span>
 <span class="kn">from</span> <span class="nn">twistpy.time</span> <span class="kn">import</span> <span class="n">TimeDomainAnalysis</span>
 <span class="kn">from</span> <span class="nn">twistpy.timefrequency</span> <span class="kn">import</span> <span
@@ -326,6 +340,346 @@
             class="n">load</span><span class="p">(</span><span class="n">fid</span><span class="p">)</span>
     <span class="n">fid</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">obj</span></div>
+
+
+<div class="viewcode-block" id="i_s_transform"><a class="viewcode-back"
+                                                  href="../../api/generated/twistpy.utils.i_s_transform.html#twistpy.utils.i_s_transform">[docs]</a><span
+        class="k">def</span> <span class="nf">i_s_transform</span><span class="p">(</span><span class="n">st</span><span
+        class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span
+        class="p">,</span> <span class="n">f</span><span class="p">:</span> <span class="n">np</span><span
+        class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Compute the inverse S-transform.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">weight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span
+            class="n">reshape</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span
+            class="n">abs</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span
+            class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">f</span><span
+            class="p">),</span> <span class="mi">1</span><span class="p">)),</span> <span class="p">(</span><span
+            class="mi">1</span><span class="p">,</span> <span class="n">st</span><span class="o">.</span><span
+            class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">weight</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span
+            class="p">:]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">st</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">abs</span><span class="p">(</span><span class="n">weight</span><span class="p">)</span>
+    <span class="n">st</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span
+            class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span
+            class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fft</span><span
+            class="o">.</span><span class="n">irfft</span><span class="p">(</span><span class="n">st</span><span
+            class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span
+            class="p">))</span>  <span class="c1"># Approximate inverse after Schimmel,</span>
+    <span class="c1"># filtered version of the exact inverse</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span
+            class="n">u</span><span class="p">)</span>
+    <span class="n">n_half</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span
+            class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span
+            class="n">M</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">odd</span> <span class="o">=</span> <span class="n">M</span> <span class="o">%</span> <span
+            class="mi">2</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span
+            class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span
+            class="p">(</span><span class="n">n_half</span> <span class="o">+</span> <span class="mi">1</span><span
+            class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span
+            class="p">(</span><span class="o">-</span><span class="n">n_half</span> <span class="o">+</span> <span
+            class="mi">1</span> <span class="o">-</span> <span class="n">odd</span><span class="p">,</span> <span
+            class="mi">0</span><span class="p">)])</span> <span class="o">/</span> <span class="n">M</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span
+            class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span
+            class="p">(</span><span class="n">M</span><span class="p">)</span>
+    <span class="n">term1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span
+            class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span
+            class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tile</span><span
+            class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span
+            class="p">,</span> <span class="n">M</span><span class="p">))</span> <span class="o">/</span> <span
+            class="mi">1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">tile</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span
+            class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span> <span
+            class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">term2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">exp</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span
+            class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span
+            class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span
+            class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span
+            class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span
+            class="n">M</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span
+            class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">n</span><span
+            class="p">,</span> <span class="p">(</span><span class="n">M</span><span class="p">,</span> <span
+            class="mi">1</span><span class="p">))))</span>
+    <span class="c1"># Filter after Simon et al. 2007: The S-Transform and its Inverses: Side Effects of Discretizing and Filtering</span>
+    <span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span
+            class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span
+            class="p">(</span><span class="n">term1</span> <span class="o">*</span> <span class="n">term2</span><span
+            class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span
+            class="p">))</span> <span class="o">/</span> <span class="n">M</span>
+    <span class="n">I_fft</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span
+            class="n">I</span><span class="p">)</span>
+    <span class="n">u_fft</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span
+            class="n">u</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span
+            class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fft</span><span
+            class="o">.</span><span class="n">ifft</span><span class="p">(</span><span class="n">u_fft</span> <span
+            class="o">/</span> <span class="n">I_fft</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="s_transform"><a class="viewcode-back"
+                                                href="../../api/generated/twistpy.utils.s_transform.html#twistpy.utils.s_transform">[docs]</a><span
+        class="k">def</span> <span class="nf">s_transform</span><span class="p">(</span><span
+        class="n">signal</span><span class="p">,</span> <span class="n">dsfacf</span><span class="o">=</span><span
+        class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span
+        class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the S-transform of the input signal.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        stran: S-transform of the signal with dimensions (next_pow_2(len(signal))/2+1, next_pow_2(len(signal)))</span>
+<span class="sd">        f: Normalized frequency vector (divide by sampling interval dt to get frequency in Hz)</span>
+<span class="sd">        dsfacf: Down-sampling factor in the frequency direction -&gt; enables efficient computation for long signals</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span
+            class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">shape</span><span
+            class="p">)</span>
+    <span class="n">M_half</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span
+            class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span
+            class="n">M</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span
+            class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span
+            class="p">(</span><span class="n">M_half</span> <span class="o">+</span> <span class="mi">1</span><span
+            class="p">)])</span> <span class="o">/</span> <span class="n">M</span>
+    <span class="n">stran</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">zeros</span><span class="p">((</span><span class="n">M_half</span> <span class="o">+</span> <span
+            class="mi">1</span><span class="p">,</span> <span class="n">M</span><span class="p">),</span> <span
+            class="n">dtype</span><span class="o">=</span><span class="s1">&#39;complex&#39;</span><span
+            class="p">)</span>
+    <span class="n">signal</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span
+            class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">M</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span
+            class="p">(</span><span class="n">M_half</span> <span class="o">+</span> <span class="mi">1</span><span
+            class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span
+            class="p">(</span><span class="n">M_half</span> <span class="o">+</span> <span class="mi">1</span><span
+            class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">stran</span> <span class="o">=</span> <span class="n">stran</span><span class="p">[::</span><span
+            class="n">dsfacf</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">m</span><span class="p">[::</span><span class="n">dsfacf</span><span
+            class="p">]</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span
+            class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span
+            class="p">,</span> <span class="n">M</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">np</span><span
+            class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">M</span><span
+            class="p">):</span>
+        <span class="n">stran</span><span class="p">[:,</span> <span class="n">p</span><span class="p">]</span> <span
+            class="o">=</span> <span class="n">_evaluate_stran</span><span class="p">(</span><span
+            class="n">signal</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span
+            class="n">m</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">M</span><span
+            class="p">)</span>
+    <span class="n">stran</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span
+            class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+            class="n">mean</span><span class="p">(</span><span class="n">signal</span> <span class="o">*</span> <span
+            class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span
+            class="mi">1</span><span class="p">,</span> <span class="n">M</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">stran</span><span class="p">,</span> <span class="n">f</span><span
+            class="p">[::</span><span class="n">dsfacf</span><span class="p">]</span></div>
+
+
+<span class="k">def</span> <span class="nf">_evaluate_stran</span><span class="p">(</span><span
+                                class="n">signal</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span
+                                class="n">m</span><span class="p">,</span> <span class="n">k</span><span
+                                class="p">,</span> <span class="n">M</span><span class="p">):</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span
+                                class="p">(</span><span class="n">signal</span> <span class="o">*</span> <span
+                                class="p">(</span><span class="n">np</span><span class="o">.</span><span
+                                class="n">abs</span><span class="p">(</span><span class="n">m</span><span
+                                class="p">)</span> <span class="o">/</span> <span class="p">(</span><span
+                                class="n">k</span> <span class="o">*</span> <span class="n">M</span> <span
+                                class="o">*</span> <span class="n">np</span><span class="o">.</span><span
+                                class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span
+                                class="o">*</span> <span class="n">np</span><span class="o">.</span><span
+                                class="n">pi</span><span class="p">)))</span>
+               <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span
+                                class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span
+                                class="o">*</span> <span class="p">(</span><span class="n">m</span> <span
+                                class="o">*</span> <span class="p">(</span><span class="n">p</span> <span
+                                class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span
+                                class="p">(</span><span class="n">M</span><span class="p">))</span> <span
+                                class="o">/</span> <span class="p">(</span><span class="n">M</span> <span
+                                class="o">*</span> <span class="n">k</span><span class="p">))</span> <span
+                                class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+               <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span
+                                class="p">(</span><span class="o">-</span><span class="mi">2</span> <span
+                                class="o">*</span> <span class="mi">1</span><span class="n">j</span> <span
+                                class="o">*</span> <span class="n">np</span><span class="o">.</span><span
+                                class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span
+                                class="o">.</span><span class="n">arange</span><span class="p">(</span><span
+                                class="n">M</span><span class="p">)</span> <span class="o">*</span> <span
+                                class="n">m</span> <span class="o">/</span> <span class="n">M</span><span
+                                class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span
+                                class="p">)</span>
+    <span class="k">return</span> <span class="n">S</span>
+
+
+<span class="k">def</span> <span class="nf">_s_transform_deprecated</span><span class="p">(</span><span
+                                class="n">signal</span><span class="p">,</span> <span class="n">dsfacf</span><span
+                                class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the S-transform of the input signal</span>
+<span class="sd">    David Sollberger, 2020</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        signal_strans: S-transform of the signal with dimensions (next_pow_2(len(signal))/2+1, next_pow_2(len(signal)))</span>
+<span class="sd">        f: Normalized frequency vector (divide by sampling interval dt to get frequency in Hz)</span>
+<span class="sd">        dsfacf: Down-sampling factor in the frequency direction -&gt; enables efficient computation for long signals</span>
+
+<span class="sd">    Code is adapted from a Matlab implementation by Vincent Perron, ETHZ, Switzerland,  which is based on the</span>
+<span class="sd">    Matlab implementation by  Kalyan S. Dash, IIT Bhubaneswar, India</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span
+                                class="n">shape</span><span class="p">[</span><span class="mi">0</span><span
+                                class="p">]</span>
+    <span class="n">n_half</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span
+                                class="n">np</span><span class="o">.</span><span class="n">floor</span><span
+                                class="p">(</span><span class="n">n</span> <span class="o">/</span> <span
+                                class="mi">2</span><span class="p">))</span>
+    <span class="n">odd</span> <span class="o">=</span> <span class="n">n</span> <span class="o">%</span> <span
+                                class="mi">2</span>
+
+    <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span
+                                class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span
+                                class="p">(</span><span class="n">n_half</span> <span class="o">+</span> <span
+                                class="mi">1</span><span class="p">),</span> <span class="n">np</span><span
+                                class="o">.</span><span class="n">arange</span><span class="p">(</span><span
+                                class="o">-</span><span class="n">n_half</span> <span class="o">+</span> <span
+                                class="mi">1</span> <span class="o">-</span> <span class="n">odd</span><span
+                                class="p">,</span> <span class="mi">0</span><span class="p">)])</span> <span
+                                class="o">/</span> <span class="n">n</span>
+    <span class="n">signal_fft</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+                                class="n">fft</span><span class="o">.</span><span class="n">fft</span><span
+                                class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">n</span><span
+                                class="o">=</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">signal_fft</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span
+                                class="p">(</span><span class="mi">1</span><span class="p">,</span> <span
+                                class="n">n</span><span class="p">)</span>
+    <span class="n">periods</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">/</span> <span
+                                class="n">f</span><span class="p">[</span><span class="n">dsfacf</span><span
+                                class="p">:</span><span class="nb">int</span><span class="p">(</span><span class="n">n_half</span><span
+                                class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span
+                                class="p">:</span><span class="n">dsfacf</span><span class="p">]</span>
+    <span class="n">periods</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span
+                                class="p">(</span><span class="n">periods</span><span class="o">.</span><span class="n">shape</span><span
+                                class="p">[</span><span class="mi">0</span><span class="p">],</span> <span
+                                class="mi">1</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span
+                                class="n">np</span><span class="o">.</span><span class="n">pi</span> <span
+                                class="o">*</span> <span class="n">np</span><span class="o">.</span><span
+                                class="n">tile</span><span class="p">(</span><span class="n">f</span><span
+                                class="p">,</span> <span class="p">(</span><span class="n">periods</span><span
+                                class="o">.</span><span class="n">shape</span><span class="p">[</span><span
+                                class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span
+                                class="p">))</span> <span class="o">*</span> <span class="n">np</span><span
+                                class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">periods</span><span
+                                class="p">,</span> <span class="p">(</span><span class="mi">1</span><span
+                                class="p">,</span> <span class="n">n</span><span class="p">))</span>
+    <span class="c1"># gaussian = (np.abs(2*np.pi*np.tile(1/periods, (1, w.shape[1])))/np.sqrt(2*np.pi))*np.exp((- w ** 2) / 2)</span>
+    <span class="n">gaussian</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+                                class="n">exp</span><span class="p">((</span><span class="o">-</span> <span
+                                class="n">w</span> <span class="o">**</span> <span class="mi">2</span><span
+                                class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span
+                                class="p">)</span>
+    <span class="n">hw</span> <span class="o">=</span> <span class="n">_toeplitz_red</span><span class="p">(</span><span
+                                class="n">signal_fft</span><span class="p">[:,</span> <span class="mi">1</span><span
+                                class="p">:</span><span class="n">n_half</span> <span class="o">+</span> <span
+                                class="mi">1</span><span class="p">]</span><span class="o">.</span><span
+                                class="n">T</span><span class="p">,</span> <span class="n">signal_fft</span><span
+                                class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">dsfacf</span><span
+                                class="p">)</span>
+    <span class="n">signal_strans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+                                class="n">fft</span><span class="o">.</span><span class="n">ifft</span><span
+                                class="p">(</span><span class="n">hw</span> <span class="o">*</span> <span class="n">gaussian</span><span
+                                class="p">,</span> <span class="n">n</span><span class="o">=</span><span
+                                class="n">n</span><span class="p">)</span>
+    <span class="n">signal_strans_zero</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+                                class="n">mean</span><span class="p">(</span><span class="n">signal</span><span
+                                class="p">)</span> <span class="o">*</span> <span class="n">np</span><span
+                                class="o">.</span><span class="n">ones</span><span class="p">(</span><span
+                                class="n">n</span><span class="p">)</span>
+    <span class="n">signal_strans_zero</span><span class="o">.</span><span class="n">shape</span> <span
+                                class="o">=</span> <span class="p">(</span><span class="mi">1</span><span
+                                class="p">,</span> <span class="n">signal_strans_zero</span><span
+                                class="o">.</span><span class="n">shape</span><span class="p">[</span><span
+                                class="mi">0</span><span class="p">])</span>
+    <span class="n">signal_strans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+                                class="n">concatenate</span><span class="p">([</span><span
+                                class="n">signal_strans_zero</span><span class="p">,</span> <span class="n">signal_strans</span><span
+                                class="p">])</span>
+
+    <span class="k">return</span> <span class="n">signal_strans</span><span class="o">.</span><span
+                                class="n">conj</span><span class="p">(),</span> <span class="n">np</span><span
+                                class="o">.</span><span class="n">insert</span><span class="p">(</span><span
+                                class="n">f</span><span class="p">[</span><span class="n">dsfacf</span><span
+                                class="p">:</span><span class="n">n_half</span> <span class="o">+</span> <span
+                                class="mi">1</span><span class="p">:</span><span class="n">dsfacf</span><span class="p">],</span> <span
+                                class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span
+                                class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_toeplitz_red</span><span class="p">(</span><span class="n">c</span><span
+                                class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">dsfacf</span><span
+                                class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Constructs a non-symmetric Toeplitz matrix with c as its first column and r its first row</span>
+<span class="sd">    :param c: first column</span>
+<span class="sd">    :param r: first row</span>
+<span class="sd">    :param dsfacf: down-sampling factor</span>
+<span class="sd">    :return: T (Toeplitz matrix)</span>
+<span class="sd">    David Sollberger, 2020 (david.sollberger@gmail.com)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span
+                                class="p">((</span><span class="n">np</span><span class="o">.</span><span
+                                class="n">flip</span><span class="p">(</span><span class="n">r</span><span
+                                class="p">[</span><span class="mi">1</span><span class="p">:]),</span> <span
+                                class="n">c</span><span class="o">.</span><span class="n">conj</span><span class="p">()),</span> <span
+                                class="n">axis</span><span class="o">=</span><span class="mi">0</span><span
+                                class="p">)</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+                                class="n">arange</span><span class="p">(</span><span class="n">r</span><span
+                                class="o">.</span><span class="n">shape</span><span class="p">[</span><span
+                                class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span
+                                class="mi">1</span><span class="p">,</span> <span class="o">-</span><span
+                                class="mi">1</span><span class="p">,</span> <span class="o">-</span><span
+                                class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span
+                                class="mi">1</span>
+    <span class="n">index</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span
+                                class="p">(</span><span class="n">index</span><span class="o">.</span><span class="n">shape</span><span
+                                class="p">[</span><span class="mi">0</span><span class="p">],</span> <span
+                                class="mi">1</span><span class="p">)</span>
+    <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+                                class="n">arange</span><span class="p">(</span><span class="n">dsfacf</span><span
+                                class="p">,</span> <span class="n">c</span><span class="o">.</span><span
+                                class="n">shape</span><span class="p">[</span><span class="mi">0</span><span
+                                class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span
+                                class="p">,</span> <span class="n">dsfacf</span><span class="p">)</span>
+    <span class="n">ind</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span
+                                class="p">(</span><span class="mi">1</span><span class="p">,</span> <span
+                                class="n">ind</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span
+                                class="mi">0</span><span class="p">])</span>
+
+    <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
+                                class="n">add</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span
+                                class="n">ind</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span
+                                class="p">()</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">index</span><span
+                                class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span
+                                class="o">.</span><span class="n">T</span>
+    <span class="k">return</span> <span class="n">T</span>
 </pre>
                         </div>
 

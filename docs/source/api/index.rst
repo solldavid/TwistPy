@@ -63,4 +63,6 @@ Utility functions
     :nosignatures:
     :recursive:
 
+    s_transform
+    i_s_transform
     load_analysis

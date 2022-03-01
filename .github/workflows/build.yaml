@@ -23,8 +23,10 @@ jobs:
           pip install flake8 pytest
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: Install TwistPy
+        shell: bash -l {0}
         run: |
           pip install .
       - name: Run tests
+        shell: bash -l {0}
         run: |
           pytest

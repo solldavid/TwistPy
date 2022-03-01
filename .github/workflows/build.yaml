@@ -25,3 +25,6 @@ jobs:
       - name: Install TwistPy
         run: |
           pip install .
+      - name: Run tests
+        run: |
+          pytest

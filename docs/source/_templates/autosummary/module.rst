@@ -1,54 +1,55 @@
-.. raw:: html
-
-    <div class="api-module">
-
-``{{ fullname }}``
-{% for i in range(fullname|length + 15) %}-{% endfor %}
-
-.. raw:: html
-
-    <hr>
+{{ fullname }}
+{{ underline }}
 
 .. automodule:: {{ fullname }}
 
-{% block classes %}
-{% if classes %}
-.. rubric:: Classes
+   {% block functions %}
+   {% if functions %}
 
-.. autosummary::
-  :toctree: ./
-{% for item in classes %}
-  {{ fullname }}.{{ item }}
-{% endfor %}
-{% endif %}
-{% endblock %}
+   Functions
+   ---------
 
+   {% for item in functions %}
 
-{% block functions %}
-{% if functions %}
-.. rubric:: Functions
+   .. autofunction:: {{ item }}
 
-.. autosummary::
-  :toctree: ./
-{% for item in functions %}
-  {{ fullname }}.{{ item }}
-{% endfor %}
-{% endif %}
-{% endblock %}
+   .. _sphx_glr_backref_{{fullname}}.{{item}}:
 
+   .. minigallery:: {{fullname}}.{{item}}
+       :add-heading:
 
-{% block exceptions %}
-{% if exceptions %}
-.. rubric:: Exceptions
+   {%- endfor %}
+   {% endif %}
+   {% endblock %}
 
-.. autosummary::
-  :toctree: ./
-{% for item in exceptions %}
-  {{ fullname }}.{{ item }}
-{% endfor %}
-{% endif %}
-{% endblock %}
+   {% block classes %}
+   {% if classes %}
 
-.. raw:: html
+   Classes
+   -------
 
-    </div>
+   {% for item in classes %}
+   .. autoclass:: {{ item }}
+      :members:
+
+   .. _sphx_glr_backref_{{fullname}}.{{item}}:
+
+   .. minigallery:: {{fullname}}.{{item}}
+       :add-heading:
+
+   {%- endfor %}
+   {% endif %}
+   {% endblock %}
+
+   {% block exceptions %}
+   {% if exceptions %}
+
+   Exceptions
+   ----------
+
+   .. autosummary::
+   {% for item in exceptions %}
+      {{ item }}
+   {%- endfor %}
+   {% endif %}
+   {% endblock %}

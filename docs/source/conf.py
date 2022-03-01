@@ -4,8 +4,6 @@
 # list see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-# -- Path setup --------------------------------------------------------------
-
 import datetime
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -14,11 +12,14 @@ import datetime
 import os
 import sys
 
+# -- Path setup --------------------------------------------------------------
+from sphinx_gallery.sorting import ExampleTitleSortKey
+
 sys.path.insert(0, os.path.abspath('../..'))
 
 extensions = [
-    'sphinx.ext.autodoc',
     # 'sphinx.ext.napoleon',
+    'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
     'sphinx.ext.coverage',
     'sphinx.ext.mathjax',
@@ -29,7 +30,7 @@ extensions = [
     'matplotlib.sphinxext.plot_directive',
     'numpydoc',
     'nbsphinx',
-    # 'sphinx_gallery.gen_gallery',
+    'sphinx_gallery.gen_gallery',
 ]
 
 intersphinx_mapping = {
@@ -42,24 +43,7 @@ intersphinx_mapping = {
     "obspy": ("https://docs.obspy.org/", None),
 }
 
-# sphinx_gallery_conf = {
-#     # path to your examples scripts
-#     'examples_dirs': ['../../tutorials',],
-#     # path where to save gallery generated examples
-#     'gallery_dirs': ['tutorials'],
-#     'filename_pattern': '\.py',
-#     # Remove the "Download all examples" button from the top level gallery
-#     'download_all_examples': False,
-#     # Sort gallery example by file name instead of number of lines (default)
-#     'within_subsection_order': ExampleTitleSortKey,
-#     # directory where function granular galleries are stored
-#     'backreferences_dir': 'api/generated/backreferences',
-#     # Modules for which function level galleries are created.
-#     'doc_module': 'twistpy',
-#     # Insert links to documentation of objects in the examples
-#     'reference_url': {'twistpy': None}
-# }
-
+exclude_patterns = ['_build', '**.ipynb_checkpoints']
 source_suffix = '.rst'
 # The encoding of source files.
 master_doc = 'index'
@@ -74,12 +58,33 @@ autosummary_generate = True
 ## Include Python objects as they appear in source files
 autodoc_member_order = 'bysource'
 
+sphinx_gallery_conf = {
+    # path to your examples scripts
+    'examples_dirs': ['../../tutorials', '../../examples', ],
+    # path where to save gallery generated examples
+    'gallery_dirs': ['tutorials', 'examples'],
+    'filename_pattern': '\.py',
+    'ignore_pattern': '_init_/',
+    # Remove the "Download all examples" button from the top level gallery
+    'download_all_examples': False,
+    # Sort gallery example by file name instead of number of lines (default)
+    'within_subsection_order': ExampleTitleSortKey,
+    # directory where function granular galleries are stored
+    'backreferences_dir': 'api/generated/backreferences',
+    # Modules for which function level galleries are created.
+    'doc_module': 'twistpy',
+    # Insert links to documentation of objects in the examples
+    'reference_url': {'twistpy': None},
+    'first_notebook_cell': ("%matplotlib inline"),
+    'run_stale_examples': True,
+}
+
 ## Default flags used by autodoc directives
 autodoc_default_flags = ['members']
 
-numpydoc_show_class_members = False
-numpydoc_show_inherited_class_members = False
-numpydoc_class_members_toctree = False
+numpydoc_show_class_members = True
+numpydoc_show_inherited_class_members = True
+numpydoc_class_members_toctree = True
 numpydoc_attributes_as_param_list = False
 
 html_theme_options = {
@@ -99,7 +104,7 @@ release = '0.1'
 html_last_updated_fmt = '%b %d, %Y'
 html_title = 'TwistPy'
 html_short_title = 'TwistPy'
-html_logo = '_static/logo_textbelow_adobe.png'
+html_logo = '_static/logo_textbelow_oneaxis_adobe.png'
 html_favicon = '_static/twistpy.ico'
 html_static_path = ['_static']
 html_extra_path = []
@@ -139,7 +144,20 @@ html_theme = "sphinx_book_theme"
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
+html_context = {
+    # Custom variables to enable "Improve this page"" and "Download notebook"
+    # links
+    'doc_path': 'docs/source',
+    'galleries': sphinx_gallery_conf['gallery_dirs'],
+    'gallery_dir': dict(zip(sphinx_gallery_conf['gallery_dirs'],
+                            sphinx_gallery_conf['examples_dirs'])),
+    'github_project': 'TwistPy',
+    'github_repo': 'twistpy',
+    'github_version': 'master',
+}
+
 
 # Load the custom CSS files (needs sphinx >= 1.6 for this to work)
 def setup(app):
     app.add_css_file("style.css")
+    app.registry.source_suffix.pop(".ipynb", None)

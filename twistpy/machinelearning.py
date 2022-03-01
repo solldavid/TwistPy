@@ -13,9 +13,11 @@ from twistpy.polarization import PolarizationModel
 
 
 class SupportVectorMachine:
-    """
-    Support vector machine for wave type classification based on six component polarization analysis. This class is an
-    overload of the class sklearn.svm.SVC for convenience only.
+    """Support vector machine for wave type classification based on six component polarization analysis.
+
+    Used to train and classify wave types via 6-C polarization analysis. This class is merely here for convenience.
+    The core functionality of this class inherits from :obj:`sklearn.svm.SVC`.
+
     """
 
     def __init__(self, name: str) -> None:

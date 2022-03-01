@@ -24,6 +24,10 @@
           type="text/css"/>
     <link href="../_static/plot_directive.css" rel="stylesheet" type="text/css"/>
     <link href="../_static/style.css" rel="stylesheet" type="text/css"/>
+    <link href="../_static/sg_gallery.css" rel="stylesheet" type="text/css"/>
+    <link href="../_static/sg_gallery-binder.css" rel="stylesheet" type="text/css"/>
+    <link href="../_static/sg_gallery-dataframe.css" rel="stylesheet" type="text/css"/>
+    <link href="../_static/sg_gallery-rendered-html.css" rel="stylesheet" type="text/css"/>
 
     <link as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js" rel="preload">
 
@@ -66,7 +70,7 @@
                     <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
 
 
-                    <img alt="logo" class="logo" src="../_static/logo_textbelow_adobe.png">
+                    <img alt="logo" class="logo" src="../_static/logo_textbelow_oneaxis_adobe.png">
 
 
                 </a>
@@ -89,6 +93,42 @@
                                 Installation Instructions
                             </a>
                         </li>
+                        <li class="toctree-l1 has-children">
+                            <a class="reference internal" href="../examples/index.html">
+                                Examples
+                            </a>
+                            <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1"
+                                   type="checkbox"/>
+                            <label for="toctree-checkbox-1">
+                                <i class="fas fa-chevron-down">
+                                </i>
+                            </label>
+                            <ul>
+                                <li class="toctree-l2">
+                                    <a class="reference internal" href="../examples/stransform.html">
+                                        S-transform
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="toctree-l1 has-children">
+                            <a class="reference internal" href="../tutorials/index.html">
+                                Tutorials
+                            </a>
+                            <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2"
+                                   type="checkbox"/>
+                            <label for="toctree-checkbox-2">
+                                <i class="fas fa-chevron-down">
+                                </i>
+                            </label>
+                            <ul>
+                                <li class="toctree-l2">
+                                    <a class="reference internal" href="../tutorials/beamforming.html">
+                                        00. Array Processing: Beamforming
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
                     <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -100,9 +140,9 @@
                             <a class="reference internal" href="../api/index.html">
                                 TwistPy API
                             </a>
-                            <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1"
+                            <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3"
                                    type="checkbox"/>
-                            <label for="toctree-checkbox-1">
+                            <label for="toctree-checkbox-3">
                                 <i class="fas fa-chevron-down">
                                 </i>
                             </label>
@@ -118,9 +158,9 @@
                                        href="../api/generated/twistpy.TimeDomainAnalysis.html">
                                         twistpy.TimeDomainAnalysis
                                     </a>
-                                    <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2"
+                                    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4"
                                            type="checkbox"/>
-                                    <label for="toctree-checkbox-2">
+                                    <label for="toctree-checkbox-4">
                                         <i class="fas fa-chevron-down">
                                         </i>
                                     </label>
@@ -150,9 +190,9 @@
                                        href="../api/generated/twistpy.PolarizationModel.html">
                                         twistpy.PolarizationModel
                                     </a>
-                                    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3"
+                                    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5"
                                            type="checkbox"/>
-                                    <label for="toctree-checkbox-3">
+                                    <label for="toctree-checkbox-5">
                                         <i class="fas fa-chevron-down">
                                         </i>
                                     </label>
@@ -163,16 +203,60 @@
                                                 twistpy.PolarizationModel.polarization_vector
                                             </a>
                                         </li>
+                                        <li class="toctree-l3">
+                                            <a class="reference internal"
+                                               href="../api/generated/twistpy.PolarizationModel.polarization_vector.html">
+                                                twistpy.PolarizationModel.polarization_vector
+                                            </a>
+                                        </li>
                                     </ul>
+                                </li>
+                                <li class="toctree-l2 has-children">
+                                    <a class="reference internal"
+                                       href="../api/generated/twistpy.array.BeamformArray.html">
+                                        twistpy.array.BeamformArray
+                                    </a>
+                                    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6"
+                                           type="checkbox"/>
+                                    <label for="toctree-checkbox-6">
+                                        <i class="fas fa-chevron-down">
+                                        </i>
+                                    </label>
+                                    <ul>
+                                        <li class="toctree-l3">
+                                            <a class="reference internal"
+                                               href="../api/generated/twistpy.array.BeamformArray.add_data.html">
+                                                twistpy.array.BeamformArray.add_data
+                                            </a>
+                                        </li>
+                                        <li class="toctree-l3">
+                                            <a class="reference internal"
+                                               href="../api/generated/twistpy.array.BeamformArray.beamforming.html">
+                                                twistpy.array.BeamformArray.beamforming
+                                            </a>
+                                        </li>
+                                        <li class="toctree-l3">
+                                            <a class="reference internal"
+                                               href="../api/generated/twistpy.array.BeamformArray.compute_steering_vectors.html">
+                                                twistpy.array.BeamformArray.compute_steering_vectors
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="toctree-l2">
+                                    <a class="reference internal"
+                                       href="../api/generated/twistpy.array.GradiometryArray.html">
+                                        twistpy.array.GradiometryArray
+                                    </a>
                                 </li>
                                 <li class="toctree-l2 has-children">
                                     <a class="reference internal"
                                        href="../api/generated/twistpy.SupportVectorMachine.html">
                                         twistpy.SupportVectorMachine
                                     </a>
-                                    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4"
+                                    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7"
                                            type="checkbox"/>
-                                    <label for="toctree-checkbox-4">
+                                    <label for="toctree-checkbox-7">
                                         <i class="fas fa-chevron-down">
                                         </i>
                                     </label>
@@ -210,6 +294,23 @@
                                     </a>
                                 </li>
                             </ul>
+                        </li>
+                    </ul>
+                    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  References:
+ </span>
+                    </p>
+                    <ul class="nav bd-sidenav">
+                        <li class="toctree-l1">
+                            <a class="reference internal" href="../references.html">
+                                Relevant Publications
+                            </a>
+                        </li>
+                        <li class="toctree-l1">
+                            <a class="reference internal" href="../acknowledgments.html">
+                                Acknowledgments
+                            </a>
                         </li>
                     </ul>
 
@@ -295,6 +396,7 @@
 
                         <h1>All modules for which code is available</h1>
                         <ul>
+                            <li><a href="twistpy/array.html">twistpy.array</a></li>
                             <li><a href="twistpy/dispersion.html">twistpy.dispersion</a></li>
                             <li><a href="twistpy/machinelearning.html">twistpy.machinelearning</a></li>
                             <li><a href="twistpy/polarization.html">twistpy.polarization</a></li>
@@ -316,7 +418,7 @@
                 <p>
 
                     &copy; Copyright 2022, David Sollberger.<br/>
-                    Last updated on Feb 24, 2022.<br/>
+                    Last updated on Mar 01, 2022.<br/>
                 </p>
             </footer>
         </main>

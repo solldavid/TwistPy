@@ -18,12 +18,9 @@
    
    
 
-   
-   
-   .. rubric:: Methods
 
-   .. autosummary::
-      :toctree: .
-   
-   
-   
+.. include:: backreferences/twistpy.PolarizationModel.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

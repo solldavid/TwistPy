@@ -1,9 +1,3 @@
-"""
-:copyright:
-    David Sollberger (david.sollberger@gmail.com), 2022
-:license:
-    None
-"""
 import inspect
 import os
 
@@ -13,7 +7,6 @@ from .machinelearning import *
 from .polarization import *
 from .time import *
 from .timefrequency import *
-from .utils import *
 
 LOCAL_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 sys.path.insert(0, LOCAL_PATH)

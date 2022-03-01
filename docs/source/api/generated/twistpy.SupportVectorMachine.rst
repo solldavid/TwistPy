@@ -11,14 +11,9 @@
    
    
 
-   
-   
-   .. rubric:: Methods
 
-   .. autosummary::
-      :toctree: .
-   
-      ~twistpy.SupportVectorMachine.load_model
-      ~twistpy.SupportVectorMachine.train
-   
-   
+.. include:: backreferences/twistpy.SupportVectorMachine.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

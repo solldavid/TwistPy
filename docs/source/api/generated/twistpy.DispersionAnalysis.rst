@@ -11,12 +11,9 @@
    
    
 
-   
-   
-   .. rubric:: Methods
 
-   .. autosummary::
-      :toctree: .
-   
-   
-   
+.. include:: backreferences/twistpy.DispersionAnalysis.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

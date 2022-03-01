@@ -15,6 +15,9 @@ Tools for six-component polarization analysis and filtering.
 
 .. currentmodule:: twistpy
 
+.. automodule:: twistpy
+    :no-inherited-members:
+
 .. autosummary::
     :toctree: generated/
     :recursive:
@@ -26,13 +29,18 @@ Tools for six-component polarization analysis and filtering.
 
 Polarization Models
 -------------------
+
+Pure-state polarization models.
+
 .. currentmodule:: twistpy
+
+.. automodule:: twistpy
+    :no-inherited-members:
 
 .. autosummary::
     :toctree: generated/
     :recursive:
     :nosignatures:
-
 
     PolarizationModel
 
@@ -41,10 +49,26 @@ Array Processing
 
 Tools for array processing.
 
+.. currentmodule:: twistpy.array
+
+.. automodule:: twistpy.array
+    :no-inherited-members:
+
+.. autosummary::
+    :toctree: generated/
+    :recursive:
+    :nosignatures:
+
+
+    BeamformArray
+    GradiometryArray
 
 Machine Learning
 ----------------
 .. currentmodule:: twistpy
+
+.. automodule:: twistpy
+    :no-inherited-members:
 
 .. autosummary::
     :toctree: generated/
@@ -56,7 +80,10 @@ Machine Learning
 
 Utility functions
 -----------------
+
 .. currentmodule:: twistpy.utils
+
+.. automodule:: twistpy.utils
 
 .. autosummary::
     :toctree: generated/

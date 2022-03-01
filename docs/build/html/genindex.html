@@ -24,6 +24,10 @@
           type="text/css"/>
     <link href="_static/plot_directive.css" rel="stylesheet" type="text/css"/>
     <link href="_static/style.css" rel="stylesheet" type="text/css"/>
+    <link href="_static/sg_gallery.css" rel="stylesheet" type="text/css"/>
+    <link href="_static/sg_gallery-binder.css" rel="stylesheet" type="text/css"/>
+    <link href="_static/sg_gallery-dataframe.css" rel="stylesheet" type="text/css"/>
+    <link href="_static/sg_gallery-rendered-html.css" rel="stylesheet" type="text/css"/>
 
     <link as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js" rel="preload">
 
@@ -66,7 +70,7 @@
                     <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
 
 
-                    <img alt="logo" class="logo" src="_static/logo_textbelow_adobe.png">
+                    <img alt="logo" class="logo" src="_static/logo_textbelow_oneaxis_adobe.png">
 
 
                 </a>
@@ -89,6 +93,42 @@
                                 Installation Instructions
                             </a>
                         </li>
+                        <li class="toctree-l1 has-children">
+                            <a class="reference internal" href="examples/index.html">
+                                Examples
+                            </a>
+                            <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1"
+                                   type="checkbox"/>
+                            <label for="toctree-checkbox-1">
+                                <i class="fas fa-chevron-down">
+                                </i>
+                            </label>
+                            <ul>
+                                <li class="toctree-l2">
+                                    <a class="reference internal" href="examples/stransform.html">
+                                        S-transform
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="toctree-l1 has-children">
+                            <a class="reference internal" href="tutorials/index.html">
+                                Tutorials
+                            </a>
+                            <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2"
+                                   type="checkbox"/>
+                            <label for="toctree-checkbox-2">
+                                <i class="fas fa-chevron-down">
+                                </i>
+                            </label>
+                            <ul>
+                                <li class="toctree-l2">
+                                    <a class="reference internal" href="tutorials/beamforming.html">
+                                        00. Array Processing: Beamforming
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
                     <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -100,9 +140,9 @@
                             <a class="reference internal" href="api/index.html">
                                 TwistPy API
                             </a>
-                            <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1"
+                            <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3"
                                    type="checkbox"/>
-                            <label for="toctree-checkbox-1">
+                            <label for="toctree-checkbox-3">
                                 <i class="fas fa-chevron-down">
                                 </i>
                             </label>
@@ -116,9 +156,9 @@
                                     <a class="reference internal" href="api/generated/twistpy.TimeDomainAnalysis.html">
                                         twistpy.TimeDomainAnalysis
                                     </a>
-                                    <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2"
+                                    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4"
                                            type="checkbox"/>
-                                    <label for="toctree-checkbox-2">
+                                    <label for="toctree-checkbox-4">
                                         <i class="fas fa-chevron-down">
                                         </i>
                                     </label>
@@ -147,9 +187,9 @@
                                     <a class="reference internal" href="api/generated/twistpy.PolarizationModel.html">
                                         twistpy.PolarizationModel
                                     </a>
-                                    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3"
+                                    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5"
                                            type="checkbox"/>
-                                    <label for="toctree-checkbox-3">
+                                    <label for="toctree-checkbox-5">
                                         <i class="fas fa-chevron-down">
                                         </i>
                                     </label>
@@ -160,16 +200,59 @@
                                                 twistpy.PolarizationModel.polarization_vector
                                             </a>
                                         </li>
+                                        <li class="toctree-l3">
+                                            <a class="reference internal"
+                                               href="api/generated/twistpy.PolarizationModel.polarization_vector.html">
+                                                twistpy.PolarizationModel.polarization_vector
+                                            </a>
+                                        </li>
                                     </ul>
+                                </li>
+                                <li class="toctree-l2 has-children">
+                                    <a class="reference internal" href="api/generated/twistpy.array.BeamformArray.html">
+                                        twistpy.array.BeamformArray
+                                    </a>
+                                    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6"
+                                           type="checkbox"/>
+                                    <label for="toctree-checkbox-6">
+                                        <i class="fas fa-chevron-down">
+                                        </i>
+                                    </label>
+                                    <ul>
+                                        <li class="toctree-l3">
+                                            <a class="reference internal"
+                                               href="api/generated/twistpy.array.BeamformArray.add_data.html">
+                                                twistpy.array.BeamformArray.add_data
+                                            </a>
+                                        </li>
+                                        <li class="toctree-l3">
+                                            <a class="reference internal"
+                                               href="api/generated/twistpy.array.BeamformArray.beamforming.html">
+                                                twistpy.array.BeamformArray.beamforming
+                                            </a>
+                                        </li>
+                                        <li class="toctree-l3">
+                                            <a class="reference internal"
+                                               href="api/generated/twistpy.array.BeamformArray.compute_steering_vectors.html">
+                                                twistpy.array.BeamformArray.compute_steering_vectors
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="toctree-l2">
+                                    <a class="reference internal"
+                                       href="api/generated/twistpy.array.GradiometryArray.html">
+                                        twistpy.array.GradiometryArray
+                                    </a>
                                 </li>
                                 <li class="toctree-l2 has-children">
                                     <a class="reference internal"
                                        href="api/generated/twistpy.SupportVectorMachine.html">
                                         twistpy.SupportVectorMachine
                                     </a>
-                                    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4"
+                                    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7"
                                            type="checkbox"/>
-                                    <label for="toctree-checkbox-4">
+                                    <label for="toctree-checkbox-7">
                                         <i class="fas fa-chevron-down">
                                         </i>
                                     </label>
@@ -204,6 +287,23 @@
                                     </a>
                                 </li>
                             </ul>
+                        </li>
+                    </ul>
+                    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  References:
+ </span>
+                    </p>
+                    <ul class="nav bd-sidenav">
+                        <li class="toctree-l1">
+                            <a class="reference internal" href="references.html">
+                                Relevant Publications
+                            </a>
+                        </li>
+                        <li class="toctree-l1">
+                            <a class="reference internal" href="acknowledgments.html">
+                                Acknowledgments
+                            </a>
                         </li>
                     </ul>
 
@@ -291,15 +391,55 @@
                         <h1 id="index">Index</h1>
 
                         <div class="genindex-jumpbox">
-                            <a href="#C"><strong>C</strong></a>
+                            <a href="#A"><strong>A</strong></a>
+                            | <a href="#B"><strong>B</strong></a>
+                            | <a href="#C"><strong>C</strong></a>
                             | <a href="#D"><strong>D</strong></a>
+                            | <a href="#G"><strong>G</strong></a>
                             | <a href="#I"><strong>I</strong></a>
                             | <a href="#L"><strong>L</strong></a>
+                            | <a href="#M"><strong>M</strong></a>
                             | <a href="#P"><strong>P</strong></a>
                             | <a href="#S"><strong>S</strong></a>
                             | <a href="#T"><strong>T</strong></a>
 
                         </div>
+                        <h2 id="A">A</h2>
+                        <table class="indextable genindextable" style="width: 100%">
+                            <tr>
+                                <td style="width: 33%; vertical-align: top;">
+                                    <ul>
+                                        <li>
+                                            <a href="api/generated/twistpy.array.BeamformArray.add_data.html#twistpy.array.BeamformArray.add_data">add_data()
+                                                (BeamformArray method)</a>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <h2 id="B">B</h2>
+                        <table class="indextable genindextable" style="width: 100%">
+                            <tr>
+                                <td style="width: 33%; vertical-align: top;">
+                                    <ul>
+                                        <li>
+                                            <a href="api/generated/twistpy.array.BeamformArray.html#twistpy.array.BeamformArray">BeamformArray
+                                                (class in twistpy.array)</a>
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td style="width: 33%; vertical-align: top;">
+                                    <ul>
+                                        <li>
+                                            <a href="api/generated/twistpy.array.BeamformArray.beamforming.html#twistpy.array.BeamformArray.beamforming">beamforming()
+                                                (BeamformArray method)</a>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </table>
+
                         <h2 id="C">C</h2>
                         <table class="indextable genindextable" style="width: 100%">
                             <tr>
@@ -308,6 +448,14 @@
                                         <li>
                                             <a href="api/generated/twistpy.TimeDomainAnalysis.classify.html#twistpy.TimeDomainAnalysis.classify">classify()
                                                 (TimeDomainAnalysis method)</a>
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td style="width: 33%; vertical-align: top;">
+                                    <ul>
+                                        <li>
+                                            <a href="api/generated/twistpy.array.BeamformArray.compute_steering_vectors.html#twistpy.array.BeamformArray.compute_steering_vectors">compute_steering_vectors()
+                                                (BeamformArray method)</a>
                                         </li>
                                     </ul>
                                 </td>
@@ -322,6 +470,20 @@
                                         <li>
                                             <a href="api/generated/twistpy.DispersionAnalysis.html#twistpy.DispersionAnalysis">DispersionAnalysis
                                                 (class in twistpy)</a>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <h2 id="G">G</h2>
+                        <table class="indextable genindextable" style="width: 100%">
+                            <tr>
+                                <td style="width: 33%; vertical-align: top;">
+                                    <ul>
+                                        <li>
+                                            <a href="api/generated/twistpy.array.GradiometryArray.html#twistpy.array.GradiometryArray">GradiometryArray
+                                                (class in twistpy.array)</a>
                                         </li>
                                     </ul>
                                 </td>
@@ -358,6 +520,30 @@
                                         <li>
                                             <a href="api/generated/twistpy.SupportVectorMachine.load_model.html#twistpy.SupportVectorMachine.load_model">load_model()
                                                 (SupportVectorMachine method)</a>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <h2 id="M">M</h2>
+                        <table class="indextable genindextable" style="width: 100%">
+                            <tr>
+                                <td style="width: 33%; vertical-align: top;">
+                                    <ul>
+                                        <li>
+                                            module
+
+                                            <ul>
+                                                <li><a href="api/index.html#module-0">twistpy</a>, <a
+                                                        href="api/index.html#module-1">[1]</a>, <a
+                                                        href="api/index.html#module-twistpy">[2]</a>
+                                                </li>
+                                                <li><a href="api/index.html#module-twistpy.array">twistpy.array</a>
+                                                </li>
+                                                <li><a href="api/index.html#module-twistpy.utils">twistpy.utils</a>
+                                                </li>
+                                            </ul>
                                         </li>
                                     </ul>
                                 </td>
@@ -421,10 +607,6 @@
                                             <a href="api/generated/twistpy.TimeDomainAnalysis.html#twistpy.TimeDomainAnalysis">TimeDomainAnalysis
                                                 (class in twistpy)</a>
                                         </li>
-                                    </ul>
-                                </td>
-                                <td style="width: 33%; vertical-align: top;">
-                                    <ul>
                                         <li>
                                             <a href="api/generated/twistpy.TimeFrequencyAnalysis.html#twistpy.TimeFrequencyAnalysis">TimeFrequencyAnalysis
                                                 (class in twistpy)</a>
@@ -432,6 +614,36 @@
                                         <li>
                                             <a href="api/generated/twistpy.SupportVectorMachine.train.html#twistpy.SupportVectorMachine.train">train()
                                                 (SupportVectorMachine method)</a>
+                                        </li>
+                                        <li>
+                                            twistpy
+
+                                            <ul>
+                                                <li><a href="api/index.html#module-0">module</a>, <a
+                                                        href="api/index.html#module-1">[1]</a>, <a
+                                                        href="api/index.html#module-twistpy">[2]</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td style="width: 33%; vertical-align: top;">
+                                    <ul>
+                                        <li>
+                                            twistpy.array
+
+                                            <ul>
+                                                <li><a href="api/index.html#module-twistpy.array">module</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            twistpy.utils
+
+                                            <ul>
+                                                <li><a href="api/index.html#module-twistpy.utils">module</a>
+                                                </li>
+                                            </ul>
                                         </li>
                                     </ul>
                                 </td>
@@ -452,7 +664,7 @@
                 <p>
 
                     &copy; Copyright 2022, David Sollberger.<br/>
-                    Last updated on Feb 24, 2022.<br/>
+                    Last updated on Mar 01, 2022.<br/>
                 </p>
             </footer>
         </main>

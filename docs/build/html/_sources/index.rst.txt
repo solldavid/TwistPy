@@ -1,7 +1,27 @@
-.. TwistPy documentation master file, created by
+.. TwistPy documentation master file, created by David Sollberger
 
-Python Toolbox for Wavefield Inertial Sensing Techniques
-========================================================
+.. image:: _static/logo_adobe_title.svg
+    :alt: TwistPy Logo
+
+
+
+
+
+TwistPy is a small Python package for seismic data processing. It includes routines for single-station
+polarization analysis and filtering, as well as array processing tools.
+
+A special focus lies on innovative techniques to process spatial wavefield gradient data and, in particular,
+rotational seismic data obtained from dedicated rotational seismometers or small-aperture arrays of three-component
+sensors.
+
+Some of the tools available in TwistPy are:
+
+- Three-component polarization analysis and filtering (both time domain and S-transform).
+- Six-component polarization analysis and filtering (both time domain and S-transform).
+- Single-station six-component Love- and Rayleigh-wave dispersion and Rayleigh wave ellipticity angle estimation.
+- Beamforming (Bartlett, MVDR, and MUSIC algorithm).
+- Rotation and strain estimation from small-aperture arrays.
+- Forward and inverse S-transform (Stockwell transform).
 
 .. toctree::
     :maxdepth: 1
@@ -14,6 +34,8 @@ Python Toolbox for Wavefield Inertial Sensing Techniques
     :caption: Instructions:
 
     installation
+    examples/index.rst
+    tutorials/index.rst
 
 .. toctree::
     :maxdepth: 3
@@ -21,3 +43,12 @@ Python Toolbox for Wavefield Inertial Sensing Techniques
     :caption: Reference documentation:
 
     api/index.rst
+
+.. toctree::
+    :maxdepth: 2
+    :hidden:
+    :caption: References:
+
+    references.rst
+    acknowledgments.rst
+

@@ -1,4 +1,4 @@
-![Twistpy](https://github.com/solldavid/TwistPy/blob/master/docs/source/_static/logo_adobe_title.svg)
+![Twistpy](https://github.com/solldavid/TwistPy/blob/main/docs/source/_static/logo_adobe_title.svg)
 [![GithubAction Status](https://github.com/solldavid/twistpy/actions/workflows/build.yaml/badge.svg)](https://github.com/solldavid/twistpy/actions/workflows/build.yaml)
 
 

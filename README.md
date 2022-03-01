@@ -1,5 +1,6 @@
 ![Twistpy](https://github.com/solldavid/TwistPy/blob/main/docs/source/_static/logo_adobe_title.svg)
 [![GithubAction Status](https://github.com/solldavid/twistpy/actions/workflows/build.yaml/badge.svg)](https://github.com/solldavid/twistpy/actions/workflows/build.yaml)
+![OS-support](https://img.shields.io/badge/OS-linux,win,osx-850A8B.svg)
 
 
 TwistPy is a small Python package for seismic data processing. It includes routines for single-station polarization

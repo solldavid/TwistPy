@@ -1,4 +1,4 @@
-name: TwistPyLinux
+name: TwistPy
 
 on: [ push, pull_request ]
 

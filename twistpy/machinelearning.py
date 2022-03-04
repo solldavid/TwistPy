@@ -1,7 +1,7 @@
 import pickle
 import sys
 from os.path import exists, join
-from typing import Tuple, Union
+from typing import Tuple, Union, List
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -15,9 +15,13 @@ from twistpy.polarization import PolarizationModel
 class SupportVectorMachine:
     """Support vector machine for wave type classification based on six component polarization analysis.
 
-    Used to train and classify wave types via 6-C polarization analysis. This class is merely here for convenience.
+    Used to train and classify wave types via 6-C polarization analysis. This class merely exists for convenience.
     The core functionality of this class inherits from :obj:`sklearn.svm.SVC`.
 
+    Parameters
+    ----------
+    name : :obj:`str`
+        Name of the support mector machine
     """
 
     def __init__(self, name: str) -> None:
@@ -39,34 +43,56 @@ class SupportVectorMachine:
         if not self.name:
             raise Exception('Please specify a name for this SupportVectorMachine!')
 
-    def train(self, N: int = 5000, scaling_velocity: float = 1., vp: Tuple[float, float] = (50., 2000.),
+    def train(self, wave_types: List[str] = ['R', 'L', 'P', 'SV', 'SH', 'Noise'],
+              N: int = 5000, scaling_velocity: float = 1., vp: Tuple[float, float] = (50., 2000.),
               vp_to_vs: Tuple[float, float] = (1.7, 2.4), vl: Tuple[float, float] = (50, 2000),
               vr: Tuple[float, float] = (50, 2000), phi: Tuple[float, float] = (0, 360),
               theta: Tuple[float, float] = (0, 90), xi: Tuple[float, float] = (-90, 90),
               free_surface: bool = True, C: float = 1, kernel: str = 'rbf', gamma: Union[str, float] = 'scale',
               plot_confusion_matrix: bool = True) -> None:
-        """
-        :param N: Number of randomly generated models for each wave type that are used for training
-        :param scaling_velocity: Scaling velocity in (m/s) applied to the translational components of the polarization
-               models
-        :param vp: (vp_min, vp_max) The range of P-wave velocities in (m/s) that for training
-        :param vp_to_vs: (vp_to_vs_min, vp_to_vs_max) The range of vp to vs ratios used for training
-        :param vl: (vl_min, vl_max) The range of Love wave velocities (m/s) used for training
-        :param vr: (vr_min, vr_max) The range of Rayleigh wave velocities (m/s) used for training
-        :param phi: (phi_min, phi_max) The range of azimuth angles (degrees) used for training
-        :param theta: (theta_min, theta_max) The range of incidence angles (degrees) used for training
-        :param xi: (xi_min, xi_max) The range of Rayleigh wave ellipticity angles (degrees) used for training
-        :param free_surface: True (Default) or False, specifies whether the Support Vector Machine is trained using
-               free-surface polarization models
-        :param C: Regularization parameter for the support vector machine (defaults to 1)
-        :param kernel: Specifies the kernel type to be used in the SVC algorithm (defaults to 'rbf',
-               radial basis function)
-        :param gamma: Kernel coefficient for SVC
-        :param plot_confusion_matrix: True (Default) or False. Specifies whether a confusion matrix is plotted after
-               training
+        """Train support vector machine with random polarization models from the specified parameter range.
 
+        Parameters
+        ----------
+        wave_types : :obj:`list` of :obj:`str`, default=['R', 'L', 'P', 'SV', 'SH', 'Noise']
+            List of wave-types that are used for training.
+        N : :obj:`int`, default=5000
+            Number of randomly generated polarization models for each wave type that are used for training.
+        scaling_velocity : :obj:`float`, default=1.
+            Scaling velocity (in m/s) that was applied to the translational components of the real data.
+        vp : :obj:`tuple`
+            P-wave velocity range (in m/s) from which the random parametrization of the training set of
+            polarization vectors is drawn as (vp_min, vp_max).
+        vp_to_vs : :obj:`tuple`
+            Range of P-to-S wave velocity ratios from which the random parametrization of the training set of
+            polarization vectors is drawn (vp_to_vs_min, vp_to_vs_max).
+        vl : :obj:`tuple`
+            Range of Love wave velocities in m/s.
+        vr : :obj:`tuple`
+            Range of Rayleigh wave velocities in m/s.
+        phi : :obj:`tuple`
+            Azimuth angle range in degrees.
+        theta : :obj:`tuple`
+            Inclination angle range in degrees.
+        xi : :obj:`tuple`
+            Rayleigh wave ellipticity angle range in degrees.
+        free_surface : :obj:`bool`, default=True
+            Specifies whether free-surface polarization models apply
+        C : :obj:`float`, default=1.0
+            Regularization parameter for the support vector machine. See :obj:`sklearn.svm.SVC`.
+        kernel : :obj:`str` or *callable*, default='rbf'
+            Kernel type used for the support vector machine. Defaults to a radial basis function kernel.
+            See :obj:`sklearn.svm.SVC`.
+        gamma : :obj:`str` or float, default='scale'
+            Kernel coefficient. See :obj:`sklearn.svm.SVC`.
+        plot_confusion_matrix : :obj:`bool`, default=True
+            Specify whether a confusion matrix will be plotted after training
         """
-
+        # Initial sanity checks
+        wtypes_implemented = ['R', 'L', 'P', 'SV', 'SH', 'Noise']
+        for w_type in wave_types:
+            assert w_type in wtypes_implemented, f"Invalid wave type specified: {w_type}! Must be in " \
+                                                 f"[{wtypes_implemented}]"
         # Set class attributes
         self.C, self.kernel, self.free_surface = C, kernel, free_surface
         self.N, self.scaling_velocity = N, scaling_velocity
@@ -79,7 +105,7 @@ class SupportVectorMachine:
             print(f"A trained model already exists with this name and is saved at '{pkl_filename}'")
             print('Nothing will be done! Please delete the file above if you want to re-train this model.')
             return
-        df = pd.DataFrame(index=np.arange(0, 6 * N),
+        df = pd.DataFrame(index=np.arange(0, len(wave_types) * N),
                           columns=['t1_real', 't2_real', 't3_real', 'r1_real', 'r2_real', 'r3_real',
                                    't1_imag', 't2_imag', 't3_imag', 'r1_imag', 'r2_imag', 'r3_imag', 'wave_type'])
         phi = np.random.uniform(phi[0], phi[1], (N, 1))
@@ -93,48 +119,40 @@ class SupportVectorMachine:
         print('Generating random polarization models for training! \n')
         # Generate random P-wave polarization models drawn from a uniform distribution
         # Generate random Rayleigh-wave polarization models drawn from a uniform distribution
-        pm_r = PolarizationModel(wave_type='R', vr=vr, phi=phi, xi=xi,
-                                 scaling_velocity=scaling_velocity, free_surface=free_surface)
-        pol_r = np.random.choice([-1, 1], (1, N)) * pm_r.polarization_vector
+        columns = ['t1_real', 't2_real', 't3_real', 'r1_real', 'r2_real', 'r3_real',
+                   't1_imag', 't2_imag', 't3_imag', 'r1_imag', 'r2_imag', 'r3_imag']
+        for it, w_type in enumerate(wave_types):
 
-        # Generate random Love-wave polarization models drawn from a uniform distribution
-        pm_l = PolarizationModel(wave_type='L', vl=vl, phi=phi,
-                                 scaling_velocity=scaling_velocity, free_surface=free_surface)
-        pol_l = np.random.choice([-1, 1], (1, N)) * pm_l.polarization_vector
+            if w_type == 'Noise':
+                u1_real: np.ndarray = np.random.normal(0.0, 1, size=(6, N))
+                u1_imag: np.ndarray = np.random.normal(0.0, 1, size=(6, N))
+                u1: np.ndarray = u1_real + 1j * u1_imag
+                u1: np.ndarray = (u1 / np.linalg.norm(u1, axis=0))
+                u1: np.ndarray = np.random.choice([-1, 1]) * u1
+                gamma_samson = np.arctan2(2 * np.einsum('ij,ij->j', u1.real, u1.imag, optimize=True),
+                                          np.einsum('ij,ij->j', u1.real, u1.real, optimize=True) -
+                                          np.einsum('ij,ij->j', u1.imag, u1.imag, optimize=True))
+                phi1 = -0.5 * gamma_samson
+                pol_noise = np.exp(1j * phi1) * u1
+                df.loc[it * N:(it + 1) * N - 1, 'wave_type'] = w_type
+                for idx, column in enumerate(columns):
+                    if idx < 6:
+                        df.loc[it * N:(it + 1) * N - 1, column] = pol_noise[idx, :].real.tolist()
+                    else:
+                        df.loc[it * N:(it + 1) * N - 1, column] = pol_noise[idx - 6, :].imag.tolist()
+            else:
+                # Generate random 6C wave polarization models drawn from a uniform distribution
+                pm = PolarizationModel(wave_type=w_type, vr=vr, vp=vp, vs=vp / vp_to_vs, phi=phi, xi=xi,
+                                       theta=theta, vl=vl, scaling_velocity=scaling_velocity, free_surface=free_surface)
+                # Direction of polarization can either be positive or negative
+                pol = np.random.choice([-1, 1], (1, N)) * pm.polarization_vector
+                df.loc[it * N:(it + 1) * N - 1, 'wave_type'] = w_type
+                for idx, column in enumerate(columns):
+                    if idx < 6:
+                        df.loc[it * N:(it + 1) * N - 1, column] = pol[idx, :].real.tolist()
+                    else:
+                        df.loc[it * N:(it + 1) * N - 1, column] = pol[idx - 6, :].imag.tolist()
 
-        pm_p = PolarizationModel(wave_type='P', vp=vp, vs=vp / vp_to_vs, phi=phi, theta=theta,
-                                 scaling_velocity=scaling_velocity, free_surface=free_surface)
-        pol_p = np.random.choice([-1, 1], (1, N)) * pm_p.polarization_vector
-
-        # Generate random SV-wave polarization models drawn from a uniform distribution
-        pm_sv = PolarizationModel(wave_type='SV', vp=vp, vs=vp / vp_to_vs, phi=phi, theta=theta,
-                                  scaling_velocity=scaling_velocity, free_surface=free_surface)
-        pol_sv = np.random.choice([-1, 1], (1, N)) * pm_sv.polarization_vector  # direction can be positive or negative
-
-        # Generate random SH-wave polarization models drawn from a uniform distribution
-        pm_sh = PolarizationModel(wave_type='SH', vs=vp / vp_to_vs, phi=phi, theta=theta,
-                                  scaling_velocity=scaling_velocity, free_surface=free_surface)
-        pol_sh = np.random.choice([-1, 1], (1, N)) * pm_sh.polarization_vector
-
-        # Generate random polarization vectors for Noise class
-        u1_real: np.ndarray = np.random.normal(0.0, 1, size=(6, N))
-        u1_imag: np.ndarray = np.random.normal(0.0, 1, size=(6, N))
-        u1: np.ndarray = u1_real + 1j * u1_imag
-        u1: np.ndarray = (u1 / np.linalg.norm(u1, axis=0))
-        u1: np.ndarray = np.random.choice([-1, 1]) * u1
-        gamma = np.arctan2(2 * np.einsum('ij,ij->j', u1.real, u1.imag, optimize=True),
-                           np.einsum('ij,ij->j', u1.real, u1.real, optimize=True) -
-                           np.einsum('ij,ij->j', u1.imag, u1.imag, optimize=True))
-        phi1 = -0.5 * gamma
-        pol_noise = np.exp(1j * phi1) * u1
-
-        for n in range(N):
-            df.loc[n + 0 * N] = pol_r[:, n].real.tolist() + pol_r[:, n].imag.tolist() + ['R']
-            df.loc[n + 1 * N] = pol_p[:, n].real.tolist() + pol_p[:, n].imag.tolist() + ['P']
-            df.loc[n + 2 * N] = pol_sv[:, n].real.tolist() + pol_sv[:, n].imag.tolist() + ['SV']
-            df.loc[n + 3 * N] = pol_l[:, n].real.tolist() + pol_l[:, n].imag.tolist() + ['L']
-            df.loc[n + 4 * N] = pol_sh[:, n].real.tolist() + pol_sh[:, n].imag.tolist() + ['SH']
-            df.loc[n + 5 * N] = pol_noise[:, n].real.tolist() + pol_noise[:, n].imag.tolist() + ['Noise']
         print('Training Support Vector Machine!')
         df = df.dropna()
         X = df.drop(['wave_type'], axis='columns')

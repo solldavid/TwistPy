@@ -10,6 +10,7 @@ from obspy import Trace
 from scipy.ndimage import uniform_filter1d
 from scipy.signal import hilbert
 
+from twistpy import EstimatorConfiguration
 from twistpy.machinelearning import SupportVectorMachine
 
 
@@ -43,17 +44,17 @@ class TimeDomainAnalysis:
         |  window = {'window_length_seconds': :obj:`float`, 'overlap': :obj:`float`}
         |  Overlap should be on the interval 0 (no overlap between subsequent time windows) and 1
            (complete overlap, window is moved by 1 sample only).
-    scaling_velocity : :obj:`float`, optional
+    scaling_velocity : :obj:`float`, default=1.
         Scaling velocity (in m/s) to ensure numerical stability. The scaling velocity is
         applied to the translational data only (amplitudes are divided by scaling velocity) and ensures
         that both translation and rotation amplitudes are on the same order of magnitude and
         dimensionless. Ideally, v_scal is close to the S-Wave velocity at the receiver. After applying
-        the scaling velocity, translation and rotation signals amplitudes should be similar. Defaults to 1.
-    free_surface : :obj:`bool`, optional
-        True (Default) or False. Specifies whether the recording station is located at the
-        free surface and uses the corresponding polarization models.
-    verbose : :obj:`bool`, optional
-        True (Default) to run in verbose mode.
+        the scaling velocity, translation and rotation signals amplitudes should be similar.
+    free_surface : :obj:`bool`, default=True
+        Specify whether the recording station is located at the
+        free surface in order to use the corresponding polarization models.
+    verbose : :obj:`bool`, default=True
+        Run in verbose mode.
 
     Attributes
     ----------
@@ -63,7 +64,7 @@ class TimeDomainAnalysis:
 
         |  classification = {'0': list_with_classifications_of_first_eigenvector, '1':
             list_with_classification_of_second_eigenvector, ... , '5': list_with_classification_of_last_eigenvector}
-    time_window : :obj:`list` of :obj:`~obspy.core.utcdatetime.UTCDateTime`
+    t_windows : :obj:`list` of :obj:`~obspy.core.utcdatetime.UTCDateTime`
         Window positions of the sliding time window on the time axis (center point of the window)
     C : :obj:`~numpy.ndarray` of :obj:`~numpy.complex128`
         Complex covariance matrices at each window position
@@ -99,11 +100,11 @@ class TimeDomainAnalysis:
         self.verbose = verbose
         self.delta = self.traN.stats.delta
         self.window_length_samples = 2 * int((self.window['window_length_seconds'] / self.delta) / 2)
-        self.classification: Dict[str, List[str]] = {'0': [], '1': [], '2': [], '3': [], '4': [], '5': []}
+        self.classification: Dict[str, List[str]] = {'0': None, '1': None, '2': None, '3': None, '4': None, '5': None}
         start, stop, incr = [int(self.window_length_samples / 2),
                              -1 - int(self.window_length_samples / 2),
                              np.max([1, int((1 - self.window['overlap']) * self.window_length_samples)])]
-        self.time_window = self.time[start:stop:incr]
+        self.t_windows = self.time[start:stop:incr]
         # Compute the analytic signal
         u: np.ndarray = np.array([hilbert(self.traN).T, hilbert(self.traE).T, hilbert(self.traZ).T,
                                   hilbert(self.rotN).T, hilbert(self.rotE).T, hilbert(self.rotZ).T]).T
@@ -126,15 +127,15 @@ class TimeDomainAnalysis:
         ----------
         svm : :obj:`~twistpy.MachineLearning.SupportVectorMachine`
             Trained support vector machine used for wave type classification
-        eigenvector_to_classify : :obj:`int`, optional
-            (Default = 0) Integer value identifying the eigenvector that will be classified, where the eigenvectors are
+        eigenvector_to_classify : :obj:`int`, optional, default=0
+            Integer value identifying the eigenvector that will be classified. The eigenvectors are
             sorted in descending order of their corresponding eigenvalue
 
             |  If 0: first eigenvector, corresponding to the dominant signal in
-               the time window (associated with the largest eigenvalue)
+               the time window (associated with the largest eigenvalue).
 
         """
-        if self.classification[str(eigenvector_to_classify)]:
+        if self.classification[str(eigenvector_to_classify)] is not None:
             print(f"Wave types are already classified for eigenvector with number '{eigenvector_to_classify}'! "
                   f"Classification will not be run a second time. To access the previous classification, "
                   f"check the attribute TimeDomainAnalysis.classification['{eigenvector_to_classify}']")
@@ -168,6 +169,22 @@ class TimeDomainAnalysis:
         self.classification[str(eigenvector_to_classify)] = wave_types
         if self.verbose:
             print('Wave types have been classified!')
+
+    def polarization_analysis(self, estimator_configuration: EstimatorConfiguration = None,
+                              method: str = 'ML', svm: SupportVectorMachine = None, eigenvector_to_classify: int = 0,
+                              music_signal_space_dimension: int = 1):
+        r"""Perform polarization analysis.
+
+        Parameters
+        ----------
+        estimator_configuration
+        svm
+        """
+
+        if method == 'ML':
+            pass
+        else:
+            pass
 
     def save(self, name: str) -> None:
         """ Save the current TimeDomainAnalysis object to a file on the disk in the current working directory.

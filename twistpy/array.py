@@ -8,10 +8,10 @@ from scipy.linalg import pinvh
 from spectrum import dpss
 
 
-class BeamformArray:
+class BeamformingArray:
     r"""Beamforming using the multi-taper technique.
 
-    Specify a BeamformArray object that can be used for beamforming using the multi-taper technique [1].
+    Specify a BeamformingArray object that can be used for beamforming using the multi-taper technique [1].
 
     [1] Meng et al. (2012). High-resoultion backprojection at regional distance. JGR:
     https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2011JB008702
@@ -60,7 +60,7 @@ class BeamformArray:
 
     def beamforming(self, method: str = 'MUSIC', event_time: UTCDateTime = None, frequency_band: tuple = (90., 110.),
                     window: int = 5, number_of_sources: int = 1) -> np.ndarray:
-        r"""Compute beam power at specified time window location for this instance of class BeamformArray.
+        r"""Compute beam power at specified time window location for this instance of class BeamformingArray.
 
         Parameters
         ----------
@@ -69,7 +69,8 @@ class BeamformArray:
 
              .. hint:: 'BARTLETT': Conventional beamforming.
 
-                'MVDR': Minimum Variance Distortionless Response beamformer or Capon beamformer. In seismology, often referred to as FK method.
+                'MVDR': Minimum Variance Distortionless Response beamformer or Capon beamformer. In seismology,
+                often referred to as FK method.
 
                 'MUSIC': Multiple Signal Classification.
         event_time : :obj:`~obspy.core.datetime.UTCDateTime`
@@ -104,7 +105,7 @@ class BeamformArray:
         return np.real(P)
 
     def add_data(self, data: Stream) -> None:
-        """Add data in ObsPy stream
+        """Add data in ObsPy stream format to this instance of class BeamformingArray.
 
         Parameters
         ----------
@@ -118,14 +119,14 @@ class BeamformArray:
 
         self.data = data
         self.has_data = True
-        print('Data successfully added to the Array object!')
+        print('Data successfully added to the BeamformingArray object!')
 
     def compute_steering_vectors(self, frequency: float, intra_array_velocity: Union[float, tuple] = 6000,
                                  inclination: tuple = (-90, 90, 1), azimuth: tuple = (0, 360, 1)) -> None:
-        """Precompute the steering vectors
+        r"""Precompute the steering vectors
 
         Compute the steering vectors for the specified parameter range. For parameters that are specified as a tuple,
-         the grid search is performed over the range: (min_value, max_value, increment)
+        the grid search is performed over the range: (min_value, max_value, increment)
 
         Parameters
         ----------
@@ -151,12 +152,12 @@ class BeamformArray:
         azimuth_gridded, inclination_gridded, velocity_gridded = np.meshgrid(azimuth_gridded, inclination_gridded,
                                                                              velocity_gridded)
         coordinates = self.coordinates - np.tile(self.coordinates[self.reference_receiver, :], (self.N, 1))
-        wave_vector_x = (np.sin(inclination_gridded) * np.cos(azimuth_gridded)).flatten()
-        wave_vector_y = (np.sin(inclination_gridded) * np.sin(azimuth_gridded)).flatten()
-        wave_vector_z = (np.cos(inclination_gridded)).flatten()
+        wave_vector_x = (np.sin(inclination_gridded) * np.cos(azimuth_gridded)).ravel()
+        wave_vector_y = (np.sin(inclination_gridded) * np.sin(azimuth_gridded)).ravel()
+        wave_vector_z = (np.cos(inclination_gridded)).ravel()
         wave_vector_x, wave_vector_y, wave_vector_z = np.asmatrix(wave_vector_x).T, np.asmatrix(
             wave_vector_y).T, np.asmatrix(wave_vector_z).T
-        wave_number = (-2 * np.pi * frequency / velocity_gridded).flatten()
+        wave_number = (-2 * np.pi * frequency / velocity_gridded).ravel()
         wave_number = np.asmatrix(wave_number).T
         coordinates = np.asmatrix(coordinates)
         steering_vectors: np.ndarray = np.exp(1j * np.multiply(np.tile(wave_number, (1, self.N)),
@@ -313,7 +314,7 @@ def plot_beam(grid: np.ndarray, beam_origin: np.ndarray, P: np.ndarray, inclinat
     inclination_grid_index_use = (inclination_grid_index < P.shape[0]) * (inclination_grid_index > 0)
     azimuth_grid_index_use = (azimuth_grid_index < P.shape[0]) * (azimuth_grid_index > 0)
     use = inclination_grid_index_use * azimuth_grid_index_use
-    beam_power_grid = P[inclination_grid_index[use], azimuth_grid_index[use]].flatten()
+    beam_power_grid = P[inclination_grid_index[use], azimuth_grid_index[use]].ravel()
     grid = grid[use]
     grid = grid[beam_power_grid > clip * P.max().max(), :]
     beam_power_grid = beam_power_grid[beam_power_grid > clip * P.max().max()]

@@ -82,7 +82,7 @@ sphinx_gallery_conf = {
 ## Default flags used by autodoc directives
 autodoc_default_flags = ['members']
 
-numpydoc_show_class_members = True
+numpydoc_show_class_members = False
 numpydoc_show_inherited_class_members = True
 numpydoc_class_members_toctree = True
 numpydoc_attributes_as_param_list = False

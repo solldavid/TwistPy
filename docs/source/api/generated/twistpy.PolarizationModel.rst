@@ -6,6 +6,15 @@
 .. add toctree option to make autodoc generate the pages
 
 .. autoclass:: PolarizationModel
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree: .
+   
+   
+   
 
    
    

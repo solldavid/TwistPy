@@ -3,18 +3,14 @@ TwistPy utility functions
 """
 
 import pickle
-from typing import Union, Tuple
+from typing import Any, Tuple
 
 import numpy as np
 import scipy
 from numpy.lib.stride_tricks import as_strided
 
-from twistpy.dispersion import DispersionAnalysis
-from twistpy.time import TimeDomainAnalysis
-from twistpy.timefrequency import TimeFrequencyAnalysis
 
-
-def load_analysis(file: str = None) -> Union[TimeDomainAnalysis, TimeFrequencyAnalysis, DispersionAnalysis]:
+def load_analysis(file: str) -> Any:
     """Read a TwistPy analysis object from the disk.
 
     Parameters
@@ -24,7 +20,8 @@ def load_analysis(file: str = None) -> Union[TimeDomainAnalysis, TimeFrequencyAn
 
     Returns
     -------
-    obj : :obj:`~twistpy.TimeDomainAnalysis` or :obj:`~twistpy.TimeFrequencyAnalysis` or :obj:`~twistpy.DispersionAnalysis`
+    obj : :obj:`~twistpy.TimeDomainAnalysis` or :obj:`~twistpy.TimeFrequencyAnalysis` or
+    :obj:`~twistpy.DispersionAnalysis`
     """
 
     if file is None:
@@ -136,16 +133,16 @@ def s_transform(signal, dsfacf: int = 1, k: float = 1) -> Tuple[np.ndarray, np.n
     ----------
     signal : :obj:`numpy.ndarray` of :obj:`float`
         Real signal
-    dsfacf : :obj:`int`
+    dsfacf : :obj:`int`, default=1
         Down-sampling factor in the frequency direction -> enables efficient computation for long signals.
 
         .. warning::
                 Downsampling of the frequency axis (dsfacf > 1) prevents the accurate computation of the inverse
                 transform!
 
-    k : :obj:`float`
+    k : :obj:`float`, default=1.
         Scaling factor that controls the number of oscillations in the window. When k increases, the frequency
-        resolution increases, with a corresponding loss of time resolution [2]. Defaults to 1.
+        resolution increases, with a corresponding loss of time resolution [2].
 
     Returns
     -------

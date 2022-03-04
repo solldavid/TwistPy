@@ -20,12 +20,13 @@ Tools for six-component polarization analysis and filtering.
 
 .. autosummary::
     :toctree: generated/
-    :recursive:
     :nosignatures:
+    :recursive:
 
     DispersionAnalysis
     TimeDomainAnalysis
     TimeFrequencyAnalysis
+    EstimatorConfiguration
 
 Polarization Models
 -------------------
@@ -56,11 +57,9 @@ Tools for array processing.
 
 .. autosummary::
     :toctree: generated/
-    :recursive:
     :nosignatures:
 
-
-    BeamformArray
+    BeamformingArray
     GradiometryArray
 
 Machine Learning
@@ -84,6 +83,7 @@ Utility functions
 .. currentmodule:: twistpy.utils
 
 .. automodule:: twistpy.utils
+    :no-inherited-members:
 
 .. autosummary::
     :toctree: generated/
@@ -93,3 +93,4 @@ Utility functions
     s_transform
     i_s_transform
     load_analysis
+

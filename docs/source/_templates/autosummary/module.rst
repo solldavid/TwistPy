@@ -30,7 +30,6 @@
 
    {% for item in classes %}
    .. autoclass:: {{ item }}
-      :members:
 
    .. _sphx_glr_backref_{{fullname}}.{{item}}:
 

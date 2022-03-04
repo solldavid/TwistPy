@@ -6,9 +6,10 @@ import numpy as np
 class PolarizationModel:
     r""" Six-component pure-state polarization model.
 
-    This class computes the six-component pure-state polarization vector for the specified wave-type
-    according to Equations 40 in Sollberger et al. (2018) [1], corrected in [2]. Polarization models can either be computed for recordings
-    at the free surface or inside the medium.
+    This class computes the six-component pure-state polarization vectors for the specified wave-type and
+    wave_parametersaccording to Equations 40 in Sollberger et al. (2018) [1], corrected in [2]. Polarization models can
+    either be computed for recordings at the free surface or inside the medium. If the wave parameters are provided
+    as an array, polarization vectors are generated for each entry.
 
     |  [1] https://doi.org/10.1093/gji/ggx542
     |  [2] https://doi.org/10.1093/gji/ggy205
@@ -23,7 +24,7 @@ class PolarizationModel:
         |  'SH':    SH-wave
         |  'L':     Love-wave
         |  'R':     Rayleigh-wave
-    vp : :py:class:`numpy.ndarray`
+    vp : :obj:`numpy.ndarray`
         P-wave velocity (m/s) at the receiver location
     vs : :obj:`numpy.ndarray`
         S-wave velocity (m/s) at the receiver location
@@ -87,11 +88,6 @@ class PolarizationModel:
         """
 
         if self.wave_type == 'P':
-            # Exclude non-physical vp to vs ratios
-            self.vp[self.vp / self.vs > 4] = np.nan
-            self.vp[self.vp / self.vs < 1.66] = np.nan
-            self.vs[self.vp / self.vs > 4] = np.nan
-            self.vs[self.vp / self.vs < 1.66] = np.nan
 
             if self.free_surface:
                 theta_rad = np.radians(self.theta)
@@ -135,13 +131,14 @@ class PolarizationModel:
                 polarization = np.asarray([v_x, v_y, v_z, w_x, w_y, w_z]).astype('complex').squeeze()
 
         elif self.wave_type == 'SV':
-            # Exclude non-physical vp to vs ratios
-            self.vp[self.vp / self.vs > 4] = np.nan
-            self.vp[self.vp / self.vs < 1.66] = np.nan
-            self.vs[self.vp / self.vs > 4] = np.nan
-            self.vs[self.vp / self.vs < 1.66] = np.nan
             if self.free_surface:
                 theta_rad = np.radians(self.theta)
+                if isinstance(theta_rad, float):
+                    theta_rad = np.asarray(theta_rad)[np.newaxis]
+                    self.vp = np.asarray(self.vp)[np.newaxis]
+                    self.vs = np.asarray(self.vs)[np.newaxis]
+                    self.phi = np.asarray(self.phi)[np.newaxis]
+                    self.theta = np.asarray(self.theta)[np.newaxis]
                 theta_rad[theta_rad == np.pi / 4] = np.nan
                 phi_rad = np.radians(self.phi)
                 v = (self.vp ** 2 - 2. * self.vs ** 2) / (2. * (self.vp ** 2 - self.vs ** 2))  # poisson's ratio

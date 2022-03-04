@@ -8,18 +8,18 @@ import numpy as np
 from obspy.core import UTCDateTime, Stream, Trace
 from scipy import fft
 
-from twistpy.array import BeamformArray
+from twistpy.array import BeamformingArray
 
 
-def generate_synthetics(source_coordinates: np.ndarray, array: BeamformArray, t: np.ndarray, velocity: float = 6000,
+def generate_synthetics(source_coordinates: np.ndarray, array: BeamformingArray, t: np.ndarray, velocity: float = 6000,
                         center_frequency: float = 10):
-    """Generates synthetics for a given BeamformArray object assuming a homogeneous velocity model.
+    """Generates synthetics for a given BeamformingArray object assuming a homogeneous velocity model.
 
     Parameters
     ----------
     source_coordinates : :obj:`~numpy.ndarray`
         Source coordinates
-    array : :obj:`~twistpy.array.BeamformArray`
+    array : :obj:`~twistpy.array.BeamformingArray`
         Array for which to compute synthetics
     t : :obj:`numpy.ndarray`
         Time vector for the seismogram

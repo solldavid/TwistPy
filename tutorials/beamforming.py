@@ -1,5 +1,5 @@
 r"""
-00. Array Processing: Beamforming
+Array Processing: Beamforming
 =================================
 In this tutorial, you will learn how to use TwistPy's Array processing tools for beamforming.
 """
@@ -7,13 +7,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 from obspy.core import UTCDateTime
 
-from twistpy.array import BeamformArray, plot_beam
+from twistpy.array import BeamformingArray, plot_beam
 from twistpy.convenience import generate_synthetics, to_obspy_stream
 
 rng = np.random.default_rng(1)
 
 ########################################################################################################################
-# Instantiate an object of class BeamformArray(), the basic interface that we use to perform array processing.
+# Instantiate an object of class BeamformingArray(), the basic interface that we use to perform array processing.
 # We pass a name to uniquely identify the array and the coordinates of the receivers. Additionally, we specify the index
 # of a reference receiver, all phase delays inside the array are computed with respect to this receiver:
 
@@ -23,8 +23,8 @@ center_point = np.asarray([100, 100, 50])  # Coordinates of the center point of 
 # Array coordinates as (Nx3) array, with N being the number of receivers
 coordinates = np.tile(center_point, (4, 1)) + aperture * np.array([[-1, 1, 1], [1, -1, 1], [1, 1, -1], [-1, -1, -1]])
 
-# Instantiate Array object (the fourth receiver (with index 3) is specified to be the reference receiver)
-array = BeamformArray(name='My Array', coordinates=coordinates, reference_receiver=3)
+# Instantiate BeamformingArray object (the fourth receiver (with index 3) is specified to be the reference receiver)
+array = BeamformingArray(name='My Array', coordinates=coordinates, reference_receiver=3)
 
 ########################################################################################################################
 # In this example, we generate some synthetic data with a source located at the origin:
@@ -60,7 +60,7 @@ nt = int(len(t))  # Number of samples
 data = generate_synthetics(source_coordinates, array, t,
                            velocity=velocity,
                            center_frequency=wavelet_center_frequency)  # Use helper function to generate synthetics
-data += rng.normal(scale=1e-2, size=data.shape)  # Add noise
+data += rng.normal(scale=1e-2, size=data.shape)  # Add noise for numerical stability
 
 # Plot data
 plt.figure()
@@ -68,7 +68,8 @@ plt.plot(t, data.T)
 plt.legend(['Receiver 0', 'Receiver 1', 'Receiver 2', 'Receiver 3'])
 
 ########################################################################################################################
-# We now need to feed the data to our Array() object. Array objects only accept data in ObsPy Stream() format.
+# We now need to feed the data to our BeamformingArray object. BeamformingArray objects only accept data in ObsPy
+# Stream() format.
 # We therefore convert the synthetic data to an ObsPy Stream:
 
 # Convert data to Obspy Stream format
@@ -77,8 +78,8 @@ data_st = to_obspy_stream(data, start_time, dt)  # Use helper function to conver
 print(data_st)
 
 # Add data to array object
-array.add_data(
-    data_st)  # add_data() will automatically check that the data is in the Stream() format and that the number of traces in the data agrees with the number of receivers
+array.add_data(data_st)  # add_data() will automatically check that the data is in  Stream() format and that the
+# number of traces in the data agrees with the number of receivers
 
 ########################################################################################################################
 # Specify parameters for array processing:
@@ -87,8 +88,10 @@ array.add_data(
 freq_band = (80., 120.)
 inclination = (-90, 90, 1)  # Search space for the inclination in degrees (min_value, max_value, increment)
 azimuth = (0, 360, 1)  # Search space for the back-azimuth in degrees (min_value, max_value, increment)
-velocity = 6000.  # Intra-array velocity in m/s, either a float or a tuple as for azimuth and inclination if velocity is unknown and part of the search
-number_of_sources = 1  # Specify the number of interfering sources that will be estimated in the time window (only relevant for MUSIC)
+velocity = 6000.  # Intra-array velocity in m/s, either a float or a tuple as for azimuth and inclination if velocity
+# is unknown and part of the search
+number_of_sources = 1  # Specify the number of interfering sources that will be estimated in the time window
+# (only relevant for MUSIC)
 
 ########################################################################################################################
 # Now we have everything we need to compute the steering vectors:
@@ -106,7 +109,8 @@ P_MUSIC = array.beamforming(method='MUSIC', event_time=event_time, frequency_ban
                             number_of_sources=number_of_sources)
 P_MVDR = array.beamforming(method='MVDR', event_time=event_time, frequency_band=freq_band, window=5)
 P_BARTLETT = array.beamforming(method='BARTLETT', event_time=event_time, frequency_band=freq_band, window=5)
-# Window specifies the width of the time window, here corresponding to 5 times the dominant period in the specified frequency band
+# Window specifies the width of the time window, here corresponding to 5 times the dominant period in the specified
+# frequency band
 # If you want to perform a time-depenent analysis you would slide the window down the data by adjusting event_time
 
 ########################################################################################################################

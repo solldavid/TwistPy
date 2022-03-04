@@ -110,7 +110,9 @@ plt.show()
 
 ########################################################################################################################
 # Note that the inverse transform after Schimmel & Gallart provides a better time-localization of the filtered signal
-# compared to the conventional inverse. Though it has to be noted that this inverse transform is only an approximation
-# to the true inverse (see Simon, C., Ventosa, S., Schimmel, M., Heldring, A., Dañobeitia, J. J., Gallart, J., &
-# Mànuel, A. 2007. **The S-transform and its inverses: Side effects of discretizing and filtering**. *IEEE Transactions
-# on Signal Processing*, **55** (10), 4928–4937. https://doi.org/10.1109/TSP.2007.897893).
+# compared to the conventional inverse. However, it has to be noted that this inverse transform is only an approximation
+# to the true inverse (the level of approximation is described in Simon, C., Ventosa, S., Schimmel, M., Heldring, A.,
+# Dañobeitia, J. J., Gallart, J., & Mànuel, A. 2007. **The S-transform and its inverses: Side effects of discretizing
+# and filtering**. *IEEE Transactions on Signal Processing*, **55** (10), 4928–4937.
+# https://doi.org/10.1109/TSP.2007.897893). For filtering purposes, the inverse transform after Schimmel et al. is
+# usually still the better choice.

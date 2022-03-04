@@ -5,7 +5,7 @@ The `conda` Python distribution is recommended, but you can use any Python
 distribution you see fit.
 
 Install `conda`
-==================
+_______________
 
 .. seealso::
 
@@ -14,7 +14,7 @@ Install `conda`
 
 
 1. Install `miniconda` for your operating system:
-2. Create a new environment:
+2. We recommend to create a new conda environment:
 
 .. code-block:: bash
 
@@ -25,7 +25,7 @@ Install `conda`
     this page!
 
 Install TwistPy
-===============
+_______________
 
 Clone TwistPy
 
@@ -33,6 +33,7 @@ Clone TwistPy
 
     git clone https://github.com/solldavid/TwistPy.git
 
+Install TwistPy
 
 .. code-block:: bash
 
@@ -41,7 +42,7 @@ Clone TwistPy
     pip install -e .
 
 Update TwistPy
-==============
+______________
 
 To update `TwistPy` please change to the `TwistPy` directory and run
 
@@ -49,14 +50,15 @@ To update `TwistPy` please change to the `TwistPy` directory and run
 
     git pull
 
-If that does not work for some reason (e.g. the `TwistPy` repository has been
-force pushed to, local changes, ...) please do the following (**All your local
-changes will be deleted!**):
+If that does not work for some reason (e.g. the `TwistPy` repository has seen local changes, ...)
+please do the following
 
 .. code-block:: bash
 
     git fetch origin main
     git reset --hard origin/main
+
+.. warning:: All your local changes will be deleted!
 
 If the `TwistPy` dependencies changed, just run
 

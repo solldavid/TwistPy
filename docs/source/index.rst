@@ -1,6 +1,6 @@
 .. TwistPy documentation master file, created by David Sollberger
 
-.. image:: _static/logo_adobe_title.svg
+.. image:: _static/logo_adobe_title.png
     :alt: TwistPy Logo
 
 

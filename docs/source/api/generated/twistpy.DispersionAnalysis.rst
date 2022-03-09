@@ -13,6 +13,8 @@
    .. autosummary::
       :toctree: .
    
+      ~twistpy.DispersionAnalysis.plot_dispersion_curves
+      ~twistpy.DispersionAnalysis.save
    
    
 

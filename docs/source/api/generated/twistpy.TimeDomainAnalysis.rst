@@ -14,6 +14,7 @@
       :toctree: .
    
       ~twistpy.TimeDomainAnalysis.classify
+      ~twistpy.TimeDomainAnalysis.plot_polarization_analysis
       ~twistpy.TimeDomainAnalysis.polarization_analysis
       ~twistpy.TimeDomainAnalysis.save
    

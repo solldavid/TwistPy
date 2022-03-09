@@ -4,8 +4,7 @@ Installation Instructions
 The `conda` Python distribution is recommended, but you can use any Python
 distribution you see fit.
 
-Install `conda`
-_______________
+**Install `conda`**
 
 .. seealso::
 
@@ -24,8 +23,7 @@ _______________
 .. note:: Make sure the `twistpy` environment is active when using `TwistPy` and for all the following steps on
     this page!
 
-Install TwistPy
-_______________
+**Install TwistPy**
 
 Clone TwistPy
 
@@ -33,16 +31,13 @@ Clone TwistPy
 
     git clone https://github.com/solldavid/TwistPy.git
 
-Install TwistPy
-
 .. code-block:: bash
 
     cd TwistPy
     conda activate twistpy
     pip install -e .
 
-Update TwistPy
-______________
+**Update TwistPy**
 
 To update `TwistPy` please change to the `TwistPy` directory and run
 

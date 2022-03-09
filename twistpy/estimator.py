@@ -43,7 +43,7 @@ class EstimatorConfiguration:
     svm : :obj:`~twistpy.machinelearning.SupportVectorMachine`, optional
         Pre-trained support vector machine for wave type classification. Needs to be provided if method='ML' or
         use_ml_classification = True.
-    eigenvector_to_classify : :obj:`int`, default=0
+    eigenvector : :obj:`int`, default=0
         Integer value identifying the eigenvector that will be used for wave parameter estimation. The eigenvectors are
         sorted in descending order of their corresponding eigenvalue
 
@@ -71,7 +71,7 @@ class EstimatorConfiguration:
     def __init__(self, wave_types: List[str] = ['R', 'L', 'P', 'SV', 'SH'],
                  method: str = 'ML', free_surface: bool = True, scaling_velocity: float = 1.,
                  use_ml_classification: bool = True, svm: SupportVectorMachine = None,
-                 eigenvector_to_classify: int = 0,
+                 eigenvector: int = 0,
                  music_signal_space_dimension: int = 1,
                  vp: Tuple[float, float, float] = (100., 2000., 100.),
                  vp_to_vs: Tuple[float, float, float] = (1.7, 2.2, 0.1),
@@ -108,7 +108,7 @@ class EstimatorConfiguration:
         self.xi = xi
         self.free_surface = free_surface
         self.svm = svm
-        self.eigenvector_to_classify = eigenvector_to_classify
+        self.eigenvector = eigenvector
         self.music_signal_space_dimension = music_signal_space_dimension
         self.scaling_velocity = scaling_velocity
 

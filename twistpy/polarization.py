@@ -108,14 +108,14 @@ class PolarizationModel:
                 v_x = -(np.sin(theta_rad) * np.cos(phi_rad)
                         + alpha_pp * np.sin(theta_rad) * np.cos(phi_rad)
                         + alpha_ps * np.cos(theta_s) * np.cos(phi_rad)) / self.scaling_velocity
-                v_y = (np.sin(theta_rad) * np.sin(phi_rad)
-                       + alpha_pp * np.sin(theta_rad) * np.sin(phi_rad)
-                       + alpha_ps * np.cos(theta_s) * np.sin(phi_rad)) / self.scaling_velocity
+                v_y = - (np.sin(theta_rad) * np.sin(phi_rad)
+                         + alpha_pp * np.sin(theta_rad) * np.sin(phi_rad)
+                         + alpha_ps * np.cos(theta_s) * np.sin(phi_rad)) / self.scaling_velocity
                 v_z = (np.cos(theta_rad)
                        - alpha_pp * np.cos(theta_rad)
                        + alpha_ps * np.sin(theta_s)) / self.scaling_velocity
                 w_x = (1 / 2.) * alpha_ps * np.sin(phi_rad) / self.vs
-                w_y = (1 / 2.) * alpha_ps * np.cos(phi_rad) / self.vs
+                w_y = - (1 / 2.) * alpha_ps * np.cos(phi_rad) / self.vs
                 w_z = 0. * w_x
 
                 polarization = np.asarray([v_x, v_y, v_z, w_x, w_y, w_z]).astype('complex').squeeze()
@@ -123,7 +123,7 @@ class PolarizationModel:
                 theta_rad = np.radians(self.theta)
                 phi_rad = np.radians(self.phi)
                 v_x = - (1. / self.scaling_velocity) * np.sin(theta_rad) * np.cos(phi_rad)
-                v_y = (1. / self.scaling_velocity) * np.sin(theta_rad) * np.sin(phi_rad)
+                v_y = - (1. / self.scaling_velocity) * np.sin(theta_rad) * np.sin(phi_rad)
                 v_z = (1. / self.scaling_velocity) * np.cos(theta_rad)
                 w_x = 0. * v_x
                 w_y = 0. * v_x
@@ -192,26 +192,31 @@ class PolarizationModel:
                 v_x = (np.cos(theta_rad) * np.cos(phi_rad)
                        - alpha_ss * np.cos(theta_rad) * np.cos(phi_rad)
                        - alpha_sp * np.sin(theta_p) * np.cos(phi_rad)) / self.scaling_velocity
-                v_y = - (np.cos(theta_rad) * np.sin(phi_rad)
-                         - alpha_ss * np.cos(theta_rad) * np.sin(phi_rad)
-                         - alpha_sp * np.sin(theta_p) * np.sin(phi_rad)) / self.scaling_velocity
+                v_y = (np.cos(theta_rad) * np.sin(phi_rad)
+                       - alpha_ss * np.cos(theta_rad) * np.sin(phi_rad)
+                       - alpha_sp * np.sin(theta_p) * np.sin(phi_rad)) / self.scaling_velocity
                 v_z = (np.sin(theta_rad)
                        + alpha_ss * np.sin(theta_rad)
                        - alpha_sp * np.cos(theta_p)) / self.scaling_velocity
 
                 w_x = (1 / 2.) * (1 + alpha_ss) * np.sin(phi_rad) / self.vs
-                w_y = (1 / 2.) * (1 + alpha_ss) * np.cos(phi_rad) / self.vs
+                w_y = -(1 / 2.) * (1 + alpha_ss) * np.cos(phi_rad) / self.vs
                 w_z = 0. * w_x
                 polarization = np.asarray([v_x, v_y, v_z, w_x, w_y, w_z]).astype('complex').squeeze()
 
             elif not self.free_surface:
                 theta_rad = np.radians(self.theta)
+                if isinstance(theta_rad, float):
+                    theta_rad = np.asarray(theta_rad)[np.newaxis]
+                    self.vs = np.asarray(self.vs)[np.newaxis]
+                    self.phi = np.asarray(self.phi)[np.newaxis]
+                    self.theta = np.asarray(self.theta)[np.newaxis]
                 phi_rad = np.radians(self.phi)
                 v_x = (1. / self.scaling_velocity) * np.cos(theta_rad) * np.cos(phi_rad)
-                v_y = -(1. / self.scaling_velocity) * np.cos(theta_rad) * np.sin(phi_rad)
+                v_y = (1. / self.scaling_velocity) * np.cos(theta_rad) * np.sin(phi_rad)
                 v_z = (1. / self.scaling_velocity) * np.sin(theta_rad)
                 w_x = (2 * self.vs) ** -1 * np.sin(phi_rad)
-                w_y = (2 * self.vs) ** -1 * np.cos(phi_rad)
+                w_y = - (2 * self.vs) ** -1 * np.cos(phi_rad)
                 w_z = 0. * w_x
                 polarization = np.asarray([v_x, v_y, v_z, w_x, w_y, w_z]).astype('complex').squeeze()
 
@@ -220,7 +225,7 @@ class PolarizationModel:
                 phi_rad = np.radians(self.phi)
                 theta_rad = np.radians(self.theta)
                 v_x = 2. / self.scaling_velocity * np.sin(phi_rad)
-                v_y = 2. / self.scaling_velocity * np.cos(phi_rad)
+                v_y = - 2. / self.scaling_velocity * np.cos(phi_rad)
                 v_z = 0. * v_x
                 w_x = 0. * v_x
                 w_y = 0. * v_x
@@ -230,33 +235,41 @@ class PolarizationModel:
                 phi_rad = np.radians(self.phi)
                 theta_rad = np.radians(self.theta)
                 v_x = (1. / self.scaling_velocity) * np.sin(phi_rad)
-                v_y = (1. / self.scaling_velocity) * np.cos(phi_rad)
+                v_y = - (1. / self.scaling_velocity) * np.cos(phi_rad)
                 v_z = 0. * v_x
                 w_x = - (2 * self.vs) ** -1 * np.cos(theta_rad) * np.cos(phi_rad)
-                w_y = (2 * self.vs) ** -1 * np.cos(theta_rad) * np.sin(phi_rad)
+                w_y = - (2 * self.vs) ** -1 * np.cos(theta_rad) * np.sin(phi_rad)
                 w_z = (2 * self.vs) ** -1 * np.sin(theta_rad)
                 polarization = np.asarray([v_x, v_y, v_z, w_x, w_y, w_z]).astype('complex').squeeze()
 
         elif self.wave_type == 'R':
+            if isinstance(self.phi, float) or isinstance(self.phi, int):
+                self.vr = np.asarray(self.vr)[np.newaxis]
+                self.phi = np.asarray(self.phi)[np.newaxis]
+                self.xi = np.asarray(self.xi)[np.newaxis]
             phi_rad = np.radians(self.phi)
             xi_rad = np.radians(self.xi)
             v_x = -1j * 1. / self.scaling_velocity * np.sin(xi_rad) * np.cos(phi_rad)
-            v_y = 1j * 1. / self.scaling_velocity * np.sin(xi_rad) * np.sin(phi_rad)
+            v_y = - 1j * 1. / self.scaling_velocity * np.sin(xi_rad) * np.sin(phi_rad)
             v_z = 1. / self.scaling_velocity * np.cos(xi_rad)
 
             w_x = 1. / self.vr * np.sin(phi_rad) * np.cos(xi_rad)
-            w_y = 1. / self.vr * np.cos(phi_rad) * np.cos(xi_rad)
+            w_y = - 1. / self.vr * np.cos(phi_rad) * np.cos(xi_rad)
             w_z = 0. * v_x
             polarization = np.asarray([v_x, v_y, v_z, w_x, w_y, w_z]).astype('complex').squeeze()
         elif self.wave_type == 'L':
+            if isinstance(self.phi, float) or isinstance(self.phi, int):
+                self.vl = np.asarray(self.vl)[np.newaxis]
+                self.phi = np.asarray(self.phi)[np.newaxis]
             phi_rad = np.radians(self.phi)
             v_x = 1 / self.scaling_velocity * np.sin(phi_rad)
-            v_y = 1 / self.scaling_velocity * np.cos(phi_rad)
+            v_y = -1 / self.scaling_velocity * np.cos(phi_rad)
             v_z = 0. * v_x
 
             w_x = 0. * v_x
             w_y = 0. * v_x
             w_z = - 1. / (2 * self.vl)
+            w_z[phi_rad > np.pi] *= -1  # Resolve 180 degree ambiguity (sense of rotation changes)
             polarization = np.asarray([v_x, v_y, v_z, w_x, w_y, w_z]).astype('complex').squeeze()
 
         elif self.wave_type not in ['L', 'R', 'P', 'SV', 'SH']:

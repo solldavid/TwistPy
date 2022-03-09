@@ -1,7 +1,7 @@
 r"""
 6-C Polarization Analysis: Wave type classification
 ===================================================
-In this tutorial, you will learn how to use TwistPy's Array to train a machine learning model that enables the
+In this tutorial, you will learn how to train a machine learning model that enables the
 efficient classification of wave types using six-component polarization analysis.
 """
 import matplotlib.pyplot as plt
@@ -100,7 +100,7 @@ plt.xlabel('Time (s)')
 ########################################################################################################################
 # Note that the translational components and the rotational components have different units. The PolarizationModel class
 # yields the amplitudes in acceleration (m/s/s) for the translational components and in rotation rate (rad/s) for the
-# rotational components. Since the rotational signal scales with the local wave slowness, they are barely visible in the
+# rotational components. Since the rotational signal scales with the local wave slowness, it is barely visible in the
 # plot above. For polarization analysis, we want to make sure that both the translational and the rotational components
 # have the same units and that the amplitudes are comparable, we therefore divide the translational components by a
 # scaling velocity and plot the data again. Here we choose a scaling velocity of 400 m/s. Applying a scaling velocity to
@@ -126,7 +126,7 @@ plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 plt.xlabel('Time (s)')
 
 ########################################################################################################################
-# To make the synthetics accessible to TwistPy, we convert them to an Obspy stream.
+# To make the synthetics accessible to TwistPy, we convert them to an Obspy Stream object.
 
 data = Stream()
 for n in range(signal.shape[1]):
@@ -154,10 +154,11 @@ svm.train(wave_types=['R', 'P', 'SV', 'SH', 'Noise'],
           vr=(100, 3000), phi=(0, 360), theta=(0, 90), xi=(-90, 90), free_surface=True, C=1, kernel='rbf')
 
 ########################################################################################################################
-# Now that we have trained the model, we can set up our analysis. We will perform 6C polarization anlysis in the time
-# domain and use a sliding time window that is 10 samples long with an overlap between subsequent windows of 50%.
+# Now that we have trained the model, we can set up our analysis. We will perform 6C polarization analysis in the time
+# domain and use a sliding time window that is 0.05 s long (50 samples) with an overlap between subsequent windows of
+# 50%.
 
-window = {'window_length_seconds': 10. * dt, 'overlap': 0.5}
+window = {'window_length_seconds': 50. * dt, 'overlap': 0.5}
 analysis = TimeDomainAnalysis(traN=data[0], traE=data[1], traZ=data[2], rotN=data[3], rotE=data[4], rotZ=data[5],
                               window=window, scaling_velocity=scaling_velocity)
 

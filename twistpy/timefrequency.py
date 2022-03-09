@@ -81,8 +81,8 @@ class TimeFrequencyAnalysis:
     Attributes
     ----------
     classification : :obj:`dict`
-        Dictionary containing the labels of classified wave types at each position of the sliding time window. The
-        dictionary has up to six entries corresponding to classifications for each eigenvector.
+        Dictionary containing the labels of classified wave types at each position of the analysis window in time and
+        frequency. The dictionary has six entries corresponding to classifications for each eigenvector.
 
         |  classification = {'0': list_with_classifications_of_first_eigenvector, '1':
             list_with_classification_of_second_eigenvector, ... , '5': list_with_classification_of_last_eigenvector}

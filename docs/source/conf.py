@@ -76,7 +76,7 @@ sphinx_gallery_conf = {
     # Insert links to documentation of objects in the examples
     'reference_url': {'twistpy': None},
     'first_notebook_cell': ("%matplotlib inline"),
-    'run_stale_examples': True,
+    'run_stale_examples': False,
 }
 
 ## Default flags used by autodoc directives

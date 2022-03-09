@@ -4,13 +4,14 @@ import pickle
 from builtins import *
 from typing import List, Dict
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from obspy import Trace
 from scipy.ndimage import uniform_filter1d
 from scipy.signal import hilbert
 
-from twistpy import EstimatorConfiguration
+from twistpy.estimator import EstimatorConfiguration
 from twistpy.machinelearning import SupportVectorMachine
 
 
@@ -62,7 +63,7 @@ class TimeDomainAnalysis:
         Dictionary containing the labels of classified wave types at each position of the sliding time window. The
         dictionary has up to six entries corresponding to classifications for each eigenvector.
 
-        |  classification = {'0': list_with_classifications_of_first_eigenvector, '1':
+        | classification = {'0': list_with_classifications_of_first_eigenvector, '1':
             list_with_classification_of_second_eigenvector, ... , '5': list_with_classification_of_last_eigenvector}
     t_windows : :obj:`list` of :obj:`~obspy.core.utcdatetime.UTCDateTime`
         Window positions of the sliding time window on the time axis (center point of the window)
@@ -81,6 +82,12 @@ class TimeDomainAnalysis:
                  rotE: Trace, rotZ: Trace, window: dict,
                  scaling_velocity: float = 1., free_surface: bool = True, verbose: bool = True) -> None:
 
+        self.dop = None
+        self.phi_r = None
+        self.c_r = None
+        self.xi = None
+        self.phi_l = None
+        self.c_l = None
         self.traN, self.traE, self.traZ, self.rotN, self.rotE, self.rotZ = traN, traE, traZ, rotN, rotE, rotZ
 
         # Assert that input traces are ObsPy Trace objects
@@ -94,7 +101,7 @@ class TimeDomainAnalysis:
                and self.traN.stats.npts == self.rotZ.stats.npts, "All six traces must have the same number of samples!"
 
         self.window = window
-        self.time = self.traN.times(type="utcdatetime")
+        self.time = self.traN.times(type="matplotlib")
         self.scaling_velocity = scaling_velocity
         self.free_surface = free_surface
         self.verbose = verbose
@@ -170,21 +177,176 @@ class TimeDomainAnalysis:
         if self.verbose:
             print('Wave types have been classified!')
 
-    def polarization_analysis(self, estimator_configuration: EstimatorConfiguration = None,
-                              method: str = 'ML', svm: SupportVectorMachine = None, eigenvector_to_classify: int = 0,
-                              music_signal_space_dimension: int = 1):
+    def polarization_analysis(self, estimator_configuration: EstimatorConfiguration = None):
         r"""Perform polarization analysis.
 
         Parameters
         ----------
         estimator_configuration
-        svm
         """
+        if estimator_configuration is None:
+            raise ValueError("Please provide an EstimatorConfiguration for polarization analysis!")
 
-        if method == 'ML':
-            pass
+        # Classify wave types if this has not been done already.
+        if estimator_configuration.use_ml_classification and \
+                self.classification[str(estimator_configuration.eigenvector)] is None:
+            self.classify(estimator_configuration.svm, estimator_configuration.eigenvector)
+
+        if self.verbose:
+            print('Computing wave parameters...')
+        eigenvalues, eigenvectors = np.linalg.eigh(self.C)
+
+        # The eigenvectors are initially arbitrarily oriented in the complex plane, here we ensure that
+        # the real and imaginary parts are orthogonal. See Samson (1980): Some comments on the descriptions of the
+        # polarization states of waves, Geophysical Journal of the Royal Astronomical Society, Eqs. (3)-(5)
+        u1 = eigenvectors[:, :, -(estimator_configuration.eigenvector + 1)]  # Select eigenvector for classification
+        gamma = np.arctan2(2 * np.einsum('ij,ij->j', u1.real.T, u1.imag.T, optimize=True),
+                           np.einsum('ij,ij->j', u1.real.T, u1.real.T, optimize=True) -
+                           np.einsum('ij,ij->j', u1.imag.T, u1.imag.T, optimize=True))
+        phi = - 0.5 * gamma
+        eigenvectors = np.tile(np.exp(1j * phi), (6, 6, 1)).T * eigenvectors
+        # Compute degree of polarization after Samson (1980): Some comments on the descriptions of the
+        # polarization states of waves, Geophysical Journal of the Royal Astronomical Society, Eq. (18)
+        self.dop = ((eigenvalues[:, 0] - eigenvalues[:, 1]) ** 2
+                    + (eigenvalues[:, 0] - eigenvalues[:, 2]) ** 2
+                    + (eigenvalues[:, 0] - eigenvalues[:, 3]) ** 2
+                    + (eigenvalues[:, 0] - eigenvalues[:, 4]) ** 2
+                    + (eigenvalues[:, 0] - eigenvalues[:, 5]) ** 2
+                    + (eigenvalues[:, 1] - eigenvalues[:, 2]) ** 2
+                    + (eigenvalues[:, 1] - eigenvalues[:, 3]) ** 2
+                    + (eigenvalues[:, 1] - eigenvalues[:, 4]) ** 2
+                    + (eigenvalues[:, 1] - eigenvalues[:, 5]) ** 2
+                    + (eigenvalues[:, 2] - eigenvalues[:, 3]) ** 2
+                    + (eigenvalues[:, 2] - eigenvalues[:, 4]) ** 2
+                    + (eigenvalues[:, 2] - eigenvalues[:, 5]) ** 2
+                    + (eigenvalues[:, 3] - eigenvalues[:, 4]) ** 2
+                    + (eigenvalues[:, 3] - eigenvalues[:, 5]) ** 2
+                    + (eigenvalues[:, 4] - eigenvalues[:, 5]) ** 2) / (5 * np.sum(eigenvalues, axis=-1) ** 2)
+
+        # Estimate wave parameters directly from the specified eigenvector if method=='ML'
+        if estimator_configuration.method == 'ML':
+            for wave_type in estimator_configuration.wave_types:
+                indices = self.classification[str(estimator_configuration.eigenvector)] == wave_type
+                eigenvector_wtype = eigenvectors[indices, :, -(estimator_configuration.eigenvector + 1)]
+                if wave_type == 'L':
+                    self.phi_l = np.empty_like(self.t_windows)
+                    self.phi_l[:] = np.nan
+                    self.c_l = np.empty_like(self.t_windows)
+                    self.c_l[:] = np.nan
+                    eigenvector_wtype[np.linalg.norm(np.abs(eigenvector_wtype[:, 0:2].real), axis=1) <
+                                      np.linalg.norm(np.abs(eigenvector_wtype[:, 0:2].imag), axis=1)] = \
+                        eigenvector_wtype[np.linalg.norm(np.abs(eigenvector_wtype[:, 0:2].real), axis=1) <
+                                          np.linalg.norm(np.abs(eigenvector_wtype[:, 0:2].imag), axis=1)].conj() * 1j
+                    phi_love = np.arctan2(np.real(eigenvector_wtype[:, 1]), np.real(eigenvector_wtype[:, 0]))
+                    a_t = np.cos(phi_love) * eigenvector_wtype[:, 0] + np.sin(phi_love) * eigenvector_wtype[:, 1]
+                    phi_love += np.pi / 2
+                    phi_love[np.sign(eigenvector_wtype[:, 0].real) == np.sign(eigenvector_wtype[:, 1])] += np.pi
+                    phi_love[phi_love > 2 * np.pi] -= 2 * np.pi
+                    phi_love[phi_love < 0] += 2 * np.pi
+                    # Love wave velocity: transverse acceleration divided by 2*vertical rotation
+                    c_love = self.scaling_velocity * np.abs(a_t.real) / np.abs(eigenvector_wtype[:, 5].real) / 2
+                    self.c_l[indices] = c_love
+                    self.phi_l[indices] = np.degrees(phi_love)
+                elif wave_type == 'R':
+                    self.xi = np.empty_like(self.t_windows)
+                    self.xi[:] = np.nan
+                    self.c_r = np.empty_like(self.t_windows)
+                    self.c_r[:] = np.nan
+                    self.phi_r = np.empty_like(self.t_windows)
+                    self.phi_r[:] = np.nan
+                    eigenvector_wtype[np.linalg.norm(np.abs(eigenvector_wtype[:, 0:2].real), axis=1) >
+                                      np.linalg.norm(np.abs(eigenvector_wtype[:, 0:2].imag), axis=1)] = \
+                        eigenvector_wtype[np.linalg.norm(np.abs(eigenvector_wtype[:, 0:2].real), axis=1) >
+                                          np.linalg.norm(np.abs(eigenvector_wtype[:, 0:2].imag), axis=1)].conj() * 1j
+                    eigenvector_wtype[eigenvector_wtype[:, 2] < 0, :] *= -1  # Ensure that eigenvectors point into
+                    # the same direction with translational z-component positive
+                    phi_rayleigh = np.arctan2(np.imag(eigenvector_wtype[:, 1]), np.imag(eigenvector_wtype[:, 0]))
+                    phi_rayleigh[phi_rayleigh < 0] += np.pi
+                    # Compute radial translational component t_r and transverse rotational component r_t
+                    r_t = -np.sin(phi_rayleigh) * eigenvector_wtype[:, 3].real + np.cos(phi_rayleigh) * \
+                          eigenvector_wtype[:, 4].real
+                    t_r = np.cos(phi_rayleigh) * eigenvector_wtype[:, 0].imag + np.sin(phi_rayleigh) * \
+                          eigenvector_wtype[:, 1].imag
+                    # Account for 180 degree ambiguity by evaluating signs
+                    phi_rayleigh[np.sign(t_r) < np.sign(r_t)] += np.pi
+                    phi_rayleigh[(np.sign(t_r) > 0) & (np.sign(r_t) > 0)] += np.pi
+
+                    # Compute Rayleigh wave ellipticity angle
+                    elli_rayleigh = -np.arctan(t_r / eigenvector_wtype[:, 2].real)
+                    elli_rayleigh[np.sign(t_r) == np.sign(r_t)] *= -1
+
+                    # Compute Rayleigh wave phase velocity
+                    c_rayleigh = self.scaling_velocity * np.abs(eigenvector_wtype[:, 2].real) / np.abs(r_t)
+                    self.xi[indices] = np.degrees(elli_rayleigh)
+                    self.c_r[indices] = c_rayleigh
+                    self.phi_r[indices] = np.degrees(phi_rayleigh)
+
         else:
             pass
+
+    def plot_polarization_analysis(self, wave_types: List[str] = ['L', 'R'], method: str = 'ML',
+                                   dop_clip: np.float = 0):
+        if isinstance(wave_types, str):
+            wave_types = [wave_types]
+        for wave_type in wave_types:
+            if wave_type == 'L':
+                assert self.c_l is not None, 'No polarization attributes for Love waves have been computed so far!'
+                if method == 'ML':
+                    fig, ax = plt.subplots(4, 1, sharex=True, figsize=(10, 8))
+                    self._plot_seismograms(ax[0])
+                    phi_l = self.phi_l
+                    phi_l[self.dop < dop_clip] = np.nan
+                    c_l = self.c_l
+                    c_l[self.dop < dop_clip] = np.nan
+                    dop = self.dop
+                    ax[1].plot(self.t_windows, phi_l, 'k.')
+                    ax[1].set_ylabel('Degrees')
+                    ax[1].set_title('Back-azimuth')
+                    ax[2].plot(self.t_windows, c_l, 'k.')
+                    ax[2].set_title('Phase velocity')
+                    ax[2].set_ylabel('m/s')
+                    ax[3].plot(self.t_windows, dop, 'k.')
+                    ax[3].set_title('Degree of polarization')
+                    ax[3].set_ylabel('DOP')
+                    ax[3].set_xlabel('Time (UTC)')
+                    fig.suptitle('Love wave analysis')
+            elif wave_type == 'R':
+                assert self.c_r is not None, 'No polarization attributes for Rayleigh waves have been computed so far!'
+                if method == 'ML':
+                    fig, ax = plt.subplots(5, 1, sharex=True, figsize=(10, 10))
+                    self._plot_seismograms(ax[0])
+                    phi_r = self.phi_r
+                    phi_r[self.dop < dop_clip] = np.nan
+                    c_r = self.c_r
+                    c_r[self.dop < dop_clip] = np.nan
+                    xi = self.xi
+                    xi[self.dop < dop_clip] = np.nan
+                    dop = self.dop
+                    ax[1].plot(self.t_windows, phi_r, 'k.')
+                    ax[1].set_ylabel('Degrees')
+                    ax[1].set_title('Back-azimuth')
+                    ax[2].plot(self.t_windows, c_r, 'k.')
+                    ax[2].set_title('Phase velocity')
+                    ax[2].set_ylabel('m/s')
+                    ax[3].plot(self.t_windows, xi, 'k.')
+                    ax[3].set_ylabel('Degrees')
+                    ax[3].set_title('Ellipticity angle')
+                    ax[4].plot(self.t_windows, dop, 'k.')
+                    ax[4].set_ylabel('DOP')
+                    ax[4].set_title('Degree of polarization')
+                    ax[4].set_xlabel('Time (UTC)')
+                    fig.suptitle('Rayleigh wave analysis')
+        plt.show()
+
+    def _plot_seismograms(self, ax: plt.Axes):
+        ax.plot(self.traN.times(type='matplotlib'), self.traN.data, 'k:', label='traN')
+        ax.plot(self.traE.times(type='matplotlib'), self.traE.data, 'k--', label='traE')
+        ax.plot(self.traZ.times(type='matplotlib'), self.traZ.data, 'k', label='traZ')
+        ax.plot(self.rotN.times(type='matplotlib'), self.rotZ.data, 'r:', label='rotN')
+        ax.plot(self.rotE.times(type='matplotlib'), self.rotE.data, 'r--', label='rotE')
+        ax.plot(self.rotZ.times(type='matplotlib'), self.rotZ.data, 'r', label='rotZ')
+        ax.xaxis_date()
+        ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 
     def save(self, name: str) -> None:
         """ Save the current TimeDomainAnalysis object to a file on the disk in the current working directory.

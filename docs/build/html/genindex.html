@@ -132,6 +132,11 @@
                                         Array Processing: Beamforming
                                     </a>
                                 </li>
+                                <li class="toctree-l2">
+                                    <a class="reference internal" href="tutorials/dispersion.html">
+                                        Six-component dispersion analysis
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                     </ul>
@@ -152,14 +157,9 @@
                                 </i>
                             </label>
                             <ul>
-                                <li class="toctree-l2">
+                                <li class="toctree-l2 has-children">
                                     <a class="reference internal" href="api/generated/twistpy.DispersionAnalysis.html">
                                         twistpy.DispersionAnalysis
-                                    </a>
-                                </li>
-                                <li class="toctree-l2 has-children">
-                                    <a class="reference internal" href="api/generated/twistpy.TimeDomainAnalysis.html">
-                                        twistpy.TimeDomainAnalysis
                                     </a>
                                     <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4"
                                            type="checkbox"/>
@@ -170,8 +170,39 @@
                                     <ul>
                                         <li class="toctree-l3">
                                             <a class="reference internal"
+                                               href="api/generated/twistpy.DispersionAnalysis.plot_dispersion_curves.html">
+                                                twistpy.DispersionAnalysis.plot_dispersion_curves
+                                            </a>
+                                        </li>
+                                        <li class="toctree-l3">
+                                            <a class="reference internal"
+                                               href="api/generated/twistpy.DispersionAnalysis.save.html">
+                                                twistpy.DispersionAnalysis.save
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="toctree-l2 has-children">
+                                    <a class="reference internal" href="api/generated/twistpy.TimeDomainAnalysis.html">
+                                        twistpy.TimeDomainAnalysis
+                                    </a>
+                                    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5"
+                                           type="checkbox"/>
+                                    <label for="toctree-checkbox-5">
+                                        <i class="fas fa-chevron-down">
+                                        </i>
+                                    </label>
+                                    <ul>
+                                        <li class="toctree-l3">
+                                            <a class="reference internal"
                                                href="api/generated/twistpy.TimeDomainAnalysis.classify.html">
                                                 twistpy.TimeDomainAnalysis.classify
+                                            </a>
+                                        </li>
+                                        <li class="toctree-l3">
+                                            <a class="reference internal"
+                                               href="api/generated/twistpy.TimeDomainAnalysis.plot_polarization_analysis.html">
+                                                twistpy.TimeDomainAnalysis.plot_polarization_analysis
                                             </a>
                                         </li>
                                         <li class="toctree-l3">
@@ -193,9 +224,9 @@
                                        href="api/generated/twistpy.TimeFrequencyAnalysis.html">
                                         twistpy.TimeFrequencyAnalysis
                                     </a>
-                                    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5"
+                                    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6"
                                            type="checkbox"/>
-                                    <label for="toctree-checkbox-5">
+                                    <label for="toctree-checkbox-6">
                                         <i class="fas fa-chevron-down">
                                         </i>
                                     </label>
@@ -225,9 +256,9 @@
                                        href="api/generated/twistpy.EstimatorConfiguration.html">
                                         twistpy.EstimatorConfiguration
                                     </a>
-                                    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6"
+                                    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7"
                                            type="checkbox"/>
-                                    <label for="toctree-checkbox-6">
+                                    <label for="toctree-checkbox-7">
                                         <i class="fas fa-chevron-down">
                                         </i>
                                     </label>
@@ -244,9 +275,9 @@
                                     <a class="reference internal" href="api/generated/twistpy.PolarizationModel.html">
                                         twistpy.PolarizationModel
                                     </a>
-                                    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7"
+                                    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8"
                                            type="checkbox"/>
-                                    <label for="toctree-checkbox-7">
+                                    <label for="toctree-checkbox-8">
                                         <i class="fas fa-chevron-down">
                                         </i>
                                     </label>
@@ -264,9 +295,9 @@
                                        href="api/generated/twistpy.array.BeamformingArray.html">
                                         twistpy.array.BeamformingArray
                                     </a>
-                                    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8"
+                                    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9"
                                            type="checkbox"/>
-                                    <label for="toctree-checkbox-8">
+                                    <label for="toctree-checkbox-9">
                                         <i class="fas fa-chevron-down">
                                         </i>
                                     </label>
@@ -302,9 +333,9 @@
                                        href="api/generated/twistpy.SupportVectorMachine.html">
                                         twistpy.SupportVectorMachine
                                     </a>
-                                    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9"
+                                    <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10"
                                            type="checkbox"/>
-                                    <label for="toctree-checkbox-9">
+                                    <label for="toctree-checkbox-10">
                                         <i class="fas fa-chevron-down">
                                         </i>
                                     </label>
@@ -641,13 +672,21 @@
                                                 (TimeFrequencyAnalysis method)</a>
                                         </li>
                                         <li>
-                                            <a href="api/generated/twistpy.TimeDomainAnalysis.polarization_analysis.html#twistpy.TimeDomainAnalysis.polarization_analysis">polarization_analysis()
+                                            <a href="api/generated/twistpy.DispersionAnalysis.plot_dispersion_curves.html#twistpy.DispersionAnalysis.plot_dispersion_curves">plot_dispersion_curves()
+                                                (DispersionAnalysis method)</a>
+                                        </li>
+                                        <li>
+                                            <a href="api/generated/twistpy.TimeDomainAnalysis.plot_polarization_analysis.html#twistpy.TimeDomainAnalysis.plot_polarization_analysis">plot_polarization_analysis()
                                                 (TimeDomainAnalysis method)</a>
                                         </li>
                                     </ul>
                                 </td>
                                 <td style="width: 33%; vertical-align: top;">
                                     <ul>
+                                        <li>
+                                            <a href="api/generated/twistpy.TimeDomainAnalysis.polarization_analysis.html#twistpy.TimeDomainAnalysis.polarization_analysis">polarization_analysis()
+                                                (TimeDomainAnalysis method)</a>
+                                        </li>
                                         <li>
                                             <a href="api/generated/twistpy.PolarizationModel.polarization_vector.html#twistpy.PolarizationModel.polarization_vector">polarization_vector
                                                 (PolarizationModel property)</a>
@@ -671,10 +710,14 @@
                                                 (in module twistpy.utils)</a>
                                         </li>
                                         <li>
-                                            <a href="api/generated/twistpy.TimeDomainAnalysis.save.html#twistpy.TimeDomainAnalysis.save">save()
-                                                (TimeDomainAnalysis method)</a>
+                                            <a href="api/generated/twistpy.DispersionAnalysis.save.html#twistpy.DispersionAnalysis.save">save()
+                                                (DispersionAnalysis method)</a>
 
                                             <ul>
+                                                <li>
+                                                    <a href="api/generated/twistpy.TimeDomainAnalysis.save.html#twistpy.TimeDomainAnalysis.save">(TimeDomainAnalysis
+                                                        method)</a>
+                                                </li>
                                                 <li>
                                                     <a href="api/generated/twistpy.TimeFrequencyAnalysis.save.html#twistpy.TimeFrequencyAnalysis.save">(TimeFrequencyAnalysis
                                                         method)</a>
@@ -760,7 +803,7 @@
                 <p>
 
                     &copy; Copyright 2022, David Sollberger.<br/>
-                    Last updated on Mar 04, 2022.<br/>
+                    Last updated on Mar 09, 2022.<br/>
                 </p>
             </footer>
         </main>

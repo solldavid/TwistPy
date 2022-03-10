@@ -76,7 +76,7 @@ sphinx_gallery_conf = {
     # Insert links to documentation of objects in the examples
     'reference_url': {'twistpy': None},
     'first_notebook_cell': ("%matplotlib inline"),
-    'run_stale_examples': False,
+    'run_stale_examples': True,
 }
 
 ## Default flags used by autodoc directives
@@ -85,7 +85,7 @@ autodoc_default_flags = ['members']
 numpydoc_show_class_members = False
 numpydoc_show_inherited_class_members = True
 numpydoc_class_members_toctree = True
-numpydoc_attributes_as_param_list = False
+numpydoc_attributes_as_param_list = True
 
 html_theme_options = {
     "repository_url": "https://github.com/solldavid/TwistPy",

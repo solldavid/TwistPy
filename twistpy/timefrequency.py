@@ -42,9 +42,9 @@ class TimeFrequencyAnalysis:
         2-D time-frequency window within which the covariance matrices are averaged:
 
         |  window = {'number_of_periods': :obj:`float`, 'frequency_extent': :obj:`float`}
-        |  The extent of the window in time is frequency-dependent and stretches over number_of_periods periods, where
+        |  The extent of the window in time is frequency-dependent and stretches over 'number_of_periods' periods, where
             the period is defined as 1/f. In frequency, the window stretches over the specified 'frequency_extent' in
-             Hz.
+            Hz.
     dsfact : :obj:`int`, default=1
         Down-sampling factor of the time-axis prior to the computation of polarization attributes.
     dsfacf : :obj:`int`, default=1
@@ -56,9 +56,10 @@ class TimeFrequencyAnalysis:
 
     frange : :obj:`tuple`, (f_min, f_max)
         Limit the analysis to the specified frequency band in Hz
-    trange : :obj:`tuple`, (t_min, t_max) as (:obj:`~obspy.core.utcdatetime.UTCDateTime`,
-    :obj:`~obspy.core.utcdatetime.UTCDateTime`)
-        Limit the analysis to the specified time window.
+    trange : :obj:`tuple`, (t_min, t_max)
+        Limit the analysis to the specified time window. t_min and t_max should either be specified as a tuple of two
+        :obj:`~obspy.core.utcdatetime.UTCDateTime` objects (if timeaxis='utc'), or as a tuple of :obj:`float` (if
+        timeaxis='rel').
     k : :obj:`float`, default=1.
         k-value used in the S-transform, corresponding to a scaling factor that controls the number of oscillations in
         the Gaussian window. When k increases, the frequency resolution increases, with a corresponding loss of time
@@ -77,6 +78,9 @@ class TimeFrequencyAnalysis:
         free surface in order to use the corresponding polarization models.
     verbose : :obj:`bool`, default=True
         Run in verbose mode.
+    timeaxis : :obj:'str', default='utc'
+        Specify whether the time axis of plots is shown in UTC (timeaxis='utc') or in seconds relative to the first
+        sample (timeaxis='rel').
 
     Attributes
     ----------
@@ -102,7 +106,8 @@ class TimeFrequencyAnalysis:
     def __init__(self, traN: Trace, traE: Trace, traZ: Trace, rotN: Trace,
                  rotE: Trace, rotZ: Trace, window: dict, dsfacf: int = 1, dsfact: int = 1,
                  frange: Tuple[float, float] = None, trange: Tuple[UTCDateTime, UTCDateTime] = None, k: float = 1,
-                 scaling_velocity: float = 1., free_surface: bool = True, verbose: bool = True) -> None:
+                 scaling_velocity: float = 1., free_surface: bool = True, verbose: bool = True,
+                 timeaxis: 'str' = 'utc') -> None:
 
         self.traN, self.traE, self.traZ, self.rotN, self.rotE, self.rotZ = traN, traE, traZ, rotN, rotE, rotZ
 
@@ -125,7 +130,11 @@ class TimeFrequencyAnalysis:
         self.dsfact = dsfact
         self.dsfacf = dsfacf
         self.k = k
-        self.time = self.traN.times(type="utcdatetime")
+        self.timeaxis = timeaxis
+        if self.timeaxis == 'utc':
+            self.time = self.traN.times(type="matplotlib")
+        else:
+            self.time = self.traN.times()
         self.scaling_velocity = scaling_velocity
         self.free_surface = free_surface
         self.verbose = verbose

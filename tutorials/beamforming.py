@@ -99,6 +99,7 @@ number_of_sources = 1  # Specify the number of interfering sources that will be 
 array.compute_steering_vectors(frequency=np.mean(freq_band), inclination=inclination, azimuth=azimuth,
                                intra_array_velocity=velocity)
 
+########################################################################################################################
 # Let's now perform beamforming at a specific time. Currently, three different beamforming methods are implemented:
 # 'MUSIC', 'MVDR' (minimum variance distortionless response or Capon Beamformer), and 'BARTLETT'
 # (conventional beamforming). To compute the beam power at time=event_time, we do:

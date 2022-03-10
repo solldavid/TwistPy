@@ -48,7 +48,7 @@ class EstimatorConfiguration:
         sorted in descending order of their corresponding eigenvalue
 
         |  If 0: first eigenvector, corresponding to the dominant signal in
-               the time window (associated with the largest eigenvalue).
+                the time window (associated with the largest eigenvalue).
     music_signal_space_dimension : :obj:´int´, default=1
         Specify the number of overlapping waves for which wave parameters will be estimated using the MUSIC algorithm.
     vp : :obj:`tuple` (vp_min, vp_max, increment)

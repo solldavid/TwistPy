@@ -8,6 +8,19 @@ TwistPy API
 
 Tools for three-component polarization analysis and filtering.
 
+.. currentmodule:: twispy.three
+
+.. automodule:: twistpy.three
+    :no-inherited-members:
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+    :recursive:
+
+    TimeDomainAnalysis
+    TimeFrequencyAnalysis
+
 6C Polarization Analysis
 ------------------------
 

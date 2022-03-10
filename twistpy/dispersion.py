@@ -16,7 +16,7 @@ from twistpy.time import TimeDomainAnalysis
 
 
 class DispersionAnalysis:
-    """
+    r"""
     Single-station six-component surface wave dispersion estimation for Love and Rayleigh waves.
 
     Under the hood, the DispersionAnalysis clas runs a :obj:`~twistpy.time.TimeDomainAnalysis`. The data is
@@ -65,21 +65,21 @@ class DispersionAnalysis:
         List containing the estimated surface wave parameters at each frequency.
         The parameters for each frequency are saved in a dictionary with the following keys:
 
-            'xi': Rayleigh wave ellipticity angle (degrees)
+        |  'xi': Rayleigh wave ellipticity angle (degrees)
 
-            'phi_r': Rayleigh wave back-azimuth (degrees)
+        |  'phi_r': Rayleigh wave back-azimuth (degrees)
 
-            'c_r': Rayleigh wave phase-velocity (m/s)
+        |  'c_r': Rayleigh wave phase-velocity (m/s)
 
-            'phi_l': Love wave back azimuth (degrees)
+        |  'phi_l': Love wave back azimuth (degrees)
 
-            'c_l': Love wave phase velocity (m/s)
+        |  'c_l': Love wave phase velocity (m/s)
 
-            'wave_types': Wave type classification labels
+        |  'wave_types': Wave type classification labels
 
-            'dop': Degree of polarization
+        |  'dop': Degree of polarization
     f : :obj:`numpy.ndarray` of :obj:`float`
-        Frequency vector for parameters
+        Frequency vector for parameters.
     """
 
     def __init__(self, traN: Trace = None, traE: Trace = None, traZ: Trace = None, rotN: Trace = None,
@@ -256,9 +256,9 @@ class DispersionAnalysis:
         ax4.set_xlim(ax2.get_xlim())
         ax3.set_xlim(ax1.get_xlim())
         ax6.set_xlim(ax1.get_xlim())
-        ax4.set_ylim([0, np.max([cr_ndec.max(), cl_ndec.max()])])
-        ax3.set_ylim([0, np.max([cr_ndec.max(), cl_ndec.max()])])
-        ax6.set_ylim([0, np.max([cr_ndec.max(), cl_ndec.max()])])
+        ax4.set_ylim([0, 1.2 * np.max([cr_ndec.max(), cl_ndec.max()])])
+        ax3.set_ylim([0, 1.2 * np.max([cr_ndec.max(), cl_ndec.max()])])
+        ax6.set_ylim([0, 1.2 * np.max([cr_ndec.max(), cl_ndec.max()])])
         ax4.set_ylabel('No. of detections')
 
         im = NonUniformImage(ax7, interpolation='nearest', cmap='magma',
@@ -291,7 +291,7 @@ class DispersionAnalysis:
         plt.show()
 
     def save(self, name: str) -> None:
-        """ Save the current TimeDomainAnalysis object to a file on the disk in the current working directory.
+        """ Save the current DispersionAnalysis object to a file on the disk in the current working directory.
 
          Include absolute path if you want to save in a different directory.
 

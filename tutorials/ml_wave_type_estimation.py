@@ -160,7 +160,7 @@ svm.train(wave_types=['R', 'P', 'SV', 'SH', 'Noise'],
 
 window = {'window_length_seconds': 50. * dt, 'overlap': 0.5}
 analysis = TimeDomainAnalysis(traN=data[0], traE=data[1], traZ=data[2], rotN=data[3], rotE=data[4], rotZ=data[5],
-                              window=window, scaling_velocity=scaling_velocity)
+                              window=window, scaling_velocity=scaling_velocity, timeaxis='rel')
 
 ########################################################################################################################
 # To classify the waves, we simply do (yielding a classification of the first eigenvector of the covariance matrix):
@@ -208,7 +208,7 @@ data.resample(120)
 # Now we set up the polarization analysis in the time-frequency domain and classify the waves:
 
 analysis_tf = TimeFrequencyAnalysis(traN=data[0], traE=data[1], traZ=data[2], rotN=data[3], rotE=data[4], rotZ=data[5],
-                                    window=window)
+                                    window=window, timeaxis='rel')
 analysis_tf.classify(svm=svm, eigenvector_to_classify=0)
 # The classified labels can be obtained as:
 classification_tf = analysis_tf.classification['0']

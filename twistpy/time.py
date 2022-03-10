@@ -56,6 +56,9 @@ class TimeDomainAnalysis:
         free surface in order to use the corresponding polarization models.
     verbose : :obj:`bool`, default=True
         Run in verbose mode.
+    timeaxis : :obj:'str', default='utc'
+        Specify whether the time axis of plots is shown in UTC (timeaxis='utc') or in seconds relative to the first
+        sample (timeaxis='rel').
 
     Attributes
     ----------
@@ -80,7 +83,8 @@ class TimeDomainAnalysis:
 
     def __init__(self, traN: Trace, traE: Trace, traZ: Trace, rotN: Trace,
                  rotE: Trace, rotZ: Trace, window: dict,
-                 scaling_velocity: float = 1., free_surface: bool = True, verbose: bool = True) -> None:
+                 scaling_velocity: float = 1., free_surface: bool = True, verbose: bool = True,
+                 timeaxis: str = 'utc') -> None:
 
         self.dop = None
         self.phi_r = None
@@ -89,6 +93,7 @@ class TimeDomainAnalysis:
         self.phi_l = None
         self.c_l = None
         self.traN, self.traE, self.traZ, self.rotN, self.rotE, self.rotZ = traN, traE, traZ, rotN, rotE, rotZ
+        self.timeaxis = timeaxis
 
         # Assert that input traces are ObsPy Trace objects
         assert isinstance(self.traN, Trace) and isinstance(self.traE, Trace) and isinstance(self.traZ, Trace) \
@@ -101,7 +106,10 @@ class TimeDomainAnalysis:
                and self.traN.stats.npts == self.rotZ.stats.npts, "All six traces must have the same number of samples!"
 
         self.window = window
-        self.time = self.traN.times(type="matplotlib")
+        if self.timeaxis == 'utc':
+            self.time = self.traN.times(type="matplotlib")
+        else:
+            self.time = self.traN.times()
         self.scaling_velocity = scaling_velocity
         self.free_surface = free_surface
         self.verbose = verbose
@@ -292,7 +300,7 @@ class TimeDomainAnalysis:
             if wave_type == 'L':
                 assert self.c_l is not None, 'No polarization attributes for Love waves have been computed so far!'
                 if method == 'ML':
-                    fig, ax = plt.subplots(4, 1, sharex=True, figsize=(10, 8))
+                    fig, ax = plt.subplots(4, 1, sharex=True, figsize=(10, 10))
                     self._plot_seismograms(ax[0])
                     phi_l = self.phi_l
                     phi_l[self.dop < dop_clip] = np.nan
@@ -339,13 +347,18 @@ class TimeDomainAnalysis:
         plt.show()
 
     def _plot_seismograms(self, ax: plt.Axes):
-        ax.plot(self.traN.times(type='matplotlib'), self.traN.data, 'k:', label='traN')
-        ax.plot(self.traE.times(type='matplotlib'), self.traE.data, 'k--', label='traE')
-        ax.plot(self.traZ.times(type='matplotlib'), self.traZ.data, 'k', label='traZ')
-        ax.plot(self.rotN.times(type='matplotlib'), self.rotZ.data, 'r:', label='rotN')
-        ax.plot(self.rotE.times(type='matplotlib'), self.rotE.data, 'r--', label='rotE')
-        ax.plot(self.rotZ.times(type='matplotlib'), self.rotZ.data, 'r', label='rotZ')
-        ax.xaxis_date()
+        if self.timeaxis == 'utc':
+            time = self.traN.times(type='matplotlib')
+        else:
+            time = self.traN.times()
+        ax.plot(time, self.traN.data, 'k:', label='traN')
+        ax.plot(time, self.traE.data, 'k--', label='traE')
+        ax.plot(time, self.traZ.data, 'k', label='traZ')
+        ax.plot(time, self.rotZ.data, 'r:', label='rotN')
+        ax.plot(time, self.rotE.data, 'r--', label='rotE')
+        ax.plot(time, self.rotZ.data, 'r', label='rotZ')
+        if self.timeaxis == 'utc':
+            ax.xaxis_date()
         ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 
     def save(self, name: str) -> None:

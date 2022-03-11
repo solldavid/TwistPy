@@ -75,7 +75,7 @@ class EstimatorConfiguration:
                  music_signal_space_dimension: int = 1,
                  vp: Tuple[float, float, float] = (100., 2000., 100.),
                  vp_to_vs: Tuple[float, float, float] = (1.7, 2.2, 0.1),
-                 vl: Tuple[float, float, float, float] = (100, 2000, 100),
+                 vl: Tuple[float, float, float] = (100, 2000, 100),
                  vr: Tuple[float, float, float] = (100, 2000, 100),
                  phi: Tuple[float, float, float] = (0, 360, 1), theta: Tuple[float, float, float] = (0, 90, 1),
                  xi: Tuple[float, float, float] = (-90, 90, 1)) -> None:
@@ -111,6 +111,13 @@ class EstimatorConfiguration:
         self.eigenvector = eigenvector
         self.music_signal_space_dimension = music_signal_space_dimension
         self.scaling_velocity = scaling_velocity
+        self.vp_n = int((vp[1] + vp[2] - vp[0]) / vp[2])
+        self.vp_to_vs_n = int((vp_to_vs[1] + vp_to_vs[2] - vp_to_vs[0]) / vp_to_vs[2])
+        self.vl_n = int((vl[1] + vl[2] - vl[0]) / vl[2])
+        self.vr_n = int((vr[1] + vr[2] - vr[0]) / vr[2])
+        self.phi_n = int((phi[1] + phi[2] - phi[0]) / phi[2])
+        self.theta_n = int((theta[1] + theta[2] - theta[0]) / theta[2])
+        self.xi_n = int((xi[1] + xi[2] - xi[0]) / xi[2])
 
     def compute_steering_vectors(self, wave_type: str) -> Callable[[], ndarray]:
         """Compute steering vectors for polarization analysis with grid search methods for the specified wave type.
@@ -126,59 +133,64 @@ class EstimatorConfiguration:
             6-C steering vectors. N is the search-space dimension.
         """
         if wave_type == 'P':
-            vp = np.arange(self.vp[0], self.vp[1], self.vp[2])
-            vp_to_vs = np.arange(self.vp_to_vs[0], self.vp_to_vs[1], self.vp_to_vs[2])
-            theta = np.arange(self.theta[0], self.theta[1], self.theta[2])
-            phi = np.arange(self.phi[0], self.phi[1], self.phi[2])
+            vp = np.arange(self.vp[0], self.vp[1] + self.vp[2], self.vp[2])
+            vp_to_vs = np.arange(self.vp_to_vs[0], self.vp_to_vs[1] + self.vp_to_vs[2], self.vp_to_vs[2])
+            theta = np.arange(self.theta[0], self.theta[1] + self.theta[2], self.theta[2])
+            phi = np.arange(self.phi[0], self.phi[1] + self.phi[2], self.phi[2])
 
             vp, vp_to_vs, theta, phi = np.meshgrid(vp, vp_to_vs, theta, phi)
 
             pm = PolarizationModel(wave_type=wave_type, vp=vp.ravel(), vs=vp.ravel() / vp_to_vs.ravel(),
-                                   theta=theta.ravel(), phi=phi.ravel(), scaling_velocity=self.scaling_velocity)
+                                   theta=theta.ravel(), phi=phi.ravel(), scaling_velocity=self.scaling_velocity,
+                                   free_surface=self.free_surface)
             return pm.polarization
 
         elif wave_type == 'SV':
-            vp = np.arange(self.vp[0], self.vp[1], self.vp[2])
-            vp_to_vs = np.arange(self.vp_to_vs[0], self.vp_to_vs[1], self.vp_to_vs[2])
-            theta = np.arange(self.theta[0], self.theta[1], self.theta[2])
-            phi = np.arange(self.phi[0], self.phi[1], self.phi[2])
+            vp = np.arange(self.vp[0], self.vp[1] + self.vp[2], self.vp[2])
+            vp_to_vs = np.arange(self.vp_to_vs[0], self.vp_to_vs[1] + self.vp_to_vs[2], self.vp_to_vs[2])
+            theta = np.arange(self.theta[0], self.theta[1] + self.theta[2], self.theta[2])
+            phi = np.arange(self.phi[0], self.phi[1] + self.phi[2], self.phi[2])
 
             vp, vp_to_vs, theta, phi = np.meshgrid(vp, vp_to_vs, theta, phi)
 
             pm = PolarizationModel(wave_type=wave_type, vp=vp.ravel(), vs=vp.ravel() / vp_to_vs.ravel(),
-                                   theta=theta.ravel(), phi=phi.ravel(), scaling_velocity=self.scaling_velocity)
+                                   theta=theta.ravel(), phi=phi.ravel(), scaling_velocity=self.scaling_velocity,
+                                   free_surface=self.free_surface)
             return pm.polarization
 
         elif wave_type == 'SH':
-            vp = np.arange(self.vp[0], self.vp[1], self.vp[2])
-            vp_to_vs = np.arange(self.vp_to_vs[0], self.vp_to_vs[1], self.vp_to_vs[2])
+            vp = np.arange(self.vp[0], self.vp[1] + self.vp[2], self.vp[2])
+            vp_to_vs = np.arange(self.vp_to_vs[0], self.vp_to_vs[1] + self.vp_to_vs[2], self.vp_to_vs[2])
             vs = vp / vp_to_vs
-            theta = np.arange(self.theta[0], self.theta[1], self.theta[2])
-            phi = np.arange(self.phi[0], self.phi[1], self.phi[2])
+            theta = np.arange(self.theta[0], self.theta[1] + self.theta[2], self.theta[2])
+            phi = np.arange(self.phi[0], self.phi[1] + self.phi[2], self.phi[2])
 
             vs, theta, phi = np.meshgrid(vs, theta, phi)
 
             pm = PolarizationModel(wave_type=wave_type, vs=vs.ravel(),
-                                   theta=theta.ravel(), phi=phi.ravel(), scaling_velocity=self.scaling_velocity)
+                                   theta=theta.ravel(), phi=phi.ravel(), scaling_velocity=self.scaling_velocity,
+                                   free_surface=self.free_surface)
             return pm.polarization
 
         elif wave_type == 'R':
-            vr = np.arange(self.vr[0], self.vr[1], self.vr[2])
-            phi = np.arange(self.phi[0], self.phi[1], self.phi[2])
-            xi = np.arange(self.xi[0], self.xi[1], self.xi[2])
+            vr = np.arange(self.vr[0], self.vr[1] + self.vr[2], self.vr[2])
+            phi = np.arange(self.phi[0], self.phi[1] + self.phi[2], self.phi[2])
+            xi = np.arange(self.xi[0], self.xi[1] + self.xi[2], self.xi[2])
 
-            vp, vp_to_vs, theta, phi = np.meshgrid(vr, phi, xi)
+            vr, phi, xi = np.meshgrid(vr, phi, xi)
 
             pm = PolarizationModel(wave_type=wave_type, vr=vr.ravel(), phi=phi.ravel(), xi=xi.ravel(),
-                                   scaling_velocity=self.scaling_velocity)
+                                   scaling_velocity=self.scaling_velocity,
+                                   free_surface=self.free_surface)
             return pm.polarization
 
         elif wave_type == 'L':
-            vl = np.arange(self.vl[0], self.vl[1], self.vl[2])
-            phi = np.arange(self.phi[0], self.phi[1], self.phi[2])
+            vl = np.arange(self.vl[0], self.vl[1] + self.vl[2], self.vl[2])
+            phi = np.arange(self.phi[0], self.phi[1] + self.phi[2], self.phi[2])
 
             vl, phi = np.meshgrid(vl, phi)
 
             pm = PolarizationModel(wave_type=wave_type, vl=vl.ravel(), phi=phi.ravel(),
-                                   scaling_velocity=self.scaling_velocity)
+                                   scaling_velocity=self.scaling_velocity,
+                                   free_surface=self.free_surface)
             return pm.polarization

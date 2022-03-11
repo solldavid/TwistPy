@@ -92,6 +92,7 @@ class TimeDomainAnalysis:
         self.xi = None
         self.phi_l = None
         self.c_l = None
+        self.P = {'P': None, 'SV': None, 'R': None, 'L': None, 'SH': None}
         self.traN, self.traE, self.traZ, self.rotN, self.rotE, self.rotZ = traN, traE, traZ, rotN, rotE, rotZ
         self.timeaxis = timeaxis
 
@@ -185,7 +186,7 @@ class TimeDomainAnalysis:
         if self.verbose:
             print('Wave types have been classified!')
 
-    def polarization_analysis(self, estimator_configuration: EstimatorConfiguration = None):
+    def polarization_analysis(self, estimator_configuration: EstimatorConfiguration = None, plot: bool = True):
         r"""Perform polarization analysis.
 
         Parameters
@@ -290,10 +291,35 @@ class TimeDomainAnalysis:
                     self.phi_r[indices] = np.degrees(phi_rayleigh)
 
         else:
-            pass
+            for wave_type in estimator_configuration.wave_types:
+                if estimator_configuration.use_ml_classification:
+                    indices = self.classification[str(estimator_configuration.eigenvector)] == wave_type
+                else:
+                    indices = np.ones_like(self.t_windows).astype('bool')
+            steering_vectors = estimator_configuration.compute_steering_vectors(wave_type)
 
-    def plot_polarization_analysis(self, wave_types: List[str] = ['L', 'R'], method: str = 'ML',
+            if estimator_configuration.method == 'MUSIC':
+                noise_space_vectors = \
+                    eigenvectors[indices, :, :6 - estimator_configuration.music_signal_space_dimension]
+                noise_space_vectors_H = np.transpose(noise_space_vectors.conj(), axes=(0, 2, 1))
+                noise_space = np.einsum('...ij, ...jk->...ik', noise_space_vectors, noise_space_vectors_H,
+                                        optimize=True)
+                P = 1 / np.einsum('...sn,...nk,...sk->...s', steering_vectors.conj().T, noise_space, steering_vectors.T,
+                                  optimize=True).real
+            elif estimator_configuration.method == 'MVDR':
+                P = 1 / np.einsum('...sn,...nk,...sk->...s', steering_vectors.conj().T,
+                                  np.linalg.pinv(self.C[indices, :, :], rcond=1e-6, hermitian=True),
+                                  steering_vectors.T, optimize=True).real
+            elif estimator_configuration.method == 'BARTLETT':
+                P = np.einsum('...sn,...nk,...sk->...s', steering_vectors.conj().T,
+                              self.C[indices, :, :], steering_vectors.T, optimize=True).real
+        if plot:
+            self.plot_polarization_analysis(estimator_configuration=estimator_configuration)
+
+    def plot_polarization_analysis(self, estimator_configuration: EstimatorConfiguration,
                                    dop_clip: np.float = 0):
+        wave_types = estimator_configuration.wave_types
+        method = estimator_configuration.method
         if isinstance(wave_types, str):
             wave_types = [wave_types]
         for wave_type in wave_types:

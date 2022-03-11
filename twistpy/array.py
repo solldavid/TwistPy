@@ -11,9 +11,11 @@ from spectrum import dpss
 class BeamformingArray:
     r"""Beamforming using the multi-taper technique.
 
-    Specify a BeamformingArray object that can be used for beamforming using the multi-taper technique [1].
+    Specify a BeamformingArray object that can be used for beamforming using the multi-taper technique [1],[2].
 
-    [1] Meng et al. (2012). High-resoultion backprojection at regional distance. JGR:
+    [1] Meng et al. (2011). A window into the complexity of the dynamic rupture of the 2011 Mw 9 Tohoku-Oki earthquake.
+    GRL:  https://doi.org/10.1029/2011GL048118
+    [2] Meng et al. (2012). High-resoultion backprojection at regional distance. JGR:
     https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2011JB008702
 
     Parameters
@@ -64,7 +66,7 @@ class BeamformingArray:
 
         Parameters
         ----------
-        method : :obj:`str`
+        method : :obj:`str`, default='MUSIC'
              Beamforming method to use.
 
              .. hint:: 'BARTLETT': Conventional beamforming.
@@ -78,8 +80,8 @@ class BeamformingArray:
         frequency_band : :obj:`tuple`
             Frequency band over which beamforming is performed, specified as (minimum_frequency, maximum_frequency).
             (Covariance matrices are averaged within this frequency band)
-        window : :obj:`int`
-            Length of the time window defined as an integer number (number of dominant periods included in the window,
+        window : :obj:`float`
+            Length of the time window defined as the number of dominant periods included in the window,
             where the dominant period is defined as 1/mean(minimum_frequency, maximum_frequency))
         number_of_sources : :obj:`int`
              Number of sources that are estimated  (only relevant for MUSIC, defaults to 1)
@@ -141,13 +143,14 @@ class BeamformingArray:
 
         """
         if isinstance(intra_array_velocity, tuple):
-            velocity_gridded = np.arange(intra_array_velocity[0], intra_array_velocity[1], intra_array_velocity[2])
+            velocity_gridded = np.arange(intra_array_velocity[0], intra_array_velocity[1] + intra_array_velocity[2],
+                                         intra_array_velocity[2])
             self.n_vel = len(velocity_gridded)
         else:
             velocity_gridded = intra_array_velocity
             self.n_vel = 1
-        inclination_gridded = np.radians(np.arange(inclination[0], inclination[1], inclination[2]))
-        azimuth_gridded = np.radians(np.arange(azimuth[0], azimuth[1], azimuth[2]))
+        inclination_gridded = np.radians(np.arange(inclination[0], inclination[1] + inclination[2], inclination[2]))
+        azimuth_gridded = np.radians(np.arange(azimuth[0], azimuth[1] + azimuth[2], azimuth[2]))
         self.n_inc, self.n_azi = len(inclination_gridded), len(azimuth_gridded)
         azimuth_gridded, inclination_gridded, velocity_gridded = np.meshgrid(azimuth_gridded, inclination_gridded,
                                                                              velocity_gridded)
@@ -235,7 +238,7 @@ def cmmt(data: np.ndarray, Nw: int, freq_band: tuple, fsamp: float) -> np.ndarra
     Returns
     -------
     C : :obj:`~numpy.ndarray` of :obj:`~numpy.complex128`
-        Covariance matrices within specified frequency band
+        Covariance matrix averaged within specified frequency band.
 
     """
     # Number of stations (m), time sampling points (Nx)

@@ -184,4 +184,4 @@ est = EstimatorConfiguration(wave_types=['L', 'R'], method='ML', scaling_velocit
                              use_ml_classification=True,
                              svm=svm)
 analysis.polarization_analysis(estimator_configuration=est)
-analysis.plot_polarization_analysis(wave_types=['L', 'R'], dop_clip=0.9)
+analysis.plot_polarization_analysis(estimator_configuration=est, dop_clip=0.9)

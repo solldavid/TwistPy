@@ -14,7 +14,8 @@ rng = np.random.default_rng(1)
 
 ########################################################################################################################
 # Instantiate an object of class BeamformingArray(), the basic interface that we use to perform array processing.
-# We pass a name to uniquely identify the array and the coordinates of the receivers. Additionally, we specify the index
+# We pass a name to uniquely identify the array and the coordinates of the receivers. The coordinates should be defined
+# in a left-handed coordinate system as North, East, Up. Additionally, we specify the index
 # of a reference receiver, all phase delays inside the array are computed with respect to this receiver:
 
 # Define tetrahedral array coordinates

@@ -36,13 +36,13 @@ source_coordinates = np.asarray([0, 0, 0])  # Source at the origin
 
 fig = plt.figure()
 ax = fig.add_subplot(projection="3d")
-ax.scatter(array.coordinates[:, 0], array.coordinates[:, 1], array.coordinates[:, 2], marker='v')
-ax.scatter(array.coordinates[array.reference_receiver, 0], array.coordinates[array.reference_receiver, 1],
+ax.scatter(array.coordinates[:, 1], array.coordinates[:, 0], array.coordinates[:, 2], marker='v')
+ax.scatter(array.coordinates[array.reference_receiver, 1], array.coordinates[array.reference_receiver, 0],
            array.coordinates[array.reference_receiver, 2], marker='v')
-ax.scatter(source_coordinates[0], source_coordinates[1], source_coordinates[2], marker='*')
+ax.scatter(source_coordinates[1], source_coordinates[0], source_coordinates[2], marker='*')
 ax.legend(['Receiver', 'Reference receiver', 'Source'])
-ax.set_xlabel('X')
-ax.set_ylabel('Y')
+ax.set_xlabel('E')
+ax.set_ylabel('N')
 ax.set_zlabel('Z')
 ax.set_box_aspect((np.ptp(ax.get_xlim()), np.ptp(ax.get_ylim()), np.ptp(ax.get_zlim())))
 
@@ -85,8 +85,8 @@ array.add_data(data_st)  # add_data() will automatically check that the data is 
 # Specify parameters for array processing:
 # Frequency band over which to perform frequency-domain beamforming
 
-freq_band = (80., 120.)
-inclination = (-90, 90, 1)  # Search space for the inclination in degrees (min_value, max_value, increment)
+freq_band = (90., 110.)
+inclination = (0, 90, 1)  # Search space for the inclination in degrees (min_value, max_value, increment)
 azimuth = (0, 360, 1)  # Search space for the back-azimuth in degrees (min_value, max_value, increment)
 velocity = 6000.  # Intra-array velocity in m/s, either a float or a tuple as for azimuth and inclination if velocity
 # is unknown and part of the search
@@ -115,43 +115,42 @@ P_BARTLETT = array.beamforming(method='BARTLETT', event_time=event_time, frequen
 # If you want to perform a time-depenent analysis you would slide the window down the data by adjusting event_time
 
 ########################################################################################################################
-# Plot the results:
+# Plot the results. The azimuth is defined clock-wise from the North axis. The inclination is measured from the vertical
+# axis downward.
+
 # Compute the true propagation direction at the center point of the array as a reference to evaluate beamforming
 # performance
-
 propagation_direction = center_point - source_coordinates
 print(np.linalg.norm(propagation_direction))
 propagation_direction = propagation_direction / np.linalg.norm(propagation_direction)
 
-if propagation_direction[0] > 0:
-    azimuth_true = np.arctan(propagation_direction[1] / propagation_direction[0])
-elif propagation_direction[0] < 0:
-    azimuth_true = np.arctan(propagation_direction[0] / propagation_direction[1])
-else:
-    azimuth_true = np.pi / 2
+# negative to go from counter-clockwise to clockwise definition of angles
+azimuth_true = np.arctan2(propagation_direction[1], propagation_direction[0])
+if azimuth_true < 0:
+    azimuth_true += 2 * np.pi
 inclination_true = np.arctan(np.linalg.norm(propagation_direction[:-1]) / propagation_direction[2])
 
 # Plot beamforming results obtained with the 3 different methods
 fig_bf, ax_bf = plt.subplots(3, 1, sharex=True, sharey=True, figsize=(10, 12))
-ax_bf[0].imshow(P_MUSIC, extent=[azimuth[0], azimuth[1], inclination[1], inclination[0]])
+ax_bf[0].imshow(P_MUSIC, extent=[azimuth[0], azimuth[1], inclination[0], inclination[1]], origin='lower')
 ax_bf[0].plot(np.degrees(azimuth_true), np.degrees(inclination_true), 'r*')
 ax_bf[0].set_xlabel('Azimuth (degrees)')
 ax_bf[0].set_ylabel('Inclination (degrees)')
-ax_bf[0].legend(['True'])
+ax_bf[0].legend(['True'], loc='center left', bbox_to_anchor=(1, 0.5))
 ax_bf[0].set_title('MUSIC')
 
-ax_bf[1].imshow(P_MVDR, extent=[azimuth[0], azimuth[1], inclination[1], inclination[0]])
+ax_bf[1].imshow(P_MVDR, extent=[azimuth[0], azimuth[1], inclination[0], inclination[1]], origin='lower')
 ax_bf[1].plot(np.degrees(azimuth_true), np.degrees(inclination_true), 'r*')
 ax_bf[1].set_xlabel('Azimuth (degrees)')
 ax_bf[1].set_ylabel('Inclination (degrees)')
-ax_bf[1].legend(['True'])
+ax_bf[1].legend(['True'], loc='center left', bbox_to_anchor=(1, 0.5))
 ax_bf[1].set_title('MVDR (Capon)')
 
-ax_bf[2].imshow(P_BARTLETT, extent=[azimuth[0], azimuth[1], inclination[1], inclination[0]])
+ax_bf[2].imshow(P_BARTLETT, extent=[azimuth[0], azimuth[1], inclination[0], inclination[1]], origin='lower')
 ax_bf[2].plot(np.degrees(azimuth_true), np.degrees(inclination_true), 'r*')
 ax_bf[2].set_xlabel('Azimuth (degrees)')
 ax_bf[2].set_ylabel('Inclination (degrees)')
-ax_bf[2].legend(['True'])
+ax_bf[2].legend(['True'], loc='center left', bbox_to_anchor=(1, 0.5))
 ax_bf[2].set_title('BARTLETT')
 
 ########################################################################################################################
@@ -160,7 +159,7 @@ ax_bf[2].set_title('BARTLETT')
 # Plot the beam in 3D domain
 nx, ny, nz = 111, 111, 61  # number of points in x-, y- and z- direction where beam is plotted
 xmin, xmax = 0, 110  # min and max locations in x-direction where beam will be plotted
-ymin, ymax = 0, 110
+ymin, ymax = 0, 100
 zmin, zmax = 0, 60
 x = np.linspace(xmin, xmax, nx)
 y = np.linspace(ymin, ymax, ny)
@@ -174,37 +173,37 @@ beam_origin = center_point  # location where the origin of the beam is located
 fig_beam, ax_beam = plt.subplots(3, 1, figsize=(10, 15), subplot_kw={'projection': '3d'})
 
 plot_beam(grid, beam_origin, P_MUSIC, inclination, azimuth, ax=ax_beam[0])  # Helper function to plot the beam power
-ax_beam[0].scatter(array.coordinates[:, 0], array.coordinates[:, 1], array.coordinates[:, 2], marker='v')
-ax_beam[0].scatter(array.coordinates[array.reference_receiver, 0], array.coordinates[array.reference_receiver, 1],
+ax_beam[0].scatter(array.coordinates[:, 1], array.coordinates[:, 0], array.coordinates[:, 2], marker='v')
+ax_beam[0].scatter(array.coordinates[array.reference_receiver, 1], array.coordinates[array.reference_receiver, 0],
                    array.coordinates[array.reference_receiver, 2], marker='v')
-ax_beam[0].scatter(source_coordinates[0], source_coordinates[1], source_coordinates[2], marker='*')
-ax_beam[0].set_xlabel('X')
-ax_beam[0].set_ylabel('Y')
+ax_beam[0].scatter(source_coordinates[1], source_coordinates[0], source_coordinates[2], marker='*')
+ax_beam[0].set_xlabel('E')
+ax_beam[0].set_ylabel('N')
 ax_beam[0].set_zlabel('Z')
 ax_beam[0].set_box_aspect((np.ptp(ax.get_xlim()), np.ptp(ax.get_ylim()), np.ptp(ax.get_zlim())))
 ax_beam[0].set_title('MUSIC')
 
-plot_beam(grid, beam_origin, P_MVDR, inclination, azimuth, ax=ax_beam[1], clip=0.1)
-ax_beam[1].scatter(array.coordinates[:, 0], array.coordinates[:, 1], array.coordinates[:, 2], marker='v')
-ax_beam[1].scatter(array.coordinates[array.reference_receiver, 0], array.coordinates[array.reference_receiver, 1],
+plot_beam(grid, beam_origin, P_MVDR, inclination, azimuth, ax=ax_beam[1], clip=0.05)
+ax_beam[1].scatter(array.coordinates[:, 1], array.coordinates[:, 0], array.coordinates[:, 2], marker='v')
+ax_beam[1].scatter(array.coordinates[array.reference_receiver, 1], array.coordinates[array.reference_receiver, 0],
                    array.coordinates[array.reference_receiver, 2], marker='v')
-ax_beam[1].scatter(source_coordinates[0], source_coordinates[1], source_coordinates[2], marker='*')
-ax_beam[1].set_xlabel('X')
-ax_beam[1].set_ylabel('Y')
+ax_beam[1].scatter(source_coordinates[1], source_coordinates[0], source_coordinates[2], marker='*')
+ax_beam[1].set_xlabel('E')
+ax_beam[1].set_ylabel('N')
 ax_beam[1].set_zlabel('Z')
 ax_beam[1].set_box_aspect((np.ptp(ax.get_xlim()), np.ptp(ax.get_ylim()), np.ptp(ax.get_zlim())))
 ax_beam[1].set_title('MVDR (Capon)')
 
 plot_beam(grid, beam_origin, P_BARTLETT, inclination, azimuth, ax=ax_beam[2], clip=0.8)
-ax_beam[2].scatter(array.coordinates[:, 0], array.coordinates[:, 1], array.coordinates[:, 2], marker='v')
-ax_beam[2].scatter(array.coordinates[array.reference_receiver, 0], array.coordinates[array.reference_receiver, 1],
+ax_beam[2].scatter(array.coordinates[:, 1], array.coordinates[:, 0], array.coordinates[:, 2], marker='v')
+ax_beam[2].scatter(array.coordinates[array.reference_receiver, 1], array.coordinates[array.reference_receiver, 0],
                    array.coordinates[array.reference_receiver, 2], marker='v')
-ax_beam[2].scatter(source_coordinates[0], source_coordinates[1], source_coordinates[2], marker='*')
-ax_beam[2].set_xlabel('X')
-ax_beam[2].set_ylabel('Y')
+ax_beam[2].scatter(source_coordinates[1], source_coordinates[0], source_coordinates[2], marker='*')
+ax_beam[2].set_xlabel('E')
+ax_beam[2].set_ylabel('N')
 ax_beam[2].set_zlabel('Z')
 ax_beam[2].set_box_aspect((np.ptp(ax.get_xlim()), np.ptp(ax.get_ylim()), np.ptp(ax.get_zlim())))
 ax_beam[2].set_title('BARTLETT')
-
+plt.show()
 ########################################################################################################################
 # If multiple arrays are available, the beamforming results can be summed to provide a location.

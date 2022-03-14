@@ -152,8 +152,8 @@ class BeamformingArray:
         inclination_gridded = np.radians(np.arange(inclination[0], inclination[1] + inclination[2], inclination[2]))
         azimuth_gridded = np.radians(np.arange(azimuth[0], azimuth[1] + azimuth[2], azimuth[2]))
         self.n_inc, self.n_azi = len(inclination_gridded), len(azimuth_gridded)
-        azimuth_gridded, inclination_gridded, velocity_gridded = np.meshgrid(azimuth_gridded, inclination_gridded,
-                                                                             velocity_gridded)
+        inclination_gridded, azimuth_gridded, velocity_gridded = np.meshgrid(inclination_gridded, azimuth_gridded,
+                                                                             velocity_gridded, indexing='ij')
         coordinates = self.coordinates - np.tile(self.coordinates[self.reference_receiver, :], (self.N, 1))
         wave_vector_x = (np.sin(inclination_gridded) * np.cos(azimuth_gridded)).ravel()
         wave_vector_y = (np.sin(inclination_gridded) * np.sin(azimuth_gridded)).ravel()
@@ -309,17 +309,19 @@ def plot_beam(grid: np.ndarray, beam_origin: np.ndarray, P: np.ndarray, inclinat
     """
     dxdydz = beam_origin - grid
     azimuth_grid = np.degrees(np.arctan2(dxdydz[:, 1], dxdydz[:, 0]))
+    azimuth_grid[azimuth_grid < 0] += 360
     azimuth_grid = np.around(azimuth_grid / azimuth[2], decimals=0) * azimuth[2]
     inclination_grid = np.degrees(np.arctan(np.linalg.norm(dxdydz[:, :-1], axis=1) / dxdydz[:, 2]))
+    inclination_grid[inclination_grid < 0] += 180
     inclination_grid = np.around(inclination_grid / inclination[2], decimals=0) * inclination[2]
     inclination_grid_index = ((inclination_grid - inclination[0]) / inclination[2]).astype(int)
     azimuth_grid_index = ((azimuth_grid - azimuth[0]) / azimuth[2]).astype(int)
     inclination_grid_index_use = (inclination_grid_index < P.shape[0]) * (inclination_grid_index > 0)
-    azimuth_grid_index_use = (azimuth_grid_index < P.shape[0]) * (azimuth_grid_index > 0)
+    azimuth_grid_index_use = (azimuth_grid_index < P.shape[1]) * (azimuth_grid_index > 0)
     use = inclination_grid_index_use * azimuth_grid_index_use
     beam_power_grid = P[inclination_grid_index[use], azimuth_grid_index[use]].ravel()
     grid = grid[use]
     grid = grid[beam_power_grid > clip * P.max().max(), :]
     beam_power_grid = beam_power_grid[beam_power_grid > clip * P.max().max()]
-    ax.scatter(grid[:, 0], grid[:, 1], grid[:, 2], marker='.', c=beam_power_grid, vmin=clip * P.max().max(),
+    ax.scatter(grid[:, 1], grid[:, 0], grid[:, 2], marker='.', c=beam_power_grid, vmin=clip * P.max().max(),
                vmax=P.max().max(), cmap='inferno')

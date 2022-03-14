@@ -138,7 +138,7 @@ class EstimatorConfiguration:
             theta = np.arange(self.theta[0], self.theta[1] + self.theta[2], self.theta[2])
             phi = np.arange(self.phi[0], self.phi[1] + self.phi[2], self.phi[2])
 
-            vp, vp_to_vs, theta, phi = np.meshgrid(vp, vp_to_vs, theta, phi)
+            vp, vp_to_vs, theta, phi = np.meshgrid(vp, vp_to_vs, theta, phi, indexing='ij')
 
             pm = PolarizationModel(wave_type=wave_type, vp=vp.ravel(), vs=vp.ravel() / vp_to_vs.ravel(),
                                    theta=theta.ravel(), phi=phi.ravel(), scaling_velocity=self.scaling_velocity,
@@ -151,7 +151,7 @@ class EstimatorConfiguration:
             theta = np.arange(self.theta[0], self.theta[1] + self.theta[2], self.theta[2])
             phi = np.arange(self.phi[0], self.phi[1] + self.phi[2], self.phi[2])
 
-            vp, vp_to_vs, theta, phi = np.meshgrid(vp, vp_to_vs, theta, phi)
+            vp, vp_to_vs, theta, phi = np.meshgrid(vp, vp_to_vs, theta, phi, indexing='ij')
 
             pm = PolarizationModel(wave_type=wave_type, vp=vp.ravel(), vs=vp.ravel() / vp_to_vs.ravel(),
                                    theta=theta.ravel(), phi=phi.ravel(), scaling_velocity=self.scaling_velocity,
@@ -165,7 +165,7 @@ class EstimatorConfiguration:
             theta = np.arange(self.theta[0], self.theta[1] + self.theta[2], self.theta[2])
             phi = np.arange(self.phi[0], self.phi[1] + self.phi[2], self.phi[2])
 
-            vs, theta, phi = np.meshgrid(vs, theta, phi)
+            vs, theta, phi = np.meshgrid(vs, theta, phi, indexing='ij')
 
             pm = PolarizationModel(wave_type=wave_type, vs=vs.ravel(),
                                    theta=theta.ravel(), phi=phi.ravel(), scaling_velocity=self.scaling_velocity,
@@ -177,7 +177,7 @@ class EstimatorConfiguration:
             phi = np.arange(self.phi[0], self.phi[1] + self.phi[2], self.phi[2])
             xi = np.arange(self.xi[0], self.xi[1] + self.xi[2], self.xi[2])
 
-            vr, phi, xi = np.meshgrid(vr, phi, xi)
+            vr, phi, xi = np.meshgrid(vr, phi, xi, indexing='ij')
 
             pm = PolarizationModel(wave_type=wave_type, vr=vr.ravel(), phi=phi.ravel(), xi=xi.ravel(),
                                    scaling_velocity=self.scaling_velocity,
@@ -188,7 +188,7 @@ class EstimatorConfiguration:
             vl = np.arange(self.vl[0], self.vl[1] + self.vl[2], self.vl[2])
             phi = np.arange(self.phi[0], self.phi[1] + self.phi[2], self.phi[2])
 
-            vl, phi = np.meshgrid(vl, phi)
+            vl, phi = np.meshgrid(vl, phi, indexing='ij')
 
             pm = PolarizationModel(wave_type=wave_type, vl=vl.ravel(), phi=phi.ravel(),
                                    scaling_velocity=self.scaling_velocity,

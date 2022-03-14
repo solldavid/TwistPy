@@ -296,23 +296,23 @@ class TimeDomainAnalysis:
                     indices = self.classification[str(estimator_configuration.eigenvector)] == wave_type
                 else:
                     indices = np.ones_like(self.t_windows).astype('bool')
-            steering_vectors = estimator_configuration.compute_steering_vectors(wave_type)
+                steering_vectors = estimator_configuration.compute_steering_vectors(wave_type)
 
-            if estimator_configuration.method == 'MUSIC':
-                noise_space_vectors = \
-                    eigenvectors[indices, :, :6 - estimator_configuration.music_signal_space_dimension]
-                noise_space_vectors_H = np.transpose(noise_space_vectors.conj(), axes=(0, 2, 1))
-                noise_space = np.einsum('...ij, ...jk->...ik', noise_space_vectors, noise_space_vectors_H,
-                                        optimize=True)
-                P = 1 / np.einsum('...sn,...nk,...sk->...s', steering_vectors.conj().T, noise_space, steering_vectors.T,
-                                  optimize=True).real
-            elif estimator_configuration.method == 'MVDR':
-                P = 1 / np.einsum('...sn,...nk,...sk->...s', steering_vectors.conj().T,
-                                  np.linalg.pinv(self.C[indices, :, :], rcond=1e-6, hermitian=True),
-                                  steering_vectors.T, optimize=True).real
-            elif estimator_configuration.method == 'BARTLETT':
-                P = np.einsum('...sn,...nk,...sk->...s', steering_vectors.conj().T,
-                              self.C[indices, :, :], steering_vectors.T, optimize=True).real
+                if estimator_configuration.method == 'MUSIC':
+                    noise_space_vectors = \
+                        eigenvectors[indices, :, :6 - estimator_configuration.music_signal_space_dimension]
+                    noise_space_vectors_H = np.transpose(noise_space_vectors.conj(), axes=(0, 2, 1))
+                    noise_space = np.einsum('...ij, ...jk->...ik', noise_space_vectors, noise_space_vectors_H,
+                                            optimize=True)
+                    P = 1 / np.einsum('...sn,...nk,...sk->...s', steering_vectors.conj().T, noise_space,
+                                      steering_vectors.T, optimize=True).real
+                elif estimator_configuration.method == 'MVDR':
+                    P = 1 / np.einsum('...sn,...nk,...sk->...s', steering_vectors.conj().T,
+                                      np.linalg.pinv(self.C[indices, :, :], rcond=1e-6, hermitian=True),
+                                      steering_vectors.T, optimize=True).real
+                elif estimator_configuration.method == 'BARTLETT':
+                    P = np.einsum('...sn,...nk,...sk->...s', steering_vectors.conj().T,
+                                  self.C[indices, :, :], steering_vectors.T, optimize=True).real
         if plot:
             self.plot_polarization_analysis(estimator_configuration=estimator_configuration)
 

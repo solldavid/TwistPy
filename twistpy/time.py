@@ -186,7 +186,7 @@ class TimeDomainAnalysis:
         if self.verbose:
             print('Wave types have been classified!')
 
-    def polarization_analysis(self, estimator_configuration: EstimatorConfiguration = None, plot: bool = True):
+    def polarization_analysis(self, estimator_configuration: EstimatorConfiguration = None, plot: bool = False):
         r"""Perform polarization analysis.
 
         Parameters

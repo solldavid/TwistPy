@@ -155,12 +155,39 @@ ax_bf[2].legend(['True'], loc='center left', bbox_to_anchor=(1, 0.5))
 ax_bf[2].set_title('BARTLETT')
 
 ########################################################################################################################
+# For a polar plot with the azimuth plotted as the polar angle and the inclination as the radius:
+
+azi_plot = np.arange(azimuth[0], azimuth[1] + azimuth[2], azimuth[2])
+inc_plot = np.arange(inclination[0], inclination[1] + inclination[2], inclination[2])
+
+azi_plot, inc_plot = np.meshgrid(np.radians(azi_plot), inc_plot)
+
+fig_bf_polar, ax_bf_polar = plt.subplots(1, 3, sharex=True, sharey=True, figsize=(10, 6), subplot_kw=dict(polar=True))
+for ax_p in ax_bf_polar:
+    ax_p.set_theta_direction(-1)
+    ax_p.set_theta_offset(np.pi / 2.0)
+ax_bf_polar[0].pcolormesh(azi_plot, inc_plot, P_MUSIC.squeeze())
+ax_bf_polar[0].plot(azimuth_true, np.degrees(inclination_true), 'r.')
+ax_bf_polar[0].legend(['True'], loc='center left', bbox_to_anchor=(1.5, 0.5))
+ax_bf_polar[0].set_title('MUSIC')
+
+ax_bf_polar[1].pcolormesh(azi_plot, inc_plot, P_MVDR.squeeze())
+ax_bf_polar[1].plot(azimuth_true, np.degrees(inclination_true), 'r.')
+ax_bf_polar[1].legend(['True'], loc='center left', bbox_to_anchor=(1.5, 0.5))
+ax_bf_polar[1].set_title('MVDR (Capon)')
+
+ax_bf_polar[2].pcolormesh(azi_plot, inc_plot, P_BARTLETT.squeeze())
+ax_bf_polar[2].plot(azimuth_true, np.degrees(inclination_true), 'r.')
+ax_bf_polar[2].legend(['True'], loc='center left', bbox_to_anchor=(1.5, 0.5))
+ax_bf_polar[2].set_title('BARTLETT')
+
+########################################################################################################################
 # To visualize the beam power in 3D, we use a simple back-projection of the beam assuming straight rays:
 
 # Plot the beam in 3D domain
 nx, ny, nz = 111, 111, 61  # number of points in x-, y- and z- direction where beam is plotted
 xmin, xmax = 0, 110  # min and max locations in x-direction where beam will be plotted
-ymin, ymax = 0, 100
+ymin, ymax = 0, 110
 zmin, zmax = 0, 60
 x = np.linspace(xmin, xmax, nx)
 y = np.linspace(ymin, ymax, ny)

@@ -12,6 +12,8 @@ from twistpy.convenience import generate_synthetics, to_obspy_stream
 
 rng = np.random.default_rng(1)
 
+# sphinx_gallery_thumbnail_number = 4
+
 ########################################################################################################################
 # Instantiate an object of class BeamformingArray(), the basic interface that we use to perform array processing.
 # We pass a name to uniquely identify the array and the coordinates of the receivers. The coordinates should be defined
@@ -117,7 +119,8 @@ P_BARTLETT = array.beamforming(method='BARTLETT', event_time=event_time, frequen
 
 ########################################################################################################################
 # Plot the results. The azimuth is defined clock-wise from the North axis. The inclination is measured from the vertical
-# axis downward.
+# axis downward. The extracted azimuth and inclination point into the direction of propagation of the wave (away from
+# the source).
 
 # Compute the true propagation direction at the center point of the array as a reference to evaluate beamforming
 # performance
@@ -162,23 +165,17 @@ inc_plot = np.arange(inclination[0], inclination[1] + inclination[2], inclinatio
 
 azi_plot, inc_plot = np.meshgrid(np.radians(azi_plot), inc_plot)
 
-fig_bf_polar, ax_bf_polar = plt.subplots(1, 3, sharex=True, sharey=True, figsize=(10, 6), subplot_kw=dict(polar=True))
+fig_bf_polar, ax_bf_polar = plt.subplots(1, 3, sharex=True, sharey=True, figsize=(15, 6), subplot_kw=dict(polar=True))
 for ax_p in ax_bf_polar:
     ax_p.set_theta_direction(-1)
     ax_p.set_theta_offset(np.pi / 2.0)
 ax_bf_polar[0].pcolormesh(azi_plot, inc_plot, P_MUSIC.squeeze())
-ax_bf_polar[0].plot(azimuth_true, np.degrees(inclination_true), 'r.')
-ax_bf_polar[0].legend(['True'], loc='center left', bbox_to_anchor=(1.5, 0.5))
 ax_bf_polar[0].set_title('MUSIC')
 
 ax_bf_polar[1].pcolormesh(azi_plot, inc_plot, P_MVDR.squeeze())
-ax_bf_polar[1].plot(azimuth_true, np.degrees(inclination_true), 'r.')
-ax_bf_polar[1].legend(['True'], loc='center left', bbox_to_anchor=(1.5, 0.5))
 ax_bf_polar[1].set_title('MVDR (Capon)')
 
 ax_bf_polar[2].pcolormesh(azi_plot, inc_plot, P_BARTLETT.squeeze())
-ax_bf_polar[2].plot(azimuth_true, np.degrees(inclination_true), 'r.')
-ax_bf_polar[2].legend(['True'], loc='center left', bbox_to_anchor=(1.5, 0.5))
 ax_bf_polar[2].set_title('BARTLETT')
 
 ########################################################################################################################

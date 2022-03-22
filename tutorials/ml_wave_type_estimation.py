@@ -9,11 +9,12 @@ import numpy as np
 from obspy.core import Trace, Stream
 from scipy.signal import hilbert, convolve
 
-from twistpy import TimeDomainAnalysis, TimeFrequencyAnalysis, PolarizationModel
 from twistpy.convenience import ricker
-from twistpy.machinelearning import SupportVectorMachine
+from twistpy.polarization import TimeDomainAnalysis6C, TimeFrequencyAnalysis6C, PolarizationModel, SupportVectorMachine
 
 rng = np.random.default_rng(1)
+
+# sphinx_gallery_thumbnail_number = -1
 
 ########################################################################################################################
 # We start by generating a very simple synthetic data set for illustration purposes. The data will contain isolated wave
@@ -159,8 +160,8 @@ svm.train(wave_types=['R', 'P', 'SV', 'SH', 'Noise'],
 # 50%.
 
 window = {'window_length_seconds': 50. * dt, 'overlap': 0.5}
-analysis = TimeDomainAnalysis(traN=data[0], traE=data[1], traZ=data[2], rotN=data[3], rotE=data[4], rotZ=data[5],
-                              window=window, scaling_velocity=scaling_velocity, timeaxis='rel')
+analysis = TimeDomainAnalysis6C(traN=data[0], traE=data[1], traZ=data[2], rotN=data[3], rotE=data[4], rotZ=data[5],
+                                window=window, scaling_velocity=scaling_velocity, timeaxis='rel')
 
 ########################################################################################################################
 # To classify the waves, we simply do (yielding a classification of the first eigenvector of the covariance matrix):
@@ -207,15 +208,16 @@ data.resample(120)
 ########################################################################################################################
 # Now we set up the polarization analysis in the time-frequency domain and classify the waves:
 
-analysis_tf = TimeFrequencyAnalysis(traN=data[0], traE=data[1], traZ=data[2], rotN=data[3], rotE=data[4], rotZ=data[5],
-                                    window=window, timeaxis='rel')
+analysis_tf = TimeFrequencyAnalysis6C(traN=data[0], traE=data[1], traZ=data[2], rotN=data[3], rotE=data[4],
+                                      rotZ=data[5],
+                                      window=window, timeaxis='rel')
 analysis_tf.classify(svm=svm, eigenvector_to_classify=0)
 # The classified labels can be obtained as:
 classification_tf = analysis_tf.classification['0']
 
 ########################################################################################################################
-# Now we can plot the classification using the TimeFrequencyAnalysis.plot_classification() method. We additionally plot
-# the S-transform of the vertical translational component.
+# Now we can plot the classification using the TimeFrequencyAnalysis6C.plot_classification() method. We additionally
+# plot the S-transform of the vertical translational component.
 
 from twistpy.utils import s_transform
 

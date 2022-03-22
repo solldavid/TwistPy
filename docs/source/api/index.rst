@@ -8,9 +8,9 @@ TwistPy API
 
 Tools for three-component polarization analysis and filtering.
 
-.. currentmodule:: twispy.three
+.. currentmodule:: twispy.polarization
 
-.. automodule:: twistpy.three
+.. automodule:: twistpy.polarization
     :no-inherited-members:
 
 .. autosummary::
@@ -18,17 +18,17 @@ Tools for three-component polarization analysis and filtering.
     :nosignatures:
     :recursive:
 
-    TimeDomainAnalysis
-    TimeFrequencyAnalysis
+    TimeDomainAnalysis3C
+    TimeFrequencyAnalysis3C
 
 6C Polarization Analysis
 ------------------------
 
 Tools for six-component polarization analysis and filtering.
 
-.. currentmodule:: twistpy
+.. currentmodule:: twistpy.polarization
 
-.. automodule:: twistpy
+.. automodule:: twistpy.polarization
     :no-inherited-members:
 
 .. autosummary::
@@ -37,8 +37,8 @@ Tools for six-component polarization analysis and filtering.
     :recursive:
 
     DispersionAnalysis
-    TimeDomainAnalysis
-    TimeFrequencyAnalysis
+    TimeDomainAnalysis6C
+    TimeFrequencyAnalysis6C
     EstimatorConfiguration
 
 Polarization Models
@@ -46,9 +46,9 @@ Polarization Models
 
 Pure-state polarization models.
 
-.. currentmodule:: twistpy
+.. currentmodule:: twistpy.polarization
 
-.. automodule:: twistpy
+.. automodule:: twistpy.polarization
     :no-inherited-members:
 
 .. autosummary::
@@ -77,9 +77,9 @@ Tools for array processing.
 
 Machine Learning
 ----------------
-.. currentmodule:: twistpy
+.. currentmodule:: twistpy.polarization
 
-.. automodule:: twistpy
+.. automodule:: twistpy.polarization
     :no-inherited-members:
 
 .. autosummary::

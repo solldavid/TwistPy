@@ -9,11 +9,12 @@ import numpy as np
 from obspy.core import Trace, Stream
 from scipy.signal import hilbert, convolve
 
-from twistpy import TimeDomainAnalysis, PolarizationModel
 from twistpy.convenience import ricker
-from twistpy.machinelearning import SupportVectorMachine
+from twistpy.polarization import TimeDomainAnalysis6C, PolarizationModel, SupportVectorMachine
 
 rng = np.random.default_rng(1)
+
+# sphinx_gallery_thumbnail_number = -1
 
 ########################################################################################################################
 # We start by generating a very simple synthetic data set for illustration purposes. The data will contain isolated wave
@@ -167,8 +168,8 @@ svm.train(wave_types=['R', 'P', 'SV', 'L', 'Noise'],
 # 50%.
 
 window = {'window_length_seconds': 20. * dt, 'overlap': 0.5}
-analysis = TimeDomainAnalysis(traN=data[0], traE=data[1], traZ=data[2], rotN=data[3], rotE=data[4], rotZ=data[5],
-                              window=window, scaling_velocity=scaling_velocity, timeaxis='rel')
+analysis = TimeDomainAnalysis6C(traN=data[0], traE=data[1], traZ=data[2], rotN=data[3], rotE=data[4], rotZ=data[5],
+                                window=window, scaling_velocity=scaling_velocity, timeaxis='rel')
 
 ########################################################################################################################
 # To classify the waves, we simply do (yielding a classification of the first eigenvector of the covariance matrix):
@@ -178,7 +179,7 @@ classification = analysis.classification['0']
 t_windows = analysis.t_windows  # Positions of the sliding time windows where the classification was performed
 
 #  Wave parameter estimation
-from twistpy import EstimatorConfiguration
+from twistpy.polarization import EstimatorConfiguration
 
 est = EstimatorConfiguration(wave_types=['L', 'R'], method='ML', scaling_velocity=scaling_velocity,
                              use_ml_classification=True,

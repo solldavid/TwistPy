@@ -10,9 +10,7 @@ import numpy as np
 from scipy.fft import irfft
 from scipy.signal.windows import tukey
 
-import twistpy
-
-rng = np.random.default_rng(1)
+from twistpy.utils import s_transform, i_s_transform
 
 ########################################################################################################################
 # Here, we generate a simple signal consisting of two superimposed sinusoids at 10 and 30 Hz.
@@ -34,8 +32,8 @@ u *= taper
 ########################################################################################################################
 # The S-transform can be obtained with different k-values as:
 
-u_stran_k1, f = twistpy.utils.s_transform(u, k=1)  # Compute the S-transform with k=1
-u_stran_k3, _ = twistpy.utils.s_transform(u, k=3)  # Compute the S-transform with k=3
+u_stran_k1, f = s_transform(u, k=1)  # Compute the S-transform with k=1
+u_stran_k3, _ = s_transform(u, k=3)  # Compute the S-transform with k=3
 f_Hz = f / dt  # Convert frequency vector to Hz
 
 figure, axes = plt.subplots(3, 1, sharex=True)
@@ -60,8 +58,8 @@ axes[2].set_title('S-transform (k=3)')
 # lower time-resolution. The inverse S-transform after Schimmel and Gallart (2005,
 # https://doi.org/10.1109/TSP.2005.857065) can now be obtained as:
 
-u_ist_k1 = twistpy.utils.i_s_transform(u_stran_k1, f)
-u_ist_k3 = twistpy.utils.i_s_transform(u_stran_k3, f, k=3)
+u_ist_k1 = i_s_transform(u_stran_k1, f)
+u_ist_k3 = i_s_transform(u_stran_k3, f, k=3)
 
 plt.figure()
 plt.plot(t, u, 'k', label='Original signal')
@@ -87,7 +85,7 @@ filter_mask[filter_mask_index[1][0]:filter_mask_index[1][1],
 filter_mask_index[0][0]:filter_mask_index[0][1]] = 1
 
 u_filt_schimmel = \
-    twistpy.utils.i_s_transform(u_stran_k1 * filter_mask, f, k=1)  # Inverse S-transform after Schimmel
+    i_s_transform(u_stran_k1 * filter_mask, f, k=1)  # Inverse S-transform after Schimmel
 u_filt_conventional = \
     irfft(np.sum(u_stran_k1 * filter_mask, axis=-1))  # Conventional inverse S-transform
 

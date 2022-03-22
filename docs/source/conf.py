@@ -76,7 +76,8 @@ sphinx_gallery_conf = {
     # Insert links to documentation of objects in the examples
     'reference_url': {'twistpy': None},
     'first_notebook_cell': ("%matplotlib inline"),
-    'run_stale_examples': True,
+    'run_stale_examples': False,
+    'inspect_global_variables': False,
 }
 
 ## Default flags used by autodoc directives
@@ -99,7 +100,7 @@ project = 'TwistPy'
 copyright = f'{year}, David Sollberger'
 
 # The full version, including alpha/beta/rc tags
-release = '0.1'
+release = '0.0.1'
 
 html_last_updated_fmt = '%b %d, %Y'
 html_title = 'TwistPy'

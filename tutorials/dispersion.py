@@ -8,8 +8,8 @@ ambient noise.
 import numpy as np
 from obspy.core import read
 
-from twistpy import DispersionAnalysis
-from twistpy.machinelearning import SupportVectorMachine
+from twistpy.polarization import DispersionAnalysis
+from twistpy.polarization.machinelearning import SupportVectorMachine
 
 scaling_velocity = 800.
 

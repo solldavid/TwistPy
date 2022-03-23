@@ -7,7 +7,7 @@ import numpy as np
 from numpy import ndarray
 
 from twistpy.polarization.machinelearning import SupportVectorMachine
-from twistpy.polarization.model import PolarizationModel
+from twistpy.polarization.model import PolarizationModel6C
 
 
 class EstimatorConfiguration:
@@ -140,9 +140,9 @@ class EstimatorConfiguration:
 
             vp, vp_to_vs, theta, phi = np.meshgrid(vp, vp_to_vs, theta, phi, indexing='ij')
 
-            pm = PolarizationModel(wave_type=wave_type, vp=vp.ravel(), vs=vp.ravel() / vp_to_vs.ravel(),
-                                   theta=theta.ravel(), phi=phi.ravel(), scaling_velocity=self.scaling_velocity,
-                                   free_surface=self.free_surface)
+            pm = PolarizationModel6C(wave_type=wave_type, vp=vp.ravel(), vs=vp.ravel() / vp_to_vs.ravel(),
+                                     theta=theta.ravel(), phi=phi.ravel(), scaling_velocity=self.scaling_velocity,
+                                     free_surface=self.free_surface)
             return pm.polarization
 
         elif wave_type == 'SV':
@@ -153,9 +153,9 @@ class EstimatorConfiguration:
 
             vp, vp_to_vs, theta, phi = np.meshgrid(vp, vp_to_vs, theta, phi, indexing='ij')
 
-            pm = PolarizationModel(wave_type=wave_type, vp=vp.ravel(), vs=vp.ravel() / vp_to_vs.ravel(),
-                                   theta=theta.ravel(), phi=phi.ravel(), scaling_velocity=self.scaling_velocity,
-                                   free_surface=self.free_surface)
+            pm = PolarizationModel6C(wave_type=wave_type, vp=vp.ravel(), vs=vp.ravel() / vp_to_vs.ravel(),
+                                     theta=theta.ravel(), phi=phi.ravel(), scaling_velocity=self.scaling_velocity,
+                                     free_surface=self.free_surface)
             return pm.polarization
 
         elif wave_type == 'SH':
@@ -167,9 +167,9 @@ class EstimatorConfiguration:
 
             vs, theta, phi = np.meshgrid(vs, theta, phi, indexing='ij')
 
-            pm = PolarizationModel(wave_type=wave_type, vs=vs.ravel(),
-                                   theta=theta.ravel(), phi=phi.ravel(), scaling_velocity=self.scaling_velocity,
-                                   free_surface=self.free_surface)
+            pm = PolarizationModel6C(wave_type=wave_type, vs=vs.ravel(),
+                                     theta=theta.ravel(), phi=phi.ravel(), scaling_velocity=self.scaling_velocity,
+                                     free_surface=self.free_surface)
             return pm.polarization
 
         elif wave_type == 'R':
@@ -179,9 +179,9 @@ class EstimatorConfiguration:
 
             vr, phi, xi = np.meshgrid(vr, phi, xi, indexing='ij')
 
-            pm = PolarizationModel(wave_type=wave_type, vr=vr.ravel(), phi=phi.ravel(), xi=xi.ravel(),
-                                   scaling_velocity=self.scaling_velocity,
-                                   free_surface=self.free_surface)
+            pm = PolarizationModel6C(wave_type=wave_type, vr=vr.ravel(), phi=phi.ravel(), xi=xi.ravel(),
+                                     scaling_velocity=self.scaling_velocity,
+                                     free_surface=self.free_surface)
             return pm.polarization
 
         elif wave_type == 'L':
@@ -190,7 +190,7 @@ class EstimatorConfiguration:
 
             vl, phi = np.meshgrid(vl, phi, indexing='ij')
 
-            pm = PolarizationModel(wave_type=wave_type, vl=vl.ravel(), phi=phi.ravel(),
-                                   scaling_velocity=self.scaling_velocity,
-                                   free_surface=self.free_surface)
+            pm = PolarizationModel6C(wave_type=wave_type, vl=vl.ravel(), phi=phi.ravel(),
+                                     scaling_velocity=self.scaling_velocity,
+                                     free_surface=self.free_surface)
             return pm.polarization

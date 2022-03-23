@@ -10,7 +10,7 @@ from obspy.core import Trace, Stream
 from scipy.signal import hilbert, convolve
 
 from twistpy.convenience import ricker
-from twistpy.polarization import TimeDomainAnalysis6C, PolarizationModel, SupportVectorMachine
+from twistpy.polarization import TimeDomainAnalysis6C, PolarizationModel6C, SupportVectorMachine
 
 rng = np.random.default_rng(1)
 
@@ -19,7 +19,7 @@ rng = np.random.default_rng(1)
 ########################################################################################################################
 # We start by generating a very simple synthetic data set for illustration purposes. The data will contain isolated wave
 # arrivals for a P-wave, an SV-wave, an SH wave, a Love-wave, and a Rayleigh wave. To generate the data, we make use
-# of the pure state polarization models that are implemented in the class 'twistpy.polarization.PolarizationModel'.
+# of the pure state polarization models that are implemented in the class 'twistpy.polarization.PolarizationModel6C'.
 # Note that this example is purely meant to illustrate the usage of TwistPy's wave type classification tools, by using
 # the same model to generate the synthetics as we use for training and classification, we are practically committing an
 # inverse crime, so that the classification will always yield perfect results.
@@ -48,17 +48,17 @@ wavelet_hilb = np.imag(hilbert(wavelet))  # Here we make use of the Hilbert tran
 # the Love and Rayleigh wave velocities are assumed to be 300 m/s, and the Rayleigh wave ellipticity angle is set to be
 # -45 degrees.
 
-wave1 = PolarizationModel(wave_type='R', theta=20., phi=210., vr=300.,
-                          xi=45.)  # Generate a P-wave polarization model for
+wave1 = PolarizationModel6C(wave_type='R', theta=20., phi=210., vr=300.,
+                            xi=45.)  # Generate a P-wave polarization model for
 # a P-wave recorded at the free surface with an inclination of 20 degrees, an azimuth of 30 degrees. The local P- and
 # S-wave velocities are 1000 m/s and 400 m/s
-wave2 = PolarizationModel(wave_type='SV', theta=20., phi=30., vp=1000.,
-                          vs=400.)  # Generate an SV-wave polarization model
-wave3 = PolarizationModel(wave_type='SH', theta=20., phi=30., vs=400.,
-                          vl=400.)  # Generate an SH-wave polarization model
-wave4 = PolarizationModel(wave_type='L', phi=350., vl=300.)  # Generate a Love-wave polarization model
-wave5 = PolarizationModel(wave_type='R', phi=30., vr=300.,
-                          xi=-45.)  # Generate a Rayleigh-wave polarization model with a
+wave2 = PolarizationModel6C(wave_type='SV', theta=20., phi=30., vp=1000.,
+                            vs=400.)  # Generate an SV-wave polarization model
+wave3 = PolarizationModel6C(wave_type='SH', theta=20., phi=30., vs=400.,
+                            vl=400.)  # Generate an SH-wave polarization model
+wave4 = PolarizationModel6C(wave_type='L', phi=350., vl=300.)  # Generate a Love-wave polarization model
+wave5 = PolarizationModel6C(wave_type='R', phi=30., vr=300.,
+                            xi=-45.)  # Generate a Rayleigh-wave polarization model with a
 # Rayleigh wave ellipticity angle of -45 degrees.
 
 

@@ -9,7 +9,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
 
-from twistpy.polarization.model import PolarizationModel
+from twistpy.polarization.model import PolarizationModel6C
 
 
 class SupportVectorMachine:
@@ -148,8 +148,9 @@ class SupportVectorMachine:
                         df.loc[it * N:(it + 1) * N - 1, column] = pol_noise[idx - 6, :].imag.tolist()
             else:
                 # Generate random 6C wave polarization models drawn from a uniform distribution
-                pm = PolarizationModel(wave_type=w_type, vr=vr, vp=vp, vs=vp / vp_to_vs, phi=phi, xi=xi,
-                                       theta=theta, vl=vl, scaling_velocity=scaling_velocity, free_surface=free_surface)
+                pm = PolarizationModel6C(wave_type=w_type, vr=vr, vp=vp, vs=vp / vp_to_vs, phi=phi, xi=xi,
+                                         theta=theta, vl=vl, scaling_velocity=scaling_velocity,
+                                         free_surface=free_surface)
                 # Direction of polarization can either be positive or negative
                 pol = np.random.choice([-1, 1], (1, N)) * pm.polarization_vector
                 df.loc[it * N:(it + 1) * N - 1, 'wave_type'] = w_type

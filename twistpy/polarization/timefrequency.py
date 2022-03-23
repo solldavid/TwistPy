@@ -10,12 +10,12 @@ import pandas as pd
 from matplotlib import colors
 from matplotlib.axes import Axes
 from matplotlib.cm import ScalarMappable
-from obspy import Trace
+from obspy import Trace, Stream
 from obspy.core.utcdatetime import UTCDateTime
 from scipy.ndimage import uniform_filter1d
 
 from twistpy.polarization.machinelearning import SupportVectorMachine
-from twistpy.utils import s_transform
+from twistpy.utils import s_transform, i_s_transform
 
 
 class TimeFrequencyAnalysis6C:
@@ -192,7 +192,7 @@ class TimeFrequencyAnalysis6C:
             for k in range(C.shape[3]):
                 C[..., j, k] = uniform_filter1d(C[..., j, k], size=window_f_samples)
                 for i in range(C.shape[0]):
-                    C[i, :, j, k] = uniform_filter1d(C[i, :, j, k], size=window_t_samples[k])
+                    C[i, :, j, k] = uniform_filter1d(C[i, :, j, k], size=window_t_samples[i])
         self.C = np.reshape(C[:, indx_t[0]:indx_t[1]:dsfact, :, :],
                             (len(self.t_pol) * len(self.f_pol), 6, 6))  # flatten the
         # time and frequency dimension
@@ -442,6 +442,9 @@ class TimeFrequencyAnalysis3C:
         window_t_samples[window_t_samples > len(self.time)] = len(self.time)
         window_f_samples = np.max([1, int(self.window["frequency_extent"] / df)])
 
+        self.window_t_samples = window_t_samples
+        self.window_f_samples = window_f_samples
+
         # Compute the S-transform of the input signal
         u: np.ndarray = np.moveaxis(np.array([s_transform(N.data, dsfacf=dsfacf, k=k)[0],
                                               s_transform(E.data, dsfacf=dsfacf, k=k)[0],
@@ -475,7 +478,7 @@ class TimeFrequencyAnalysis3C:
             for k in range(C.shape[3]):
                 C[..., j, k] = uniform_filter1d(C[..., j, k], size=window_f_samples)
                 for i in range(C.shape[0]):
-                    C[i, :, j, k] = uniform_filter1d(C[i, :, j, k], size=window_t_samples[k])
+                    C[i, :, j, k] = uniform_filter1d(C[i, :, j, k], size=window_t_samples[i])
         self.C = np.reshape(C[:, indx_t[0]:indx_t[1]:dsfact, :, :],
                             (len(self.t_pol) * len(self.f_pol), 3, 3))  # flatten the
         # time and frequency dimension
@@ -528,7 +531,101 @@ class TimeFrequencyAnalysis3C:
         if self.verbose:
             print('Polarization attributes have been computed!')
 
-    def plot_polarization_analysis(self, clip: np.float = 0.05, major_semi_axis: bool = True) -> None:
+    def filter(self, plot_filtered_attributes: bool = False, **kwargs):
+        r"""Filter data based on polarization attributes
+
+        Parameters
+        ----------
+        plot_filtered_attributes : :obj:`bool`, default = False
+            If set to True, a plot will be generated that shows the polarization attributes after filtering
+        **kwargs : For example elli=[0, 0.3]
+            Polarization attributes used for filtering. The filter parameters are specified as a list with two entries,
+            specifying the range of the polarization attributes that are kept by the filter. In the above example the
+            filter would only retain all signal with an ellipticity between 0 and 0.3 and suppress all signal
+            with an ellipticity larger than 0.3. Multiple polarization attributes can be specified.
+
+            .. hint:: Supported polariziation attributes are:
+
+                dop (degree of polarization)
+
+                elli (Ellipticity)
+
+                inc1 (Incidence angle of major semi axis)
+
+                inc2 (Incidence angle of minor semi axis)
+
+                azi1 (Azimuth of the major semi axis)
+
+                azi2 (Azimuth of the minor semi axis)
+        """
+        params = {}
+        for k in kwargs:
+            if kwargs[k] is not None:
+                params[k] = kwargs[k]
+        if not params:
+            raise Exception("No values provided")
+
+        if self.elli is None:
+            raise Exception('No polarization attributes computed yet!')
+
+        # Compute eigenvectors for projection
+        _, eigenvectors = np.linalg.eigh(self.C)
+
+        # Compute S-transform of each component
+        Z_stran, f_stran = s_transform(self.Z.data, k=self.k)
+        N_stran, _ = s_transform(self.N.data, k=self.k)
+        E_stran, _ = s_transform(self.E.data, k=self.k)
+
+        # Initialize filter mask
+        mask = np.ones((len(self.f_pol), len(self.t_pol)))
+
+        # Populate filter mask (will be 1 where signal is kept and 0 everywhere else)
+        for parameter in params:
+            pol_attr = np.real(getattr(self, parameter))
+            if parameter == 'dop' or parameter == 'elli' and params[parameter][1] == 1.:
+                alpha = pol_attr >= params[parameter][0]
+            else:
+                alpha = ((pol_attr >= params[parameter][0]) &
+                         (pol_attr <= params[parameter][1])).astype('int')
+            mask *= alpha
+
+        mask = uniform_filter1d(mask, size=self.window_f_samples, axis=0)
+        for i in range(mask.shape[0]):
+            mask[i, :] = uniform_filter1d(mask[i, :], size=self.window_t_samples[i])
+        indx = mask > 0
+
+        Z_sep = np.zeros_like(Z_stran)
+        N_sep = np.zeros_like(N_stran)
+        E_sep = np.zeros_like(E_stran)
+
+        data_st = np.array([N_stran[indx].ravel(), E_stran[indx].ravel(), Z_stran[indx].ravel()]).T
+        # Project data into coordinate frame spanned by eigenvectors
+        data_proj = np.einsum('...i, ...ij -> ...j', data_st, eigenvectors[indx.ravel(), :, :], optimize=True)
+
+        # Only keep data that is aligned with the principal eigenvector
+        data_proj[:, 0:2] = 0
+        data_filt = np.einsum('...i, ...ij -> ...j', data_proj, np.transpose(eigenvectors[indx.ravel(), :, :].conj(),
+                                                                             axes=(0, 2, 1)), optimize=True)
+        Z_sep[indx] = data_filt[:, 2]
+        N_sep[indx] = data_filt[:, 0]
+        E_sep[indx] = data_filt[:, 1]
+
+        Z_sep = i_s_transform(Z_sep, f=f_stran, k=self.k)
+        N_sep = i_s_transform(N_sep, f=f_stran, k=self.k)
+        E_sep = i_s_transform(E_sep, f=f_stran, k=self.k)
+        #
+        data_filtered = Stream(traces=[self.N.copy(), self.E.copy(), self.Z.copy()])
+        data_filtered[0].data = N_sep
+        data_filtered[1].data = E_sep
+        data_filtered[2].data = Z_sep
+
+        if plot_filtered_attributes:
+            self.plot_polarization_analysis(show=False, alpha=mask, seismograms=data_filtered)
+
+        return data_filtered
+
+    def plot_polarization_analysis(self, clip: np.float = 0.05, major_semi_axis: bool = True, show: bool = True,
+                                   alpha: np.ndarray = None, seismograms: Stream = None) -> None:
         """
         Parameters
         ----------
@@ -538,15 +635,31 @@ class TimeFrequencyAnalysis3C:
         major_semi_axis : obj:`bool`, default=True
             If True, the inclination and azimuth of the major semi-axis is plotted. Otherwise (major_semi_axis=False),
             The inclination and azimuth are plotted for the minor semi-axis.
-
+        show : :obj:`bool`, default=True
+            Display the plot directly after plotting. If set to False, the plot will only show up once
+            :func:`~matplotlib.pyplot.show` is called.
+        alpha : :obj:`numpy.ndarray`, default = None
+            A mask (values between zero and 1) of the same dimension as the polarization attributes, that will be
+            plotted on the alpha channel.
+        seismograms : :obj:`obspy.core.Stream`, default = None
+            Manually provide seismograms to be plotted in the first panel. By default, the input data is plotted.
         """
         assert self.elli is not None, 'No polarization attributes for Love waves have been computed so far!'
         fig, ax = plt.subplots(5, 1, sharex=True, figsize=(10, 10))
-        self._plot_seismograms(ax[0])
+        if seismograms is None:
+            self._plot_seismograms(ax[0])
+        else:
+            self._plot_seismograms(ax[0], seismograms=seismograms)
         ax[0].set_ylabel('Amplitude')
-        alpha = np.ones(self.dop.shape)
-        alpha[self.signal_amplitudes_st < clip * self.signal_amplitudes_st.max().max()] = 0
-        ax[1].imshow(self.elli, origin='lower', aspect='auto', alpha=alpha,
+
+        alpha_channel = np.ones(self.dop.shape)
+        if alpha is not None:
+            alpha_channel *= alpha
+        alpha_channel[self.signal_amplitudes_st < clip * self.signal_amplitudes_st.max().max()] = 0
+        alpha_channel[alpha_channel > 1] = 1
+        alpha_channel[alpha_channel < 0] = 0
+
+        ax[1].imshow(self.elli, origin='lower', aspect='auto', alpha=alpha_channel,
                      extent=[self.t_pol[0], self.t_pol[-1], self.f_pol[0], self.f_pol[-1]], cmap='inferno',
                      vmin=0, vmax=1)
         map_elli = ScalarMappable(colors.Normalize(vmin=0, vmax=1), cmap='inferno')
@@ -556,7 +669,7 @@ class TimeFrequencyAnalysis3C:
         ax[1].set_ylabel('Frequency (Hz)')
 
         if major_semi_axis:
-            ax[2].imshow(self.inc1, origin='lower', aspect='auto', alpha=alpha,
+            ax[2].imshow(self.inc1, origin='lower', aspect='auto', alpha=alpha_channel,
                          extent=[self.t_pol[0], self.t_pol[-1], self.f_pol[0], self.f_pol[-1]], cmap='inferno',
                          vmin=0, vmax=90)
             map_inc1 = ScalarMappable(colors.Normalize(vmin=0, vmax=90), cmap='inferno')
@@ -564,7 +677,7 @@ class TimeFrequencyAnalysis3C:
             cbar_inc1.set_label(f"Inclination (degrees)")
             ax[2].set_title('Inclination of major semi-axis')
         else:
-            ax[2].imshow(self.inc2, origin='lower', aspect='auto', alpha=alpha,
+            ax[2].imshow(self.inc2, origin='lower', aspect='auto', alpha=alpha_channel,
                          extent=[self.t_pol[0], self.t_pol[-1], self.f_pol[0], self.f_pol[-1]], cmap='inferno',
                          vmin=0, vmax=90)
             map_inc2 = ScalarMappable(colors.Normalize(vmin=0, vmax=90), cmap='inferno')
@@ -574,7 +687,7 @@ class TimeFrequencyAnalysis3C:
         ax[2].set_ylabel('Frequency (Hz)')
 
         if major_semi_axis:
-            ax[3].imshow(self.azi1, origin='lower', aspect='auto', alpha=alpha,
+            ax[3].imshow(self.azi1, origin='lower', aspect='auto', alpha=alpha_channel,
                          extent=[self.t_pol[0], self.t_pol[-1], self.f_pol[0], self.f_pol[-1]], cmap='twilight',
                          vmin=0, vmax=180)
             map_azi1 = ScalarMappable(colors.Normalize(vmin=0, vmax=180), cmap='twilight')
@@ -582,7 +695,7 @@ class TimeFrequencyAnalysis3C:
             cbar_azi1.set_label(f"Azimuth (degrees)")
             ax[3].set_title('Azimuth of major semi-axis')
         else:
-            ax[3].imshow(self.azi2, origin='lower', aspect='auto', alpha=alpha,
+            ax[3].imshow(self.azi2, origin='lower', aspect='auto', alpha=alpha_channel,
                          extent=[self.t_pol[0], self.t_pol[-1], self.f_pol[0], self.f_pol[-1]], cmap='twilight',
                          vmin=0, vmax=180)
             map_azi2 = ScalarMappable(colors.Normalize(vmin=0, vmax=180), cmap='twilight')
@@ -591,7 +704,7 @@ class TimeFrequencyAnalysis3C:
             ax[3].set_title('Azimuth of minor semi-axis')
         ax[3].set_ylabel('Frequency (Hz)')
 
-        ax[4].imshow(self.dop, origin='lower', aspect='auto', alpha=alpha,
+        ax[4].imshow(self.dop, origin='lower', aspect='auto', alpha=alpha_channel,
                      extent=[self.t_pol[0], self.t_pol[-1], self.f_pol[0], self.f_pol[-1]], cmap='inferno',
                      vmin=0, vmax=1)
         map_dop = ScalarMappable(colors.Normalize(vmin=0, vmax=1), cmap='inferno')
@@ -614,19 +727,32 @@ class TimeFrequencyAnalysis3C:
             ax[4].set_xlabel('Time (UTC)')
         else:
             ax[4].set_xlabel('Time (s)')
-        plt.show()
+        if show:
+            plt.show()
 
-    def _plot_seismograms(self, ax: plt.Axes):
-        if self.timeaxis == 'utc':
-            time = self.N.times(type='matplotlib')
+    def _plot_seismograms(self, ax: plt.Axes, seismograms: Stream = None):
+        if seismograms is None:
+            if self.timeaxis == 'utc':
+                time = self.N.times(type='matplotlib')
+            else:
+                time = self.N.times()
+            ax.plot(time, self.N.data, 'k:', label='N')
+            ax.plot(time, self.E.data, 'k--', label='E')
+            ax.plot(time, self.Z.data, 'k', label='Z')
+            if self.timeaxis == 'utc':
+                ax.xaxis_date()
+            ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
         else:
-            time = self.N.times()
-        ax.plot(time, self.N.data, 'k:', label='N')
-        ax.plot(time, self.E.data, 'k--', label='E')
-        ax.plot(time, self.Z.data, 'k', label='Z')
-        if self.timeaxis == 'utc':
-            ax.xaxis_date()
-        ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+            if self.timeaxis == 'utc':
+                time = seismograms[0].times(type='matplotlib')
+            else:
+                time = seismograms[0].times()
+            ax.plot(time, seismograms[0].data, 'k:', label='N')
+            ax.plot(time, seismograms[1].data, 'k--', label='E')
+            ax.plot(time, seismograms[2].data, 'k', label='Z')
+            if self.timeaxis == 'utc':
+                ax.xaxis_date()
+            ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 
     def save(self, name: str) -> None:
         """ Save the current TimeDomainAnalysis object to a file on the disk in the current working directory.

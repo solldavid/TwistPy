@@ -56,7 +56,8 @@ Pure-state polarization models.
     :recursive:
     :nosignatures:
 
-    PolarizationModel
+    PolarizationModel3C
+    PolarizationModel6C
 
 Array Processing
 ----------------

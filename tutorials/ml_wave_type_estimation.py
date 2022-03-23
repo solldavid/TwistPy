@@ -10,7 +10,17 @@ from obspy.core import Trace, Stream
 from scipy.signal import hilbert, convolve
 
 from twistpy.convenience import ricker
-from twistpy.polarization import TimeDomainAnalysis6C, TimeFrequencyAnalysis6C, PolarizationModel, SupportVectorMachine
+from twistpy.polarization import TimeDomainAnalysis6C, TimeFrequencyAnalysis6C, PolarizationModel6C, \
+    SupportVectorMachine
+
+import matplotlib.pyplot as plt
+import numpy as np
+from obspy.core import Trace, Stream
+from scipy.signal import hilbert, convolve
+
+from twistpy.convenience import ricker
+from twistpy.polarization import TimeDomainAnalysis6C, TimeFrequencyAnalysis6C, PolarizationModel6C, \
+    SupportVectorMachine
 
 rng = np.random.default_rng(1)
 
@@ -19,7 +29,7 @@ rng = np.random.default_rng(1)
 ########################################################################################################################
 # We start by generating a very simple synthetic data set for illustration purposes. The data will contain isolated wave
 # arrivals for a P-wave, an SV-wave, an SH wave, a Love-wave, and a Rayleigh wave. To generate the data, we make use
-# of the pure state polarization models that are implemented in the class 'twistpy.polarization.PolarizationModel'.
+# of the pure state polarization models that are implemented in the class 'twistpy.polarization.PolarizationModel6C'.
 # Note that this example is purely meant to illustrate the usage of TwistPy's wave type classification tools, by using
 # the same model to generate the synthetics as we use for training and classification, we are practically committing an
 # inverse crime, so that the classification will always yield perfect results.
@@ -48,13 +58,14 @@ wavelet_hilb = np.imag(hilbert(wavelet))  # Here we make use of the Hilbert tran
 # the Love and Rayleigh wave velocities are assumed to be 300 m/s, and the Rayleigh wave ellipticity angle is set to be
 # -45 degrees.
 
-wave1 = PolarizationModel(wave_type='P', theta=20, phi=30, vp=1000, vs=400)  # Generate a P-wave polarization model for
+wave1 = PolarizationModel6C(wave_type='P', theta=20, phi=30, vp=1000,
+                            vs=400)  # Generate a P-wave polarization model for
 # a P-wave recorded at the free surface with an inclination of 20 degrees, an azimuth of 30 degrees. The local P- and
 # S-wave velocities are 1000 m/s and 400 m/s
-wave2 = PolarizationModel(wave_type='SV', theta=20, phi=30, vp=1000, vs=400)  # Generate an SV-wave polarization model
-wave3 = PolarizationModel(wave_type='SH', theta=20, phi=30, vs=400, vl=400)  # Generate an SH-wave polarization model
-wave4 = PolarizationModel(wave_type='L', phi=30, vl=300)  # Generate a Love-wave polarization model
-wave5 = PolarizationModel(wave_type='R', phi=30, vr=300, xi=-45)  # Generate a Rayleigh-wave polarization model with a
+wave2 = PolarizationModel6C(wave_type='SV', theta=20, phi=30, vp=1000, vs=400)  # Generate an SV-wave polarization model
+wave3 = PolarizationModel6C(wave_type='SH', theta=20, phi=30, vs=400, vl=400)  # Generate an SH-wave polarization model
+wave4 = PolarizationModel6C(wave_type='L', phi=30, vl=300)  # Generate a Love-wave polarization model
+wave5 = PolarizationModel6C(wave_type='R', phi=30, vr=300, xi=-45)  # Generate a Rayleigh-wave polarization model with a
 # Rayleigh wave ellipticity angle of -45 degrees.
 
 
@@ -99,7 +110,8 @@ plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 plt.xlabel('Time (s)')
 
 ########################################################################################################################
-# Note that the translational components and the rotational components have different units. The PolarizationModel class
+# Note that the translational components and the rotational components have different units. The PolarizationModel6C
+# class
 # yields the amplitudes in acceleration (m/s/s) for the translational components and in rotation rate (rad/s) for the
 # rotational components. Since the rotational signal scales with the local wave slowness, it is barely visible in the
 # plot above. For polarization analysis, we want to make sure that both the translational and the rotational components
@@ -197,7 +209,7 @@ ax2.set_ylabel('Classification label')
 # the S-transform. For this, we specify an analysis window that extends over both time and frequency. The window that
 # we choose here is frequency-dependent and extends over a fifth of a period in time and 2 Hz in frequency.
 
-window = {'number_of_periods': 0.2, 'frequency_extent': 2}
+window = {'number_of_periods': 1, 'frequency_extent': 2}
 
 ########################################################################################################################
 # The data that we have are oversampled, which results in unnecessary computations. We therefore downsample the data

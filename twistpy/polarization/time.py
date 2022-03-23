@@ -7,7 +7,8 @@ from typing import List, Dict
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from obspy import Trace
+from matplotlib import colors
+from obspy import Trace, Stream
 from scipy.ndimage import uniform_filter1d
 from scipy.signal import hilbert
 
@@ -579,6 +580,98 @@ class TimeDomainAnalysis3C:
                                                                                          axis=1)
         if self.verbose:
             print('Polarization attributes have been computed!')
+
+    def filter(self, taper_degrees=5, taper=0.1, **kwargs):
+        """
+        Filter data based on polarization attributes
+        Supported attributes that can be used for filtering:
+         -dop (Degree of polarization)
+         -elli (Ellipticity)
+         -inc1 (Incidence angle of major semi axis)
+         -inc2 (Incidence angle of minor semi axis)
+         -azi1 (Azimuth of the major semi axis)
+         -azi2 (Azimuth of the minor semi axis)
+
+         Each attribute needs to be provided as a separate argument as a list with two entries.
+         For example, elli=[0.4, 0.6] will generate a mask that will only retain all signals with an ellipticity between
+         0.4 and 0.6. The taper argument will add a taper to the mask to avoid Gibbs phenomenon (ringing). Effectively,
+         the filter mask will be:
+         1             -------------------------
+                      /                         \
+                     /                           \
+                    /                             \
+                   /                               \
+         0   -----                                  --------
+            0.4-taper  0.4                    0.6  0.6+taper
+
+         taper_degrees defines the taper for the attributes inc1, azi1, inc2, azi2 in  degrees
+        """
+        params = {}
+        for k in kwargs:
+            if kwargs[k] is not None:
+                params[k] = kwargs[k]
+        if not params:
+            raise Exception("No values provided")
+
+        if not self.computed:
+            raise Exception('No polarization attributes computed yet!')
+
+        traZ_stran, f_stran = s_transform(self.traZ.data)
+        traN_stran, f_stran = s_transform(self.traN.data)
+        traE_stran, f_stran = s_transform(self.traE.data)
+
+        mask = np.ones((len(self.f_pol), len(self.t_pol)))
+
+        for parameter in params:
+            pol_attr = getattr(self, parameter)
+            if parameter == 'inc1' or parameter == 'inc2':
+                alpha_1 = np.degrees(np.real(pol_attr))
+                alpha_1 = colors.Normalize(vmin=params[parameter][0] - taper_degrees, vmax=params[parameter][0])(
+                    alpha_1)
+                alpha_2 = 90 - np.degrees(np.real(pol_attr))
+                alpha_2 = colors.Normalize(vmin=90 - params[parameter][1] - taper_degrees,
+                                           vmax=90 - params[parameter][1])(alpha_2)
+            elif parameter == 'dop' or 'elli':
+                alpha_1 = np.real(pol_attr)
+                alpha_1 = colors.Normalize(vmin=params[parameter][0] - taper, vmax=params[parameter][0])(alpha_1)
+                alpha_2 = 1 - np.real(pol_attr)
+                alpha_2 = colors.Normalize(vmin=1 - params[parameter][1] - taper, vmax=1 - params[parameter][1])(
+                    alpha_2)
+            elif parameter == 'azi1' or 'azi2':
+                alpha_1 = np.degrees(np.real(pol_attr))
+                alpha_1 = colors.Normalize(vmin=params[parameter][0] - taper_degrees, vmax=params[parameter][0])(
+                    alpha_1)
+                alpha_2 = 180 - np.degrees(np.real(pol_attr))
+                alpha_2 = colors.Normalize(vmin=180 - params[parameter][1] - taper_degrees,
+                                           vmax=180 - params[parameter][1])(alpha_2)
+
+            alpha_1[alpha_1 < 0.] = 0.
+            alpha_1[alpha_1 > 1.] = 1.
+            alpha_2[alpha_2 < 0.] = 0.
+            alpha_2[alpha_2 > 1.] = 1.
+            mask *= alpha_1
+            mask *= alpha_2
+        mask = colors.Normalize(vmin=0, vmax=1)(mask)
+
+        traZ_sep = np.multiply(mask, traZ_stran)
+        traN_sep = np.multiply(mask, traN_stran)
+        traE_sep = np.multiply(mask, traE_stran)
+
+        traZ_sep_fft = np.sum(traZ_sep, axis=1)
+        traZ_sep = np.fft.irfft(traZ_sep_fft)
+
+        traN_sep_fft = np.sum(traN_sep, axis=1)
+        traN_sep = np.fft.irfft(traN_sep_fft)
+
+        traE_sep_fft = np.sum(traE_sep, axis=1)
+        traE_sep = np.fft.irfft(traE_sep_fft)
+        #
+        data_filtered = Stream(traces=[self.traN.copy(), self.traE.copy(), self.traZ.copy()])
+        data_filtered[0].data = traN_sep
+        data_filtered[1].data = traE_sep
+        data_filtered[2].data = traZ_sep
+
+        return data_filtered, mask
 
     def plot_polarization_analysis(self) -> None:
         """Plot the polarization analysis result.

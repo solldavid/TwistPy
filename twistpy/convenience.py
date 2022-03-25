@@ -8,7 +8,7 @@ import numpy as np
 from obspy.core import UTCDateTime, Stream, Trace
 from scipy import fft
 
-from twistpy.array import BeamformingArray
+from twistpy.array_processing import BeamformingArray
 
 
 def generate_synthetics(source_coordinates: np.ndarray, array: BeamformingArray, t: np.ndarray, velocity: float = 6000,

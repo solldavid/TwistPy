@@ -7,9 +7,9 @@ from typing import List, Dict, Tuple
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from matplotlib import colors
 from matplotlib.axes import Axes
 from matplotlib.cm import ScalarMappable
+from matplotlib.colors import ListedColormap, Normalize
 from obspy import Trace, Stream
 from obspy.core.utcdatetime import UTCDateTime
 from scipy.ndimage import uniform_filter1d
@@ -158,7 +158,7 @@ class TimeFrequencyAnalysis6C:
         # Compute extent of window in no. of samples in the time and frequency direction
         df = self.f_pol[1] - self.f_pol[0]
         periods = 1. / self.f_pol[1:]  # Exclude DC
-        periods = np.append(np.float(self.time[-1] - self.time[0]), periods)
+        periods = np.append(float(self.time[-1] - self.time[0]), periods)
         window_t_samples = np.array(self.window["number_of_periods"] * periods / self.delta, dtype=int)
         window_t_samples[window_t_samples > len(self.time)] = len(self.time)
         window_t_samples[window_t_samples == 0] = 1
@@ -176,8 +176,8 @@ class TimeFrequencyAnalysis6C:
                                             + np.abs(u[:, :, 3]) ** 2 + np.abs(u[:, :, 4]) ** 2 + np.abs(
             u[:, :, 5]) ** 2)
         if self.trange is not None:
-            indx_t = [(np.abs(self.time.astype('float') - np.float(self.trange[0]))).argmin(),
-                      (np.abs(self.time.astype('float') - np.float(self.trange[1]))).argmin()]
+            indx_t = [(np.abs(self.time.astype('float') - float(self.trange[0]))).argmin(),
+                      (np.abs(self.time.astype('float') - float(self.trange[1]))).argmin()]
         else:
             indx_t = [0, u.shape[1]]
 
@@ -272,8 +272,8 @@ class TimeFrequencyAnalysis6C:
             amplitudes * maximum amplitude in the signal (given by the l2-norm of all three components).
         """
         if self.classification[str(classified_eigenvector)] is not None:
-            cmap = colors.ListedColormap(['blue', 'red', 'green', 'yellow', 'white'])
-            map = ScalarMappable(colors.Normalize(vmin=0, vmax=4), cmap=cmap)
+            cmap = ListedColormap(['blue', 'red', 'green', 'yellow', 'white'])
+            map = ScalarMappable(Normalize(vmin=0, vmax=4), cmap=cmap)
             d = {'P': 0, 'SV': 1, 'SH': 2, 'L': 2, 'R': 3, 'Noise': 4}
             classification = (self.classification[str(classified_eigenvector)]).flatten()
             # Convert classification label from string to numbers for plotting
@@ -391,6 +391,7 @@ class TimeFrequencyAnalysis3C:
         Azimuth of the major semi-axis of the polarization ellipse estimated at each window position
     azi2 : 2D :obj:`numpy.ndarray` of :obj:`float`
         Azimuth of the minor semi-axis of the polarization ellipse estimated at each window position
+
     """
 
     def __init__(self, N: Trace, E: Trace, Z: Trace, window: dict, dsfacf: int = 1, dsfact: int = 1,
@@ -438,7 +439,7 @@ class TimeFrequencyAnalysis3C:
         # Compute extent of window in no. of samples in the time and frequency direction
         df = self.f_pol[1] - self.f_pol[0]
         periods = 1. / self.f_pol[1:]  # Exclude DC
-        periods = np.append(np.float(self.time[-1] - self.time[0]), periods)
+        periods = np.append(float(self.time[-1] - self.time[0]), periods)
         window_t_samples = np.array(self.window["number_of_periods"] * periods / self.delta, dtype=int)
         window_t_samples[window_t_samples == 0] = 1
         window_t_samples[window_t_samples > len(self.time)] = len(self.time)
@@ -456,8 +457,8 @@ class TimeFrequencyAnalysis3C:
         self.signal_amplitudes_st = np.sqrt(np.abs(u[:, :, 0]) ** 2 + np.abs(u[:, :, 1]) ** 2 + np.abs(u[:, :, 2]) ** 2
                                             )
         if self.trange is not None:
-            indx_t = [(np.abs(self.time.astype('float') - np.float(self.trange[0]))).argmin(),
-                      (np.abs(self.time.astype('float') - np.float(self.trange[1]))).argmin()]
+            indx_t = [(np.abs(self.time.astype('float') - float(self.trange[0]))).argmin(),
+                      (np.abs(self.time.astype('float') - float(self.trange[1]))).argmin()]
         else:
             indx_t = [0, u.shape[1]]
 
@@ -638,7 +639,7 @@ class TimeFrequencyAnalysis3C:
 
         return data_filtered
 
-    def plot(self, clip: np.float = 0.05, major_semi_axis: bool = True, show: bool = True,
+    def plot(self, clip: float = 0.05, major_semi_axis: bool = True, show: bool = True,
              alpha: np.ndarray = None, seismograms: Stream = None) -> None:
         """Plot polarization analysis.
 
@@ -677,7 +678,7 @@ class TimeFrequencyAnalysis3C:
         ax[1].imshow(self.elli, origin='lower', aspect='auto', alpha=alpha_channel,
                      extent=[self.t_pol[0], self.t_pol[-1], self.f_pol[0], self.f_pol[-1]], cmap='inferno',
                      vmin=0, vmax=1)
-        map_elli = ScalarMappable(colors.Normalize(vmin=0, vmax=1), cmap='inferno')
+        map_elli = ScalarMappable(Normalize(vmin=0, vmax=1), cmap='inferno')
         cbar_elli = plt.colorbar(map_elli, ax=ax[1], extend='max')
         cbar_elli.set_label(f"Ellipticity")
         ax[1].set_title('Ellipticity')
@@ -687,7 +688,7 @@ class TimeFrequencyAnalysis3C:
             ax[2].imshow(self.inc1, origin='lower', aspect='auto', alpha=alpha_channel,
                          extent=[self.t_pol[0], self.t_pol[-1], self.f_pol[0], self.f_pol[-1]], cmap='inferno',
                          vmin=0, vmax=90)
-            map_inc1 = ScalarMappable(colors.Normalize(vmin=0, vmax=90), cmap='inferno')
+            map_inc1 = ScalarMappable(Normalize(vmin=0, vmax=90), cmap='inferno')
             cbar_inc1 = plt.colorbar(map_inc1, ax=ax[2], extend='max')
             cbar_inc1.set_label(f"Inclination (degrees)")
             ax[2].set_title('Inclination of major semi-axis')
@@ -695,7 +696,7 @@ class TimeFrequencyAnalysis3C:
             ax[2].imshow(self.inc2, origin='lower', aspect='auto', alpha=alpha_channel,
                          extent=[self.t_pol[0], self.t_pol[-1], self.f_pol[0], self.f_pol[-1]], cmap='inferno',
                          vmin=0, vmax=90)
-            map_inc2 = ScalarMappable(colors.Normalize(vmin=0, vmax=90), cmap='inferno')
+            map_inc2 = ScalarMappable(Normalize(vmin=0, vmax=90), cmap='inferno')
             cbar_inc2 = plt.colorbar(map_inc2, ax=ax[2], extend='max')
             cbar_inc2.set_label(f"Inclination (degrees)")
             ax[2].set_title('Inclination of minor semi-axis')
@@ -705,7 +706,7 @@ class TimeFrequencyAnalysis3C:
             ax[3].imshow(self.azi1, origin='lower', aspect='auto', alpha=alpha_channel,
                          extent=[self.t_pol[0], self.t_pol[-1], self.f_pol[0], self.f_pol[-1]], cmap='twilight',
                          vmin=0, vmax=180)
-            map_azi1 = ScalarMappable(colors.Normalize(vmin=0, vmax=180), cmap='twilight')
+            map_azi1 = ScalarMappable(Normalize(vmin=0, vmax=180), cmap='twilight')
             cbar_azi1 = plt.colorbar(map_azi1, ax=ax[3], extend='max')
             cbar_azi1.set_label(f"Azimuth (degrees)")
             ax[3].set_title('Azimuth of major semi-axis')
@@ -713,7 +714,7 @@ class TimeFrequencyAnalysis3C:
             ax[3].imshow(self.azi2, origin='lower', aspect='auto', alpha=alpha_channel,
                          extent=[self.t_pol[0], self.t_pol[-1], self.f_pol[0], self.f_pol[-1]], cmap='twilight',
                          vmin=0, vmax=180)
-            map_azi2 = ScalarMappable(colors.Normalize(vmin=0, vmax=180), cmap='twilight')
+            map_azi2 = ScalarMappable(Normalize(vmin=0, vmax=180), cmap='twilight')
             cbar_azi2 = plt.colorbar(map_azi2, ax=ax[3], extend='max')
             cbar_azi2.set_label(f"Azimuth (degrees)")
             ax[3].set_title('Azimuth of minor semi-axis')
@@ -722,7 +723,7 @@ class TimeFrequencyAnalysis3C:
         ax[4].imshow(self.dop, origin='lower', aspect='auto', alpha=alpha_channel,
                      extent=[self.t_pol[0], self.t_pol[-1], self.f_pol[0], self.f_pol[-1]], cmap='inferno',
                      vmin=0, vmax=1)
-        map_dop = ScalarMappable(colors.Normalize(vmin=0, vmax=1), cmap='inferno')
+        map_dop = ScalarMappable(Normalize(vmin=0, vmax=1), cmap='inferno')
         cbar_dop = plt.colorbar(map_dop, ax=ax[4], extend='max')
         cbar_dop.set_label(f"DOP")
         ax[4].set_title('Degree of polarization')

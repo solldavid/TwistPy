@@ -64,9 +64,9 @@ Array Processing
 
 Tools for array processing.
 
-.. currentmodule:: twistpy.array
+.. currentmodule:: twistpy.array_processing
 
-.. automodule:: twistpy.array
+.. automodule:: twistpy.array_processing
     :no-inherited-members:
 
 .. autosummary::

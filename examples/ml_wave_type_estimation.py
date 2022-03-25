@@ -4,14 +4,6 @@ r"""
 In this tutorial, you will learn how to train a machine learning model that enables the
 efficient classification of wave types using six-component polarization analysis.
 """
-import matplotlib.pyplot as plt
-import numpy as np
-from obspy.core import Trace, Stream
-from scipy.signal import hilbert, convolve
-
-from twistpy.convenience import ricker
-from twistpy.polarization import TimeDomainAnalysis6C, TimeFrequencyAnalysis6C, PolarizationModel6C, \
-    SupportVectorMachine
 
 import matplotlib.pyplot as plt
 import numpy as np

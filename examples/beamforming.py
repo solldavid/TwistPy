@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from obspy.core import UTCDateTime
 
-from twistpy.array import BeamformingArray, plot_beam
+from twistpy.array_processing import BeamformingArray, plot_beam
 from twistpy.convenience import generate_synthetics, to_obspy_stream
 
 rng = np.random.default_rng(1)

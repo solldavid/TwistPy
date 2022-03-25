@@ -246,7 +246,7 @@ class DispersionAnalysis:
         im.set_clim([0.005 * np.max(np.max(counts_elli)), 0.8 * np.max(np.max(counts_elli))])
         ax5.images.append(im)
         ax5.set_ylim([-90, 90])
-        ax5.set_ylabel(f"Ellipticity")
+        ax5.set_ylabel(f"Ellipticity angle (degrees)")
         ax5.set_xlabel("Frequency (Hz)")
         ax5.set_title("Rayleigh")
 

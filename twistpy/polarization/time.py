@@ -7,7 +7,6 @@ from typing import List, Dict
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from matplotlib import colors
 from obspy import Trace, Stream
 from scipy.ndimage import uniform_filter1d
 from scipy.signal import hilbert
@@ -20,7 +19,11 @@ class TimeDomainAnalysis6C:
     """Time domain six-component polarization analysis.
 
     Single-station six degree-of-freedom polarization analysis in the time domain. Polarization analysis is performed
-    in a sliding time window.
+    in a sliding time window using the complex analytic signal [1].
+
+    [1] Sollberger et al. (2018). *6-C polarization analysis using point measurements of translational and rotational
+    ground-motion: theory and applications*, Geophysical Journal International, 213(1),
+    https://doi.org/10.1093/gji/ggx542
 
     .. note:: It is recommended to bandpass filter the data to a narrow frequency band before attempting a time-domain
        polarization analysis in order to avoid that dispersion effects  and wave type interference affect the
@@ -327,10 +330,10 @@ class TimeDomainAnalysis6C:
                     P = np.einsum('...sn,...nk,...sk->...s', steering_vectors.conj().T,
                                   self.C[indices, :, :], steering_vectors.T, optimize=True).real
         if plot:
-            self.plot_polarization_analysis(estimator_configuration=estimator_configuration)
+            self.plot(estimator_configuration=estimator_configuration)
 
-    def plot_polarization_analysis(self, estimator_configuration: EstimatorConfiguration,
-                                   dop_clip: np.float = 0):
+    def plot(self, estimator_configuration: EstimatorConfiguration,
+             dop_clip: float = 0):
         wave_types = estimator_configuration.wave_types
         method = estimator_configuration.method
         if isinstance(wave_types, str):
@@ -433,7 +436,10 @@ class TimeDomainAnalysis3C:
     """Time domain three-component polarization analysis.
 
     Single-station three-component polarization analysis in the time domain. Polarization analysis is performed
-    in a sliding time window.
+    in a sliding time window using the complex analytic signal [1].
+
+    [1] Vidale, J. E. (1986). *Complex polarization analysis of particle motion*, BSSA, 76(5),
+    https://doi.org/10.1785/BSSA0760051393
 
     .. note:: It is recommended to bandpass filter the data to a narrow frequency band before attempting a time-domain
        polarization analysis in order to avoid that dispersion effects  and wave type interference affect the
@@ -581,119 +587,146 @@ class TimeDomainAnalysis3C:
         if self.verbose:
             print('Polarization attributes have been computed!')
 
-    def filter(self, taper_degrees=5, taper=0.1, **kwargs):
+    def filter(self, plot_filtered_attributes: bool = False, **kwargs):
         """
-        Filter data based on polarization attributes
-        Supported attributes that can be used for filtering:
-         -dop (Degree of polarization)
-         -elli (Ellipticity)
-         -inc1 (Incidence angle of major semi axis)
-         -inc2 (Incidence angle of minor semi axis)
-         -azi1 (Azimuth of the major semi axis)
-         -azi2 (Azimuth of the minor semi axis)
+        Parameters
+        ----------
+        plot_filtered_attributes : :obj:`bool`, default = False
+            If set to True, a plot will be generated that shows the polarization attributes after filtering
+        **kwargs : For example elli=[0, 0.3]
+            Polarization attributes used for filtering. The filter parameters are specified as a list with two entries,
+            specifying the range of the polarization attributes that are kept by the filter. In the above example the
+            filter would only retain all signal with an ellipticity between 0 and 0.3 and suppress all signal
+            with an ellipticity larger than 0.3. Multiple polarization attributes can be specified.
 
-         Each attribute needs to be provided as a separate argument as a list with two entries.
-         For example, elli=[0.4, 0.6] will generate a mask that will only retain all signals with an ellipticity between
-         0.4 and 0.6. The taper argument will add a taper to the mask to avoid Gibbs phenomenon (ringing). Effectively,
-         the filter mask will be:
-         1             -------------------------
-                      /                         \
-                     /                           \
-                    /                             \
-                   /                               \
-         0   -----                                  --------
-            0.4-taper  0.4                    0.6  0.6+taper
+            .. hint:: Supported polariziation attributes are:
 
-         taper_degrees defines the taper for the attributes inc1, azi1, inc2, azi2 in  degrees
+                dop (degree of polarization)
+
+                elli (Ellipticity)
+
+                inc1 (Incidence angle of major semi axis)
+
+                inc2 (Incidence angle of minor semi axis)
+
+                azi1 (Azimuth of the major semi axis)
+
+                azi2 (Azimuth of the minor semi axis)
+
+        Returns
+        -------
+        data_filtered : :obj:`~obspy.core.stream.Stream`
+            Filtered data. The order of traces in the stream is N, E, Z.
         """
+
+        if self.window['overlap'] != 1.:
+            raise Exception("Polarization filtering is only supported if the polarization attributes have been computed"
+                            "at each sample. To do so, recompute the polarization attributes by setting the overlap of"
+                            "adjacent time windows to 1. (window['overlap']=1.)")
+
         params = {}
         for k in kwargs:
             if kwargs[k] is not None:
                 params[k] = kwargs[k]
         if not params:
-            raise Exception("No values provided")
+            raise Exception("No filter values provided!")
 
-        if not self.computed:
+        if self.elli is None:
             raise Exception('No polarization attributes computed yet!')
 
-        traZ_stran, f_stran = s_transform(self.traZ.data)
-        traN_stran, f_stran = s_transform(self.traN.data)
-        traE_stran, f_stran = s_transform(self.traE.data)
+        # Compute eigenvectors for projection
+        start, stop = int(self.window_length_samples / 2), -1 - int(self.window_length_samples / 2)
+        eigenvectors = np.zeros((self.N.stats.npts, 3, 3)).astype('complex')
+        _, eigenvectors[start:stop, :, :] = np.linalg.eigh(self.C)
 
-        mask = np.ones((len(self.f_pol), len(self.t_pol)))
-
+        # Initialize filter mask
+        mask = np.ones((self.N.stats.npts,))
+        # Populate filter mask (will be 1 where signal is kept and 0 everywhere else)
         for parameter in params:
-            pol_attr = getattr(self, parameter)
-            if parameter == 'inc1' or parameter == 'inc2':
-                alpha_1 = np.degrees(np.real(pol_attr))
-                alpha_1 = colors.Normalize(vmin=params[parameter][0] - taper_degrees, vmax=params[parameter][0])(
-                    alpha_1)
-                alpha_2 = 90 - np.degrees(np.real(pol_attr))
-                alpha_2 = colors.Normalize(vmin=90 - params[parameter][1] - taper_degrees,
-                                           vmax=90 - params[parameter][1])(alpha_2)
-            elif parameter == 'dop' or 'elli':
-                alpha_1 = np.real(pol_attr)
-                alpha_1 = colors.Normalize(vmin=params[parameter][0] - taper, vmax=params[parameter][0])(alpha_1)
-                alpha_2 = 1 - np.real(pol_attr)
-                alpha_2 = colors.Normalize(vmin=1 - params[parameter][1] - taper, vmax=1 - params[parameter][1])(
-                    alpha_2)
-            elif parameter == 'azi1' or 'azi2':
-                alpha_1 = np.degrees(np.real(pol_attr))
-                alpha_1 = colors.Normalize(vmin=params[parameter][0] - taper_degrees, vmax=params[parameter][0])(
-                    alpha_1)
-                alpha_2 = 180 - np.degrees(np.real(pol_attr))
-                alpha_2 = colors.Normalize(vmin=180 - params[parameter][1] - taper_degrees,
-                                           vmax=180 - params[parameter][1])(alpha_2)
+            pol_attr = np.empty_like(mask)
+            pol_attr[:] = np.nan
+            pol_attr[start:stop] = np.real(getattr(self, parameter))
+            if parameter == 'dop' or parameter == 'elli' and params[parameter][1] == 1.:
+                alpha = pol_attr >= params[parameter][0]
+            else:
+                alpha = ((pol_attr >= params[parameter][0]) &
+                         (pol_attr <= params[parameter][1])).astype('int')
+            mask *= alpha
 
-            alpha_1[alpha_1 < 0.] = 0.
-            alpha_1[alpha_1 > 1.] = 1.
-            alpha_2[alpha_2 < 0.] = 0.
-            alpha_2[alpha_2 > 1.] = 1.
-            mask *= alpha_1
-            mask *= alpha_2
-        mask = colors.Normalize(vmin=0, vmax=1)(mask)
+        mask = uniform_filter1d(mask, size=self.window_length_samples, axis=0)
+        indx = mask > 0
 
-        traZ_sep = np.multiply(mask, traZ_stran)
-        traN_sep = np.multiply(mask, traN_stran)
-        traE_sep = np.multiply(mask, traE_stran)
+        Z_sep = np.zeros_like(self.Z.data)
+        N_sep = np.zeros_like(self.N.data)
+        E_sep = np.zeros_like(self.E.data)
 
-        traZ_sep_fft = np.sum(traZ_sep, axis=1)
-        traZ_sep = np.fft.irfft(traZ_sep_fft)
+        N_hilbert, E_hilbert, Z_hilbert = hilbert(self.N.data), hilbert(self.E.data), hilbert(self.Z.data)
+        data_hilbert = np.array([N_hilbert[indx].ravel(), E_hilbert[indx].ravel(), Z_hilbert[indx].ravel()]).T
+        # Project data into coordinate frame spanned by eigenvectors
+        data_proj = np.einsum('...i, ...ij -> ...j', data_hilbert, eigenvectors[indx, :, :], optimize=True)
 
-        traN_sep_fft = np.sum(traN_sep, axis=1)
-        traN_sep = np.fft.irfft(traN_sep_fft)
+        # Only keep data that is aligned with the principal eigenvector
+        data_proj[:, 0:2] = 0
 
-        traE_sep_fft = np.sum(traE_sep, axis=1)
-        traE_sep = np.fft.irfft(traE_sep_fft)
+        # Back-projection into original coordinate frame
+        data_filt = np.einsum('...i, ...ij -> ...j', data_proj, np.transpose(eigenvectors[indx.ravel(), :, :].conj(),
+                                                                             axes=(0, 2, 1)), optimize=True)
+        Z_sep[indx] = data_filt[:, 2].real
+        N_sep[indx] = data_filt[:, 0].real
+        E_sep[indx] = data_filt[:, 1].real
+
+        Z_sep = mask * Z_sep
+        N_sep = mask * N_sep
+        E_sep = mask * E_sep
         #
-        data_filtered = Stream(traces=[self.traN.copy(), self.traE.copy(), self.traZ.copy()])
-        data_filtered[0].data = traN_sep
-        data_filtered[1].data = traE_sep
-        data_filtered[2].data = traZ_sep
+        data_filtered = Stream(traces=[self.N.copy(), self.E.copy(), self.Z.copy()])
+        data_filtered[0].data = N_sep
+        data_filtered[1].data = E_sep
+        data_filtered[2].data = Z_sep
 
-        return data_filtered, mask
+        if plot_filtered_attributes:
+            self.plot(show=False, alpha=mask[start:stop], seismograms=data_filtered)
 
-    def plot_polarization_analysis(self) -> None:
-        """Plot the polarization analysis result.
+        return data_filtered
 
+    def plot(self, show: bool = True, alpha: np.ndarray = None, seismograms: Stream = None) -> None:
+        """Plot polarization analysis.
+
+        Parameters
+        ----------
+        show : :obj:`bool`, default=True
+            Display the plot directly after plotting. If set to False, the plot will only show up once
+            :func:`~matplotlib.pyplot.show` is called.
+        alpha : :obj:`numpy.ndarray`, default = None
+            A mask (values between zero and 1) of the same dimension as the polarization attributes, that will be
+            plotted on the alpha channel.
+        seismograms : :obj:`obspy.core.Stream`, default = None
+            Manually provide seismograms to be plotted in the first panel. By default, the input data is plotted.
         """
         assert self.elli is not None, 'No polarization attributes for Love waves have been computed so far!'
         fig, ax = plt.subplots(5, 1, sharex=True, figsize=(10, 10))
-        self._plot_seismograms(ax[0])
-        ax[1].plot(self.t_windows, self.elli, 'k.')
+        if seismograms is None:
+            self._plot_seismograms(ax[0])
+        else:
+            self._plot_seismograms(ax[0], seismograms=seismograms)
+
+        filter_mask = np.ones_like(self.dop)
+        if alpha is not None:
+            filter_mask *= alpha
+        ax[1].plot(self.t_windows, filter_mask * self.elli, 'k.')
         ax[1].set_ylabel('Ellipticity')
         ax[1].set_title('Ellipticity')
-        ax[2].plot(self.t_windows, self.inc1, 'k.', label='Major')
-        ax[2].plot(self.t_windows, self.inc2, 'r.', label='Minor')
+        ax[2].plot(self.t_windows, filter_mask * self.inc1, 'k.', label='Major')
+        ax[2].plot(self.t_windows, filter_mask * self.inc2, 'r.', label='Minor')
         ax[2].set_title('Inclination of major and minor semi-axis')
         ax[2].legend()
         ax[2].set_ylabel('Degrees')
-        ax[3].plot(self.t_windows, self.azi1, 'k.', label='Major')
-        ax[3].plot(self.t_windows, self.azi2, 'r.', label='Minor')
+        ax[3].plot(self.t_windows, filter_mask * self.azi1, 'k.', label='Major')
+        ax[3].plot(self.t_windows, filter_mask * self.azi2, 'r.', label='Minor')
         ax[3].legend()
         ax[3].set_ylabel('Degrees')
         ax[3].set_title('Azimuth of major and minor semi-axis')
-        ax[4].plot(self.t_windows, self.dop, 'k.')
+        ax[4].plot(self.t_windows, filter_mask * self.dop, 'k.')
         ax[4].set_title('Degree of polarization')
         ax[4].set_ylabel('DOP')
         if self.timeaxis == 'utc':
@@ -704,19 +737,32 @@ class TimeDomainAnalysis3C:
             ax[4].set_xlabel('Time (UTC)')
         else:
             ax[4].set_xlabel('Time (s)')
-        plt.show()
+        if show:
+            plt.show()
 
-    def _plot_seismograms(self, ax: plt.Axes):
-        if self.timeaxis == 'utc':
-            time = self.N.times(type='matplotlib')
+    def _plot_seismograms(self, ax: plt.Axes, seismograms: Stream = None):
+        if seismograms is None:
+            if self.timeaxis == 'utc':
+                time = self.N.times(type='matplotlib')
+            else:
+                time = self.N.times()
+            ax.plot(time, self.N.data, 'k:', label='N')
+            ax.plot(time, self.E.data, 'k--', label='E')
+            ax.plot(time, self.Z.data, 'k', label='Z')
+            if self.timeaxis == 'utc':
+                ax.xaxis_date()
+            ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
         else:
-            time = self.N.times()
-        ax.plot(time, self.N.data, 'k:', label='N')
-        ax.plot(time, self.E.data, 'k--', label='E')
-        ax.plot(time, self.Z.data, 'k', label='Z')
-        if self.timeaxis == 'utc':
-            ax.xaxis_date()
-        ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+            if self.timeaxis == 'utc':
+                time = seismograms[0].times(type='matplotlib')
+            else:
+                time = seismograms[0].times()
+            ax.plot(time, seismograms[0].data, 'k:', label='N')
+            ax.plot(time, seismograms[1].data, 'k--', label='E')
+            ax.plot(time, seismograms[2].data, 'k', label='Z')
+            if self.timeaxis == 'utc':
+                ax.xaxis_date()
+            ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 
     def save(self, name: str) -> None:
         """ Save the current TimeDomainAnalysis object to a file on the disk in the current working directory.

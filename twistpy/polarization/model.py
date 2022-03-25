@@ -18,7 +18,7 @@ class PolarizationModel6C:
     Parameters
     ----------
     wave_type : :obj:`str`
-        Wave type
+        Wave type for which the polarization model is computed. The following options are available:
 
         |  'P':     P-wave
         |  'SV':    SV-wave
@@ -44,6 +44,7 @@ class PolarizationModel6C:
         True (default): the wave is recorded at the free surface, False: the wave is recorded inside
         the medium
     """
+
     def __init__(self, wave_type: str, scaling_velocity: float = 1, free_surface: bool = True,
                  vp: np.ndarray = None,
                  vs: np.ndarray = None, vl: np.ndarray = None, vr: np.ndarray = None, theta: np.ndarray = None,
@@ -262,7 +263,7 @@ class PolarizationModel3C:
     Parameters
     ----------
     wave_type : :obj:`str`
-        Wave type
+        Wave type for which the polarization model is computed. The following options are available:
 
         |  'P':     P-wave
         |  'SV':    SV-wave
@@ -421,7 +422,7 @@ class PolarizationModel3C:
             if self.free_surface:
                 phi_rad = np.radians(self.phi)
                 v_x = np.sin(phi_rad)
-                v_y = np.cos(phi_rad)
+                v_y = -np.cos(phi_rad)
                 v_z = 0. * v_x
                 polarization = np.asarray([v_x, v_y, v_z]).astype('complex').squeeze()
             else:

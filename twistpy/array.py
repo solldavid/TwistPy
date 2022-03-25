@@ -15,6 +15,7 @@ class BeamformingArray:
 
     [1] Meng et al. (2011). A window into the complexity of the dynamic rupture of the 2011 Mw 9 Tohoku-Oki earthquake.
     GRL:  https://doi.org/10.1029/2011GL048118
+
     [2] Meng et al. (2012). High-resoultion backprojection at regional distance. JGR:
     https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2011JB008702
 
@@ -36,7 +37,6 @@ class BeamformingArray:
         Seismic data in ObsPy format. len(data) = N
     steering_vectors : :obj:`~numpy.ndarray`
         Steering vectors used for beam forming
-
     """
 
     def __init__(self,

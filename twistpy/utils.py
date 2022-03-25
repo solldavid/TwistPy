@@ -1,5 +1,5 @@
 """
-TwistPy utility functions
+TwistPy utility functions.
 """
 
 import pickle

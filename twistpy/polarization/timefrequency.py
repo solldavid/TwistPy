@@ -22,7 +22,15 @@ class TimeFrequencyAnalysis6C:
     """Time-frequency domain six-component polarization analysis.
 
     Single-station six degree-of-freedom polarization analysis on time-frequency decomposed signals. The time-frequency
-    representation is obtained via the S-transform (:func:`twistpy.utils.s_transform`).
+    representation is obtained via the S-transform (:func:`twistpy.utils.s_transform`) [1], [2].
+
+    .. hint::
+        [1] Sollberger et al. (2018). *6-C polarization analysis using point measurements of translational and
+        rotational ground-motion: theory and applications*, Geophysical Journal International, 213(1),
+        https://doi.org/10.1093/gji/ggx542
+
+        [2] Sollberger et al. (2020). *Seismological processing of six degree-of-freedom ground-motion data*, Sensors,
+        20(23), https://doi.org/10.3390/s20236904
 
     Parameters
     ----------
@@ -284,7 +292,7 @@ class TimeFrequencyAnalysis6C:
                             f"{classified_eigenvector})!")
 
     def save(self, name: str) -> None:
-        """ Save the current TimeDomainAnalysis object to a file on the disk in the current working directory.
+        """ Save the current TimeFrequencyAnalaysis6C object to a file on the disk in the current working directory.
 
          Include absolute path if you want to save in a different directory.
 
@@ -350,12 +358,6 @@ class TimeFrequencyAnalysis3C:
 
     Attributes
     ----------
-    classification : :obj:`dict`
-        Dictionary containing the labels of classified wave types at each position of the analysis window in time and
-        frequency. The dictionary has six entries corresponding to classifications for each eigenvector.
-
-        |  classification = {'0': list_with_classifications_of_first_eigenvector, '1':
-            list_with_classification_of_second_eigenvector, ... , '5': list_with_classification_of_last_eigenvector}
     t_pol : :obj:`list` of :obj:`~obspy.core.utcdatetime.UTCDateTime`
         Time axis of the computed polarization attributes.
     f_pol : :obj:`~numpy.ndarray` of :obj:`float`
@@ -531,8 +533,8 @@ class TimeFrequencyAnalysis3C:
         if self.verbose:
             print('Polarization attributes have been computed!')
 
-    def filter(self, plot_filtered_attributes: bool = False, **kwargs):
-        r"""Filter data based on polarization attributes
+    def filter(self, plot_filtered_attributes: bool = False, **kwargs) -> Stream:
+        r"""Filter data based on polarization attributes.
 
         Parameters
         ----------
@@ -557,7 +559,17 @@ class TimeFrequencyAnalysis3C:
                 azi1 (Azimuth of the major semi axis)
 
                 azi2 (Azimuth of the minor semi axis)
+
+        Returns
+        -------
+        data_filtered : :obj:`~obspy.core.stream.Stream`
+            Filtered data. The order of traces in the stream is N, E, Z.
         """
+
+        if self.dsfacf != 1 or self.dsfact != 1:
+            raise Exception('Polarization filtering is only supported if the polarization attributes have been computed'
+                            'at each time-frequency pixel. To do so, recompute the polarization attributes and set '
+                            'dsfacf=1 and dsfact=1.')
         params = {}
         for k in kwargs:
             if kwargs[k] is not None:
@@ -594,9 +606,9 @@ class TimeFrequencyAnalysis3C:
             mask[i, :] = uniform_filter1d(mask[i, :], size=self.window_t_samples[i])
         indx = mask > 0
 
-        Z_sep = np.zeros_like(Z_stran)
-        N_sep = np.zeros_like(N_stran)
-        E_sep = np.zeros_like(E_stran)
+        Z_sep = np.zeros_like(Z_stran).astype('complex')
+        N_sep = np.zeros_like(N_stran).astype('complex')
+        E_sep = np.zeros_like(E_stran).astype('complex')
 
         data_st = np.array([N_stran[indx].ravel(), E_stran[indx].ravel(), Z_stran[indx].ravel()]).T
         # Project data into coordinate frame spanned by eigenvectors
@@ -604,15 +616,17 @@ class TimeFrequencyAnalysis3C:
 
         # Only keep data that is aligned with the principal eigenvector
         data_proj[:, 0:2] = 0
+
+        # Back-projection into original coordinate frame
         data_filt = np.einsum('...i, ...ij -> ...j', data_proj, np.transpose(eigenvectors[indx.ravel(), :, :].conj(),
                                                                              axes=(0, 2, 1)), optimize=True)
         Z_sep[indx] = data_filt[:, 2]
         N_sep[indx] = data_filt[:, 0]
         E_sep[indx] = data_filt[:, 1]
 
-        Z_sep = i_s_transform(Z_sep, f=f_stran, k=self.k)
-        N_sep = i_s_transform(N_sep, f=f_stran, k=self.k)
-        E_sep = i_s_transform(E_sep, f=f_stran, k=self.k)
+        Z_sep = i_s_transform(mask * Z_sep, f=f_stran, k=self.k)
+        N_sep = i_s_transform(mask * N_sep, f=f_stran, k=self.k)
+        E_sep = i_s_transform(mask * E_sep, f=f_stran, k=self.k)
         #
         data_filtered = Stream(traces=[self.N.copy(), self.E.copy(), self.Z.copy()])
         data_filtered[0].data = N_sep
@@ -620,13 +634,14 @@ class TimeFrequencyAnalysis3C:
         data_filtered[2].data = Z_sep
 
         if plot_filtered_attributes:
-            self.plot_polarization_analysis(show=False, alpha=mask, seismograms=data_filtered)
+            self.plot(show=False, alpha=mask, seismograms=data_filtered)
 
         return data_filtered
 
-    def plot_polarization_analysis(self, clip: np.float = 0.05, major_semi_axis: bool = True, show: bool = True,
-                                   alpha: np.ndarray = None, seismograms: Stream = None) -> None:
-        """
+    def plot(self, clip: np.float = 0.05, major_semi_axis: bool = True, show: bool = True,
+             alpha: np.ndarray = None, seismograms: Stream = None) -> None:
+        """Plot polarization analysis.
+
         Parameters
         ----------
         clip : :obj:`float`, default=0.05 (between 0 and 1)
@@ -755,7 +770,7 @@ class TimeFrequencyAnalysis3C:
             ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 
     def save(self, name: str) -> None:
-        """ Save the current TimeDomainAnalysis object to a file on the disk in the current working directory.
+        """ Save the current TimeFrequencyAnalaysis3C object to a file on the disk in the current working directory.
 
          Include absolute path if you want to save in a different directory.
 

@@ -60,9 +60,9 @@ autodoc_member_order = 'bysource'
 
 sphinx_gallery_conf = {
     # path to your examples scripts
-    'examples_dirs': ['../../tutorials', '../../examples', ],
+    'examples_dirs': ['../../examples', ],
     # path where to save gallery generated examples
-    'gallery_dirs': ['tutorials', 'examples'],
+    'gallery_dirs': ['examples'],
     'filename_pattern': '\.py',
     'ignore_pattern': '_init_/',
     # Remove the "Download all examples" button from the top level gallery

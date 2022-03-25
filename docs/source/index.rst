@@ -35,7 +35,6 @@ Some of the tools available in TwistPy are:
 
     installation
     examples/index.rst
-    tutorials/index.rst
 
 .. toctree::
     :maxdepth: 3

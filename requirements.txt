@@ -1,9 +1,13 @@
-numpy
-scipy
-obspy
-pandas
+numpy~=1.21.5
+scipy~=1.7.3
+obspy~=1.3.0
+pandas~=1.3.5
 matplotlib
 pytest
-scikit-learn
+scikit-learn~=1.0.2
 
 
+
+twistpy~=0.0
+spectrum~=0.7.5
+setuptools~=59.8.0

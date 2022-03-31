@@ -33,7 +33,7 @@ def load_analysis(file: str) -> Any:
     return obj
 
 
-def s_transform(signal, dsfacf: int = 1, k: float = 1) -> Tuple[np.ndarray, np.ndarray]:
+def stransform(signal, dsfacf: int = 1, k: float = 1) -> Tuple[np.ndarray, np.ndarray]:
     r"""Compute the discrete S-transform of the input signal.
 
     The S-transform or Stockwell transform provides a time-frequency representation of a signal. It is an extension of
@@ -101,7 +101,7 @@ def s_transform(signal, dsfacf: int = 1, k: float = 1) -> Tuple[np.ndarray, np.n
     return stran, f[::dsfacf]
 
 
-def i_s_transform(st: np.ndarray, f: np.ndarray, k: float = 1) -> np.ndarray:
+def istransform(st: np.ndarray, f: np.ndarray, k: float = 1) -> np.ndarray:
     r"""Compute the inverse S-transform.
 
     This function computes the approximate inverse S-transform after Schimmel et al. (2005) [1]. This inverse has some

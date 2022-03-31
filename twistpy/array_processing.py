@@ -9,15 +9,36 @@ from spectrum import dpss
 
 
 class BeamformingArray:
-    r"""Beamforming using the multi-taper technique.
+    r"""Beamforming for arbitrarily-shaped arrays.
 
-    Specify a BeamformingArray object that can be used for beamforming using the multi-taper technique [1],[2].
+    This class serves as an interface to apply various beamforming techniques to single-component data recorded on
+    arbitrarly-shaped arrays. It makes use of the multi-taper method for spectral estimation [1],[2].
+    Currently, the available beamforming methods are: BARTLETT beamforming, MVDR (Capon) beamforming, and the MUSIC
+    algorithm.
 
-    [1] Meng et al. (2011). A window into the complexity of the dynamic rupture of the 2011 Mw 9 Tohoku-Oki earthquake.
-    GRL:  https://doi.org/10.1029/2011GL048118
+    Example usage::
 
-    [2] Meng et al. (2012). High-resoultion backprojection at regional distance. JGR:
-    https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2011JB008702
+        # Instantiate an array object with a name and receiver coordinates
+        array = BeamformingArray(name='My Array', coordinates=coordinates)
+
+        # Provide waveform data to the array object:
+        array.add_data(data=ObsPyStream)
+
+        # Pre-compute the phase delays inside the array for a set of candidate
+        # plane-waves (so-called steering vectors):
+        array.compute_steering_vectors(frequency=50, intra_array_velocity=(2000, 3000, 100),
+        inclination=(0, 90, 1), azimuth=(0, 360, 1))
+
+        # Perform beamforming, which yields the estimation function P:
+        P = array.beamforming(method='MUSIC', eventtime = UTCDateTime, frequency_band=(45, 55),
+        window=5, number_of_sources=1)
+
+    .. hint::
+            [1] Meng et al. (2011). A window into the complexity of the dynamic rupture of the 2011 Mw 9 Tohoku-Oki
+            earthquake, GRL, https://doi.org/10.1029/2011GL048118
+
+            [2] Meng et al. (2012). High-resoultion backprojection at regional distance. JGR:
+            https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2011JB008702
 
     Parameters
     ----------
@@ -32,11 +53,14 @@ class BeamformingArray:
     Attributes
     ----------
     N : :obj:`int`
-        Number of stations in the array
+        Number of stations in the array.
     data : :obj:`~obspy.core.stream.Stream`
         Seismic data in ObsPy format. len(data) = N
     steering_vectors : :obj:`~numpy.ndarray`
-        Steering vectors used for beam forming
+        Steering vectors used for beamforming.
+    has_data : :obj:`bool`
+        True if wqveform data was already added to this array object.
+
     """
 
     def __init__(self,

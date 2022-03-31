@@ -15,7 +15,7 @@ import numpy as np
 from obspy.core import read
 
 from twistpy.polarization import TimeFrequencyAnalysis3C
-from twistpy.utils import s_transform
+from twistpy.utils import stransform
 
 # sphinx_gallery_thumbnail_number = 1
 
@@ -33,7 +33,7 @@ data = read('../example_data/S0173a.mseed')
 # specify a window that is frequency-dependent and extends over a single period in time (1/frequency). In the
 # frequency-direction the window extends over 5 mHz.
 
-window = {'number_of_periods': 1, 'frequency_extent': 0.05}
+window = {'number_of_periods': 1, 'frequency_extent': 0.005}
 
 ########################################################################################################################
 # Now we can set up the polarizaiton analysis interface. To compute the S-transform, we use the default value of k=1.
@@ -73,8 +73,8 @@ data_filtered = analysis.filter(elli=[0, 0.4], inc1=[60, 90], plot_filtered_attr
 # time-frequency representation (S-transform) of the signal for interpretation. This can be done in the following way:
 
 # Compute S-transform of North component for plotting
-N_stran, f = s_transform(data[1].data, k=1)
-N_stran_filtered, _ = s_transform(data_filtered[0].data, k=1)  # S-transform of filtered data for comparison
+N_stran, f = stransform(data[1].data, k=1)
+N_stran_filtered, _ = stransform(data_filtered[0].data, k=1)  # S-transform of filtered data for comparison
 plt.style.use("ggplot")
 
 # Plot the result

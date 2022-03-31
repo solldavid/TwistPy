@@ -223,13 +223,13 @@ classification_tf = analysis_tf.classification['0']
 # Now we can plot the classification using the TimeFrequencyAnalysis6C.plot_classification() method. We additionally
 # plot the S-transform of the vertical translational component.
 
-from twistpy.utils import s_transform
+from twistpy.utils import stransform
 
 fig_tf, (ax1_tf, ax2_tf, ax3_tf) = plt.subplots(3, 1, sharex=True, figsize=(10, 5))
 ax1_tf.plot(data[0].times(), data[2].data, 'k')
-ax2_tf.imshow(np.abs(s_transform(data[2].data)[0]), origin='lower', extent=[data[0].times()[0], data[0].times()[-1],
-                                                                            analysis_tf.f_pol[0],
-                                                                            analysis_tf.f_pol[-1]], aspect='auto')
+ax2_tf.imshow(np.abs(stransform(data[2].data)[0]), origin='lower', extent=[data[0].times()[0], data[0].times()[-1],
+                                                                           analysis_tf.f_pol[0],
+                                                                           analysis_tf.f_pol[-1]], aspect='auto')
 analysis_tf.plot_classification(ax3_tf)
 
 ax1_tf.set_ylabel('Signal Amplitude')

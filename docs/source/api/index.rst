@@ -8,7 +8,7 @@ TwistPy API
 
 Tools for three-component polarization analysis and filtering.
 
-.. currentmodule:: twispy.polarization
+.. currentmodule:: twistpy.polarization
 
 .. automodule:: twistpy.polarization
     :no-inherited-members:
@@ -104,7 +104,7 @@ Utility functions
     :nosignatures:
     :recursive:
 
-    s_transform
-    i_s_transform
+    stransform
+    istransform
     load_analysis
 

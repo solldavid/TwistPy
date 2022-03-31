@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.signal.windows import tukey
 
-from twistpy.utils import s_transform, i_s_transform
+from twistpy.utils import stransform, istransform
 
 dt = 0.01  # Sampling interval (s)
 tmin = 0  # Start time of the signal (s)
@@ -15,12 +15,12 @@ u = np.sin(2 * np.pi * f1 * t)
 
 taper = tukey(len(t))  # Taper the signal to avoid edge artifacts
 u *= taper
-u_stran_1, f1 = s_transform(u, k=1)
-u_stran_2, f2 = s_transform(u, k=3)
-u_stran_3, _ = s_transform(u, dsfacf=2, k=1)
-u_stran_4, _ = s_transform(u, dsfacf=3, k=1)
-u_istran_1 = i_s_transform(u_stran_1, f1, k=1)
-u_istran_2 = i_s_transform(u_stran_2, f1, k=3)
+u_stran_1, f1 = stransform(u, k=1)
+u_stran_2, f2 = stransform(u, k=3)
+u_stran_3, _ = stransform(u, dsfacf=2, k=1)
+u_stran_4, _ = stransform(u, dsfacf=3, k=1)
+u_istran_1 = istransform(u_stran_1, f1, k=1)
+u_istran_2 = istransform(u_stran_2, f1, k=3)
 
 
 def test_stransform():

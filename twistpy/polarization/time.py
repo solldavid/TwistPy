@@ -417,7 +417,7 @@ class TimeDomainAnalysis6C:
         ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 
     def save(self, name: str) -> None:
-        """ Save the current TimeDomainAnalysis object to a file on the disk in the current working directory.
+        """ Save the current TimeDomainAnalysis6C object to a file on the disk in the current working directory.
 
          Include absolute path if you want to save in a different directory.
 
@@ -588,7 +588,8 @@ class TimeDomainAnalysis3C:
             print('Polarization attributes have been computed!')
 
     def filter(self, plot_filtered_attributes: bool = False, **kwargs):
-        """
+        r"""Filter data based on polarization attributes.
+
         Parameters
         ----------
         plot_filtered_attributes : :obj:`bool`, default = False
@@ -765,7 +766,7 @@ class TimeDomainAnalysis3C:
             ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 
     def save(self, name: str) -> None:
-        """ Save the current TimeDomainAnalysis object to a file on the disk in the current working directory.
+        """ Save the current TimeDomainAnalysis3C object to a file on the disk in the current working directory.
 
          Include absolute path if you want to save in a different directory.
 

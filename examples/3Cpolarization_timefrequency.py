@@ -14,7 +14,7 @@ from scipy.signal import hilbert, convolve
 
 from twistpy.convenience import ricker
 from twistpy.polarization import TimeFrequencyAnalysis3C, PolarizationModel3C
-from twistpy.utils import s_transform
+from twistpy.utils import stransform
 
 rng = np.random.default_rng(1)
 
@@ -115,7 +115,7 @@ for n in range(signal.shape[1]):
 # specify a window that is frequency-dependent and extends over a single period in time (1/frequency). In the
 # frequency-direction the window extends over 5 Hz.
 
-window = {'number_of_periods': 1, 'frequency_extent': 5.}
+window = {'number_of_periods': 1, 'frequency_extent': 50.}
 
 ########################################################################################################################
 # Now we set up the polarization analysis. We use a value of k=1 for the S-transform.
@@ -176,8 +176,8 @@ data_filtered = analysis.filter(plot_filtered_attributes=True, elli=[0.0, 0.2], 
 # the P-wave is retained, while all other signals are suppressed.
 
 # Compute S-transform of vertical component for plotting
-Z_stran, f = s_transform(data[2].data, k=1)
-Z_stran_filtered, _ = s_transform(data_filtered[2].data, k=1)  # S-transform of filtered data for comparison
+Z_stran, f = stransform(data[2].data, k=1)
+Z_stran_filtered, _ = stransform(data_filtered[2].data, k=1)  # S-transform of filtered data for comparison
 f /= dt
 
 # Plot the result

@@ -15,7 +15,7 @@ from obspy.core.utcdatetime import UTCDateTime
 from scipy.ndimage import uniform_filter1d
 
 from twistpy.polarization.machinelearning import SupportVectorMachine
-from twistpy.utils import s_transform, i_s_transform
+from twistpy.utils import stransform, istransform
 
 
 class TimeFrequencyAnalysis6C:
@@ -165,12 +165,12 @@ class TimeFrequencyAnalysis6C:
         window_f_samples = np.max([1, int(self.window["frequency_extent"] / df)])
 
         # Compute the S-transform of the input signal
-        u: np.ndarray = np.moveaxis(np.array([s_transform(traN.data, dsfacf=dsfacf, k=k)[0],
-                                              s_transform(traE.data, dsfacf=dsfacf, k=k)[0],
-                                              s_transform(traZ.data, dsfacf=dsfacf, k=k)[0],
-                                              s_transform(rotN.data, dsfacf=dsfacf, k=k)[0],
-                                              s_transform(rotE.data, dsfacf=dsfacf, k=k)[0],
-                                              s_transform(rotZ.data, dsfacf=dsfacf, k=k)[0]]), 0, 2)
+        u: np.ndarray = np.moveaxis(np.array([stransform(traN.data, dsfacf=dsfacf, k=k)[0],
+                                              stransform(traE.data, dsfacf=dsfacf, k=k)[0],
+                                              stransform(traZ.data, dsfacf=dsfacf, k=k)[0],
+                                              stransform(rotN.data, dsfacf=dsfacf, k=k)[0],
+                                              stransform(rotE.data, dsfacf=dsfacf, k=k)[0],
+                                              stransform(rotZ.data, dsfacf=dsfacf, k=k)[0]]), 0, 2)
 
         self.signal_amplitudes_st = np.sqrt(np.abs(u[:, :, 0]) ** 2 + np.abs(u[:, :, 1]) ** 2 + np.abs(u[:, :, 2]) ** 2
                                             + np.abs(u[:, :, 3]) ** 2 + np.abs(u[:, :, 4]) ** 2 + np.abs(
@@ -198,7 +198,7 @@ class TimeFrequencyAnalysis6C:
         C: np.ndarray = np.einsum('...i,...j->...ij', np.conj(u), u).astype('complex')
         for j in range(C.shape[2]):
             for k in range(C.shape[3]):
-                C[..., j, k] = uniform_filter1d(C[..., j, k], size=window_f_samples)
+                C[..., j, k] = uniform_filter1d(C[..., j, k], size=window_f_samples, axis=0)
                 for i in range(C.shape[0]):
                     C[i, :, j, k] = uniform_filter1d(C[i, :, j, k], size=window_t_samples[i])
         self.C = np.reshape(C[:, indx_t[0]:indx_t[1]:dsfact, :, :],
@@ -449,9 +449,9 @@ class TimeFrequencyAnalysis3C:
         self.window_f_samples = window_f_samples
 
         # Compute the S-transform of the input signal
-        u: np.ndarray = np.moveaxis(np.array([s_transform(N.data, dsfacf=dsfacf, k=k)[0],
-                                              s_transform(E.data, dsfacf=dsfacf, k=k)[0],
-                                              s_transform(Z.data, dsfacf=dsfacf, k=k)[0]]),
+        u: np.ndarray = np.moveaxis(np.array([stransform(N.data, dsfacf=dsfacf, k=k)[0],
+                                              stransform(E.data, dsfacf=dsfacf, k=k)[0],
+                                              stransform(Z.data, dsfacf=dsfacf, k=k)[0]]),
                                     0, 2)
 
         self.signal_amplitudes_st = np.sqrt(np.abs(u[:, :, 0]) ** 2 + np.abs(u[:, :, 1]) ** 2 + np.abs(u[:, :, 2]) ** 2
@@ -479,7 +479,7 @@ class TimeFrequencyAnalysis3C:
         C: np.ndarray = np.einsum('...i,...j->...ij', np.conj(u), u).astype('complex')
         for j in range(C.shape[2]):
             for k in range(C.shape[3]):
-                C[..., j, k] = uniform_filter1d(C[..., j, k], size=window_f_samples)
+                C[..., j, k] = uniform_filter1d(C[..., j, k], size=window_f_samples, axis=0)
                 for i in range(C.shape[0]):
                     C[i, :, j, k] = uniform_filter1d(C[i, :, j, k], size=window_t_samples[i])
         self.C = np.reshape(C[:, indx_t[0]:indx_t[1]:dsfact, :, :],
@@ -585,9 +585,9 @@ class TimeFrequencyAnalysis3C:
         _, eigenvectors = np.linalg.eigh(self.C)
 
         # Compute S-transform of each component
-        Z_stran, f_stran = s_transform(self.Z.data, k=self.k)
-        N_stran, _ = s_transform(self.N.data, k=self.k)
-        E_stran, _ = s_transform(self.E.data, k=self.k)
+        Z_stran, f_stran = stransform(self.Z.data, k=self.k)
+        N_stran, _ = stransform(self.N.data, k=self.k)
+        E_stran, _ = stransform(self.E.data, k=self.k)
 
         # Initialize filter mask
         mask = np.ones((len(self.f_pol), len(self.t_pol)))
@@ -625,9 +625,9 @@ class TimeFrequencyAnalysis3C:
         N_sep[indx] = data_filt[:, 0]
         E_sep[indx] = data_filt[:, 1]
 
-        Z_sep = i_s_transform(mask * Z_sep, f=f_stran, k=self.k)
-        N_sep = i_s_transform(mask * N_sep, f=f_stran, k=self.k)
-        E_sep = i_s_transform(mask * E_sep, f=f_stran, k=self.k)
+        Z_sep = istransform(mask * Z_sep, f=f_stran, k=self.k)
+        N_sep = istransform(mask * N_sep, f=f_stran, k=self.k)
+        E_sep = istransform(mask * E_sep, f=f_stran, k=self.k)
         #
         data_filtered = Stream(traces=[self.N.copy(), self.E.copy(), self.Z.copy()])
         data_filtered[0].data = N_sep

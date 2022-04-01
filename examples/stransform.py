@@ -2,7 +2,7 @@ r"""
 S-transform
 ============
 This example illustrates the use of TwistPy's S-transform functions
-(:func:`twistpy.utils.s_transform` and :func:`twistpy.utils.i_s_transform`) to compute a
+(:func:`twistpy.utils.stransform` and :func:`twistpy.utils.istransform`) to compute a
 time-frequency representation of a signal and perform some filtering on the time-frequency spectrum.
 """
 import matplotlib.pyplot as plt

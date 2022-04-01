@@ -31,7 +31,7 @@ data = read('../example_data/S0173a.mseed')
 # matrices for polarization analysis will be smoothed in a 2D  window extending over the number of periods specified
 # by 'number_of_periods' and over the frequency range (in Hz) specified by 'frequency'. Here, we
 # specify a window that is frequency-dependent and extends over a single period in time (1/frequency). In the
-# frequency-direction the window extends over 5 mHz.
+# frequency-direction the window extends over 50 mHz.
 
 window = {'number_of_periods': 1, 'frequency_extent': 0.05}
 

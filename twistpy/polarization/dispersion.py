@@ -132,8 +132,8 @@ class DispersionAnalysis:
                             'c_r': analysis.c_r, 'wave_types': analysis.classification['0'], 'dop': analysis.dop}
             self.parameters.append(parameters_f)
 
-    def plot_dispersion_curves(self, nbins: int = 100, velocity_range: Tuple[float, float] = (0, 2500),
-                               quantiles: Tuple[float, float] = (0.2, 0.8), dop_min: float = 0.3):
+    def plot(self, nbins: int = 100, velocity_range: Tuple[float, float] = (0, 2500),
+             quantiles: Tuple[float, float] = (0.2, 0.8), dop_min: float = 0.3):
 
         counts_r = np.zeros((nbins, len(self.f)))
         counts_l = np.zeros((nbins, len(self.f)))
@@ -204,7 +204,7 @@ class DispersionAnalysis:
             counts_dop_l[:, i] = counts
 
         fig1, ((ax2, ax1, ax5), (ax4, ax3, ax6), (ax7, ax8, ax9)) = \
-            plt.subplots(3, 3, gridspec_kw={'height_ratios': [3, 1, 1]}, figsize=(12, 10))
+            plt.subplots(3, 3, gridspec_kw={'height_ratios': [3, 1, 1]}, figsize=(15, 10))
 
         im = NonUniformImage(ax1, interpolation='nearest', cmap='magma',
                              extent=[self.f[-1], self.f[0], velocity_range[0], velocity_range[1]])

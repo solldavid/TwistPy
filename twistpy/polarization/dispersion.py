@@ -19,8 +19,8 @@ class DispersionAnalysis:
     r"""
     Single-station six-component surface wave dispersion estimation for Love and Rayleigh waves.
 
-    Under the hood, the DispersionAnalysis class runs a :obj:`~twistpy.time.TimeDomainAnalysis6C`. The data is
-    filtered to different frequency bands of interest, and the wave parameters are estimated at each frequency
+    Under the hood, the DispersionAnalysis class runs a :obj:`~twistpy.polarization.time.TimeDomainAnalysis6C`. The data
+    is filtered to different frequency bands of interest, and the wave parameters are estimated at each frequency
     independently.
 
     Parameters

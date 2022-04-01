@@ -33,7 +33,7 @@ data = read('../example_data/S0173a.mseed')
 # specify a window that is frequency-dependent and extends over a single period in time (1/frequency). In the
 # frequency-direction the window extends over 5 mHz.
 
-window = {'number_of_periods': 1, 'frequency_extent': 0.005}
+window = {'number_of_periods': 1, 'frequency_extent': 0.05}
 
 ########################################################################################################################
 # Now we can set up the polarizaiton analysis interface. To compute the S-transform, we use the default value of k=1.

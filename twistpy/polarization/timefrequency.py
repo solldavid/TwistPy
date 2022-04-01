@@ -198,7 +198,7 @@ class TimeFrequencyAnalysis6C:
         C: np.ndarray = np.einsum('...i,...j->...ij', np.conj(u), u).astype('complex')
         for j in range(C.shape[2]):
             for k in range(C.shape[3]):
-                C[..., j, k] = uniform_filter1d(C[..., j, k], size=window_f_samples, axis=0)
+                C[..., j, k] = uniform_filter1d(C[..., j, k], size=window_f_samples)
                 for i in range(C.shape[0]):
                     C[i, :, j, k] = uniform_filter1d(C[i, :, j, k], size=window_t_samples[i])
         self.C = np.reshape(C[:, indx_t[0]:indx_t[1]:dsfact, :, :],

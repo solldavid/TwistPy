@@ -50,4 +50,5 @@ Some of the tools available in TwistPy are:
 
     references.rst
     acknowledgments.rst
+    contact.rst
 

@@ -4,6 +4,7 @@ import pickle
 from builtins import *
 from typing import List, Dict
 
+import h5py
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -207,7 +208,8 @@ class TimeDomainAnalysis6C:
 
         Parameters
         ----------
-        estimator_configuration
+        estimator_configuration : :obj:`~twistpy.polarization.estimator.EstimatorConfiguration`
+            Estimator Configuration to be used in the polarization analysis
         """
         if estimator_configuration is None:
             raise ValueError("Please provide an EstimatorConfiguration for polarization analysis!")
@@ -315,6 +317,7 @@ class TimeDomainAnalysis6C:
                 steering_vectors = estimator_configuration.compute_steering_vectors(wave_type)
 
                 if estimator_configuration.method == 'MUSIC':
+                    hdf5_file = h5py.File('estimator.h5', 'w')
                     noise_space_vectors = \
                         eigenvectors[indices, :, :6 - estimator_configuration.music_signal_space_dimension]
                     noise_space_vectors_H = np.transpose(noise_space_vectors.conj(), axes=(0, 2, 1))
@@ -322,13 +325,21 @@ class TimeDomainAnalysis6C:
                                             optimize=True)
                     P = 1 / np.einsum('...sn,...nk,...sk->...s', steering_vectors.conj().T, noise_space,
                                       steering_vectors.T, optimize=True).real
+                    hdf5_file.create_dataset(wave_type, data=P)
+                    hdf5_file.close()
                 elif estimator_configuration.method == 'MVDR':
+                    hdf5_file = h5py.File('estimator.h5', 'w')
                     P = 1 / np.einsum('...sn,...nk,...sk->...s', steering_vectors.conj().T,
                                       np.linalg.pinv(self.C[indices, :, :], rcond=1e-6, hermitian=True),
                                       steering_vectors.T, optimize=True).real
+                    hdf5_file.create_dataset(wave_type, data=P)
+                    hdf5_file.close()
                 elif estimator_configuration.method == 'BARTLETT':
+                    hdf5_file = h5py.File('estimator.h5', 'w')
                     P = np.einsum('...sn,...nk,...sk->...s', steering_vectors.conj().T,
                                   self.C[indices, :, :], steering_vectors.T, optimize=True).real
+                    hdf5_file.create_dataset(wave_type, data=P)
+                    hdf5_file.close()
         if plot:
             self.plot(estimator_configuration=estimator_configuration)
 

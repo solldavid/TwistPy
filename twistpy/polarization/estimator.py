@@ -65,7 +65,6 @@ class EstimatorConfiguration:
         Define the search space for the inclination angle in degrees.
     xi : :obj:`tuple` (xi_min, xi_max, increment)
         Define the search space for the Rayleigh wave ellipticity angle in degrees.
-
     """
 
     def __init__(self, wave_types: List[str] = ['R', 'L', 'P', 'SV', 'SH'],

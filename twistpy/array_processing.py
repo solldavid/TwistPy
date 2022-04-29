@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, Tuple
 
 import numpy as np
 from matplotlib import axes
@@ -314,21 +314,24 @@ def plot_beam(grid: np.ndarray, beam_origin: np.ndarray, P: np.ndarray, inclinat
               ax: axes, clip: float = 0.2) -> None:
     """Helper function to plot the beam power in 3D assuming a homogeneous velocity model.
 
-    Args:
-        grid : :obj:`~numpy.ndarray`
-        x, y, and z coordinates where the beam should be plotted in an array of dimension Nx3 (N being the number of points)
-        beam_origin: x, y, and z coordinate of the origin of the beam
-        P : :obj:`numpy.ndarray` beam power as a function of inclination and azimuth (2D array or 3D array,
-            depending on whether the velocity was included in the search)
-        inclination : :obj:`tuple`
-            Tuple with the inclination search parameters used to compute P
-        azimuth : :obj:`tuple`
-            Tuple with the azimuth search parameters used to compute P
-        clip : :obj:`float`
-            Percentage of beam power to be ignored for plotting, everything that has a power P < clip*P.max().max()
-            will be ignored. (Defaults to 0.2).
-        ax : :obj:`matplotlib.axes`
-            Matplotlib axes object where the beam is plotted (defaults to the current axis)
+    Parameters
+    ----------
+    grid : :obj:`~numpy.ndarray`
+        x, y, and z coordinates where the beam should be plotted in an array of dimension Nx3 (N being the number of
+        points)
+    beam_origin : :obj:`~numpy.ndarray`
+        x, y, and z coordinate of the origin of the beam
+    P : :obj:`numpy.ndarray` beam power as a function of inclination and azimuth (2D array or 3D array,
+        depending on whether the velocity was included in the search)
+    inclination : :obj:`tuple`
+        Tuple with the inclination search parameters used to compute P
+    azimuth : :obj:`tuple`
+        Tuple with the azimuth search parameters used to compute P
+    clip : :obj:`float`
+        Percentage of beam power to be ignored for plotting, everything that has a power P < clip*P.max().max()
+        will be ignored. (Defaults to 0.2).
+    ax : :obj:`matplotlib.axes`
+        Matplotlib axes object where the beam is plotted (defaults to the current axis)
 
     """
     dxdydz = beam_origin - grid
@@ -349,3 +352,43 @@ def plot_beam(grid: np.ndarray, beam_origin: np.ndarray, P: np.ndarray, inclinat
     beam_power_grid = beam_power_grid[beam_power_grid > clip * P.max().max()]
     ax.scatter(grid[:, 1], grid[:, 0], grid[:, 2], marker='.', c=beam_power_grid, vmin=clip * P.max().max(),
                vmax=P.max().max(), cmap='inferno')
+
+
+def beam(grid: np.ndarray, beam_origin: np.ndarray, P: np.ndarray, inclination: tuple, azimuth: tuple,
+         clip: float = 0.2) \
+        -> Tuple[np.ndarray, np.ndarray]:
+    """Helper function to compute the beam power at specific points.
+
+    Parameters
+    ----------
+    grid : :obj:`~numpy.ndarray`
+        x, y, and z coordinates where the beam should be computed in an array of dimension Nx3 (N being the number
+        of points)
+    beam_origin : :obj:`~numpy.ndarray`
+        x, y, and z coordinate of the origin of the beam
+    P : :obj:`numpy.ndarray` beam power as a function of inclination and azimuth (2D array or 3D array,
+        depending on whether the velocity was included in the search)
+    inclination : :obj:`tuple`
+        Tuple with the inclination search parameters used to compute P
+    azimuth : :obj:`tuple`
+        Tuple with the azimuth search parameters used to compute P
+    clip : :obj:`float`
+        Percentage of beam power to be ignored for plotting, everything that has a power P < clip*P.max().max()
+        will be ignored. (Defaults to 0.2).
+
+    """
+    dxdydz = beam_origin - grid
+    azimuth_grid = np.degrees(np.arctan2(dxdydz[:, 1], dxdydz[:, 0]))
+    azimuth_grid[azimuth_grid < 0] += 360
+    azimuth_grid = np.around(azimuth_grid / azimuth[2], decimals=0) * azimuth[2]
+    inclination_grid = np.degrees(np.arctan(np.linalg.norm(dxdydz[:, :-1], axis=1) / dxdydz[:, 2]))
+    inclination_grid[inclination_grid < 0] += 180
+    inclination_grid = np.around(inclination_grid / inclination[2], decimals=0) * inclination[2]
+    inclination_grid_index = ((inclination_grid - inclination[0]) / inclination[2]).astype(int)
+    azimuth_grid_index = ((azimuth_grid - azimuth[0]) / azimuth[2]).astype(int)
+    inclination_grid_index_use = (inclination_grid_index < P.shape[0]) * (inclination_grid_index > 0)
+    azimuth_grid_index_use = (azimuth_grid_index < P.shape[1]) * (azimuth_grid_index > 0)
+    use = inclination_grid_index_use * azimuth_grid_index_use
+    beam_power_grid = np.zeros((grid.shape[0],))
+    beam_power_grid[use] = P[inclination_grid_index[use], azimuth_grid_index[use]].ravel()
+    return beam_power_grid

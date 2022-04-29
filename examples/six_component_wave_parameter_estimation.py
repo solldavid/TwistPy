@@ -48,8 +48,8 @@ wavelet_hilb = np.imag(hilbert(wavelet))  # Here we make use of the Hilbert tran
 # the Love and Rayleigh wave velocities are assumed to be 300 m/s, and the Rayleigh wave ellipticity angle is set to be
 # -45 degrees.
 
-wave1 = PolarizationModel6C(wave_type='R', theta=20., phi=210., vr=300.,
-                            xi=45.)  # Generate a P-wave polarization model for
+wave1 = PolarizationModel6C(wave_type='P', theta=20., phi=30., vp=1000.,
+                            vs=400.)  # Generate a P-wave polarization model for
 # a P-wave recorded at the free surface with an inclination of 20 degrees, an azimuth of 30 degrees. The local P- and
 # S-wave velocities are 1000 m/s and 400 m/s
 wave2 = PolarizationModel6C(wave_type='SV', theta=20., phi=30., vp=1000.,
@@ -76,15 +76,15 @@ signal5[900, 2:] = np.real(wave5.polarization[2:].T)
 signal5[900, 0:2] = np.imag(wave5.polarization[0:2].T)
 
 for j in range(0, signal1.shape[1]):
+    signal1[:, j] = convolve(signal1[:, j], wavelet, mode='same')
     signal2[:, j] = convolve(signal2[:, j], wavelet, mode='same')
     signal3[:, j] = convolve(signal3[:, j], wavelet, mode='same')
     signal4[:, j] = convolve(signal4[:, j], wavelet, mode='same')
+
     if j == 0 or j == 1:  # Special case for horizontal translational components of the Rayleigh wave
         signal5[:, j] = convolve(signal5[:, j], wavelet_hilb, mode='same')
-        signal1[:, j] = convolve(signal1[:, j], wavelet_hilb, mode='same')
     else:
         signal5[:, j] = convolve(signal5[:, j], wavelet, mode='same')
-        signal1[:, j] = convolve(signal1[:, j], wavelet, mode='same')
 
 signal = signal1 + signal2 + signal3 + signal4 + signal5  # sum all signals together
 
@@ -167,7 +167,7 @@ svm.train(wave_types=['R', 'P', 'SV', 'L', 'Noise'],
 # domain and use a sliding time window that is 0.05 s long (50 samples) with an overlap between subsequent windows of
 # 50%.
 
-window = {'window_length_seconds': 20. * dt, 'overlap': 0.5}
+window = {'window_length_seconds': 20. * dt, 'overlap': 1.}
 analysis = TimeDomainAnalysis6C(traN=data[0], traE=data[1], traZ=data[2], rotN=data[3], rotE=data[4], rotZ=data[5],
                                 window=window, scaling_velocity=scaling_velocity, timeaxis='rel')
 

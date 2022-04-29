@@ -20,6 +20,12 @@ distribution you see fit.
     conda create -n twistpy python=3.9
     conda activate twistpy
 
+3. Install the dependencies:
+
+.. code-block:: bash
+
+    conda install obspy pandas matplotlib h5py scikit-learn spectrum
+
 .. note:: Make sure the `twistpy` environment is active when using `TwistPy` and for all the following steps on
     this page!
 

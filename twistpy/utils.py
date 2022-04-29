@@ -20,8 +20,11 @@ def load_analysis(file: str) -> Any:
 
     Returns
     -------
-    obj : :obj:`~twistpy.TimeDomainAnalysis` or :obj:`~twistpy.TimeFrequencyAnalysis` or
-    :obj:`~twistpy.DispersionAnalysis`
+    :obj:`~twistpy.polarization.time.TimeDomainAnalysis3C` or
+    :obj:`~twistpy.polarization.time.TimeDomainAnalysis6C` or
+    :obj:`~twistpy.polarization.timefrequency.TimeFrequencyAnalysis3C` or
+    :obj:`~twistpy.polarization.timefrequency.TimeFrequencyAnalysis6C` or
+    :obj:`~twistpy.polarization.dispersion.DispersionAnalysis`
     """
 
     if file is None:
@@ -46,7 +49,7 @@ def stransform(signal, dsfacf: int = 1, k: float = 1) -> Tuple[np.ndarray, np.nd
 
     where :math:`u` is the signal as a continuous function of time :math:`t`, :math:`\tau` is the translation of the
     Gaussian window, :math:`f` is frequency, and :math:`k` is a user-set constant specifying a scaling factor
-    controlling the number of oscillations in the winodw. When :math:`k` increases, the frequency resolution increases,
+    controlling the number of oscillations in the window. When :math:`k` increases, the frequency resolution increases,
     with a corresponding loss of time resolution [2].
 
     .. hint::
@@ -117,7 +120,7 @@ def istransform(st: np.ndarray, f: np.ndarray, k: float = 1) -> np.ndarray:
     where :math:`S(\tau, \ f)` is the time-frequency spectrum obtained using the forward S-transform, :math:`\tau` is
     the translation of the Gaussian window, :math:`f` is frequency, and :math:`k` is the user-set constant specifying
     the scaling factor controlling the number of oscillations in the window specified in the forward transform (see
-    :func:`twistpy.utils.s_transform`).
+    :func:`twistpy.utils.stransform` and the example below).
 
     The conventional inverse S-transform can simply be obtained as:
 

@@ -295,9 +295,6 @@ def cmmt(data: np.ndarray, Nw: int, freq_band: tuple, fsamp: float) -> np.ndarra
     f = np.arange(0, NFFT + 1) * df
     ind = (f >= freq_band[0]) & (f < freq_band[1])
 
-    if not any(ind):
-        ind = np.argmin(f - np.mean())
-
     S = S[:, :, ind]
     Sk_inv = Sk_inv[:, ind]
 

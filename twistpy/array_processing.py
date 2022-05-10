@@ -270,6 +270,9 @@ def cmmt(data: np.ndarray, Nw: int, freq_band: tuple, fsamp: float) -> np.ndarra
     # Next power of 2 (for FFT)
     NFFT = 2 ** int(np.log2(Nt) + 1) + 1
 
+    # For very short windows, the frequency resolution might suffer
+    if NFFT < 257:
+        NFFT = 257
     # Demean data
     data = (data.T - np.mean(data, axis=1)).T
 
@@ -291,6 +294,10 @@ def cmmt(data: np.ndarray, Nw: int, freq_band: tuple, fsamp: float) -> np.ndarra
     df = fsamp / (2 * NFFT)
     f = np.arange(0, NFFT + 1) * df
     ind = (f >= freq_band[0]) & (f < freq_band[1])
+
+    if not any(ind):
+        ind = np.argmin(f - np.mean())
+
     S = S[:, :, ind]
     Sk_inv = Sk_inv[:, ind]
 

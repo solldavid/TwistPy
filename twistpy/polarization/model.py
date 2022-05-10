@@ -156,7 +156,7 @@ class PolarizationModel6C:
                 index = theta_rad < theta_crit
                 theta_p[index] = np.arcsin(np.sin(theta_rad[index]) * self.vp[index] / self.vs[index])
                 alpha_ss[index] = (np.sin(2 * theta_rad[index]) * np.sin(2 * theta_p[index]) - kappa[index] ** 2 * (
-                    np.cos(2 * theta_p[index])) ** 2) \
+                    np.cos(2 * theta_rad[index])) ** 2) \
                                   / (np.sin(2 * theta_rad[index]) * np.sin(2 * theta_p[index]) + kappa[index] ** 2 * (
                     np.cos(2 * theta_rad[index])) ** 2)
                 alpha_sp[index] = -(kappa[index] * np.sin(4 * theta_rad[index])) \

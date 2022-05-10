@@ -156,7 +156,8 @@ svm = SupportVectorMachine(name='nearsurface')
 
 svm.train(wave_types=['R', 'P', 'SV', 'SH', 'Noise'],
           N=5000, scaling_velocity=scaling_velocity, vp=(400, 3000), vp_to_vs=(1.7, 2.4), vl=(100, 3000),
-          vr=(100, 3000), phi=(0, 360), theta=(0, 90), xi=(-90, 90), free_surface=True, C=1, kernel='rbf')
+          vr=(100, 3000), phi=(0, 360), theta=(0, 90), xi=(-90, 90), free_surface=True, C=1, kernel='rbf',
+          plot_confusion_matrix=True)
 
 ########################################################################################################################
 # Now that we have trained the model, we can set up our analysis. We will perform 6C polarization analysis in the time

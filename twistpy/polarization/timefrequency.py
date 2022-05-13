@@ -258,6 +258,56 @@ class TimeFrequencyAnalysis6C:
         if self.verbose:
             print('Wave types have been classified!')
 
+    def filter(self, svm: SupportVectorMachine, wave_types: List = ['P', 'SV', 'R'], no_of_eigenvectors: int = 1):
+        if self.dsfacf != 1 or self.dsfact != 1:
+            raise Exception('For now, filtering is only supported if the polarization attributes have been computed'
+                            'at each time-frequency pixel. To do so, recompute the polarization attributes and set '
+                            'dsfacf=1 and dsfact=1.')
+
+        for eigenvector in range(no_of_eigenvectors):
+            self.classify(svm=svm, eigenvector_to_classify=eigenvector)
+
+        data_filtered = {}
+        d = {'P': 0, 'S': 1, 'SV': 1, 'SH': 2, 'R': 3, 'Noise': 4}
+
+        # Compute eigenvectors for projection
+        _, eigenvectors = np.linalg.eigh(self.C)
+
+        # Compute S-transform of each component
+        traZ_stran, f_stran = stransform(self.traZ.data, k=self.k)
+        traN_stran, _ = stransform(self.traN.data, k=self.k)
+        traE_stran, _ = stransform(self.traE.data, k=self.k)
+        rotZ_stran, _ = stransform(self.rotZ.data, k=self.k)
+        rotN_stran, _ = stransform(self.rotN.data, k=self.k)
+        rotE_stran, _ = stransform(self.rotE.data, k=self.k)
+
+        data_st = np.array([traN_stran.ravel(), traE_stran.ravel(), traZ_stran.ravel(),
+                            rotN_stran.ravel(), rotE_stran.ravel(), rotZ_stran.ravel()]).T
+
+        # Project data into coordinate frame spanned by eigenvectors
+        data_proj = np.einsum('...i, ...ij -> ...j', data_st,
+                              eigenvectors, optimize=True)
+
+        # Populate filter mask (will be 1 where signal is kept and 0 everywhere else)
+        for wtype in wave_types:
+            data_filtered[wtype] = np.zeros((len(self.t_pol), 6), dtype='float')
+            d_projected_filt = data_proj.copy()
+            for eigenvector in range(no_of_eigenvectors):
+                if eigenvector == 0:
+                    mask = self.classification[str(eigenvector)].ravel() == 'Noise'
+                    d_projected_filt[mask, :] *= 0
+                mask = np.invert(self.classification[str(eigenvector)].ravel() == wtype)
+                d_projected_filt[mask, -(eigenvector + 1)] *= 0
+            d_projected_filt[:, 0:3] *= 0
+            data_filt = np.einsum('...i, ...ij -> ...j', d_projected_filt,
+                                  np.transpose(eigenvectors.conj(),
+                                               axes=(0, 2, 1)), optimize=True)
+            data_filt = data_filt.reshape(len(self.f_pol), len(self.t_pol), 6)
+            for trace in range(6):
+                data_filtered[wtype][:, trace] = istransform(data_filt[:, :, trace], f=f_stran, k=self.k)
+
+        return data_filtered
+
     def plot_classification(self, ax: Axes, classified_eigenvector: int = 0, clip: float = 0.05) -> None:
         """Plot wave type classification labels as a function of time and frequency.
 
@@ -290,6 +340,21 @@ class TimeFrequencyAnalysis6C:
         else:
             raise Exception(f"No wave types have been classified for this eigenvector yet (eigenvector: "
                             f"{classified_eigenvector})!")
+
+    def _plot_seismograms(self, ax: plt.Axes):
+        if self.timeaxis == 'utc':
+            time = self.traN.times(type='matplotlib')
+        else:
+            time = self.traN.times()
+        ax.plot(time, self.traN.data, 'k:', label='traN')
+        ax.plot(time, self.traE.data, 'k--', label='traE')
+        ax.plot(time, self.traZ.data, 'k', label='traZ')
+        ax.plot(time, self.rotZ.data, 'r:', label='rotN')
+        ax.plot(time, self.rotE.data, 'r--', label='rotE')
+        ax.plot(time, self.rotZ.data, 'r', label='rotZ')
+        if self.timeaxis == 'utc':
+            ax.xaxis_date()
+        ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 
     def save(self, name: str) -> None:
         """ Save the current TimeFrequencyAnalaysis6C object to a file on the disk in the current working directory.

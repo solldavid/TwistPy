@@ -97,8 +97,8 @@ data_rz = table_rz.row
 
 src_tot = len(traN)
 
-# for it in range(src_tot):
-for it in [20]:
+for it in range(src_tot):
+    # for it in [20]:
     print(f'Computing source number: {it}/{src_tot}:\n')
     pol = TimeFrequencyAnalysis6C(traN=traN[it], traE=traE[it], traZ=traZ[it],
                                   rotN=rotN[it], rotE=rotE[it], rotZ=rotZ[it],
@@ -150,12 +150,12 @@ for it in [20]:
     data_re['p'] = data_sep['P'][:, 4]
     data_rz['p'] = data_sep['P'][:, 5]
 
-    data_tn['s'] = data_sep['S'][:, 0]
-    data_te['s'] = data_sep['S'][:, 1]
-    data_tz['s'] = data_sep['S'][:, 2]
-    data_rn['s'] = data_sep['S'][:, 3]
-    data_re['s'] = data_sep['S'][:, 4]
-    data_rz['s'] = data_sep['S'][:, 5]
+    data_tn['s'] = data_sep['SV'][:, 0]
+    data_te['s'] = data_sep['SV'][:, 1]
+    data_tz['s'] = data_sep['SV'][:, 2]
+    data_rn['s'] = data_sep['SV'][:, 3]
+    data_re['s'] = data_sep['SV'][:, 4]
+    data_rz['s'] = data_sep['SV'][:, 5]
 
     data_tn['r'] = data_sep['R'][:, 0]
     data_te['r'] = data_sep['R'][:, 1]
@@ -163,6 +163,13 @@ for it in [20]:
     data_rn['r'] = data_sep['R'][:, 3]
     data_re['r'] = data_sep['R'][:, 4]
     data_rz['r'] = data_sep['R'][:, 5]
+
+    data_tn['l'] = data_sep['SH'][:, 0]
+    data_te['l'] = data_sep['SH'][:, 1]
+    data_tz['l'] = data_sep['SH'][:, 2]
+    data_rn['l'] = data_sep['SH'][:, 3]
+    data_re['l'] = data_sep['SH'][:, 4]
+    data_rz['l'] = data_sep['SH'][:, 5]
 
     data_tn.append()
     data_te.append()

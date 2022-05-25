@@ -769,9 +769,9 @@ class TimeDomainAnalysis3C:
                 time = seismograms[0].times(type='matplotlib')
             else:
                 time = seismograms[0].times()
-            ax.plot(time, seismograms[0].data, 'k:', label='N')
-            ax.plot(time, seismograms[1].data, 'k--', label='E')
-            ax.plot(time, seismograms[2].data, 'k', label='Z')
+            ax.plot(time, seismograms[1].data, 'k:', label='N')
+            ax.plot(time, seismograms[2].data, 'k--', label='E')
+            ax.plot(time, seismograms[0].data, 'k', label='Z')
             if self.timeaxis == 'utc':
                 ax.xaxis_date()
             ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))

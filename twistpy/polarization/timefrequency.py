@@ -694,10 +694,10 @@ class TimeFrequencyAnalysis3C:
         N_sep = istransform(mask * N_sep, f=f_stran, k=self.k)
         E_sep = istransform(mask * E_sep, f=f_stran, k=self.k)
         #
-        data_filtered = Stream(traces=[self.N.copy(), self.E.copy(), self.Z.copy()])
-        data_filtered[0].data = N_sep
-        data_filtered[1].data = E_sep
-        data_filtered[2].data = Z_sep
+        data_filtered = Stream(traces=[self.Z.copy(), self.N.copy(), self.E.copy()])
+        data_filtered[0].data = Z_sep
+        data_filtered[1].data = N_sep
+        data_filtered[2].data = E_sep
 
         if plot_filtered_attributes:
             self.plot(show=False, alpha=mask, seismograms=data_filtered)

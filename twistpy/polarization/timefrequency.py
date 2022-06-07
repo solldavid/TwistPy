@@ -14,6 +14,7 @@ from obspy import Trace, Stream
 from obspy.core.utcdatetime import UTCDateTime
 from scipy.ndimage import uniform_filter1d
 
+from twistpy.polarization import EstimatorConfiguration
 from twistpy.polarization.machinelearning import SupportVectorMachine
 from twistpy.utils import stransform, istransform
 
@@ -148,6 +149,11 @@ class TimeFrequencyAnalysis6C:
         self.verbose = verbose
         self.delta = self.traN.stats.delta
         self.classification: Dict[str, List[str]] = {'0': None, '1': None, '2': None, '3': None, '4': None, '5': None}
+        self.wave_parameters = {'P': {'vp': None, 'vp_to_vs': None, 'theta': None, 'phi': None, 'lh': None},
+                                'SV': {'vp': None, 'vp_to_vs': None, 'theta': None, 'phi': None, 'lh': None},
+                                'SH': {'vs': None, 'theta': None, 'phi': None, 'lh': None},
+                                'R': {'vr': None, 'phi': None, 'xi': None, 'lh': None},
+                                'L': {'vl': None, 'phi': None, 'lh': None}}
         self.frange = frange
         self.trange = trange
 
@@ -186,8 +192,11 @@ class TimeFrequencyAnalysis6C:
         else:
             indx_f = [0, u.shape[0]]
 
+        window_t_samples = window_t_samples[indx_f[0]:indx_f[1]]
+
         self.t_pol = self.time[indx_t[0]:indx_t[1]]
         self.t_pol = self.t_pol[::dsfact]
+        self.f_pol = self.f_pol[indx_f[0]:indx_f[1]]
 
         u = u[indx_f[0]:indx_f[1], indx_t[0]:indx_t[1], :]
         self.signal_amplitudes_st = self.signal_amplitudes_st[indx_f[0]:indx_f[1], indx_t[0]:indx_t[1]:dsfact]
@@ -257,6 +266,159 @@ class TimeFrequencyAnalysis6C:
         self.classification[str(eigenvector_to_classify)] = np.reshape(wave_types, (len(self.f_pol), len(self.t_pol)))
         if self.verbose:
             print('Wave types have been classified!')
+
+    def polarization_analysis(self, estimator_configuration: EstimatorConfiguration = None, plot: bool = False):
+        r"""Perform polarization analysis.
+
+        Parameters
+        ----------
+        estimator_configuration : :obj:`~twistpy.polarization.estimator.EstimatorConfiguration`
+            Estimator Configuration to be used in the polarization analysis
+        """
+        if estimator_configuration is None:
+            raise ValueError("Please provide an EstimatorConfiguration for polarization analysis!")
+
+        # Classify wave types if this has not been done already.
+        if estimator_configuration.use_ml_classification and \
+                self.classification[str(estimator_configuration.eigenvector)] is None:
+            self.classify(estimator_configuration.svm, estimator_configuration.eigenvector)
+
+        if self.verbose:
+            print('Computing wave parameters...')
+        eigenvalues, eigenvectors = np.linalg.eigh(self.C)
+
+        # The eigenvectors are initially arbitrarily oriented in the complex plane, here we ensure that
+        # the real and imaginary parts are orthogonal. See Samson (1980): Some comments on the descriptions of the
+        # polarization states of waves, Geophysical Journal of the Royal Astronomical Society, Eqs. (3)-(5)
+        u1 = eigenvectors[:, :, -(estimator_configuration.eigenvector + 1)]  # Select eigenvector for classification
+        gamma = np.arctan2(2 * np.einsum('ij,ij->j', u1.real.T, u1.imag.T, optimize=True),
+                           np.einsum('ij,ij->j', u1.real.T, u1.real.T, optimize=True) -
+                           np.einsum('ij,ij->j', u1.imag.T, u1.imag.T, optimize=True))
+        phi = - 0.5 * gamma
+        eigenvectors = np.tile(np.exp(1j * phi), (6, 6, 1)).T * eigenvectors
+        # Compute degree of polarization after Samson (1980): Some comments on the descriptions of the
+        # polarization states of waves, Geophysical Journal of the Royal Astronomical Society, Eq. (18)
+        self.dop = ((eigenvalues[:, 0] - eigenvalues[:, 1]) ** 2
+                    + (eigenvalues[:, 0] - eigenvalues[:, 2]) ** 2
+                    + (eigenvalues[:, 0] - eigenvalues[:, 3]) ** 2
+                    + (eigenvalues[:, 0] - eigenvalues[:, 4]) ** 2
+                    + (eigenvalues[:, 0] - eigenvalues[:, 5]) ** 2
+                    + (eigenvalues[:, 1] - eigenvalues[:, 2]) ** 2
+                    + (eigenvalues[:, 1] - eigenvalues[:, 3]) ** 2
+                    + (eigenvalues[:, 1] - eigenvalues[:, 4]) ** 2
+                    + (eigenvalues[:, 1] - eigenvalues[:, 5]) ** 2
+                    + (eigenvalues[:, 2] - eigenvalues[:, 3]) ** 2
+                    + (eigenvalues[:, 2] - eigenvalues[:, 4]) ** 2
+                    + (eigenvalues[:, 2] - eigenvalues[:, 5]) ** 2
+                    + (eigenvalues[:, 3] - eigenvalues[:, 4]) ** 2
+                    + (eigenvalues[:, 3] - eigenvalues[:, 5]) ** 2
+                    + (eigenvalues[:, 4] - eigenvalues[:, 5]) ** 2) / (5 * np.sum(eigenvalues, axis=-1) ** 2)
+
+        # Estimate wave parameters directly from the specified eigenvector if method=='ML'
+        if estimator_configuration.method == 'ML':
+            for wave_type in estimator_configuration.wave_types:
+                indices = self.classification[str(estimator_configuration.eigenvector)].ravel() == wave_type
+                eigenvector_wtype = eigenvectors[indices, :, -(estimator_configuration.eigenvector + 1)]
+                if wave_type == 'L':
+                    self.phi_l = np.empty_like(self.t_windows)
+                    self.phi_l[:] = np.nan
+                    self.c_l = np.empty_like(self.t_windows)
+                    self.c_l[:] = np.nan
+                    eigenvector_wtype[np.linalg.norm(np.abs(eigenvector_wtype[:, 0:2].real), axis=1) <
+                                      np.linalg.norm(np.abs(eigenvector_wtype[:, 0:2].imag), axis=1)] = \
+                        eigenvector_wtype[np.linalg.norm(np.abs(eigenvector_wtype[:, 0:2].real), axis=1) <
+                                          np.linalg.norm(np.abs(eigenvector_wtype[:, 0:2].imag), axis=1)].conj() * 1j
+                    phi_love = np.arctan2(np.real(eigenvector_wtype[:, 1]), np.real(eigenvector_wtype[:, 0]))
+                    a_t = np.cos(phi_love) * eigenvector_wtype[:, 0] + np.sin(phi_love) * eigenvector_wtype[:, 1]
+                    phi_love += np.pi / 2
+                    phi_love[np.sign(eigenvector_wtype[:, 0].real) == np.sign(eigenvector_wtype[:, 1])] += np.pi
+                    phi_love[phi_love > 2 * np.pi] -= 2 * np.pi
+                    phi_love[phi_love < 0] += 2 * np.pi
+                    # Love wave velocity: transverse acceleration divided by 2*vertical rotation
+                    c_love = self.scaling_velocity * np.abs(a_t.real) / np.abs(eigenvector_wtype[:, 5].real) / 2
+                    self.c_l[indices] = c_love
+                    self.phi_l[indices] = np.degrees(phi_love)
+                elif wave_type == 'R':
+                    self.xi = np.empty_like(self.t_windows)
+                    self.xi[:] = np.nan
+                    self.c_r = np.empty_like(self.t_windows)
+                    self.c_r[:] = np.nan
+                    self.phi_r = np.empty_like(self.t_windows)
+                    self.phi_r[:] = np.nan
+                    eigenvector_wtype[np.linalg.norm(np.abs(eigenvector_wtype[:, 0:2].real), axis=1) >
+                                      np.linalg.norm(np.abs(eigenvector_wtype[:, 0:2].imag), axis=1)] = \
+                        eigenvector_wtype[np.linalg.norm(np.abs(eigenvector_wtype[:, 0:2].real), axis=1) >
+                                          np.linalg.norm(np.abs(eigenvector_wtype[:, 0:2].imag), axis=1)].conj() * 1j
+                    eigenvector_wtype[eigenvector_wtype[:, 2] < 0, :] *= -1  # Ensure that eigenvectors point into
+                    # the same direction with translational z-component positive
+                    phi_rayleigh = np.arctan2(np.imag(eigenvector_wtype[:, 1]), np.imag(eigenvector_wtype[:, 0]))
+                    phi_rayleigh[phi_rayleigh < 0] += np.pi
+                    # Compute radial translational component t_r and transverse rotational component r_t
+                    r_t = -np.sin(phi_rayleigh) * eigenvector_wtype[:, 3].real + np.cos(phi_rayleigh) * \
+                          eigenvector_wtype[:, 4].real
+                    t_r = np.cos(phi_rayleigh) * eigenvector_wtype[:, 0].imag + np.sin(phi_rayleigh) * \
+                          eigenvector_wtype[:, 1].imag
+                    # Account for 180 degree ambiguity by evaluating signs
+                    phi_rayleigh[np.sign(t_r) < np.sign(r_t)] += np.pi
+                    phi_rayleigh[(np.sign(t_r) > 0) & (np.sign(r_t) > 0)] += np.pi
+
+                    # Compute Rayleigh wave ellipticity angle
+                    elli_rayleigh = -np.arctan(t_r / eigenvector_wtype[:, 2].real)
+                    elli_rayleigh[np.sign(t_r) == np.sign(r_t)] *= -1
+
+                    # Compute Rayleigh wave phase velocity
+                    c_rayleigh = self.scaling_velocity * np.abs(eigenvector_wtype[:, 2].real) / np.abs(r_t)
+                    self.xi[indices] = np.degrees(elli_rayleigh)
+                    self.c_r[indices] = c_rayleigh
+                    self.phi_r[indices] = np.degrees(phi_rayleigh)
+
+        else:
+            for wave_type in estimator_configuration.wave_types:
+                if self.verbose:
+                    print(f"Estimating wave parameters for {wave_type}-Waves...")
+
+                if estimator_configuration.use_ml_classification:
+                    indices = self.classification[str(estimator_configuration.eigenvector)].ravel() == wave_type
+                else:
+                    indices = np.ones((self.C.shape[0],)).astype('bool')
+                steering_vectors = estimator_configuration.compute_steering_vectors(wave_type)
+
+                if estimator_configuration.method == 'MUSIC':
+                    noise_space_vectors = \
+                        eigenvectors[indices, :, :6 - estimator_configuration.music_signal_space_dimension]
+                    noise_space_vectors_H = np.transpose(noise_space_vectors.conj(), axes=(0, 2, 1))
+                    noise_space = np.einsum('...ij, ...jk->...ik', noise_space_vectors, noise_space_vectors_H,
+                                            optimize=True)
+                    P = 1 / np.einsum('...sn,...nk,...sk->...s', steering_vectors.conj().T, noise_space,
+                                      steering_vectors.T, optimize=True).real
+                elif estimator_configuration.method == 'MVDR':
+                    P = 1 / np.einsum('...sn,...nk,...sk->...s', steering_vectors.conj().T,
+                                      np.linalg.pinv(self.C[indices, :, :]
+                                                     / np.moveaxis(np.tile(np.linalg.norm(self.C[indices, :, :],
+                                                                                          axis=(1, 2)), (6, 6, 1)), 2,
+                                                                   0),
+                                                     rcond=1e-6, hermitian=True),
+                                      steering_vectors.T, optimize=True).real
+                elif estimator_configuration.method == 'BARTLETT':
+                    P = np.einsum('...sn,...nk,...sk->...s', steering_vectors.conj().T,
+                                  self.C[indices, :, :] / np.moveaxis(np.tile(np.linalg.norm(self.C[indices, :, :],
+                                                                                             axis=(1, 2)), (6, 6, 1)),
+                                                                      2, 0),
+                                  steering_vectors.T, optimize=True).real
+
+                if wave_type == 'R':
+                    indx_max = np.argmax(P, axis=1)
+                    self.wave_parameters['R']['lh'] = \
+                        np.reshape(np.array([P[n, indx_max[n]] for n in range(len(indx_max))]),
+                                   (len(self.f_pol), len(self.t_pol)))
+                    indx = np.unravel_index(indx_max,
+                                            (estimator_configuration.vr_n,
+                                             estimator_configuration.phi_n,
+                                             estimator_configuration.xi_n))
+                    indx[0]
+
+        if plot:
+            self.plot(estimator_configuration=estimator_configuration)
 
     def filter(self, svm: SupportVectorMachine, wave_types: List = ['P', 'SV', 'R'], no_of_eigenvectors: int = 1):
         if self.dsfacf != 1 or self.dsfact != 1:

@@ -824,7 +824,7 @@ class TimeFrequencyAnalysis6C:
                         ax[3].set_xlabel('Time (UTC)')
                     else:
                         ax[3].set_xlabel('Time (s)')
-                plt.show()
+        plt.show()
 
     def filter(self, svm: SupportVectorMachine, wave_types: List = ['P', 'SV', 'R'], no_of_eigenvectors: int = 1):
         if self.dsfacf != 1 or self.dsfact != 1:

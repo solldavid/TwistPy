@@ -17,7 +17,7 @@ distribution you see fit.
 
 .. code-block:: bash
 
-    conda create -n twistpy python=3.9
+    conda create -n twistpy python=3.7
     conda activate twistpy
 
 3. Install the dependencies:

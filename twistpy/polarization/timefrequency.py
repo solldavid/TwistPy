@@ -99,6 +99,8 @@ class TimeFrequencyAnalysis6C:
 
         |  classification = {'0': list_with_classifications_of_first_eigenvector, '1':
             list_with_classification_of_second_eigenvector, ... , '5': list_with_classification_of_last_eigenvector}
+    wave_parameters : :obj:`dict`
+        Dictionary containing the estimated wave parameters.
     t_pol : :obj:`list` of :obj:`~obspy.core.utcdatetime.UTCDateTime`
         Time axis of the computed polarization attributes.
     f_pol : :obj:`~numpy.ndarray` of :obj:`float`
@@ -272,6 +274,8 @@ class TimeFrequencyAnalysis6C:
 
         Parameters
         ----------
+        plot : :obj:`bool`, default=False
+            Plot the r
         estimator_configuration : :obj:`~twistpy.polarization.estimator.EstimatorConfiguration`
             Estimator Configuration to be used in the polarization analysis
         """
@@ -405,20 +409,421 @@ class TimeFrequencyAnalysis6C:
                                                                                              axis=(1, 2)), (6, 6, 1)),
                                                                       2, 0),
                                   steering_vectors.T, optimize=True).real
+                elif estimator_configuration.method == 'DOT':
+                    P = np.einsum('ij,kj->ik', steering_vectors.conj().T,
+                                  eigenvectors[indices, :, 5 - estimator_configuration.eigenvector], optimize=True).T
+                    P = np.exp(-np.abs(np.arccos(np.around(np.real(np.abs(P)), 12))))
+
+                indx_max = np.argmax(P, axis=1)
 
                 if wave_type == 'R':
-                    indx_max = np.argmax(P, axis=1)
                     self.wave_parameters['R']['lh'] = \
-                        np.reshape(np.array([P[n, indx_max[n]] for n in range(len(indx_max))]),
+                        np.reshape(P.max(axis=1),
                                    (len(self.f_pol), len(self.t_pol)))
                     indx = np.unravel_index(indx_max,
                                             (estimator_configuration.vr_n,
                                              estimator_configuration.phi_n,
                                              estimator_configuration.xi_n))
-                    indx[0]
+
+                    self.wave_parameters['R']['vr'] = np.reshape(estimator_configuration.vr[0] \
+                                                                 + indx[0] * estimator_configuration.vr[2],
+                                                                 (len(self.f_pol), len(self.t_pol)))
+                    self.wave_parameters['R']['phi'] = np.reshape(estimator_configuration.phi[0] \
+                                                                  + indx[1] * estimator_configuration.phi[2],
+                                                                  (len(self.f_pol), len(self.t_pol)))
+                    self.wave_parameters['R']['xi'] = np.reshape(estimator_configuration.xi[0] \
+                                                                 + indx[2] * estimator_configuration.xi[2],
+                                                                 (len(self.f_pol), len(self.t_pol)))
+                elif wave_type == 'L':
+                    indx = np.unravel_index(indx_max,
+                                            (estimator_configuration.vl_n,
+                                             estimator_configuration.phi_n))
+                    self.wave_parameters['L']['lh'] = np.reshape(P.max(axis=1),
+                                                                 (len(self.f_pol), len(self.t_pol)))
+                    self.wave_parameters['L']['vl'] = np.reshape(estimator_configuration.vl[0] \
+                                                                 + indx[0] * estimator_configuration.vl[2],
+                                                                 (len(self.f_pol), len(self.t_pol)))
+                    self.wave_parameters['L']['phi'] = np.reshape(estimator_configuration.phi[0] \
+                                                                  + indx[1] * estimator_configuration.phi[2],
+                                                                  (len(self.f_pol), len(self.t_pol)))
+                elif wave_type == 'P':
+                    indx = np.unravel_index(indx_max,
+                                            (estimator_configuration.v_p_n,
+                                             estimator_configuration.vp_to_vs_n,
+                                             estimator_configuration.theta_n,
+                                             estimator_configuration.phi_n))
+                    self.wave_parameters['P']['lh'] = np.reshape(P.max(axis=1),
+                                                                 (len(self.f_pol), len(self.t_pol)))
+                    self.wave_parameters['P']['vp'] = np.reshape(estimator_configuration.vp[0] \
+                                                                 + indx[0] * estimator_configuration.vp[2],
+                                                                 (len(self.f_pol), len(self.t_pol)))
+                    self.wave_parameters['P']['vp_to_vs'] = np.reshape(estimator_configuration.vp_to_vs[0] \
+                                                                       + indx[1] * estimator_configuration.vp_to_vs[2],
+                                                                       (len(self.f_pol), len(self.t_pol)))
+                    self.wave_parameters['P']['theta'] = np.reshape(estimator_configuration.theta[0] \
+                                                                    + indx[2] * estimator_configuration.theta[2],
+                                                                    (len(self.f_pol), len(self.t_pol)))
+                    self.wave_parameters['P']['phi'] = np.reshape(estimator_configuration.phi[0] \
+                                                                  + indx[3] * estimator_configuration.phi[2],
+                                                                  (len(self.f_pol), len(self.t_pol)))
+                elif wave_type == 'SV':
+                    indx = np.unravel_index(indx_max,
+                                            (estimator_configuration.v_p_n,
+                                             estimator_configuration.vp_to_vs_n,
+                                             estimator_configuration.theta_n,
+                                             estimator_configuration.phi_n))
+                    self.wave_parameters['SV']['lh'] = np.reshape(P.max(axis=1),
+                                                                  (len(self.f_pol), len(self.t_pol)))
+                    self.wave_parameters['SV']['vp'] = np.reshape(estimator_configuration.vp[0] \
+                                                                  + indx[0] * estimator_configuration.vp[2],
+                                                                  (len(self.f_pol), len(self.t_pol)))
+                    self.wave_parameters['SV']['vp_to_vs'] = np.reshape(estimator_configuration.vp_to_vs[0] \
+                                                                        + indx[1] * estimator_configuration.vp_to_vs[2],
+                                                                        (len(self.f_pol), len(self.t_pol)))
+                    self.wave_parameters['SV']['theta'] = np.reshape(estimator_configuration.theta[0] \
+                                                                     + indx[2] * estimator_configuration.theta[2],
+                                                                     (len(self.f_pol), len(self.t_pol)))
+                    self.wave_parameters['SV']['phi'] = np.reshape(estimator_configuration.phi[0] \
+                                                                   + indx[3] * estimator_configuration.phi[2],
+                                                                   (len(self.f_pol), len(self.t_pol)))
+                elif wave_type == 'SH':
+                    indx = np.unravel_index(indx_max,
+                                            (estimator_configuration.v_s_n,
+                                             estimator_configuration.theta_n,
+                                             estimator_configuration.phi_n))
+                    self.wave_parameters['SH']['lh'] = np.reshape(P.max(axis=1),
+                                                                  (len(self.f_pol), len(self.t_pol)))
+                    self.wave_parameters['SH']['vs'] = np.reshape(estimator_configuration.vs[0] \
+                                                                  + indx[0] * estimator_configuration.vs[2],
+                                                                  (len(self.f_pol), len(self.t_pol)))
+                    self.wave_parameters['SH']['theta'] = np.reshape(estimator_configuration.theta[0] \
+                                                                     + indx[1] * estimator_configuration.theta[2],
+                                                                     (len(self.f_pol), len(self.t_pol)))
+                    self.wave_parameters['SH']['phi'] = np.reshape(estimator_configuration.phi[0] \
+                                                                   + indx[1] * estimator_configuration.phi[2],
+                                                                   (len(self.f_pol), len(self.t_pol)))
 
         if plot:
-            self.plot(estimator_configuration=estimator_configuration)
+            self.plot_wave_parameters(estimator_configuration=estimator_configuration)
+
+    def plot_wave_parameters(self, estimator_configuration: EstimatorConfiguration, lh_min: float, lh_max: float) \
+            -> None:
+        r""" Plot estimated wave parameters
+
+        Parameters
+        ----------
+        estimator_configuration : :obj:`~twistpy.polarization.EstimatorConfiguration`
+            Estimator configuration object
+        lh_min : :obj:`float`
+            Minimum likelihood for which wave parameters are plotted
+        lh_max : :obj:`float`
+            Maximum likelihood for which wave parameters are plotted
+        """
+
+        wave_types = estimator_configuration.wave_types
+        method = estimator_configuration.method
+        if isinstance(wave_types, str):
+            wave_types = [wave_types]
+        for wave_type in wave_types:
+            if method in ['DOT', 'MUSIC', 'BARTlETT', 'MVDR']:
+                if wave_type == 'P':
+                    if self.wave_parameters[wave_type]['lh'] is None:
+                        raise ValueError(f"Wave parameters for '{wave_type}'-waves havee not been computed yet!")
+                    fig, ax = plt.subplots(5, 1, sharex=True)
+                    alpha = Normalize(vmin=lh_min, vmax=lh_max)(self.wave_parameters['P']['lh'])
+                    alpha[alpha < 0.] = 0.
+                    alpha[alpha > 1.] = 1.
+
+                    ax[0].imshow(self.wave_parameters['R']['lh'], origin='lower', cmap='inferno', aspect='auto',
+                                 vmin=lh_min, vmax=lh_max,
+                                 extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]])
+                    ax[0].set_title('P-wave model fit')
+                    cbarmap = ScalarMappable(Normalize(vmin=lh_min,
+                                                       vmax=lh_max), cmap='inferno')
+                    cbar = plt.colorbar(cbarmap, ax=ax[0], extend='max')
+                    cbar.set_label(f"Estimator power")
+
+                    ax[1].imshow(self.wave_parameters['P']['vp'], origin='lower', cmap='inferno', aspect='auto',
+                                 extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
+                                 alpha=alpha, vmin=estimator_configuration.vp[0], vmax=estimator_configuration.vp[1])
+                    ax[1].set_title('P-wave velocity')
+                    cbarmap = ScalarMappable(Normalize(vmin=estimator_configuration.vp[0],
+                                                       vmax=estimator_configuration.vp[1]), cmap='inferno')
+                    cbar = plt.colorbar(cbarmap, ax=ax[1], extend='max')
+                    cbar.set_label(f"m/s")
+
+                    ax[2].imshow(self.wave_parameters['P']['vp_to_vs'], origin='lower', cmap='inferno', aspect='auto',
+                                 extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
+                                 alpha=alpha, vmin=estimator_configuration.vp_to_vs[0],
+                                 vmax=estimator_configuration.vp_to_vs[1])
+                    ax[2].set_title('Vp/Vs Ratio')
+                    cbarmap = ScalarMappable(Normalize(vmin=estimator_configuration.vp_to_vs[0],
+                                                       vmax=estimator_configuration.vp_to_vs[1]), cmap='inferno')
+                    cbar = plt.colorbar(cbarmap, ax=ax[2], extend='max')
+                    cbar.set_label(f"Vp/Vs")
+
+                    ax[3].imshow(self.wave_parameters['P']['theta'], origin='lower', cmap='inferno', aspect='auto',
+                                 extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
+                                 alpha=alpha, vmin=estimator_configuration.theta[0],
+                                 vmax=estimator_configuration.theta[1])
+                    ax[3].set_title('Incidence angle')
+                    cbarmap = ScalarMappable(Normalize(vmin=estimator_configuration.theta[0],
+                                                       vmax=estimator_configuration.theta[1]), cmap='inferno')
+                    cbar = plt.colorbar(cbarmap, ax=ax[3], extend='max')
+                    cbar.set_label(f"Degrees")
+
+                    ax[4].imshow(self.wave_parameters['P']['phi'], origin='lower', cmap='hsv', aspect='auto',
+                                 extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
+                                 alpha=alpha, vmin=0, vmax=360)
+                    ax[4].set_title('Propagation Azimuth')
+                    cbarmap = ScalarMappable(Normalize(vmin=0,
+                                                       vmax=360), cmap='hsv')
+                    cbar = plt.colorbar(cbarmap, ax=ax[4], extend='max')
+                    cbar.set_label(f"Degrees")
+
+                    for axis in ax:
+                        axis.set_ylabel('Frequency (Hz)')
+
+                    if self.timeaxis == 'utc':
+                        ax[0].xaxis_date()
+                        ax[1].xaxis_date()
+                        ax[2].xaxis_date()
+                        ax[3].xaxis_date()
+                        ax[4].xaxis_date()
+                        ax[4].set_xlabel('Time (UTC)')
+                    else:
+                        ax[4].set_xlabel('Time (s)')
+
+                elif wave_type == 'SV':
+                    if self.wave_parameters[wave_type]['lh'] is None:
+                        raise ValueError(f"Wave parameters for '{wave_type}'-waves havee not been computed yet!")
+                    fig, ax = plt.subplots(5, 1, sharex=True)
+                    alpha = Normalize(vmin=lh_min, vmax=lh_max)(self.wave_parameters['SV']['lh'])
+                    alpha[alpha < 0.] = 0.
+                    alpha[alpha > 1.] = 1.
+
+                    ax[0].imshow(self.wave_parameters['SV']['lh'], origin='lower', cmap='inferno', aspect='auto',
+                                 vmin=lh_min, vmax=lh_max,
+                                 extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]])
+                    ax[0].set_title('SV-wave model fit')
+                    cbarmap = ScalarMappable(Normalize(vmin=lh_min,
+                                                       vmax=lh_max), cmap='inferno')
+                    cbar = plt.colorbar(cbarmap, ax=ax[0], extend='max')
+                    cbar.set_label(f"Estimator power")
+
+                    ax[1].imshow(self.wave_parameters['SV']['vp'], origin='lower', cmap='inferno', aspect='auto',
+                                 extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
+                                 alpha=alpha, vmin=estimator_configuration.vp[0], vmax=estimator_configuration.vp[1])
+                    ax[1].set_title('P-wave velocity')
+                    cbarmap = ScalarMappable(Normalize(vmin=estimator_configuration.vp[0],
+                                                       vmax=estimator_configuration.vp[1]), cmap='inferno')
+                    cbar = plt.colorbar(cbarmap, ax=ax[1], extend='max')
+                    cbar.set_label(f"m/s")
+
+                    ax[2].imshow(self.wave_parameters['SV']['vp_to_vs'], origin='lower', cmap='inferno', aspect='auto',
+                                 extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
+                                 alpha=alpha, vmin=estimator_configuration.vp_to_vs[0],
+                                 vmax=estimator_configuration.vp_to_vs[1])
+                    ax[2].set_title('Vp/Vs Ratio')
+                    cbarmap = ScalarMappable(Normalize(vmin=estimator_configuration.vp_to_vs[0],
+                                                       vmax=estimator_configuration.vp_to_vs[1]), cmap='inferno')
+                    cbar = plt.colorbar(cbarmap, ax=ax[2], extend='max')
+                    cbar.set_label(f"Vp/Vs")
+
+                    ax[3].imshow(self.wave_parameters['SV']['theta'], origin='lower', cmap='inferno', aspect='auto',
+                                 extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
+                                 alpha=alpha, vmin=estimator_configuration.theta[0],
+                                 vmax=estimator_configuration.theta[1])
+                    ax[3].set_title('Incidence angle')
+                    cbarmap = ScalarMappable(Normalize(vmin=estimator_configuration.theta[0],
+                                                       vmax=estimator_configuration.theta[1]), cmap='inferno')
+                    cbar = plt.colorbar(cbarmap, ax=ax[3], extend='max')
+                    cbar.set_label(f"Degrees")
+
+                    ax[4].imshow(self.wave_parameters['SV']['phi'], origin='lower', cmap='hsv', aspect='auto',
+                                 extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
+                                 alpha=alpha, vmin=0, vmax=360)
+                    ax[4].set_title('Propagation Azimuth')
+                    cbarmap = ScalarMappable(Normalize(vmin=0,
+                                                       vmax=360), cmap='hsv')
+                    cbar = plt.colorbar(cbarmap, ax=ax[4], extend='max')
+                    cbar.set_label(f"Degrees")
+
+                    for axis in ax:
+                        axis.set_ylabel('Frequency (Hz)')
+
+                    if self.timeaxis == 'utc':
+                        ax[0].xaxis_date()
+                        ax[1].xaxis_date()
+                        ax[2].xaxis_date()
+                        ax[3].xaxis_date()
+                        ax[4].xaxis_date()
+                        ax[4].set_xlabel('Time (UTC)')
+                    else:
+                        ax[4].set_xlabel('Time (s)')
+
+                elif wave_type == 'R':
+                    if self.wave_parameters[wave_type]['lh'] is None:
+                        raise ValueError(f"Wave parameters for '{wave_type}'-waves havee not been computed yet!")
+                    fig, ax = plt.subplots(4, 1, sharex=True)
+                    alpha = Normalize(vmin=lh_min, vmax=lh_max)(self.wave_parameters['R']['lh'])
+                    alpha[alpha < 0.] = 0.
+                    alpha[alpha > 1.] = 1.
+
+                    ax[0].imshow(self.wave_parameters['R']['lh'], origin='lower', cmap='inferno', aspect='auto',
+                                 vmin=lh_min, vmax=lh_max,
+                                 extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]])
+                    ax[0].set_title('Rayleigh-wave model fit')
+                    cbarmap = ScalarMappable(Normalize(vmin=lh_min,
+                                                       vmax=lh_max), cmap='inferno')
+                    cbar = plt.colorbar(cbarmap, ax=ax[0], extend='max')
+                    cbar.set_label(f"Estimator power")
+
+                    ax[1].imshow(self.wave_parameters['R']['vr'], origin='lower', cmap='inferno', aspect='auto',
+                                 extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
+                                 alpha=alpha, vmin=estimator_configuration.vr[0], vmax=estimator_configuration.vr[1])
+                    ax[1].set_title('Rayleigh-wave phase velocity')
+                    cbarmap = ScalarMappable(Normalize(vmin=estimator_configuration.vr[0],
+                                                       vmax=estimator_configuration.vr[1]), cmap='inferno')
+                    cbar = plt.colorbar(cbarmap, ax=ax[1], extend='max')
+                    cbar.set_label(f"m/s")
+
+                    ax[2].imshow(self.wave_parameters['R']['phi'], origin='lower', cmap='hsv', aspect='auto',
+                                 extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
+                                 alpha=alpha, vmin=0,
+                                 vmax=360)
+                    ax[2].set_title('Propagation Azimuth')
+                    cbarmap = ScalarMappable(Normalize(vmin=0,
+                                                       vmax=360), cmap='hsv')
+                    cbar = plt.colorbar(cbarmap, ax=ax[2], extend='max')
+                    cbar.set_label(f"Degrees")
+
+                    ax[3].imshow(self.wave_parameters['R']['xi'], origin='lower', cmap='Spectral', aspect='auto',
+                                 extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
+                                 alpha=alpha, vmin=-90, vmax=90)
+                    ax[3].set_title('Ellipticity angle')
+                    cbarmap = ScalarMappable(Normalize(vmin=-90,
+                                                       vmax=90), cmap='Spectral')
+                    cbar = plt.colorbar(cbarmap, ax=ax[3], extend='max')
+                    cbar.set_label(f"Degrees")
+
+                    for axis in ax:
+                        axis.set_ylabel('Frequency (Hz)')
+
+                    if self.timeaxis == 'utc':
+                        ax[0].xaxis_date()
+                        ax[1].xaxis_date()
+                        ax[2].xaxis_date()
+                        ax[3].xaxis_date()
+                        ax[3].set_xlabel('Time (UTC)')
+                    else:
+                        ax[3].set_xlabel('Time (s)')
+
+                elif wave_type == 'L':
+                    if self.wave_parameters[wave_type]['lh'] is None:
+                        raise ValueError(f"Wave parameters for '{wave_type}'-waves havee not been computed yet!")
+                    fig, ax = plt.subplots(3, 1, sharex=True)
+                    alpha = Normalize(vmin=lh_min, vmax=lh_max)(self.wave_parameters['L']['lh'])
+                    alpha[alpha < 0.] = 0.
+                    alpha[alpha > 1.] = 1.
+
+                    ax[0].imshow(self.wave_parameters['L']['lh'], origin='lower', cmap='inferno', aspect='auto',
+                                 vmin=lh_min, vmax=lh_max,
+                                 extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]])
+                    ax[0].set_title('Love-wave model fit')
+                    cbarmap = ScalarMappable(Normalize(vmin=lh_min,
+                                                       vmax=lh_max), cmap='inferno')
+                    cbar = plt.colorbar(cbarmap, ax=ax[0], extend='max')
+                    cbar.set_label(f"Estimator power")
+
+                    ax[1].imshow(self.wave_parameters['L']['vl'], origin='lower', cmap='inferno', aspect='auto',
+                                 extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
+                                 alpha=alpha, vmin=estimator_configuration.vl[0], vmax=estimator_configuration.vl[1])
+                    ax[1].set_title('Love-wave velocity')
+                    cbarmap = ScalarMappable(Normalize(vmin=estimator_configuration.vl[0],
+                                                       vmax=estimator_configuration.vl[1]), cmap='inferno')
+                    cbar = plt.colorbar(cbarmap, ax=ax[1], extend='max')
+                    cbar.set_label(f"m/s")
+
+                    ax[2].imshow(self.wave_parameters['L']['phi'], origin='lower', cmap='hsv', aspect='auto',
+                                 extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
+                                 alpha=alpha, vmin=estimator_configuration.phi[0],
+                                 vmax=estimator_configuration.phi[1])
+                    ax[2].set_title('Propagation Azimuth')
+                    cbarmap = ScalarMappable(Normalize(vmin=estimator_configuration.phi[0],
+                                                       vmax=estimator_configuration.phi[1]), cmap='hsv')
+                    cbar = plt.colorbar(cbarmap, ax=ax[2], extend='max')
+                    cbar.set_label(f"Degrees")
+
+                    for axis in ax:
+                        axis.set_ylabel('Frequency (Hz)')
+
+                    if self.timeaxis == 'utc':
+                        ax[0].xaxis_date()
+                        ax[1].xaxis_date()
+                        ax[2].xaxis_date()
+                        ax[2].set_xlabel('Time (UTC)')
+                    else:
+                        ax[2].set_xlabel('Time (s)')
+
+                elif wave_type == 'SH':
+                    if self.wave_parameters[wave_type]['lh'] is None:
+                        raise ValueError(f"Wave parameters for '{wave_type}'-waves havee not been computed yet!")
+                    fig, ax = plt.subplots(3, 1, sharex=True)
+                    alpha = Normalize(vmin=lh_min, vmax=lh_max)(self.wave_parameters['SH']['lh'])
+                    alpha[alpha < 0.] = 0.
+                    alpha[alpha > 1.] = 1.
+
+                    ax[0].imshow(self.wave_parameters['SH']['lh'], origin='lower', cmap='inferno', aspect='auto',
+                                 vmin=lh_min, vmax=lh_max,
+                                 extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]])
+                    ax[0].set_title('SH-wave model fit')
+                    cbarmap = ScalarMappable(Normalize(vmin=lh_min,
+                                                       vmax=lh_max), cmap='inferno')
+                    cbar = plt.colorbar(cbarmap, ax=ax[0], extend='max')
+                    cbar.set_label(f"Estimator power")
+
+                    ax[1].imshow(self.wave_parameters['SH']['vs'], origin='lower', cmap='inferno', aspect='auto',
+                                 extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
+                                 alpha=alpha, vmin=estimator_configuration.vs[0], vmax=estimator_configuration.vs[1])
+                    ax[1].set_title('S-wave velocity')
+                    cbarmap = ScalarMappable(Normalize(vmin=estimator_configuration.vs[0],
+                                                       vmax=estimator_configuration.vs[1]), cmap='inferno')
+                    cbar = plt.colorbar(cbarmap, ax=ax[1], extend='max')
+                    cbar.set_label(f"m/s")
+
+                    ax[2].imshow(self.wave_parameters['SH']['theta'], origin='lower', cmap='inferno', aspect='auto',
+                                 extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
+                                 alpha=alpha, vmin=estimator_configuration.theta[0],
+                                 vmax=estimator_configuration.theta[1])
+                    ax[2].set_title('Incidence angle')
+                    cbarmap = ScalarMappable(Normalize(vmin=estimator_configuration.theta[0],
+                                                       vmax=estimator_configuration.theta[1]), cmap='inferno')
+                    cbar = plt.colorbar(cbarmap, ax=ax[2], extend='max')
+                    cbar.set_label(f"Degrees")
+
+                    ax[3].imshow(self.wave_parameters['SH']['phi'], origin='lower', cmap='hsv', aspect='auto',
+                                 extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
+                                 alpha=alpha, vmin=estimator_configuration.phi[0],
+                                 vmax=estimator_configuration.phi[1])
+                    ax[3].set_title('Propagation Azimuth')
+                    cbarmap = ScalarMappable(Normalize(vmin=estimator_configuration.phi[0],
+                                                       vmax=estimator_configuration.phi[1]), cmap='hsv')
+                    cbar = plt.colorbar(cbarmap, ax=ax[3], extend='max')
+                    cbar.set_label(f"Degrees")
+
+                    for axis in ax:
+                        axis.set_ylabel('Frequency (Hz)')
+
+                    if self.timeaxis == 'utc':
+                        ax[0].xaxis_date()
+                        ax[1].xaxis_date()
+                        ax[2].xaxis_date()
+                        ax[3].xaxis_date()
+                        ax[3].set_xlabel('Time (UTC)')
+                    else:
+                        ax[3].set_xlabel('Time (s)')
+                plt.show()
 
     def filter(self, svm: SupportVectorMachine, wave_types: List = ['P', 'SV', 'R'], no_of_eigenvectors: int = 1):
         if self.dsfacf != 1 or self.dsfact != 1:
@@ -499,6 +904,12 @@ class TimeFrequencyAnalysis6C:
             cbar.set_ticks([0.4, 1.2, 2.0, 2.8, 3.6])
             cbar.set_ticklabels(['P', 'SV', 'SH', 'R', 'Noise'])
             cbar.set_label(f"Wave type")
+            if self.timeaxis == 'utc':
+                ax.xaxis_date()
+                ax.set_xlabel('Time (UTC)')
+            else:
+                ax.set_xlabel('Time (s)')
+
         else:
             raise Exception(f"No wave types have been classified for this eigenvector yet (eigenvector: "
                             f"{classified_eigenvector})!")
@@ -917,7 +1328,7 @@ class TimeFrequencyAnalysis3C:
                          vmin=0, vmax=90)
             map_inc1 = ScalarMappable(Normalize(vmin=0, vmax=90), cmap='inferno')
             cbar_inc1 = plt.colorbar(map_inc1, ax=ax[2], extend='max')
-            cbar_inc1.set_label(f"Inclination (degrees)")
+            cbar_inc1.set_label(f"Inclination (Degrees)")
             ax[2].set_title('Inclination of major semi-axis')
         else:
             ax[2].imshow(self.inc2, origin='lower', aspect='auto', alpha=alpha_channel,
@@ -925,7 +1336,7 @@ class TimeFrequencyAnalysis3C:
                          vmin=0, vmax=90)
             map_inc2 = ScalarMappable(Normalize(vmin=0, vmax=90), cmap='inferno')
             cbar_inc2 = plt.colorbar(map_inc2, ax=ax[2], extend='max')
-            cbar_inc2.set_label(f"Inclination (degrees)")
+            cbar_inc2.set_label(f"Inclination (Degrees)")
             ax[2].set_title('Inclination of minor semi-axis')
         ax[2].set_ylabel('Frequency (Hz)')
 
@@ -935,7 +1346,7 @@ class TimeFrequencyAnalysis3C:
                          vmin=0, vmax=180)
             map_azi1 = ScalarMappable(Normalize(vmin=0, vmax=180), cmap='twilight')
             cbar_azi1 = plt.colorbar(map_azi1, ax=ax[3], extend='max')
-            cbar_azi1.set_label(f"Azimuth (degrees)")
+            cbar_azi1.set_label(f"Azimuth (Degrees)")
             ax[3].set_title('Azimuth of major semi-axis')
         else:
             ax[3].imshow(self.azi2, origin='lower', aspect='auto', alpha=alpha_channel,
@@ -943,7 +1354,7 @@ class TimeFrequencyAnalysis3C:
                          vmin=0, vmax=180)
             map_azi2 = ScalarMappable(Normalize(vmin=0, vmax=180), cmap='twilight')
             cbar_azi2 = plt.colorbar(map_azi2, ax=ax[3], extend='max')
-            cbar_azi2.set_label(f"Azimuth (degrees)")
+            cbar_azi2.set_label(f"Azimuth (Degrees)")
             ax[3].set_title('Azimuth of minor semi-axis')
         ax[3].set_ylabel('Frequency (Hz)')
 

@@ -12,7 +12,7 @@ from scipy.signal import hilbert, convolve
 
 from twistpy.convenience import ricker
 from twistpy.polarization import TimeDomainAnalysis6C, TimeFrequencyAnalysis6C, PolarizationModel6C, \
-    SupportVectorMachine
+    SupportVectorMachine, EstimatorConfiguration
 
 rng = np.random.default_rng(1)
 
@@ -248,5 +248,13 @@ pos0 = ax1_tf.get_position()
 ax1_tf.set_position([pos0.x0, pos0.y0, pos.width, pos.height])
 pos0 = ax2_tf.get_position()
 ax2_tf.set_position([pos0.x0, pos0.y0, pos.width, pos.height])
+
+est_MUSIC = EstimatorConfiguration(wave_types=['R'], method='DOT', scaling_velocity=scaling_velocity,
+                                   use_ml_classification=False,
+                                   vl=(100, 3000, 50), vr=(100, 3000, 50), phi=(0, 360, 5), xi=(-90, 90, 5),
+                                   vp=(400, 3000, 50),
+                                   vp_to_vs=(1.7, 2.4, 0.1),
+                                   theta=(0, 90, 1), music_signal_space_dimension=1)
+analysis_tf.polarization_analysis(estimator_configuration=est_MUSIC)
 
 plt.show()

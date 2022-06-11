@@ -1,8 +1,8 @@
 r"""
-6-C Polarization Analysis: Wave parameter estimation
-====================================================
-In this tutorial, you will learn how to train a machine learning model that enables the
-efficient classification of wave types using six-component polarization analysis.
+6-C Polarization Analysis: Time-domain wave parameter estimation
+================================================================
+In this tutorial, you will learn how to estimate wave parameters in the time domain using 6C polarization analysis.
+For efficiency, we use a machine learning model to first classify the wave type before estimating wave parameters.
 """
 import matplotlib.pyplot as plt
 import numpy as np

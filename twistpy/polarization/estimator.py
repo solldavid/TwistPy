@@ -32,6 +32,10 @@ class EstimatorConfiguration:
             (grid search approach).
 
             'BARTLETT': Wave parameters are estimated using the Bartlett method (grid search approach).
+
+            'DOT': Minimize great-circle distance / dot  product (corresponding to the angle between the model
+            polarization vector and the polarization direction in the data) on the 5-sphere between the
+            measured and tested polarization vector
     free_surface : :obj:`bool`, default=True
         Specify whether free-surface polarization models should be used
     scaling_velocity : :obj:`float`, default = 1.
@@ -59,6 +63,9 @@ class EstimatorConfiguration:
         Define the search space for the Love wave velocity in m/s.
     vr : :obj:`tuple` (vr_min, vr_max, increment)
         Define the search space for the Rayleigh wave velocity in m/s.
+    vs : :obj:`tuple` (vr_min, vr_max, increment)
+        Define the search space for the S wave velocity in m/s. Only relevant for SH waves for P-, and SV-waves,
+        the S-wave velocity is computed over the vp-/vs-ratio
     phi : :obj:`tuple` (phi_min, phi_max, increment)
         Define the search space for the Azimuth in degrees.
     theta : :obj:`tuple` (theta_min, theta_max, increment)
@@ -74,17 +81,18 @@ class EstimatorConfiguration:
                  music_signal_space_dimension: int = 1,
                  vp: Tuple[float, float, float] = (100., 2000., 100.),
                  vp_to_vs: Tuple[float, float, float] = (1.7, 2.2, 0.1),
+                 vs: Tuple[float, float, float] = (50., 1000., 100.),
                  vl: Tuple[float, float, float] = (100, 2000, 100),
                  vr: Tuple[float, float, float] = (100, 2000, 100),
                  phi: Tuple[float, float, float] = (0, 360, 1), theta: Tuple[float, float, float] = (0, 90, 1),
                  xi: Tuple[float, float, float] = (-90, 90, 1)) -> None:
 
         # Initial sanity checks
-        methods = ['ML', 'MUSIC', 'MVDR', 'BARTLETT']
+        methods = ['ML', 'MUSIC', 'MVDR', 'BARTLETT', 'DOT']
         wtypes_implemented = ['P', 'SV', 'SH', 'L', 'R']
         assert method in methods, f"Invalid option '{method}' selected for method! Must be one of [{methods}]!"
         for w_type in wave_types:
-            assert w_type in wtypes_implemented, f"Invalid wave type specified: {w_type}! Must be in " \
+            assert w_type in wtypes_implemented, f"Invalid wave type specified: {w_type}! Must be one of " \
                                                  f"[{wtypes_implemented}]"
         if method == 'ML' or use_ml_classification:
             if svm is None:
@@ -98,6 +106,7 @@ class EstimatorConfiguration:
         self.wave_types = wave_types
         self.method = method
         self.use_ml_classification = use_ml_classification
+        self.vs = vs
         self.vp = vp
         self.vp_to_vs = vp_to_vs
         self.vl = vl
@@ -111,6 +120,7 @@ class EstimatorConfiguration:
         self.music_signal_space_dimension = music_signal_space_dimension
         self.scaling_velocity = scaling_velocity
         self.vp_n = int((vp[1] + vp[2] - vp[0]) / vp[2])
+        self.vs_n = int((vs[1] + vs[2] - vs[0]) / vs[2])
         self.vp_to_vs_n = int((vp_to_vs[1] + vp_to_vs[2] - vp_to_vs[0]) / vp_to_vs[2])
         self.vl_n = int((vl[1] + vl[2] - vl[0]) / vl[2])
         self.vr_n = int((vr[1] + vr[2] - vr[0]) / vr[2])
@@ -158,9 +168,7 @@ class EstimatorConfiguration:
             return pm.polarization
 
         elif wave_type == 'SH':
-            vp = np.arange(self.vp[0], self.vp[1] + self.vp[2], self.vp[2])
-            vp_to_vs = np.arange(self.vp_to_vs[0], self.vp_to_vs[1] + self.vp_to_vs[2], self.vp_to_vs[2])
-            vs = vp / vp_to_vs
+            vs = np.arange(self.vs[0], self.vs[1] + self.vs[2], self.vs[2])
             theta = np.arange(self.theta[0], self.theta[1] + self.theta[2], self.theta[2])
             phi = np.arange(self.phi[0], self.phi[1] + self.phi[2], self.phi[2])
 

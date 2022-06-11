@@ -111,7 +111,6 @@ class TimeFrequencyAnalysis6C:
         Time axis of the input traces
     delta : :obj:`float`
         Sampling interval of the input data in seconds
-
     """
 
     def __init__(self, traN: Trace, traE: Trace, traZ: Trace, rotN: Trace,
@@ -502,6 +501,8 @@ class TimeFrequencyAnalysis6C:
                     self.wave_parameters['SH']['phi'] = np.reshape(estimator_configuration.phi[0] \
                                                                    + indx[1] * estimator_configuration.phi[2],
                                                                    (len(self.f_pol), len(self.t_pol)))
+                if self.verbose:
+                    print('Done!')
 
         if plot:
             self.plot_wave_parameters(estimator_configuration=estimator_configuration)

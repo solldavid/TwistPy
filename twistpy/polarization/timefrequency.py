@@ -183,8 +183,8 @@ class TimeFrequencyAnalysis6C:
                                             + np.abs(u[:, :, 3]) ** 2 + np.abs(u[:, :, 4]) ** 2 + np.abs(
             u[:, :, 5]) ** 2)
         if self.trange is not None:
-            indx_t = [(np.abs(self.time.astype('float') - float(self.trange[0]))).argmin(),
-                      (np.abs(self.time.astype('float') - float(self.trange[1]))).argmin()]
+            indx_t = [(np.abs(self.traN.times(type='utcdatetime').astype('float') - float(self.trange[0]))).argmin(),
+                      (np.abs(self.traN.times(type='utcdatetime').astype('float') - float(self.trange[1]))).argmin()]
         else:
             indx_t = [0, u.shape[1]]
 
@@ -199,7 +199,6 @@ class TimeFrequencyAnalysis6C:
         self.t_pol = self.t_pol[::dsfact]
         self.f_pol = self.f_pol[indx_f[0]:indx_f[1]]
 
-        u = u[indx_f[0]:indx_f[1], indx_t[0]:indx_t[1], :]
         self.signal_amplitudes_st = self.signal_amplitudes_st[indx_f[0]:indx_f[1], indx_t[0]:indx_t[1]:dsfact]
 
         # Compute covariance matrices
@@ -211,8 +210,8 @@ class TimeFrequencyAnalysis6C:
                 C[..., j, k] = uniform_filter1d(C[..., j, k], size=window_f_samples, axis=0)
                 for i in range(C.shape[0]):
                     C[i, :, j, k] = uniform_filter1d(C[i, :, j, k], size=window_t_samples[i])
-        self.C = np.reshape(C[:, indx_t[0]:indx_t[1]:dsfact, :, :],
-                            (len(self.t_pol) * len(self.f_pol), 6, 6))  # flatten the
+        self.C = np.reshape(C[indx_f[0]:indx_f[1], indx_t[0]:indx_t[1]:dsfact, :, :],
+                            (len(self.t_pol) * len(self.f_pol), 3, 3))  # flatten the
         # time and frequency dimension
         if self.verbose:
             print('Covariance matrices computed!')
@@ -1096,8 +1095,8 @@ class TimeFrequencyAnalysis3C:
         self.signal_amplitudes_st = np.sqrt(np.abs(u[:, :, 0]) ** 2 + np.abs(u[:, :, 1]) ** 2 + np.abs(u[:, :, 2]) ** 2
                                             )
         if self.trange is not None:
-            indx_t = [(np.abs(self.time.astype('float') - float(self.trange[0]))).argmin(),
-                      (np.abs(self.time.astype('float') - float(self.trange[1]))).argmin()]
+            indx_t = [(np.abs(self.N.times(type='utcdatetime').astype('float') - float(self.trange[0]))).argmin(),
+                      (np.abs(self.N.times(type='utcdatetime').astype('float') - float(self.trange[1]))).argmin()]
         else:
             indx_t = [0, u.shape[1]]
 
@@ -1108,8 +1107,6 @@ class TimeFrequencyAnalysis3C:
 
         self.t_pol = self.time[indx_t[0]:indx_t[1]]
         self.t_pol = self.t_pol[::dsfact]
-
-        u = u[indx_f[0]:indx_f[1], indx_t[0]:indx_t[1], :]
         self.signal_amplitudes_st = self.signal_amplitudes_st[indx_f[0]:indx_f[1], indx_t[0]:indx_t[1]:dsfact]
 
         # Compute covariance matrices
@@ -1121,7 +1118,7 @@ class TimeFrequencyAnalysis3C:
                 C[..., j, k] = uniform_filter1d(C[..., j, k], size=window_f_samples, axis=0)
                 for i in range(C.shape[0]):
                     C[i, :, j, k] = uniform_filter1d(C[i, :, j, k], size=window_t_samples[i])
-        self.C = np.reshape(C[:, indx_t[0]:indx_t[1]:dsfact, :, :],
+        self.C = np.reshape(C[indx_f[0]:indx_f[1], indx_t[0]:indx_t[1]:dsfact, :, :],
                             (len(self.t_pol) * len(self.f_pol), 3, 3))  # flatten the
         # time and frequency dimension
         if self.verbose:

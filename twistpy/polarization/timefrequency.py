@@ -193,8 +193,6 @@ class TimeFrequencyAnalysis6C:
         else:
             indx_f = [0, u.shape[0]]
 
-        window_t_samples = window_t_samples[indx_f[0]:indx_f[1]]
-
         self.t_pol = self.time[indx_t[0]:indx_t[1]]
         self.t_pol = self.t_pol[::dsfact]
         self.f_pol = self.f_pol[indx_f[0]:indx_f[1]]
@@ -211,7 +209,7 @@ class TimeFrequencyAnalysis6C:
                 for i in range(C.shape[0]):
                     C[i, :, j, k] = uniform_filter1d(C[i, :, j, k], size=window_t_samples[i])
         self.C = np.reshape(C[indx_f[0]:indx_f[1], indx_t[0]:indx_t[1]:dsfact, :, :],
-                            (len(self.t_pol) * len(self.f_pol), 3, 3))  # flatten the
+                            (len(self.t_pol) * len(self.f_pol), 6, 6))  # flatten the
         # time and frequency dimension
         if self.verbose:
             print('Covariance matrices computed!')
@@ -412,7 +410,7 @@ class TimeFrequencyAnalysis6C:
                                   eigenvectors[indices, :, 5 - estimator_configuration.eigenvector], optimize=True).T
                     P = np.exp(-np.abs(np.arccos(np.around(np.real(np.abs(P)), 12))))
 
-                indx_max = np.argmax(P, axis=1)
+                indx_max = np.nanargmax(P, axis=1)
 
                 if wave_type == 'R':
                     self.wave_parameters['R']['lh'] = \
@@ -446,7 +444,7 @@ class TimeFrequencyAnalysis6C:
                                                                   (len(self.f_pol), len(self.t_pol)))
                 elif wave_type == 'P':
                     indx = np.unravel_index(indx_max,
-                                            (estimator_configuration.v_p_n,
+                                            (estimator_configuration.vp_n,
                                              estimator_configuration.vp_to_vs_n,
                                              estimator_configuration.theta_n,
                                              estimator_configuration.phi_n))
@@ -466,11 +464,11 @@ class TimeFrequencyAnalysis6C:
                                                                   (len(self.f_pol), len(self.t_pol)))
                 elif wave_type == 'SV':
                     indx = np.unravel_index(indx_max,
-                                            (estimator_configuration.v_p_n,
+                                            (estimator_configuration.vp_n,
                                              estimator_configuration.vp_to_vs_n,
                                              estimator_configuration.theta_n,
                                              estimator_configuration.phi_n))
-                    self.wave_parameters['SV']['lh'] = np.reshape(P.max(axis=1),
+                    self.wave_parameters['SV']['lh'] = np.reshape(np.nanmax(P, axis=1),
                                                                   (len(self.f_pol), len(self.t_pol)))
                     self.wave_parameters['SV']['vp'] = np.reshape(estimator_configuration.vp[0] \
                                                                   + indx[0] * estimator_configuration.vp[2],
@@ -534,7 +532,7 @@ class TimeFrequencyAnalysis6C:
                     alpha[alpha < 0.] = 0.
                     alpha[alpha > 1.] = 1.
 
-                    ax[0].imshow(self.wave_parameters['R']['lh'], origin='lower', cmap='inferno', aspect='auto',
+                    ax[0].imshow(self.wave_parameters['P']['lh'], origin='lower', cmap='inferno', aspect='auto',
                                  vmin=lh_min, vmax=lh_max,
                                  extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]])
                     ax[0].set_title('P-wave model fit')

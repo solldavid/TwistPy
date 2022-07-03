@@ -144,6 +144,8 @@ class EstimatorConfiguration:
         if wave_type == 'P':
             vp = np.arange(self.vp[0], self.vp[1] + self.vp[2], self.vp[2])
             vp_to_vs = np.arange(self.vp_to_vs[0], self.vp_to_vs[1] + self.vp_to_vs[2], self.vp_to_vs[2])
+            if vp_to_vs[-1] > self.vp_to_vs[1]:
+                vp_to_vs = vp_to_vs[:-1]
             theta = np.arange(self.theta[0], self.theta[1] + self.theta[2], self.theta[2])
             phi = np.arange(self.phi[0], self.phi[1] + self.phi[2], self.phi[2])
 
@@ -157,6 +159,8 @@ class EstimatorConfiguration:
         elif wave_type == 'SV':
             vp = np.arange(self.vp[0], self.vp[1] + self.vp[2], self.vp[2])
             vp_to_vs = np.arange(self.vp_to_vs[0], self.vp_to_vs[1] + self.vp_to_vs[2], self.vp_to_vs[2])
+            if vp_to_vs[-1] > self.vp_to_vs[1]:
+                vp_to_vs = vp_to_vs[:-1]
             theta = np.arange(self.theta[0], self.theta[1] + self.theta[2], self.theta[2])
             phi = np.arange(self.phi[0], self.phi[1] + self.phi[2], self.phi[2])
 

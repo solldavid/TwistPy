@@ -132,8 +132,8 @@ class PolarizationModel6C:
 
                 # Above critical angle (complex polarizaton)
                 index = theta_crit < theta_rad
-                theta_p[index] = np.arcsin(np.sin(theta_rad[index]) * self.vp[index] /
-                                           self.vs[index]).astype('complex')
+                theta_p[index] = np.emath.arcsin(np.sin(theta_rad[index]) * self.vp[index] /
+                                                 self.vs[index]).astype('complex')
                 alpha_ss[index] = (4 * (np.sin(theta_rad[index]) ** 2 - kappa[index] ** (-2)) * np.sin(
                     2 * theta_rad[index]) ** 2 *
                                    np.sin(theta_rad[index]) ** 2

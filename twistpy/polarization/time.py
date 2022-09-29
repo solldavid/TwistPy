@@ -153,7 +153,7 @@ class TimeDomainAnalysis6C:
         if self.verbose:
             print('Covariance matrices computed!')
 
-    def classify(self, svm: SupportVectorMachine, eigenvector_to_classify: int = 0) -> None:
+    def classify(self, svm: SupportVectorMachine, eigenvector_to_classify: int = 0, compute_dop: bool = True) -> None:
         """Classify wave types using a support vector machine
 
         Parameters
@@ -166,7 +166,8 @@ class TimeDomainAnalysis6C:
 
             |  If 0: first eigenvector, corresponding to the dominant signal in
                the time window (associated with the largest eigenvalue).
-
+        compute_dop : :obj:`bool`, optional, default = True
+            Specify whether the degree of polarization is computed.
         """
         if self.classification[str(eigenvector_to_classify)] is not None:
             print(f"Wave types are already classified for eigenvector with number '{eigenvector_to_classify}'! "
@@ -177,6 +178,25 @@ class TimeDomainAnalysis6C:
         if self.verbose:
             print('Performing eigen-decomposition of covariance matrices...')
         eigenvalues, eigenvectors = np.linalg.eigh(self.C)
+
+        if compute_dop:
+            self.dop = np.reshape(((eigenvalues[:, 0] - eigenvalues[:, 1]) ** 2
+                                   + (eigenvalues[:, 0] - eigenvalues[:, 2]) ** 2
+                                   + (eigenvalues[:, 0] - eigenvalues[:, 3]) ** 2
+                                   + (eigenvalues[:, 0] - eigenvalues[:, 4]) ** 2
+                                   + (eigenvalues[:, 0] - eigenvalues[:, 5]) ** 2
+                                   + (eigenvalues[:, 1] - eigenvalues[:, 2]) ** 2
+                                   + (eigenvalues[:, 1] - eigenvalues[:, 3]) ** 2
+                                   + (eigenvalues[:, 1] - eigenvalues[:, 4]) ** 2
+                                   + (eigenvalues[:, 1] - eigenvalues[:, 5]) ** 2
+                                   + (eigenvalues[:, 2] - eigenvalues[:, 3]) ** 2
+                                   + (eigenvalues[:, 2] - eigenvalues[:, 4]) ** 2
+                                   + (eigenvalues[:, 2] - eigenvalues[:, 5]) ** 2
+                                   + (eigenvalues[:, 3] - eigenvalues[:, 4]) ** 2
+                                   + (eigenvalues[:, 3] - eigenvalues[:, 5]) ** 2
+                                   + (eigenvalues[:, 4] - eigenvalues[:, 5]) ** 2) / (
+                                          5 * np.sum(eigenvalues, axis=-1) ** 2),
+                                  (len(self.f_pol), len(self.t_pol)))
 
         # The eigenvectors are initially arbitrarily oriented in the complex plane, here we ensure that
         # the real and imaginary parts are orthogonal. See Samson (1980): Some comments on the descriptions of the

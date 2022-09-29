@@ -217,7 +217,7 @@ class TimeFrequencyAnalysis6C:
         if self.verbose:
             print('Covariance matrices computed!')
 
-    def classify(self, svm: SupportVectorMachine, eigenvector_to_classify: int = 0, compute_dop=True) -> None:
+    def classify(self, svm: SupportVectorMachine, eigenvector_to_classify: int = 0, compute_dop: bool = True) -> None:
         """Classify wave types using a support vector machine
 
         Parameters
@@ -243,9 +243,7 @@ class TimeFrequencyAnalysis6C:
             print('Performing eigen-decomposition of covariance matrices...')
         eigenvalues, eigenvectors = np.linalg.eigh(self.C)
 
-        if not compute_dop:
-            pass
-        else:
+        if compute_dop:
             self.dop = np.reshape(((eigenvalues[:, 0] - eigenvalues[:, 1]) ** 2
                                    + (eigenvalues[:, 0] - eigenvalues[:, 2]) ** 2
                                    + (eigenvalues[:, 0] - eigenvalues[:, 3]) ** 2

@@ -107,6 +107,8 @@ class TimeFrequencyAnalysis6C:
         Frequency axis of the computed polarization attributes.
     C : :obj:`~numpy.ndarray` of :obj:`~numpy.complex128`
         Complex covariance matrices at each window position
+    dop : :obj:`~numpy.ndarray` of :obj:`float`
+        Degree of polarization as a function of time- and frequency.
     time : :obj:`list` of :obj:`~obspy.core.utcdatetime.UTCDateTime`
         Time axis of the input traces
     delta : :obj:`float`
@@ -119,6 +121,7 @@ class TimeFrequencyAnalysis6C:
                  scaling_velocity: float = 1., free_surface: bool = True, verbose: bool = True,
                  timeaxis: 'str' = 'utc') -> None:
 
+        self.dop = None
         self.traN, self.traE, self.traZ, self.rotN, self.rotE, self.rotZ = traN, traE, traZ, rotN, rotE, rotZ
 
         # Assert that input traces are ObsPy Trace objects
@@ -214,7 +217,7 @@ class TimeFrequencyAnalysis6C:
         if self.verbose:
             print('Covariance matrices computed!')
 
-    def classify(self, svm: SupportVectorMachine, eigenvector_to_classify: int = 0) -> None:
+    def classify(self, svm: SupportVectorMachine, eigenvector_to_classify: int = 0, compute_dop=True) -> None:
         """Classify wave types using a support vector machine
 
         Parameters
@@ -227,7 +230,8 @@ class TimeFrequencyAnalysis6C:
 
             |  If 0: first eigenvector, corresponding to the dominant signal in
                the time window (associated with the largest eigenvalue).
-
+        compute_dop : :obj:`bool`, optional, default = True
+            Specify whether the degree of polarization is computed.
         """
         if self.classification[str(eigenvector_to_classify)] is not None:
             print(f"Wave types are already classified for eigenvector with number '{eigenvector_to_classify}'! "
@@ -238,6 +242,27 @@ class TimeFrequencyAnalysis6C:
         if self.verbose:
             print('Performing eigen-decomposition of covariance matrices...')
         eigenvalues, eigenvectors = np.linalg.eigh(self.C)
+
+        if not compute_dop:
+            pass
+        else:
+            self.dop = np.reshape(((eigenvalues[:, 0] - eigenvalues[:, 1]) ** 2
+                                   + (eigenvalues[:, 0] - eigenvalues[:, 2]) ** 2
+                                   + (eigenvalues[:, 0] - eigenvalues[:, 3]) ** 2
+                                   + (eigenvalues[:, 0] - eigenvalues[:, 4]) ** 2
+                                   + (eigenvalues[:, 0] - eigenvalues[:, 5]) ** 2
+                                   + (eigenvalues[:, 1] - eigenvalues[:, 2]) ** 2
+                                   + (eigenvalues[:, 1] - eigenvalues[:, 3]) ** 2
+                                   + (eigenvalues[:, 1] - eigenvalues[:, 4]) ** 2
+                                   + (eigenvalues[:, 1] - eigenvalues[:, 5]) ** 2
+                                   + (eigenvalues[:, 2] - eigenvalues[:, 3]) ** 2
+                                   + (eigenvalues[:, 2] - eigenvalues[:, 4]) ** 2
+                                   + (eigenvalues[:, 2] - eigenvalues[:, 5]) ** 2
+                                   + (eigenvalues[:, 3] - eigenvalues[:, 4]) ** 2
+                                   + (eigenvalues[:, 3] - eigenvalues[:, 5]) ** 2
+                                   + (eigenvalues[:, 4] - eigenvalues[:, 5]) ** 2) / (
+                                              5 * np.sum(eigenvalues, axis=-1) ** 2),
+                                  (len(self.f_pol), len(self.t_pol)))
 
         # The eigenvectors are initially arbitrarily oriented in the complex plane, here we ensure that
         # the real and imaginary parts are orthogonal. See Samson (1980): Some comments on the descriptions of the

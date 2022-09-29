@@ -63,7 +63,8 @@ class SupportVectorMachine:
             |  'L':     Love-wave
             |  'R':     Rayleigh-wave
         N : :obj:`int`, default=5000
-            Number of randomly generated polarization models for each wave type that are used for training.
+            Number of randomly generated polarization models for each wave type. Thereof, 80% are
+            used for training and the remaining 20% are used for testing to evaluate the performance of the classifier.
         scaling_velocity : :obj:`float`, default=1.
             Scaling velocity (in m/s) that was applied to the translational components of the real data.
         vp : :obj:`tuple`
@@ -90,7 +91,7 @@ class SupportVectorMachine:
             Kernel type used for the support vector machine. Defaults to a radial basis function kernel.
             See :obj:`sklearn.svm.SVC`.
         gamma : :obj:`str` or float, default='scale'
-            Kernel coefficient. See :obj:`sklearn.svm.SVC`.
+            Kernel coefficient for the radial basis function kernel. See :obj:`sklearn.svm.SVC`.
         plot_confusion_matrix : :obj:`bool`, default=True
             Specify whether a confusion matrix will be plotted after training
         """
@@ -177,7 +178,7 @@ class SupportVectorMachine:
         if plot_confusion_matrix:
             from sklearn.metrics import ConfusionMatrixDisplay
             ConfusionMatrixDisplay.from_predictions(ytest, model.predict(Xtest), labels=model.classes_,
-                                                    cmap='binary')
+                                                    cmap='binary', normalize='true')
             plt.show()
 
     def load_model(self: str = None) -> SVC:

@@ -918,9 +918,28 @@ class TimeFrequencyAnalysis6C:
             classification = np.array([d[wave_type] for wave_type in classification])
             classification = np.reshape(classification, self.classification[str(classified_eigenvector)].shape)
             classification[self.signal_amplitudes_st < clip * self.signal_amplitudes_st.max().max()] = 4
-            ax.imshow(classification, origin='lower',
-                      extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
-                      cmap=cmap, aspect='auto')
+            if classified_eigenvector == 0:
+                ax.imshow(classification, origin='lower',
+                          extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
+                          cmap=cmap, aspect='auto', interpolation='nearest')
+            else:
+                # The following lines ensure that the classification of second eigenvector is not plotted at positions
+                # where the first eigenvector was classified as Noise, as there should not be any signal there. This
+                # avoids plotting noise samples that randomly align with one of the polarization vectors.
+                if self.classification['0'] is not None:
+                    classification0 = (self.classification['0']).flatten()
+                    # Convert classification label from string to numbers for plotting
+                    classification0 = np.array([d[wave_type] for wave_type in classification0])
+                    classification0 = np.reshape(classification0, self.classification['0'].shape)
+                    classification0[self.signal_amplitudes_st < clip * self.signal_amplitudes_st.max().max()] = 4
+                    ax.imshow(classification, origin='lower',
+                              extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
+                              cmap=cmap, aspect='auto', alpha=(classification0 != 4).astype('float'),
+                              interpolation='nearest')
+                else:
+                    ax.imshow(classification, origin='lower',
+                              extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
+                              cmap=cmap, aspect='auto', interpolation='nearest')
             cbar = plt.colorbar(map, ax=ax, extend='max')
             cbar.set_ticks([0.4, 1.2, 2.0, 2.8, 3.6])
             cbar.set_ticklabels(['P', 'SV', 'SH', 'R', 'Noise'])

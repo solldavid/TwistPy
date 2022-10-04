@@ -1,0 +1,18 @@
+Metadata-Version: 1.1
+Name: twistpy
+Version: 0.0
+Summary: Toolbox for Wavefield Inertial Sensing
+Home-page: github.com/solldavid/twistpy
+Author: David Sollberger
+Author-email: david.sollberger@gmail.com
+License: None
+Description: UNKNOWN
+Keywords: seismology,signal processing,polarization analysis,polarization filtering
+Platform: OS Independent
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Science / Research
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Physics
+Classifier: Natural Language :: English

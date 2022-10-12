@@ -886,8 +886,8 @@ class TimeFrequencyAnalysis6C:
                     d_projected_filt[mask, :] *= 0
                 mask = (self.classification[str(eigenvector)].ravel() == wtype)
                 d_projected_filt[np.invert(mask), -(eigenvector + 1)] *= 0
+                d_projected_filt[mask, 0:6 - no_of_eigenvectors] *= 0
 
-            d_projected_filt[mask, 0:6 - no_of_eigenvectors] *= 0
             data_filt = np.einsum('...i, ...ij -> ...j', d_projected_filt,
                                   np.transpose(eigenvectors.conj(),
                                                axes=(0, 2, 1)), optimize=True)

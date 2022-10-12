@@ -846,7 +846,22 @@ class TimeFrequencyAnalysis6C:
                         ax[3].set_xlabel('Time (s)')
         plt.show()
 
-    def filter(self, svm: SupportVectorMachine, wave_types: List = ['P', 'SV', 'R'], no_of_eigenvectors: int = 1):
+    def filter(self, svm: SupportVectorMachine, wave_types: List = ['P', 'SV', 'R'], no_of_eigenvectors: int = 1,
+               suppress: bool = False):
+        r""" Wavefield separation
+
+        Parameters
+        ----------
+        svm : :obj:`~twistpy.polarization.machinelearning.SupportVectorMachine`
+            Support vector machine for wave type classification
+        wave_types : :obj:`list`, default=['P', 'SV', 'R']
+            List of wave types to separate
+        no_of_eigenvectors : :obj:`int`, default=1
+            Number of eigenvectors to classify and use in the separated data
+        suppress: :obj:`bool`, default=False
+            If set to True, the wave types in listed in wave_types are suppressed from the data instead of being
+            isolated
+        """
         if self.dsfacf != 1 or self.dsfact != 1:
             raise Exception('For now, filtering is only supported if the polarization attributes have been computed'
                             'at each time-frequency pixel. To do so, recompute the polarization attributes and set '
@@ -880,17 +895,22 @@ class TimeFrequencyAnalysis6C:
         for wtype in wave_types:
             data_filtered[wtype] = np.zeros((len(self.t_pol), 6), dtype='float')
             d_projected_filt = data_proj.copy()
-            for eigenvector in range(no_of_eigenvectors):
-                if eigenvector == 0:
-                    mask = self.classification[str(eigenvector)].ravel() == 'Noise'
-                    d_projected_filt[mask, :] *= 0
-                mask = (self.classification[str(eigenvector)].ravel() == wtype)
-                d_projected_filt[np.invert(mask), -(eigenvector + 1)] *= 0
-                d_projected_filt[mask, 0:6 - no_of_eigenvectors] *= 0
 
-            data_filt = np.einsum('...i, ...ij -> ...j', d_projected_filt,
-                                  np.transpose(eigenvectors.conj(),
-                                               axes=(0, 2, 1)), optimize=True)
+            if suppress:
+                for eigenvector in range(no_of_eigenvectors):
+                    mask = self.classification[str(eigenvector)].ravel() == wtype
+                    d_projected_filt[mask, -(eigenvector + 1)] *= 0
+            else:
+                for eigenvector in range(no_of_eigenvectors):
+                    if eigenvector == 0:
+                        mask = self.classification[str(eigenvector)].ravel() == 'Noise'
+                        d_projected_filt[mask, :] *= 0
+                    mask = (self.classification[str(eigenvector)].ravel() == wtype)
+                    d_projected_filt[np.invert(mask), -(eigenvector + 1)] *= 0
+                    d_projected_filt[mask, 0:6 - no_of_eigenvectors] *= 0
+
+            data_filt = np.einsum('...i, ...ij -> ...j', d_projected_filt, np.transpose(eigenvectors.conj(),
+                                                                                        axes=(0, 2, 1)), optimize=True)
             data_filt = data_filt.reshape(len(self.f_pol), len(self.t_pol), 6)
             for trace in range(6):
                 data_filtered[wtype][:, trace] = istransform(data_filt[:, :, trace], f=f_stran, k=self.k)

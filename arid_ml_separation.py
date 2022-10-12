@@ -80,20 +80,34 @@ class TraceSep(IsDescription):
     l = Float64Col(N)
 
 
-h5file = tb.open_file('separated_data_3750_2200.hdf', 'w')
-group = h5file.create_group("/", 'data_sep', 'Separated  data')
-table_tn = h5file.create_table(group, 'tn', TraceSep, "Separated translational North component")
-table_te = h5file.create_table(group, 'te', TraceSep, "Separated translational East component")
-table_tz = h5file.create_table(group, 'tz', TraceSep, "Separated translational Vertical component")
-table_rn = h5file.create_table(group, 'rn', TraceSep, "Separated rotational North component")
-table_re = h5file.create_table(group, 're', TraceSep, "Separated rotational East component")
-table_rz = h5file.create_table(group, 'rz', TraceSep, "Separated rotational Vertical component")
-data_tn = table_tn.row
-data_te = table_te.row
-data_tz = table_tz.row
-data_rn = table_rn.row
-data_re = table_re.row
-data_rz = table_rz.row
+h5file = tb.open_file('rayleigh_3750_3500.hdf', 'w')
+group1 = h5file.create_group("/", 'surfacewaves', 'Separated  data')
+group2 = h5file.create_group("/", 'bodywaves', 'Separated  data')
+
+table_tn1 = h5file.create_table(group1, 'tn', TraceSep, "Separated translational North component")
+table_te1 = h5file.create_table(group1, 'te', TraceSep, "Separated translational East component")
+table_tz1 = h5file.create_table(group1, 'tz', TraceSep, "Separated translational Vertical component")
+table_rn1 = h5file.create_table(group1, 'rn', TraceSep, "Separated rotational North component")
+table_re1 = h5file.create_table(group1, 're', TraceSep, "Separated rotational East component")
+table_rz1 = h5file.create_table(group1, 'rz', TraceSep, "Separated rotational Vertical component")
+table_tn2 = h5file.create_table(group2, 'tn', TraceSep, "Separated translational North component")
+table_te2 = h5file.create_table(group2, 'te', TraceSep, "Separated translational East component")
+table_tz2 = h5file.create_table(group2, 'tz', TraceSep, "Separated translational Vertical component")
+table_rn2 = h5file.create_table(group2, 'rn', TraceSep, "Separated rotational North component")
+table_re2 = h5file.create_table(group2, 're', TraceSep, "Separated rotational East component")
+table_rz2 = h5file.create_table(group2, 'rz', TraceSep, "Separated rotational Vertical component")
+data_tn1 = table_tn1.row
+data_te1 = table_te1.row
+data_tz1 = table_tz1.row
+data_rn1 = table_rn1.row
+data_re1 = table_re1.row
+data_rz1 = table_rz1.row
+data_tn2 = table_tn2.row
+data_te2 = table_te2.row
+data_tz2 = table_tz2.row
+data_rn2 = table_rn2.row
+data_re2 = table_re2.row
+data_rz2 = table_rz2.row
 
 src_tot = len(traN)
 
@@ -103,7 +117,8 @@ for it in range(src_tot):
     pol = TimeFrequencyAnalysis6C(traN=traN[it], traE=traE[it], traZ=traZ[it],
                                   rotN=rotN[it], rotE=rotE[it], rotZ=rotZ[it],
                                   scaling_velocity=scal, dsfacf=1, dsfact=1, window=window, timeaxis='rel')
-    data_sep = pol.filter(svm=svm, wave_types=['P', 'SV', 'R', 'SH'], no_of_eigenvectors=1)
+    data_sep_1 = pol.filter(svm=svm, wave_types=['R'], no_of_eigenvectors=1)
+    data_sep_2 = pol.filter(svm=svm, wave_types=['R'], no_of_eigenvectors=1, suppress=True)
 
     # import matplotlib.pyplot as plt
     #
@@ -143,47 +158,47 @@ for it in range(src_tot):
     #
     # plt.show()
 
-    data_tn['p'] = data_sep['P'][:, 0]
-    data_te['p'] = data_sep['P'][:, 1]
-    data_tz['p'] = data_sep['P'][:, 2]
-    data_rn['p'] = data_sep['P'][:, 3]
-    data_re['p'] = data_sep['P'][:, 4]
-    data_rz['p'] = data_sep['P'][:, 5]
+    data_tn1['r'] = data_sep_1['R'][:, 0]
+    data_te1['r'] = data_sep_1['R'][:, 1]
+    data_tz1['r'] = data_sep_1['R'][:, 2]
+    data_rn1['r'] = data_sep_1['R'][:, 3]
+    data_re1['r'] = data_sep_1['R'][:, 4]
+    data_rz1['r'] = data_sep_1['R'][:, 5]
 
-    data_tn['s'] = data_sep['SV'][:, 0]
-    data_te['s'] = data_sep['SV'][:, 1]
-    data_tz['s'] = data_sep['SV'][:, 2]
-    data_rn['s'] = data_sep['SV'][:, 3]
-    data_re['s'] = data_sep['SV'][:, 4]
-    data_rz['s'] = data_sep['SV'][:, 5]
+    data_tn2['r'] = data_sep_2['R'][:, 0]
+    data_te2['r'] = data_sep_2['R'][:, 1]
+    data_tz2['r'] = data_sep_2['R'][:, 2]
+    data_rn2['r'] = data_sep_2['R'][:, 3]
+    data_re2['r'] = data_sep_2['R'][:, 4]
+    data_rz2['r'] = data_sep_2['R'][:, 5]
 
-    data_tn['r'] = data_sep['R'][:, 0]
-    data_te['r'] = data_sep['R'][:, 1]
-    data_tz['r'] = data_sep['R'][:, 2]
-    data_rn['r'] = data_sep['R'][:, 3]
-    data_re['r'] = data_sep['R'][:, 4]
-    data_rz['r'] = data_sep['R'][:, 5]
+    data_tn1.append()
+    data_te1.append()
+    data_tz1.append()
+    data_rn1.append()
+    data_re1.append()
+    data_rz1.append()
 
-    data_tn['l'] = data_sep['SH'][:, 0]
-    data_te['l'] = data_sep['SH'][:, 1]
-    data_tz['l'] = data_sep['SH'][:, 2]
-    data_rn['l'] = data_sep['SH'][:, 3]
-    data_re['l'] = data_sep['SH'][:, 4]
-    data_rz['l'] = data_sep['SH'][:, 5]
+    data_tn2.append()
+    data_te2.append()
+    data_tz2.append()
+    data_rn2.append()
+    data_re2.append()
+    data_rz2.append()
 
-    data_tn.append()
-    data_te.append()
-    data_tz.append()
-    data_rn.append()
-    data_re.append()
-    data_rz.append()
+    table_tn1.flush()
+    table_te1.flush()
+    table_tz1.flush()
+    table_rn1.flush()
+    table_re1.flush()
+    table_rz1.flush()
 
-    table_tn.flush()
-    table_te.flush()
-    table_tz.flush()
-    table_rn.flush()
-    table_re.flush()
-    table_rz.flush()
+    table_tn2.flush()
+    table_te2.flush()
+    table_tz2.flush()
+    table_rn2.flush()
+    table_re2.flush()
+    table_rz2.flush()
 
 h5file.close()
 # with open(PIK, "rb") as f:

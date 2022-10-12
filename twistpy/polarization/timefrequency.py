@@ -236,7 +236,7 @@ class TimeFrequencyAnalysis6C:
         if self.classification[str(eigenvector_to_classify)] is not None:
             print(f"Wave types are already classified for eigenvector with number '{eigenvector_to_classify}'! "
                   f"Classification will not be run a second time. To access the previous classification, "
-                  f"check the attribute TimeDomainAnalysis.classification['{eigenvector_to_classify}']")
+                  f"check the attribute TimeFrequencyAnalysis6C.classification['{eigenvector_to_classify}']")
             return
 
         if self.verbose:

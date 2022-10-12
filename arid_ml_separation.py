@@ -19,12 +19,12 @@ from tables import *
 from twistpy.polarization import TimeFrequencyAnalysis6C, SupportVectorMachine
 
 scal = 800
-traN = _read_su('ARID/Vx_Source_3750_3500.su')
-traE = _read_su('ARID/Vy_Source_3750_3500.su')
-traZ = _read_su('ARID/Vz_Source_3750_3500.su')
-rotN = _read_su('ARID/Rotationx_Source_3750_3500.su')
-rotE = _read_su('ARID/Rotationy_Source_3750_3500.su')
-rotZ = _read_su('ARID/Rotationz_Source_3750_3500.su')
+traN = _read_su('ARID/Vx_Source_3750_3500.su', byteorder='<')
+traE = _read_su('ARID/Vy_Source_3750_3500.su', byteorder='<')
+traZ = _read_su('ARID/Vz_Source_3750_3500.su', byteorder='<')
+rotN = _read_su('ARID/Rotationx_Source_3750_3500.su', byteorder='<')
+rotE = _read_su('ARID/Rotationy_Source_3750_3500.su', byteorder='<')
+rotZ = _read_su('ARID/Rotationz_Source_3750_3500.su', byteorder='>')
 
 svm = SupportVectorMachine(name='arid')
 svm.train(wave_types=['R', 'L', 'P', 'SH', 'SV', 'Noise'],
@@ -69,7 +69,7 @@ for stream in [traN, traE, traZ, rotN, rotE, rotZ]:
 
 #     stream.trim(starttime=stream[0].stats.starttime, endtime=stream[0].stats.starttime+1-1/370)
 
-window = {'number_of_periods': 1., 'frequency_extent': 10}
+window = {'number_of_periods': 5., 'frequency_extent': 10}
 N = traN[0].stats.npts
 
 

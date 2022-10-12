@@ -884,9 +884,10 @@ class TimeFrequencyAnalysis6C:
                 if eigenvector == 0:
                     mask = self.classification[str(eigenvector)].ravel() == 'Noise'
                     d_projected_filt[mask, :] *= 0
-                mask = np.invert(self.classification[str(eigenvector)].ravel() == wtype)
-                d_projected_filt[mask, -(eigenvector + 1)] *= 0
-            d_projected_filt[:, 0:3] *= 0
+                mask = (self.classification[str(eigenvector)].ravel() == wtype)
+                d_projected_filt[np.invert(mask), -(eigenvector + 1)] *= 0
+
+            d_projected_filt[mask, 0:6 - no_of_eigenvectors] *= 0
             data_filt = np.einsum('...i, ...ij -> ...j', d_projected_filt,
                                   np.transpose(eigenvectors.conj(),
                                                axes=(0, 2, 1)), optimize=True)

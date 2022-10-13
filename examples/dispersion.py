@@ -53,7 +53,7 @@ window = {'number_of_periods': 2, 'overlap': 0.}
 da = DispersionAnalysis(traN=data[1], traE=data[2], traZ=data[0], rotN=data[4], rotE=data[5], rotZ=data[3],
                         window=window, scaling_velocity=scaling_velocity, verbose=True, fmin=1., fmax=20., octaves=0.25,
                         svm=svm)
-
+da.save(name='munich_data.pkl')
 ########################################################################################################################
 # After running the analysis, we can save it to disk (e.g. da.save('dispersion_analysis.pkl')) or simply plot it using
 # the provided plot() method.

@@ -35,7 +35,7 @@ svm.train(wave_types=['R', 'L', 'P', 'SH', 'SV', 'Noise'],
 # Introduce artificial reflector
 x = np.arange(0, 281) * 25
 sx = x[140]
-d = 2000  # Interface depth
+d = 500  # Interface depth
 v = 3000  # Velocity
 x_off = np.abs(x - sx)  # Absolute offset from source
 s = 2 * np.sqrt((x_off / 2) ** 2 + d ** 2)

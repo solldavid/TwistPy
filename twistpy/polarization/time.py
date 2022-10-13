@@ -180,23 +180,22 @@ class TimeDomainAnalysis6C:
         eigenvalues, eigenvectors = np.linalg.eigh(self.C)
 
         if compute_dop:
-            self.dop = np.reshape(((eigenvalues[:, 0] - eigenvalues[:, 1]) ** 2
-                                   + (eigenvalues[:, 0] - eigenvalues[:, 2]) ** 2
-                                   + (eigenvalues[:, 0] - eigenvalues[:, 3]) ** 2
-                                   + (eigenvalues[:, 0] - eigenvalues[:, 4]) ** 2
-                                   + (eigenvalues[:, 0] - eigenvalues[:, 5]) ** 2
-                                   + (eigenvalues[:, 1] - eigenvalues[:, 2]) ** 2
-                                   + (eigenvalues[:, 1] - eigenvalues[:, 3]) ** 2
-                                   + (eigenvalues[:, 1] - eigenvalues[:, 4]) ** 2
-                                   + (eigenvalues[:, 1] - eigenvalues[:, 5]) ** 2
-                                   + (eigenvalues[:, 2] - eigenvalues[:, 3]) ** 2
-                                   + (eigenvalues[:, 2] - eigenvalues[:, 4]) ** 2
-                                   + (eigenvalues[:, 2] - eigenvalues[:, 5]) ** 2
-                                   + (eigenvalues[:, 3] - eigenvalues[:, 4]) ** 2
-                                   + (eigenvalues[:, 3] - eigenvalues[:, 5]) ** 2
-                                   + (eigenvalues[:, 4] - eigenvalues[:, 5]) ** 2) / (
-                                          5 * np.sum(eigenvalues, axis=-1) ** 2),
-                                  (len(self.f_pol), len(self.t_pol)))
+            self.dop = ((eigenvalues[:, 0] - eigenvalues[:, 1]) ** 2
+                        + (eigenvalues[:, 0] - eigenvalues[:, 2]) ** 2
+                        + (eigenvalues[:, 0] - eigenvalues[:, 3]) ** 2
+                        + (eigenvalues[:, 0] - eigenvalues[:, 4]) ** 2
+                        + (eigenvalues[:, 0] - eigenvalues[:, 5]) ** 2
+                        + (eigenvalues[:, 1] - eigenvalues[:, 2]) ** 2
+                        + (eigenvalues[:, 1] - eigenvalues[:, 3]) ** 2
+                        + (eigenvalues[:, 1] - eigenvalues[:, 4]) ** 2
+                        + (eigenvalues[:, 1] - eigenvalues[:, 5]) ** 2
+                        + (eigenvalues[:, 2] - eigenvalues[:, 3]) ** 2
+                        + (eigenvalues[:, 2] - eigenvalues[:, 4]) ** 2
+                        + (eigenvalues[:, 2] - eigenvalues[:, 5]) ** 2
+                        + (eigenvalues[:, 3] - eigenvalues[:, 4]) ** 2
+                        + (eigenvalues[:, 3] - eigenvalues[:, 5]) ** 2
+                        + (eigenvalues[:, 4] - eigenvalues[:, 5]) ** 2) / (
+                               5 * np.sum(eigenvalues, axis=-1) ** 2)
 
         # The eigenvectors are initially arbitrarily oriented in the complex plane, here we ensure that
         # the real and imaginary parts are orthogonal. See Samson (1980): Some comments on the descriptions of the

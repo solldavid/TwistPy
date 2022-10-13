@@ -54,6 +54,7 @@ da = DispersionAnalysis(traN=data[1], traE=data[2], traZ=data[0], rotN=data[4], 
                         window=window, scaling_velocity=scaling_velocity, verbose=True, fmin=1., fmax=20., octaves=0.25,
                         svm=svm)
 da.save(name='munich_data.pkl')
+da.plot_baz(freq=14.)
 ########################################################################################################################
 # After running the analysis, we can save it to disk (e.g. da.save('dispersion_analysis.pkl')) or simply plot it using
 # the provided plot() method.

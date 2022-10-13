@@ -133,7 +133,20 @@ class DispersionAnalysis:
             self.parameters.append(parameters_f)
 
     def plot(self, nbins: int = 100, velocity_range: Tuple[float, float] = (0, 2500),
-             quantiles: Tuple[float, float] = (0.2, 0.8), dop_min: float = 0.3):
+             quantiles: Tuple[float, float] = (0.2, 0.8), dop_min: float = 0.3) -> None:
+        r"""Plot estimated Love- and Rayleigh-wave dispersion curves and Rayleigh wave ellipticity angle.
+
+        Parameters
+        ----------
+        nbins: :obj:`int`, default=100
+            Number of bins to use in the dispersion plot.
+        velocity_range: :obj:`tuple` of (:obj:`float`, :obj:`float`), default=(0, 2500)
+            Range of the velocity axis in m/s.
+        quantiles: :obj:`tuple` of (:obj:`float`, :obj:`float`), default=(0.2, 0.8)
+            Only show data points that lie within the specified quantile range.
+        dop_min: :obj:`float`, default=0.3
+            Only show data points that were extracted in windows with a degree of polarization larger than dop_min.
+        """
 
         counts_r = np.zeros((nbins, len(self.f)))
         counts_l = np.zeros((nbins, len(self.f)))
@@ -289,6 +302,73 @@ class DispersionAnalysis:
         ax9.set_xlim(ax1.get_xlim())
         ax9.set_xlabel("Frequency (Hz)")
         plt.show()
+
+    def plot_baz(self, freq: float = None, nbins: int = 72) -> None:
+        r"""Plot the back-azimuth of Love and Rayleigh wave sources as a polar plot.
+
+        Parameters
+        ----------
+        freq: :obj:`float`
+            If specified, the back-azimuth is only plotted for sources detected at the specified frequency.
+            Needs to be a frequency belonging to the vector in attribute f of the DispersionAnalysis object.
+        nbins: :obj:`int`, default=72
+            Number of bins used to split the circle.
+        """
+        if freq is not None:
+            indx = np.argmin(np.abs(np.asarray(self.f) - freq))
+            phi_r = self.parameters[indx]['phi_r']
+            phi_l = self.parameters[indx]['phi_l']
+            phi_r = np.radians(phi_r[~np.isnan(phi_r)])
+            phi_l = np.radians(phi_l[~np.isnan(phi_l)])
+            width = (2 * np.pi) / nbins
+            theta = np.linspace(0.0, 2 * np.pi, nbins, endpoint=False)
+            height_phi_r, _ = np.histogram(phi_r, nbins, range=(0, 2 * np.pi), density=True)
+            height_phi_l, _ = np.histogram(phi_l, nbins, range=(0, 2 * np.pi), density=True)
+            bottom = 0
+            fig, ax = plt.subplots(1, 2, sharex=True, sharey=True, figsize=(15, 6), subplot_kw=dict(polar=True))
+            for axis in ax:
+                axis.set_theta_direction(-1)
+                axis.set_theta_offset(np.pi / 2.0)
+            bars_r = ax[1].bar(theta, height_phi_r, width=width, bottom=bottom)
+            bars_l = ax[0].bar(theta, height_phi_l, width=width, bottom=bottom)
+            for bar_r, bar_l in zip(bars_r, bars_l):
+                bar_l.set_facecolor('darkgreen')
+                bar_r.set_facecolor('yellow')
+                bar_r.set_edgecolor((0, 0, 0))
+                bar_l.set_edgecolor((0, 0, 0))
+            ax[0].set_title('Love waves')
+            ax[1].set_title('Rayleigh waves')
+
+            plt.suptitle(f'Back-azimuth at  {self.f[indx]: .2f} Hz')
+
+        else:
+            for indx in range(len(self.f)):
+                phi_r = self.parameters[indx]['phi_r']
+                phi_l = self.parameters[indx]['phi_l']
+                phi_r = np.radians(phi_r[~np.isnan(phi_r)])
+                phi_l = np.radians(phi_l[~np.isnan(phi_l)])
+                width = (2 * np.pi) / nbins
+                theta = np.linspace(0.0, 2 * np.pi, nbins, endpoint=False)
+                height_phi_r, _ = np.histogram(phi_r, nbins, range=(0, 2 * np.pi), density=True)
+                height_phi_l, _ = np.histogram(phi_l, nbins, range=(0, 2 * np.pi), density=True)
+                bottom = 0
+                fig, ax = plt.subplots(1, 2, sharex=True, sharey=True, figsize=(15, 6), subplot_kw=dict(polar=True))
+                for axis in ax:
+                    axis.set_theta_direction(-1)
+                    axis.set_theta_offset(np.pi / 2.0)
+                bars_r = ax[1].bar(theta, height_phi_r, width=width, bottom=bottom)
+                bars_l = ax[0].bar(theta, height_phi_l, width=width, bottom=bottom)
+                for bar_r, bar_l in zip(bars_r, bars_l):
+                    bar_l.set_facecolor('darkgreen')
+                    bar_r.set_facecolor('yellow')
+                    bar_r.set_edgecolor((0, 0, 0))
+                    bar_l.set_edgecolor((0, 0, 0))
+                ax[0].set_title('Love waves')
+                ax[1].set_title('Rayleigh waves')
+
+                plt.suptitle(f'Back-azimuth at  {self.f[indx]: .2f} Hz')
+
+    plt.show()
 
     def save(self, name: str) -> None:
         """ Save the current DispersionAnalysis object to a file on the disk in the current working directory.

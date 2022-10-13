@@ -19,17 +19,17 @@ from tables import *
 from twistpy.polarization import TimeFrequencyAnalysis6C, SupportVectorMachine
 
 scal = 800
-traN = _read_su('ARID/Vx_Source_3750_3500.su', byteorder='<')
-traE = _read_su('ARID/Vy_Source_3750_3500.su', byteorder='<')
-traZ = _read_su('ARID/Vz_Source_3750_3500.su', byteorder='<')
-rotN = _read_su('ARID/Rotationx_Source_3750_3500.su', byteorder='<')
-rotE = _read_su('ARID/Rotationy_Source_3750_3500.su', byteorder='<')
-rotZ = _read_su('ARID/Rotationz_Source_3750_3500.su', byteorder='>')
+traN = _read_su('ARID/Vx_Source_3750_2500.su', byteorder='<')
+traE = _read_su('ARID/Vy_Source_3750_2500.su', byteorder='<')
+traZ = _read_su('ARID/Vz_Source_3750_2500.su', byteorder='<')
+rotN = _read_su('ARID/Rotationx_Source_3750_2500.su', byteorder='<')
+rotE = _read_su('ARID/Rotationy_Source_3750_2500.su', byteorder='<')
+rotZ = _read_su('ARID/Rotationz_Source_3750_2500.su', byteorder='>')
 
-svm = SupportVectorMachine(name='arid')
+svm = SupportVectorMachine(name='arid_2')
 svm.train(wave_types=['R', 'L', 'P', 'SH', 'SV', 'Noise'],
-          N=5000, scaling_velocity=scal, vp=(1050, 2000), vp_to_vs=(1.7, 2.4), vl=(400, 1000),
-          vr=(400, 800), phi=(0, 360), theta=(0, 80), xi=(-90, 90), free_surface=True, C=1, kernel='rbf')
+          N=5000, scaling_velocity=scal, vp=(1050, 3000), vp_to_vs=(1.7, 2.4), vl=(400, 1000),
+          vr=(400, 700), phi=(0, 360), theta=(0, 80), xi=(-90, 90), free_surface=True, C=1, kernel='rbf')
 
 # for trace in rotZ:
 #    trace.data = 0*trace.data
@@ -69,7 +69,7 @@ for stream in [traN, traE, traZ, rotN, rotE, rotZ]:
 
 #     stream.trim(starttime=stream[0].stats.starttime, endtime=stream[0].stats.starttime+1-1/370)
 
-window = {'number_of_periods': 5., 'frequency_extent': 10}
+window = {'number_of_periods': 4., 'frequency_extent': 5}
 N = traN[0].stats.npts
 
 
@@ -80,7 +80,7 @@ class TraceSep(IsDescription):
     l = Float64Col(N)
 
 
-h5file = tb.open_file('rayleigh_3750_3500.hdf', 'w')
+h5file = tb.open_file('rayleigh_WE_3750_2500.hdf', 'w')
 group1 = h5file.create_group("/", 'surfacewaves', 'Separated  data')
 group2 = h5file.create_group("/", 'bodywaves', 'Separated  data')
 

@@ -16,6 +16,7 @@ from obspy.core import Stream
 from obspy.io.segy.core import _read_su
 from tables import *
 
+from twistpy.polarization import PolarizationModel6C
 from twistpy.polarization import TimeFrequencyAnalysis6C, SupportVectorMachine
 
 scal = 800
@@ -30,6 +31,23 @@ svm = SupportVectorMachine(name='arid_2')
 svm.train(wave_types=['R', 'L', 'P', 'SH', 'SV', 'Noise'],
           N=5000, scaling_velocity=scal, vp=(1050, 3000), vp_to_vs=(1.7, 2.4), vl=(400, 1000),
           vr=(400, 700), phi=(0, 360), theta=(0, 80), xi=(-90, 90), free_surface=True, C=1, kernel='rbf')
+
+# Introduce artificial reflector
+x = np.arange(0, 281) * 25
+sx = x[140]
+d = 2000  # Interface depth
+v = 3000  # Velocity
+x_off = np.abs(x - sx)  # Absolute offset from source
+s = 2 * np.sqrt((x_off / 2) ** 2 + d ** 2)
+theta = np.arctan(x_off / 2 / d)
+t = s / v
+time = np.arange(0, 690) * 0.006
+from twistpy.convenience import ricker, fft_roll
+
+wavelet, t_wav, center = ricker(time, f0=30)
+wavelet = wavelet[344:1034]
+t_wav = t_wav[344:1034]
+data_reflection = (fft_roll(wavelet, t - 2.02, 0.006)).T
 
 # for trace in rotZ:
 #    trace.data = 0*trace.data
@@ -46,6 +64,18 @@ traN = traN.differentiate()
 traE = traE.differentiate()
 traZ = traZ.differentiate()
 
+# data = np.asarray([x.data for x in traZ]).T
+
+
+for n in range(len(t)):
+    model = PolarizationModel6C(wave_type='P', vp=1500., vs=1500 / 1.7, theta=np.degrees(theta[n]), phi=90.)
+    pol = model.polarization
+    traN[n].data -= 15e-7 * data_reflection[:, n] * pol[0].real
+    traE[n].data -= 15e-7 * data_reflection[:, n] * pol[1].real
+    traZ[n].data -= 15e-7 * data_reflection[:, n] * pol[2].real
+    rotN[n].data -= 15e-7 * data_reflection[:, n] * pol[3].real
+    rotE[n].data -= 15e-7 * data_reflection[:, n] * pol[4].real
+    rotZ[n].data -= 15e-7 * data_reflection[:, n] * pol[5].real
 np.random.seed(42)
 
 for n, trace in enumerate(traN):

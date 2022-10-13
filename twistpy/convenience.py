@@ -37,7 +37,7 @@ def generate_synthetics(source_coordinates: np.ndarray, array: BeamformingArray,
     tt = (np.linalg.norm(array.coordinates - np.tile(source_coordinates, (array.N, 1)), axis=1)) / velocity
     dt = t[1] - t[0]
     wavelet, t_wavelet, wcenter = ricker(t, f0=center_frequency)
-    data = fft_roll(wavelet, tt, 1 / dt)
+    data = fft_roll(wavelet, tt, dt)
     data = data[:, wcenter:]
     if len(t) % 2 == 0:
         data_pad = np.zeros((array.N, len(t)))
@@ -91,7 +91,7 @@ def fft_roll(signal: np.ndarray, dt: np.ndarray, samp: float) -> np.ndarray:
     dt : :obj:`numpy.ndarray`
         Time shifts
     samp : :obj:`float`
-        Sampling rate of input signal
+        Sampling interval of input signal (in s)
 
     Returns
     -------
@@ -102,7 +102,7 @@ def fft_roll(signal: np.ndarray, dt: np.ndarray, samp: float) -> np.ndarray:
     Nrec = len(dt)
     Nt = len(signal)
 
-    freqs = fft.rfftfreq(Nt, d=1 / samp)
+    freqs = fft.rfftfreq(Nt, d=samp)
     F = fft.rfft(signal)
 
     R = np.zeros((Nrec, len(F)), dtype=np.complex128)

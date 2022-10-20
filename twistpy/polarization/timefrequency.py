@@ -354,7 +354,7 @@ class TimeFrequencyAnalysis6C:
                     phi_love = np.arctan2(np.real(eigenvector_wtype[:, 1]), np.real(eigenvector_wtype[:, 0]))
                     a_t = np.cos(phi_love) * eigenvector_wtype[:, 0] + np.sin(phi_love) * eigenvector_wtype[:, 1]
                     phi_love += np.pi / 2
-                    phi_love[np.sign(eigenvector_wtype[:, 0].real) == np.sign(eigenvector_wtype[:, 1])] += np.pi
+                    phi_love[np.sign(eigenvector_wtype[:, 0].real) == np.sign(eigenvector_wtype[:, 1].real)] += np.pi
                     phi_love[phi_love > 2 * np.pi] -= 2 * np.pi
                     phi_love[phi_love < 0] += 2 * np.pi
                     # Love wave velocity: transverse acceleration divided by 2*vertical rotation
@@ -1231,13 +1231,17 @@ class TimeFrequencyAnalysis3C:
         if self.verbose:
             print('Polarization attributes have been computed!')
 
-    def filter(self, plot_filtered_attributes: bool = False, **kwargs) -> Stream:
+    def filter(self, plot_filtered_attributes: bool = False, clip: float = 0.05, **kwargs) -> Stream:
         r"""Filter data based on polarization attributes.
 
         Parameters
         ----------
         plot_filtered_attributes : :obj:`bool`, default = False
             If set to True, a plot will be generated that shows the polarization attributes after filtering
+        clip : :obj:`float`, default = 0.05
+            Only used if plot_filtered_attributes = True. Results are only plotted at time-frequency points where the
+            signal amplitudes exceed a value of amplitudes * maximum amplitude in the signal (given by the l2-norm of
+            all three components).
         **kwargs : For example elli=[0, 0.3]
             Polarization attributes used for filtering. The filter parameters are specified as a list with two entries,
             specifying the range of the polarization attributes that are kept by the filter. In the above example the
@@ -1292,11 +1296,7 @@ class TimeFrequencyAnalysis3C:
         # Populate filter mask (will be 1 where signal is kept and 0 everywhere else)
         for parameter in params:
             pol_attr = np.real(getattr(self, parameter))
-            if parameter == 'dop' or parameter == 'elli' and params[parameter][1] == 1.:
-                alpha = pol_attr >= params[parameter][0]
-            else:
-                alpha = ((pol_attr >= params[parameter][0]) &
-                         (pol_attr <= params[parameter][1])).astype('int')
+            alpha = ((pol_attr >= params[parameter][0]) & (pol_attr <= params[parameter][1])).astype('int')
             mask *= alpha
 
         mask = uniform_filter1d(mask, size=self.window_f_samples, axis=0)
@@ -1332,7 +1332,7 @@ class TimeFrequencyAnalysis3C:
         data_filtered[2].data = E_sep
 
         if plot_filtered_attributes:
-            self.plot(show=False, alpha=mask, seismograms=data_filtered)
+            self.plot(show=False, alpha=mask, seismograms=data_filtered, clip=clip)
 
         return data_filtered
 

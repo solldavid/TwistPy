@@ -33,7 +33,7 @@ data = read('../example_data/S0173a.mseed')
 # specify a window that is frequency-dependent and extends over a single period in time (1/frequency). In the
 # frequency-direction the window extends over 50 mHz.
 
-window = {'number_of_periods': 1, 'frequency_extent': 0.05}
+window = {'number_of_periods': 5, 'frequency_extent': 0.05}
 
 ########################################################################################################################
 # Now we can set up the polarizaiton analysis interface. To compute the S-transform, we use the default value of k=1.
@@ -61,7 +61,7 @@ analysis.plot(major_semi_axis=True, clip=0.05, show=False)
 # waves with an ellipticity smaller than 0.4). To automatically generate a plot of the filtered data and the filtered
 # polarization attributes by setting plot_filtered_attributes=True.
 
-data_filtered = analysis.filter(elli=[0, 0.4], inc1=[60, 90], plot_filtered_attributes=True)
+data_filtered = analysis.filter(elli=[0, 0.4], inc1=[60, 90], plot_filtered_attributes=True, clip=0.0)
 
 ########################################################################################################################
 # Note that P-wave energy is now widely suppressed, while the S-waves are retained. However, there seems to be a
@@ -74,7 +74,7 @@ data_filtered = analysis.filter(elli=[0, 0.4], inc1=[60, 90], plot_filtered_attr
 
 # Compute S-transform of North component for plotting
 N_stran, f = stransform(data[1].data, k=1)
-N_stran_filtered, _ = stransform(data_filtered[0].data, k=1)  # S-transform of filtered data for comparison
+N_stran_filtered, _ = stransform(data_filtered[1].data, k=1)  # S-transform of filtered data for comparison
 plt.style.use("ggplot")
 
 # Plot the result
@@ -89,13 +89,13 @@ ax[1, 0].set_xlabel('Time (UTC)')
 ax[1, 0].set_title('S-transform Input Data')
 ax[1, 0].xaxis_date()
 
-ax[0, 1].plot(analysis.t_pol, data_filtered[0].data, 'k')
+ax[0, 1].plot(analysis.t_pol, data_filtered[1].data, 'k')
 ax[0, 1].set_title('N-Component Filtered Data')
 ax[0, 1].set_ylim([-6e-9, 6e-9])
 ax[0, 1].xaxis_date()
 
 ax[1, 1].imshow(np.abs(N_stran_filtered), origin='lower', aspect='auto',
-                extent=[analysis.t_pol[0], analysis.t_pol[-1], analysis.f_pol[0], analysis.f_pol[-1]])
+                extent=[analysis.t_pol[1], analysis.t_pol[-1], analysis.f_pol[0], analysis.f_pol[-1]])
 ax[1, 1].set_xlabel('Time (UTC)')
 ax[1, 1].set_title('S-transform Filtered Data')
 ax[1, 1].xaxis_date()

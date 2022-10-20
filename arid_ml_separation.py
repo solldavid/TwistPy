@@ -27,7 +27,7 @@ rotN = _read_su('ARID/Rotationx_Source_3750_2500.su', byteorder='<')
 rotE = _read_su('ARID/Rotationy_Source_3750_2500.su', byteorder='<')
 rotZ = _read_su('ARID/Rotationz_Source_3750_2500.su', byteorder='>')
 
-svm = SupportVectorMachine(name='arid_2')
+svm = SupportVectorMachine(name='arid_4')
 svm.train(wave_types=['R', 'L', 'P', 'SH', 'SV', 'Noise'],
           N=5000, scaling_velocity=scal, vp=(1050, 3000), vp_to_vs=(1.7, 2.4), vl=(400, 1000),
           vr=(400, 700), phi=(0, 360), theta=(0, 80), xi=(-90, 90), free_surface=True, C=1, kernel='rbf')
@@ -35,8 +35,10 @@ svm.train(wave_types=['R', 'L', 'P', 'SH', 'SV', 'Noise'],
 # Introduce artificial reflector
 x = np.arange(0, 281) * 25
 sx = x[140]
-d = 500  # Interface depth
-v = 3000  # Velocity
+d = 2000  # Interface depth
+v = 3
+
+000  # Velocity
 x_off = np.abs(x - sx)  # Absolute offset from source
 s = 2 * np.sqrt((x_off / 2) ** 2 + d ** 2)
 theta = np.arctan(x_off / 2 / d)
@@ -70,12 +72,12 @@ traZ = traZ.differentiate()
 for n in range(len(t)):
     model = PolarizationModel6C(wave_type='P', vp=1500., vs=1500 / 1.7, theta=np.degrees(theta[n]), phi=90.)
     pol = model.polarization
-    traN[n].data -= 15e-7 * data_reflection[:, n] * pol[0].real
-    traE[n].data -= 15e-7 * data_reflection[:, n] * pol[1].real
-    traZ[n].data -= 15e-7 * data_reflection[:, n] * pol[2].real
-    rotN[n].data -= 15e-7 * data_reflection[:, n] * pol[3].real
-    rotE[n].data -= 15e-7 * data_reflection[:, n] * pol[4].real
-    rotZ[n].data -= 15e-7 * data_reflection[:, n] * pol[5].real
+    traN[n].data -= 30 - 7 * data_reflection[:, n] * pol[0].real
+    traE[n].data -= 30 - 7 * data_reflection[:, n] * pol[1].real
+    traZ[n].data -= 30 - 7 * data_reflection[:, n] * pol[2].real
+    rotN[n].data -= 30 - 7 * data_reflection[:, n] * pol[3].real
+    rotE[n].data -= 30 - 7 * data_reflection[:, n] * pol[4].real
+    rotZ[n].data -= 30 - 7 * data_reflection[:, n] * pol[5].real
 np.random.seed(42)
 
 for n, trace in enumerate(traN):
@@ -99,7 +101,7 @@ for stream in [traN, traE, traZ, rotN, rotE, rotZ]:
 
 #     stream.trim(starttime=stream[0].stats.starttime, endtime=stream[0].stats.starttime+1-1/370)
 
-window = {'number_of_periods': 4., 'frequency_extent': 5}
+window = {'number_of_periods': 5., 'frequency_extent': 5}
 N = traN[0].stats.npts
 
 
@@ -147,8 +149,9 @@ for it in range(src_tot):
     pol = TimeFrequencyAnalysis6C(traN=traN[it], traE=traE[it], traZ=traZ[it],
                                   rotN=rotN[it], rotE=rotE[it], rotZ=rotZ[it],
                                   scaling_velocity=scal, dsfacf=1, dsfact=1, window=window, timeaxis='rel')
-    data_sep_1 = pol.filter(svm=svm, wave_types=['R'], no_of_eigenvectors=1)
-    data_sep_2 = pol.filter(svm=svm, wave_types=['R'], no_of_eigenvectors=1, suppress=True)
+    data_sep_3 = pol.filter(svm=svm, wave_types=['P'], no_of_eigenvectors=1)
+    data_sep_2 = pol.filter(svm=svm, wave_types=['R', 'L'], no_of_eigenvectors=1, suppress=True)
+    data_sep_1 = pol.filter(svm=svm, wave_types=['R', 'L'], no_of_eigenvectors=1)
 
     # import matplotlib.pyplot as plt
     #
@@ -194,6 +197,13 @@ for it in range(src_tot):
     data_rn1['r'] = data_sep_1['R'][:, 3]
     data_re1['r'] = data_sep_1['R'][:, 4]
     data_rz1['r'] = data_sep_1['R'][:, 5]
+
+    data_tn1['p'] = data_sep_1['P'][:, 0]
+    data_te1['p'] = data_sep_1['P'][:, 1]
+    data_tz1['p'] = data_sep_1['P'][:, 2]
+    data_rn1['p'] = data_sep_1['P'][:, 3]
+    data_re1['p'] = data_sep_1['P'][:, 4]
+    data_rz1['p'] = data_sep_1['P'][:, 5]
 
     data_tn2['r'] = data_sep_2['R'][:, 0]
     data_te2['r'] = data_sep_2['R'][:, 1]

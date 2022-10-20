@@ -284,9 +284,10 @@ class TimeDomainAnalysis6C:
                         eigenvector_wtype[np.linalg.norm(np.abs(eigenvector_wtype[:, 0:2].real), axis=1) <
                                           np.linalg.norm(np.abs(eigenvector_wtype[:, 0:2].imag), axis=1)].conj() * 1j
                     phi_love = np.arctan2(np.real(eigenvector_wtype[:, 1]), np.real(eigenvector_wtype[:, 0]))
-                    a_t = np.cos(phi_love) * eigenvector_wtype[:, 0] + np.sin(phi_love) * eigenvector_wtype[:, 1]
+                    a_t = np.cos(phi_love) * eigenvector_wtype[:, 0].real + np.sin(phi_love) * eigenvector_wtype[:,
+                                                                                               1].real
                     phi_love += np.pi / 2
-                    phi_love[np.sign(eigenvector_wtype[:, 0].real) == np.sign(eigenvector_wtype[:, 1])] += np.pi
+                    phi_love[np.sign(eigenvector_wtype[:, 0].real) == np.sign(eigenvector_wtype[:, 1].real)] += np.pi
                     phi_love[phi_love > 2 * np.pi] -= 2 * np.pi
                     phi_love[phi_love < 0] += 2 * np.pi
                     # Love wave velocity: transverse acceleration divided by 2*vertical rotation

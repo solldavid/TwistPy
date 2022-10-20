@@ -149,9 +149,8 @@ for it in range(src_tot):
     pol = TimeFrequencyAnalysis6C(traN=traN[it], traE=traE[it], traZ=traZ[it],
                                   rotN=rotN[it], rotE=rotE[it], rotZ=rotZ[it],
                                   scaling_velocity=scal, dsfacf=1, dsfact=1, window=window, timeaxis='rel')
-    data_sep_3 = pol.filter(svm=svm, wave_types=['P'], no_of_eigenvectors=1)
-    data_sep_2 = pol.filter(svm=svm, wave_types=['R', 'L'], no_of_eigenvectors=1, suppress=True)
-    data_sep_1 = pol.filter(svm=svm, wave_types=['R', 'L'], no_of_eigenvectors=1)
+    data_sep_2 = pol.filter(svm=svm, wave_types=['R', 'L'], no_of_eigenvectors=2, suppress=True)
+    data_sep_1 = pol.filter(svm=svm, wave_types=['R', 'L', 'P'], no_of_eigenvectors=2)
 
     # import matplotlib.pyplot as plt
     #
@@ -204,6 +203,13 @@ for it in range(src_tot):
     data_rn1['p'] = data_sep_1['P'][:, 3]
     data_re1['p'] = data_sep_1['P'][:, 4]
     data_rz1['p'] = data_sep_1['P'][:, 5]
+
+    data_tn1['l'] = data_sep_1['L'][:, 0]
+    data_te1['l'] = data_sep_1['L'][:, 1]
+    data_tz1['l'] = data_sep_1['L'][:, 2]
+    data_rn1['l'] = data_sep_1['L'][:, 3]
+    data_re1['l'] = data_sep_1['L'][:, 4]
+    data_rz1['l'] = data_sep_1['L'][:, 5]
 
     data_tn2['r'] = data_sep_2['R'][:, 0]
     data_te2['r'] = data_sep_2['R'][:, 1]

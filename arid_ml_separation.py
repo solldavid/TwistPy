@@ -148,7 +148,8 @@ for it in range(src_tot):
     print(f'Computing source number: {it}/{src_tot}:\n')
     pol = TimeFrequencyAnalysis6C(traN=traN[it], traE=traE[it], traZ=traZ[it],
                                   rotN=rotN[it], rotE=rotE[it], rotZ=rotZ[it],
-                                  scaling_velocity=scal, dsfacf=1, dsfact=1, window=window, timeaxis='rel')
+                                  scaling_velocity=scal, dsfacf=1, dsfact=1, window=window, timeaxis='rel',
+                                  verbose=False)
     data_sep_2 = pol.filter(svm=svm, wave_types=['R', 'L'], no_of_eigenvectors=2, suppress=True)
     data_sep_1 = pol.filter(svm=svm, wave_types=['R', 'L', 'P'], no_of_eigenvectors=2)
 

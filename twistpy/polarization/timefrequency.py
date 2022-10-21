@@ -1231,13 +1231,20 @@ class TimeFrequencyAnalysis3C:
         if self.verbose:
             print('Polarization attributes have been computed!')
 
-    def filter(self, plot_filtered_attributes: bool = False, clip: float = 0.05, **kwargs) -> Stream:
+    def filter(self, plot_filtered_attributes: bool = False, suppress: bool = False, smooth_mask: bool = True,
+               clip: float = 0.05, **kwargs) -> Stream:
         r"""Filter data based on polarization attributes.
 
         Parameters
         ----------
         plot_filtered_attributes : :obj:`bool`, default = False
             If set to True, a plot will be generated that shows the polarization attributes after filtering
+        suppress : :obj:`bool`, default = False
+            If set to True the polarization states that fulfill the filtering criterion will be suppressed from the data
+            while preserving any underlying signal that is orthogonal to the polarization state.
+        smooth_mask : :obj:`bool`, default = True
+            If set to True, the filter mask will be smoothed within the same time-frequency window that was used to
+            compute the polarization attributes
         clip : :obj:`float`, default = 0.05
             Only used if plot_filtered_attributes = True. Results are only plotted at time-frequency points where the
             signal amplitudes exceed a value of amplitudes * maximum amplitude in the signal (given by the l2-norm of
@@ -1299,21 +1306,30 @@ class TimeFrequencyAnalysis3C:
             alpha = ((pol_attr >= params[parameter][0]) & (pol_attr <= params[parameter][1])).astype('int')
             mask *= alpha
 
-        mask = uniform_filter1d(mask, size=self.window_f_samples, axis=0)
-        for i in range(mask.shape[0]):
-            mask[i, :] = uniform_filter1d(mask[i, :], size=self.window_t_samples[i])
+        if smooth_mask:
+            mask = uniform_filter1d(mask, size=self.window_f_samples, axis=0)
+            for i in range(mask.shape[0]):
+                mask[i, :] = uniform_filter1d(mask[i, :], size=self.window_t_samples[i])
         indx = mask > 0
 
-        Z_sep = np.zeros_like(Z_stran).astype('complex')
-        N_sep = np.zeros_like(N_stran).astype('complex')
-        E_sep = np.zeros_like(E_stran).astype('complex')
+        if suppress:
+            Z_sep = Z_stran
+            N_sep = N_stran
+            E_sep = E_stran
+        else:
+            Z_sep = np.zeros_like(Z_stran).astype('complex')
+            N_sep = np.zeros_like(N_stran).astype('complex')
+            E_sep = np.zeros_like(E_stran).astype('complex')
 
         data_st = np.array([N_stran[indx].ravel(), E_stran[indx].ravel(), Z_stran[indx].ravel()]).T
         # Project data into coordinate frame spanned by eigenvectors
         data_proj = np.einsum('...i, ...ij -> ...j', data_st, eigenvectors[indx.ravel(), :, :], optimize=True)
 
-        # Only keep data that is aligned with the principal eigenvector
-        data_proj[:, 0:2] = 0
+        # Only keep or suppress data that is aligned with the principal eigenvector
+        if suppress:
+            data_proj[:, 2] = 0
+        else:
+            data_proj[:, 0:2] = 0
 
         # Back-projection into original coordinate frame
         data_filt = np.einsum('...i, ...ij -> ...j', data_proj, np.transpose(eigenvectors[indx.ravel(), :, :].conj(),
@@ -1322,9 +1338,14 @@ class TimeFrequencyAnalysis3C:
         N_sep[indx] = data_filt[:, 0]
         E_sep[indx] = data_filt[:, 1]
 
-        Z_sep = istransform(mask * Z_sep, f=f_stran, k=self.k)
-        N_sep = istransform(mask * N_sep, f=f_stran, k=self.k)
-        E_sep = istransform(mask * E_sep, f=f_stran, k=self.k)
+        if suppress:
+            Z_sep = istransform(Z_sep, f=f_stran, k=self.k)
+            N_sep = istransform(N_sep, f=f_stran, k=self.k)
+            E_sep = istransform(E_sep, f=f_stran, k=self.k)
+        else:
+            Z_sep = istransform(mask * Z_sep, f=f_stran, k=self.k)
+            N_sep = istransform(mask * N_sep, f=f_stran, k=self.k)
+            E_sep = istransform(mask * E_sep, f=f_stran, k=self.k)
         #
         data_filtered = Stream(traces=[self.Z.copy(), self.N.copy(), self.E.copy()])
         data_filtered[0].data = Z_sep

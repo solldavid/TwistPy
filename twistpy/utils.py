@@ -104,7 +104,7 @@ def stransform(signal, dsfacf: int = 1, k: float = 1) -> Tuple[np.ndarray, np.nd
     return stran, f[::dsfacf]
 
 
-def istransform(st: np.ndarray, f: np.ndarray, k: float = 1) -> np.ndarray:
+def istransform(st: np.ndarray, f: np.ndarray, k: float = 1., use_filter: bool = False) -> np.ndarray:
     r"""Compute the inverse S-transform.
 
     This function computes the approximate inverse S-transform after Schimmel et al. (2005) [1]. This inverse has some
@@ -145,10 +145,11 @@ def istransform(st: np.ndarray, f: np.ndarray, k: float = 1) -> np.ndarray:
     st : :obj:`numpy.ndarray` of :obj:`numpy.complex128`
         S-transformed signal.
     f : :obj:`numpy.ndarray` of :obj:`float`
-        Frequency vector.
-    k : :obj:`float`
+        Normalized frequency vector.
+    k : :obj:`float`, default = 1.0
         Scaling factor that controls the number of oscillations in the window.
-
+    use_filter : :obj:`bool`, default = False
+        Deconvolve the filter that describes the approximation
     Returns
     -------
     signal : :obj:`numpy.ndarray` of :obj:`float`
@@ -161,17 +162,20 @@ def istransform(st: np.ndarray, f: np.ndarray, k: float = 1) -> np.ndarray:
     st *= k * np.sqrt(2 * np.pi)
     u = np.diag(np.fft.irfft(st, axis=0))  # Approximate inverse after Schimmel, which is a filtered version of the
     # exact inverse
-    M = len(u)
-    n_half = int(np.floor(M / 2))
-    odd = M % 2
-    f = np.concatenate([np.arange(n_half + 1), np.arange(-n_half + 1 - odd, 0)]) / M
-    f.shape = (M, 1)
-    n = np.arange(M)
-    term1 = np.exp(-(1 / 2) * (np.tile(f, (1, M)) / 1 * np.tile(n, (M, 1))) ** 2)
-    term2 = np.exp(2 * 1j * np.pi * (np.tile(f, (1, M)) * np.tile(n, (M, 1))))
-    # Filter after Simon et al. 2007: The S-Transform and its Inverses: Side Effects of Discretizing and Filtering
-    I = np.real(np.sum(term1 * term2, axis=0)) / M
-    I_fft = np.fft.fft(I)
-    u_fft = np.fft.fft(u)
-
-    return np.real(np.fft.ifft(u_fft / I_fft))
+    if use_filter:
+        M = len(u)
+        n_half = int(np.floor(M / 2))
+        odd = M % 2
+        f = np.concatenate([np.arange(n_half + 1), np.arange(-n_half + 1 - odd, 0)]) / M
+        f.shape = (M, 1)
+        n = np.arange(M)
+        term1 = np.exp(-(1 / 2) * (np.tile(f, (1, M)) / 1 * np.tile(n, (M, 1))) ** 2)
+        term2 = np.exp(2 * 1j * np.pi * (np.tile(f, (1, M)) * np.tile(n, (M, 1))))
+        # Filter after Simon et al. 2007: The S-Transform and its Inverses: Side Effects of Discretizing and Filtering
+        I = np.real(np.sum(term1 * term2, axis=0)) / M
+        I_fft = np.fft.fft(I)
+        u_fft = np.fft.fft(u)
+        ist = np.real(np.fft.ifft(u_fft / I_fft))
+    else:
+        ist = u
+    return ist

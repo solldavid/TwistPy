@@ -72,12 +72,12 @@ traZ = traZ.differentiate()
 for n in range(len(t)):
     model = PolarizationModel6C(wave_type='P', vp=1500., vs=1500 / 1.7, theta=np.degrees(theta[n]), phi=90.)
     pol = model.polarization
-    traN[n].data -= 30 - 7 * data_reflection[:, n] * pol[0].real
-    traE[n].data -= 30 - 7 * data_reflection[:, n] * pol[1].real
-    traZ[n].data -= 30 - 7 * data_reflection[:, n] * pol[2].real
-    rotN[n].data -= 30 - 7 * data_reflection[:, n] * pol[3].real
-    rotE[n].data -= 30 - 7 * data_reflection[:, n] * pol[4].real
-    rotZ[n].data -= 30 - 7 * data_reflection[:, n] * pol[5].real
+    traN[n].data -= 30e-7 * data_reflection[:, n] * pol[0].real
+    traE[n].data -= 30e-7 * data_reflection[:, n] * pol[1].real
+    traZ[n].data -= 30e-7 * data_reflection[:, n] * pol[2].real
+    rotN[n].data -= 30e-7 * data_reflection[:, n] * pol[3].real
+    rotE[n].data -= 30e-7 * data_reflection[:, n] * pol[4].real
+    rotZ[n].data -= 30e-7 * data_reflection[:, n] * pol[5].real
 np.random.seed(42)
 
 for n, trace in enumerate(traN):
@@ -112,7 +112,7 @@ class TraceSep(IsDescription):
     l = Float64Col(N)
 
 
-h5file = tb.open_file('rayleigh_WE_3750_2500.hdf', 'w')
+h5file = tb.open_file('rayleigh_love_p_WE_3750_2500.hdf', 'w')
 group1 = h5file.create_group("/", 'surfacewaves', 'Separated  data')
 group2 = h5file.create_group("/", 'bodywaves', 'Separated  data')
 

@@ -890,30 +890,33 @@ class TimeFrequencyAnalysis6C:
         # Project data into coordinate frame spanned by eigenvectors
         data_proj = np.einsum('...i, ...ij -> ...j', data_st,
                               eigenvectors, optimize=True)
-
+        d_projected_filt = data_proj.copy()
         # Populate filter mask (will be 1 where signal is kept and 0 everywhere else)
         for wtype in wave_types:
             data_filtered[wtype] = np.zeros((len(self.t_pol), 6), dtype='float')
-            d_projected_filt = data_proj.copy()
-
             if suppress:
                 for eigenvector in range(no_of_eigenvectors):
                     mask = self.classification[str(eigenvector)].ravel() == wtype
                     d_projected_filt[mask, -(eigenvector + 1)] *= 0
             else:
+                d_projected_filt = data_proj.copy()
+                d_projected_filt *= 0.
                 for eigenvector in range(no_of_eigenvectors):
-                    if eigenvector == 0:
-                        mask = self.classification[str(eigenvector)].ravel() == 'Noise'
-                        d_projected_filt[mask, :] *= 0
                     mask = (self.classification[str(eigenvector)].ravel() == wtype)
-                    d_projected_filt[np.invert(mask), -(eigenvector + 1)] *= 0
-                    d_projected_filt[mask, 0:6 - no_of_eigenvectors] *= 0
-
+                    d_projected_filt[mask, -(eigenvector + 1)] = data_proj[mask, -(eigenvector + 1)]
+                data_filt = np.einsum('...i, ...ij -> ...j', d_projected_filt, np.transpose(eigenvectors.conj(),
+                                                                                            axes=(0, 2, 1)),
+                                      optimize=True)
+                data_filt = data_filt.reshape(len(self.f_pol), len(self.t_pol), 6)
+                for trace in range(6):
+                    data_filtered[wtype][:, trace] = istransform(data_filt[:, :, trace], f=f_stran, k=self.k)
+        if suppress:
             data_filt = np.einsum('...i, ...ij -> ...j', d_projected_filt, np.transpose(eigenvectors.conj(),
                                                                                         axes=(0, 2, 1)), optimize=True)
             data_filt = data_filt.reshape(len(self.f_pol), len(self.t_pol), 6)
             for trace in range(6):
-                data_filtered[wtype][:, trace] = istransform(data_filt[:, :, trace], f=f_stran, k=self.k)
+                for wtype in wave_types:
+                    data_filtered[wtype][:, trace] = istransform(data_filt[:, :, trace], f=f_stran, k=self.k)
 
         return data_filtered
 

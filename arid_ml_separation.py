@@ -101,7 +101,7 @@ for stream in [traN, traE, traZ, rotN, rotE, rotZ]:
 
 #     stream.trim(starttime=stream[0].stats.starttime, endtime=stream[0].stats.starttime+1-1/370)
 
-window = {'number_of_periods': 5., 'frequency_extent': 10}
+window = {'number_of_periods': 5., 'frequency_extent': 5.}
 N = traN[0].stats.npts
 
 

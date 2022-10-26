@@ -97,7 +97,7 @@ html_theme_options = {
 # -- Project information -----------------------------------------------------
 year = datetime.date.today().year
 project = 'TwistPy'
-copyright = f'{year}, David Sollberger'
+copyright = f'{year}, The TwistPy Developers'
 
 # The full version, including alpha/beta/rc tags
 release = '0.0.1'

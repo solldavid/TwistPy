@@ -33,8 +33,9 @@ Some of the tools available in TwistPy are:
     :hidden:
     :caption: Instructions:
 
-    installation
+    installation.rst
     examples/index.rst
+    contributing.rst
 
 .. toctree::
     :maxdepth: 3
@@ -49,6 +50,8 @@ Some of the tools available in TwistPy are:
     :caption: References:
 
     references.rst
-    acknowledgments.rst
+    contributors.rst
     contact.rst
+    acknowledgments.rst
+
 

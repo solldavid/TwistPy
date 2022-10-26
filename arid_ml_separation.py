@@ -83,11 +83,11 @@ np.random.seed(42)
 for n, trace in enumerate(traN):
     trace.data /= scal
 for n, trace in enumerate(traE):
-    trace.data /= -1 * scal
+    trace.data /= 1 * scal
 for n, trace in enumerate(traZ):
     trace.data /= 1 * scal
 for n, trace in enumerate(rotN):
-    trace.data *= -1
+    trace.data *= 1
 for n, trace in enumerate(rotE):
     trace.data *= 1
 for n, trace in enumerate(rotZ):
@@ -150,8 +150,8 @@ for it in [20]:
                                   rotN=rotN[it], rotE=rotE[it], rotZ=rotZ[it],
                                   scaling_velocity=scal, dsfacf=1, dsfact=1, window=window, timeaxis='rel',
                                   verbose=False)
-    data_sep_2 = pol.filter(svm=svm, wave_types=['R', 'L'], no_of_eigenvectors=2, suppress=True)
-    data_sep_1 = pol.filter(svm=svm, wave_types=['R', 'L', 'P'], no_of_eigenvectors=2)
+    data_sep_2 = pol.filter(svm=svm, wave_types=['R', 'L'], no_of_eigenvectors=1, suppress=True)
+    data_sep_1 = pol.filter(svm=svm, wave_types=['R', 'L', 'P'], no_of_eigenvectors=1)
 
     import matplotlib.pyplot as plt
 

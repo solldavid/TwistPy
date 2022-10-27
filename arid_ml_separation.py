@@ -90,7 +90,7 @@ for stream in [traN, traE, traZ, rotN, rotE, rotZ]:
 
 #     stream.trim(starttime=stream[0].stats.starttime, endtime=stream[0].stats.starttime+1-1/370)
 
-window = {'number_of_periods': 1., 'frequency_extent': 10.}
+window = {'number_of_periods': 5., 'frequency_extent': 5.}
 N = traN[0].stats.npts
 
 
@@ -132,8 +132,8 @@ data_rz2 = table_rz2.row
 
 src_tot = len(traN)
 
-# for it in range(src_tot):
-for it in [20]:
+for it in range(src_tot):
+    # for it in [20]:
     print(f'Computing source number: {it}/{src_tot}:\n')
     pol = TimeFrequencyAnalysis6C(traN=traN[it].copy(), traE=traE[it].copy(), traZ=traZ[it].copy(),
                                   rotN=rotN[it].copy(), rotE=rotE[it].copy(), rotZ=rotZ[it].copy(),

@@ -37,9 +37,9 @@ for i, trace in enumerate(data):
 # dispersion curves. We choose a velocity range that is typical for the near-surface in the frequency range we are
 # interested in.
 
-svm = SupportVectorMachine(name='dispersion_analysis')
-svm.train(wave_types=['R', 'L', 'P', 'SV', 'Noise'], scaling_velocity=scaling_velocity, phi=(0, 360), vp=(100, 3000),
-          vp_to_vs=(1.7, 2.4), vr=(50, 3000), vl=(50, 3000), xi=(-90, 90), theta=(0, 70))
+svm = SupportVectorMachine(name='dispersion_analysis_3')
+svm.train(wave_types=['R', 'L', 'P', 'SV', 'Noise'], scaling_velocity=scaling_velocity, phi=(0, 360), vp=(400, 3000),
+          vp_to_vs=(1.7, 2.4), vr=(50, 3000), vl=(50, 3000), xi=(-90, 90), theta=(0, 70), C=1000)
 
 ########################################################################################################################
 # We now have everything we need to extract dispersion curves from our ambient noise data. We specify that the time
@@ -53,7 +53,7 @@ window = {'number_of_periods': 2, 'overlap': 0.}
 da = DispersionAnalysis(traN=data[1], traE=data[2], traZ=data[0], rotN=data[4], rotE=data[5], rotZ=data[3],
                         window=window, scaling_velocity=scaling_velocity, verbose=True, fmin=1., fmax=20., octaves=0.25,
                         svm=svm)
-da.save(name='munich_data.pkl')
+da.save('munich_data_C1000.pkl')
 da.plot_baz(freq=14.)
 ########################################################################################################################
 # After running the analysis, we can save it to disk (e.g. da.save('dispersion_analysis.pkl')) or simply plot it using

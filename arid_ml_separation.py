@@ -12,7 +12,6 @@
 """
 import numpy as np
 import tables as tb
-from obspy.core import Stream
 from obspy.io.segy.core import _read_su
 from tables import *
 
@@ -20,25 +19,23 @@ from twistpy.polarization import PolarizationModel6C
 from twistpy.polarization import TimeFrequencyAnalysis6C, SupportVectorMachine
 
 scal = 800
-traN = _read_su('ARID/Vx_Source_3750_2500.su', byteorder='<')
-traE = _read_su('ARID/Vy_Source_3750_2500.su', byteorder='<')
+traN = _read_su('ARID/Vy_Source_3750_2500.su', byteorder='<')
+traE = _read_su('ARID/Vx_Source_3750_2500.su', byteorder='<')
 traZ = _read_su('ARID/Vz_Source_3750_2500.su', byteorder='<')
-rotN = _read_su('ARID/Rotationx_Source_3750_2500.su', byteorder='<')
-rotE = _read_su('ARID/Rotationy_Source_3750_2500.su', byteorder='<')
+rotN = _read_su('ARID/Rotationy_Source_3750_2500.su', byteorder='<')
+rotE = _read_su('ARID/Rotationx_Source_3750_2500.su', byteorder='<')
 rotZ = _read_su('ARID/Rotationz_Source_3750_2500.su', byteorder='>')
 
-svm = SupportVectorMachine(name='arid_5')
-svm.train(wave_types=['R', 'L', 'P', 'SH', 'SV', 'Noise'],
-          N=5000, scaling_velocity=scal, vp=(1050, 5000), vp_to_vs=(1.7, 2.4), vl=(400, 1000),
-          vr=(400, 700), phi=(0, 360), theta=(0, 80), xi=(-90, 90), free_surface=True, C=1, kernel='rbf')
+svm = SupportVectorMachine(name='arid_4')
+svm.train(wave_types=['R', 'P', 'SV', 'L', 'SH', 'Noise'],
+          N=5000, scaling_velocity=scal, vp=(1050, 2000), vp_to_vs=(1.7, 2.4), vl=(400, 1000),
+          vr=(400, 1000), phi=(0, 360), theta=(0, 80), xi=(-90, 90), free_surface=True, C=10, kernel='rbf')
 
 # Introduce artificial reflector
 x = np.arange(0, 281) * 25
 sx = x[140]
 d = 2000  # Interface depth
-v = 3
-
-000  # Velocity
+v = 3000  # Velocity
 x_off = np.abs(x - sx)  # Absolute offset from source
 s = 2 * np.sqrt((x_off / 2) ** 2 + d ** 2)
 theta = np.arctan(x_off / 2 / d)
@@ -53,14 +50,6 @@ data_reflection = (fft_roll(wavelet, t - 2.02, 0.006)).T
 
 # for trace in rotZ:
 #    trace.data = 0*trace.data
-st = Stream(traces=[traN[20], traE[20], traZ[20], rotN[20], rotE[20], rotZ[20]])
-channel_names = ['EHN', 'EHE', 'EHZ', 'EJN', 'EJE', 'EJZ']
-for n, trace in enumerate(st):
-    trace = st[n]
-    trace.stats.channel = channel_names[n]
-    trace.stats.network = 'XX'
-    trace.stats.station = 'XXXX'
-st.write('Nearsurface_Synthetics.mseed')
 
 traN = traN.differentiate()
 traE = traE.differentiate()
@@ -70,7 +59,7 @@ traZ = traZ.differentiate()
 
 
 for n in range(len(t)):
-    model = PolarizationModel6C(wave_type='P', vp=1500., vs=1500 / 1.7, theta=np.degrees(theta[n]), phi=90.)
+    model = PolarizationModel6C(wave_type='P', vp=1500., vs=1500 / 1.7, theta=np.degrees(theta[n]), phi=0.)
     pol = model.polarization
     traN[n].data -= 30e-7 * data_reflection[:, n] * pol[0].real
     traE[n].data -= 30e-7 * data_reflection[:, n] * pol[1].real
@@ -101,7 +90,7 @@ for stream in [traN, traE, traZ, rotN, rotE, rotZ]:
 
 #     stream.trim(starttime=stream[0].stats.starttime, endtime=stream[0].stats.starttime+1-1/370)
 
-window = {'number_of_periods': 5., 'frequency_extent': 5.}
+window = {'number_of_periods': 1., 'frequency_extent': 10.}
 N = traN[0].stats.npts
 
 
@@ -146,8 +135,8 @@ src_tot = len(traN)
 # for it in range(src_tot):
 for it in [20]:
     print(f'Computing source number: {it}/{src_tot}:\n')
-    pol = TimeFrequencyAnalysis6C(traN=traN[it], traE=traE[it], traZ=traZ[it],
-                                  rotN=rotN[it], rotE=rotE[it], rotZ=rotZ[it],
+    pol = TimeFrequencyAnalysis6C(traN=traN[it].copy(), traE=traE[it].copy(), traZ=traZ[it].copy(),
+                                  rotN=rotN[it].copy(), rotE=rotE[it].copy(), rotZ=rotZ[it].copy(),
                                   scaling_velocity=scal, dsfacf=1, dsfact=1, window=window, timeaxis='rel',
                                   verbose=False)
     data_sep_2 = pol.filter(svm=svm, wave_types=['R', 'L'], no_of_eigenvectors=1, suppress=True)
@@ -163,7 +152,7 @@ for it in [20]:
     # alpha = np.zeros_like(s_t_data, dtype='float')
     # alpha[s_t_data >= 0.00001 * s_t_data.max().max()] = 1
     # cmap = colors.ListedColormap(['blue', 'red', 'green', 'yellow', 'white'])
-    # pol.plot_classification(ax=ax[0], clip=0.0)
+    # pol.plot_classification(ax=ax[0], clip=0.01)
     # ax[0].set_title('Estimated wave types')
     # ax[2].plot(np.arange(traN[it].stats.npts) * traN[it].stats.delta, traN[it].data.T, 'k:', label='VN')
     # ax[2].plot(np.arange(traN[it].stats.npts) * traN[it].stats.delta, traE[it].data.T, 'k--', label='VE')

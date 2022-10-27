@@ -218,6 +218,11 @@ class DispersionAnalysis:
             counts, _ = np.histogram(dop_l, bins=nbins, range=[0, 1], density=True)
             counts_dop_l[:, i] = counts
 
+        counts_r[np.isnan(counts_r)] = 0
+        counts_l[np.isnan(counts_l)] = 0
+        counts_dop_r[np.isnan(counts_dop_r)] = 0
+        counts_dop_l[np.isnan(counts_dop_l)] = 0
+
         fig1, ((ax2, ax1, ax5), (ax4, ax3, ax6), (ax7, ax8, ax9)) = \
             plt.subplots(3, 3, gridspec_kw={'height_ratios': [3, 1, 1]}, figsize=(15, 10))
 
@@ -225,7 +230,7 @@ class DispersionAnalysis:
                              extent=[self.f[-1], self.f[0], velocity_range[0], velocity_range[1]])
         im.set_data(np.flip(self.f), np.linspace(velocity_range[0], velocity_range[1], nbins), np.flip(counts_r,
                                                                                                        axis=1))
-        im.set_clim([0.005 * np.max(np.max(counts_r)), 0.8 * np.max(np.max(counts_r))])
+        im.set_clim([0.005 * np.max(np.max(counts_r)), 0.6 * np.max(np.max(counts_r))])
         ax1.images.append(im)
         ax1.set_ylim([velocity_range[0], velocity_range[1]])
         ax1.set_ylabel(f"Phase velocity (ms)")
@@ -258,7 +263,7 @@ class DispersionAnalysis:
         im = NonUniformImage(ax5, interpolation='nearest', cmap='magma',
                              extent=[self.f[-1], self.f[0], 0, 1])
         im.set_data(np.flip(self.f), np.linspace(-90, 90, nbins), np.flip(counts_elli, axis=1))
-        im.set_clim([0.005 * np.max(np.max(counts_elli)), 0.8 * np.max(np.max(counts_elli))])
+        im.set_clim([0.005 * np.max(np.max(counts_elli)), 0.6 * np.max(np.max(counts_elli))])
         ax5.images.append(im)
         ax5.set_ylim([-90, 90])
         ax5.set_ylabel(f"Ellipticity angle (degrees)")
@@ -279,7 +284,7 @@ class DispersionAnalysis:
         im = NonUniformImage(ax7, interpolation='nearest', cmap='magma',
                              extent=[self.f[-1], self.f[0], 0, 1])
         im.set_data(np.flip(self.f), np.linspace(0, 1, nbins), np.flip(counts_dop_l, axis=1))
-        im.set_clim([0.005 * np.max(np.max(counts_dop_l)), 0.8 * np.max(np.max(counts_dop_l))])
+        im.set_clim([0.005 * np.max(np.max(counts_dop_l)), 0.6 * np.max(np.max(counts_dop_l))])
         ax7.images.append(im)
         ax7.set_ylim([0, 1])
         ax7.set_ylabel(f"Degree of polarization")
@@ -288,7 +293,7 @@ class DispersionAnalysis:
         im = NonUniformImage(ax8, interpolation='nearest', cmap='magma',
                              extent=[self.f[-1], self.f[0], 0, 1])
         im.set_data(np.flip(self.f), np.linspace(0, 1, nbins), np.flip(counts_dop_r, axis=1))
-        im.set_clim([0.005 * np.max(np.max(counts_dop_r)), 0.8 * np.max(np.max(counts_dop_r))])
+        im.set_clim([0.005 * np.max(np.max(counts_dop_r)), 0.6 * np.max(np.max(counts_dop_r))])
         ax8.images.append(im)
         ax8.set_ylim([0, 1])
         ax8.set_xlabel("Frequency (Hz)")
@@ -296,7 +301,7 @@ class DispersionAnalysis:
         im = NonUniformImage(ax9, interpolation='nearest', cmap='magma',
                              extent=[self.f[-1], self.f[0], 0, 1])
         im.set_data(np.flip(self.f), np.linspace(0, 1, nbins), np.flip(counts_dop_r, axis=1))
-        im.set_clim([0.005 * np.max(np.max(counts_dop_r)), 0.8 * np.max(np.max(counts_dop_r))])
+        im.set_clim([0.005 * np.max(np.max(counts_dop_r)), 0.6 * np.max(np.max(counts_dop_r))])
         ax9.images.append(im)
         ax9.set_ylim([0, 1])
         ax7.set_xlim(ax2.get_xlim())

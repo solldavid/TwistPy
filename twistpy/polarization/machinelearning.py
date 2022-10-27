@@ -48,7 +48,7 @@ class SupportVectorMachine:
               vp_to_vs: Tuple[float, float] = (1.7, 2.4), vl: Tuple[float, float] = (50, 2000),
               vr: Tuple[float, float] = (50, 2000), phi: Tuple[float, float] = (0, 360),
               theta: Tuple[float, float] = (0, 90), xi: Tuple[float, float] = (-90, 90),
-              free_surface: bool = True, C: float = 1, kernel: str = 'rbf', gamma: Union[str, float] = 'scale',
+              free_surface: bool = True, C: float = 10., kernel: str = 'rbf', gamma: Union[str, float] = 'scale',
               plot_confusion_matrix: bool = True) -> None:
         """Train support vector machine with random polarization models from the specified parameter range.
 
@@ -85,7 +85,7 @@ class SupportVectorMachine:
             Rayleigh wave ellipticity angle range in degrees.
         free_surface : :obj:`bool`, default=True
             Specifies whether free-surface polarization models apply
-        C : :obj:`float`, default=1.0
+        C : :obj:`float`, default=10.0
             Regularization parameter for the support vector machine. See :obj:`sklearn.svm.SVC`.
         kernel : :obj:`str` or *callable*, default='rbf'
             Kernel type used for the support vector machine. Defaults to a radial basis function kernel.

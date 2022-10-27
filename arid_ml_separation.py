@@ -101,7 +101,7 @@ class TraceSep(IsDescription):
     l = Float64Col(N)
 
 
-h5file = tb.open_file('rayleigh_love_p_WE_3750_2500.hdf', 'w')
+h5file = tb.open_file('WE_3750_2500.hdf', 'w')
 group1 = h5file.create_group("/", 'surfacewaves', 'Separated  data')
 group2 = h5file.create_group("/", 'bodywaves', 'Separated  data')
 

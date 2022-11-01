@@ -26,9 +26,9 @@ rotN = _read_su('ARID/Rotationy_Source_3750_2500.su', byteorder='<')
 rotE = _read_su('ARID/Rotationx_Source_3750_2500.su', byteorder='<')
 rotZ = _read_su('ARID/Rotationz_Source_3750_2500.su', byteorder='>')
 
-svm = SupportVectorMachine(name='arid_4')
+svm = SupportVectorMachine(name='arid_5')
 svm.train(wave_types=['R', 'P', 'SV', 'L', 'SH', 'Noise'],
-          N=5000, scaling_velocity=scal, vp=(1050, 2000), vp_to_vs=(1.7, 2.4), vl=(400, 1000),
+          N=5000, scaling_velocity=scal, vp=(1050, 5000), vp_to_vs=(1.7, 2.4), vl=(400, 1000),
           vr=(400, 1000), phi=(0, 360), theta=(0, 80), xi=(-90, 90), free_surface=True, C=10, kernel='rbf')
 
 # Introduce artificial reflector
@@ -90,7 +90,7 @@ for stream in [traN, traE, traZ, rotN, rotE, rotZ]:
 
 #     stream.trim(starttime=stream[0].stats.starttime, endtime=stream[0].stats.starttime+1-1/370)
 
-window = {'number_of_periods': 5., 'frequency_extent': 5.}
+window = {'number_of_periods': 2., 'frequency_extent': 10.}
 N = traN[0].stats.npts
 
 
@@ -132,8 +132,8 @@ data_rz2 = table_rz2.row
 
 src_tot = len(traN)
 
-for it in range(src_tot):
-    # for it in [20]:
+# for it in range(src_tot):
+for it in [20]:
     print(f'Computing source number: {it}/{src_tot}:\n')
     pol = TimeFrequencyAnalysis6C(traN=traN[it].copy(), traE=traE[it].copy(), traZ=traZ[it].copy(),
                                   rotN=rotN[it].copy(), rotE=rotE[it].copy(), rotZ=rotZ[it].copy(),
@@ -142,44 +142,44 @@ for it in range(src_tot):
     data_sep_2 = pol.filter(svm=svm, wave_types=['R', 'L'], no_of_eigenvectors=1, suppress=True)
     data_sep_1 = pol.filter(svm=svm, wave_types=['R', 'L', 'P'], no_of_eigenvectors=1)
 
-    # import matplotlib.pyplot as plt
-    #
-    # fig, ax = plt.subplots(3, 1, sharex='all')
-    # from matplotlib import colors
-    # from twistpy.utils import stransform
-    #
-    # s_t_data = np.abs(stransform(traZ[it].data.T)[0])
-    # alpha = np.zeros_like(s_t_data, dtype='float')
-    # alpha[s_t_data >= 0.00001 * s_t_data.max().max()] = 1
-    # cmap = colors.ListedColormap(['blue', 'red', 'green', 'yellow', 'white'])
-    # pol.plot_classification(ax=ax[0], clip=0.01)
-    # ax[0].set_title('Estimated wave types')
-    # ax[2].plot(np.arange(traN[it].stats.npts) * traN[it].stats.delta, traN[it].data.T, 'k:', label='VN')
-    # ax[2].plot(np.arange(traN[it].stats.npts) * traN[it].stats.delta, traE[it].data.T, 'k--', label='VE')
-    # ax[2].plot(np.arange(traN[it].stats.npts) * traN[it].stats.delta, traZ[it].data.T, 'k', label='VZ')
-    # ax[2].plot(np.arange(traN[it].stats.npts) * traN[it].stats.delta, rotN[it].data.T, 'r:', label='RN')
-    # ax[2].plot(np.arange(traN[it].stats.npts) * traN[it].stats.delta, rotE[it].data.T, 'r--', label='RE')
-    # ax[2].plot(np.arange(traN[it].stats.npts) * traN[it].stats.delta, rotZ[it].data.T, 'r', label='RZ')
-    # ax[2].autoscale(enable=True, axis='both', tight=True)
-    # handles, labels = ax[2].get_legend_handles_labels()
-    # ax[2].legend(handles, labels, loc='upper left')
-    # ax[1].imshow(s_t_data, origin='lower', aspect='auto',
-    #              extent=[0, traN[it].stats.npts * traN[it].stats.delta, 0, 1 / (2 * traN[it].stats.delta)],
-    #              interpolation=None)
-    # ax[0].set_ylabel('Frequency (Hz)')
-    # ax[1].set_ylabel('Frequency (Hz)')
-    # ax[1].set_title('S-transform of VZ')
-    # ax[2].set_xlabel('Time (s)')
-    # ax[2].set_title('6C input data')
-    #
-    # plt.style.use("ggplot")
-    # pos = ax[0].get_position()
-    # pos0 = ax[1].get_position()
-    # ax[1].set_position([pos0.x0, pos0.y0, pos.width, pos.height])
-    # pos0 = ax[2].get_position()
-    # ax[2].set_position([pos0.x0, pos0.y0, pos.width, pos.height])
-    #
-    # plt.show()
+    import matplotlib.pyplot as plt
+
+    fig, ax = plt.subplots(3, 1, sharex='all')
+    from matplotlib import colors
+    from twistpy.utils import stransform
+
+    s_t_data = np.abs(stransform(traZ[it].data.T)[0])
+    alpha = np.zeros_like(s_t_data, dtype='float')
+    alpha[s_t_data >= 0.00001 * s_t_data.max().max()] = 1
+    cmap = colors.ListedColormap(['blue', 'red', 'green', 'yellow', 'white'])
+    pol.plot_classification(ax=ax[0], clip=0.01)
+    ax[0].set_title('Estimated wave types')
+    ax[2].plot(np.arange(traN[it].stats.npts) * traN[it].stats.delta, traN[it].data.T, 'k:', label='VN')
+    ax[2].plot(np.arange(traN[it].stats.npts) * traN[it].stats.delta, traE[it].data.T, 'k--', label='VE')
+    ax[2].plot(np.arange(traN[it].stats.npts) * traN[it].stats.delta, traZ[it].data.T, 'k', label='VZ')
+    ax[2].plot(np.arange(traN[it].stats.npts) * traN[it].stats.delta, rotN[it].data.T, 'r:', label='RN')
+    ax[2].plot(np.arange(traN[it].stats.npts) * traN[it].stats.delta, rotE[it].data.T, 'r--', label='RE')
+    ax[2].plot(np.arange(traN[it].stats.npts) * traN[it].stats.delta, rotZ[it].data.T, 'r', label='RZ')
+    ax[2].autoscale(enable=True, axis='both', tight=True)
+    handles, labels = ax[2].get_legend_handles_labels()
+    ax[2].legend(handles, labels, loc='upper left')
+    ax[1].imshow(s_t_data, origin='lower', aspect='auto',
+                 extent=[0, traN[it].stats.npts * traN[it].stats.delta, 0, 1 / (2 * traN[it].stats.delta)],
+                 interpolation=None)
+    ax[0].set_ylabel('Frequency (Hz)')
+    ax[1].set_ylabel('Frequency (Hz)')
+    ax[1].set_title('S-transform of VZ')
+    ax[2].set_xlabel('Time (s)')
+    ax[2].set_title('6C input data')
+
+    plt.style.use("ggplot")
+    pos = ax[0].get_position()
+    pos0 = ax[1].get_position()
+    ax[1].set_position([pos0.x0, pos0.y0, pos.width, pos.height])
+    pos0 = ax[2].get_position()
+    ax[2].set_position([pos0.x0, pos0.y0, pos.width, pos.height])
+
+    plt.show()
 
     data_tn1['r'] = data_sep_1['R'][:, 0]
     data_te1['r'] = data_sep_1['R'][:, 1]

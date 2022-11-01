@@ -172,15 +172,21 @@ class DispersionAnalysis:
             c_r_full = c_r_full[dop_f > dop_min]
             dop_r = dop_r[~np.isnan(c_r_full)]
             c_r_full = c_r_full[~np.isnan(c_r_full)]
-            dop_r = dop_r[c_r_full < np.quantile(c_r_full, quantiles[1])]
-            c_r = c_r_full[c_r_full < np.quantile(c_r_full, quantiles[1])]
-            dop_r = dop_r[c_r > np.quantile(c_r_full, quantiles[0])]
-            c_r = c_r[c_r > np.quantile(c_r_full, quantiles[0])]
-            dop_r = dop_r[c_r < velocity_range[1]]
-            c_r = c_r[c_r < velocity_range[1]]
-            dop_r = dop_r[c_r > velocity_range[0]]
-            c_r = c_r[c_r > velocity_range[0]]
-            cr_ndec[i] = len(c_r)
+
+            if not c_r_full.any():
+                c_r = np.array(np.nan)
+                cr_ndec[i] = 0
+                dop_r = np.array(np.nan)
+            else:
+                dop_r = dop_r[c_r_full < np.quantile(c_r_full, quantiles[1])]
+                c_r = c_r_full[c_r_full < np.quantile(c_r_full, quantiles[1])]
+                dop_r = dop_r[c_r > np.quantile(c_r_full, quantiles[0])]
+                c_r = c_r[c_r > np.quantile(c_r_full, quantiles[0])]
+                dop_r = dop_r[c_r < velocity_range[1]]
+                c_r = c_r[c_r < velocity_range[1]]
+                dop_r = dop_r[c_r > velocity_range[0]]
+                c_r = c_r[c_r > velocity_range[0]]
+                cr_ndec[i] = len(c_r)
             counts, values_r = np.histogram(c_r, bins=nbins, range=[velocity_range[0], velocity_range[1]], density=True)
             counts_r[:, i] = counts.T
             median_cr[i] = np.median(c_r)
@@ -191,8 +197,11 @@ class DispersionAnalysis:
             elli_full = self.parameters[i]['xi']
             elli_full = elli_full[dop_f > dop_min]
             elli_full = elli_full[~np.isnan(elli_full)]
-            elli = elli_full[elli_full < np.quantile(elli_full, quantiles[1])]
-            elli = elli[elli > np.quantile(elli_full, quantiles[0])]
+            if not elli_full.any():
+                elli = np.array(np.nan)
+            else:
+                elli = elli_full[elli_full < np.quantile(elli_full, quantiles[1])]
+                elli = elli[elli > np.quantile(elli_full, quantiles[0])]
             counts, values_elli = np.histogram(elli, bins=nbins, range=[-90, 90], density=True)
             counts_elli[:, i] = counts.T
             median_elli[i] = np.median(elli)
@@ -202,15 +211,21 @@ class DispersionAnalysis:
             c_l_full = c_l_full[dop_f > dop_min]
             dop_l = dop_l[~np.isnan(c_l_full)]
             c_l_full = c_l_full[~np.isnan(c_l_full)]
-            dop_l = dop_l[c_l_full < np.quantile(c_l_full, quantiles[1])]
-            c_l = c_l_full[c_l_full < np.quantile(c_l_full, quantiles[1])]
-            dop_l = dop_l[c_l > np.quantile(c_l_full, quantiles[0])]
-            c_l = c_l[c_l > np.quantile(c_l_full, quantiles[0])]
-            dop_l = dop_l[c_l < velocity_range[1]]
-            c_l = c_l[c_l < velocity_range[1]]
-            dop_l = dop_l[c_l > velocity_range[0]]
-            c_l = c_l[c_l > velocity_range[0]]
-            cl_ndec[i] = len(c_l)
+
+            if not c_l_full.any():
+                c_l = np.array(np.nan)
+                cl_ndec[i] = 0
+                dop_l = np.array(np.nan)
+            else:
+                dop_l = dop_l[c_l_full < np.quantile(c_l_full, quantiles[1])]
+                c_l = c_l_full[c_l_full < np.quantile(c_l_full, quantiles[1])]
+                dop_l = dop_l[c_l > np.quantile(c_l_full, quantiles[0])]
+                c_l = c_l[c_l > np.quantile(c_l_full, quantiles[0])]
+                dop_l = dop_l[c_l < velocity_range[1]]
+                c_l = c_l[c_l < velocity_range[1]]
+                dop_l = dop_l[c_l > velocity_range[0]]
+                c_l = c_l[c_l > velocity_range[0]]
+                cl_ndec[i] = len(c_l)
             counts, values_l = np.histogram(c_l, bins=nbins, range=[velocity_range[0], velocity_range[1]], density=True)
             counts_l[:, i] = counts.T
             median_cl[i] = np.median(c_l)
@@ -311,7 +326,7 @@ class DispersionAnalysis:
         if show:
             plt.show()
 
-    def plot_baz(self, freq: float = None, nbins: int = 96, show: bool = True) -> None:
+    def plot_baz(self, freq: float = None, nbins: int = 90, show: bool = True) -> None:
         r"""Plot the back-azimuth of Love and Rayleigh wave sources as a polar plot.
 
         Parameters

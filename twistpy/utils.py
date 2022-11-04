@@ -172,8 +172,8 @@ def istransform(st: np.ndarray, f: np.ndarray, k: float = 1., use_filter: bool =
         term1 = np.exp(-(1 / 2) * (np.tile(f, (1, M)) / 1 * np.tile(n, (M, 1))) ** 2)
         term2 = np.exp(2 * 1j * np.pi * (np.tile(f, (1, M)) * np.tile(n, (M, 1))))
         # Filter after Simon et al. 2007: The S-Transform and its Inverses: Side Effects of Discretizing and Filtering
-        I = np.real(np.sum(term1 * term2, axis=0)) / M
-        I_fft = np.fft.fft(I)
+        I_t = np.real(np.sum(term1 * term2, axis=0)) / M
+        I_fft = np.fft.fft(I_t)
         u_fft = np.fft.fft(u)
         ist = np.real(np.fft.ifft(u_fft / I_fft))
     else:

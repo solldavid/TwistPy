@@ -21,7 +21,7 @@ from twistpy.polarization.machinelearning import SupportVectorMachine
 # scaling velocity (see other examples on 6C polarization analysis). After scaling, the translational and rotational
 # components should have comparable amplitudes. This makes the analysis more stable.
 
-data = read('../example_data/6C_noise_data_long.mseed')
+data = read('../example_data/swmhk2.mseed')
 scaling_velocity = 800.
 for i, trace in enumerate(data):
     if i < 3:
@@ -30,13 +30,19 @@ for i, trace in enumerate(data):
     else:
         trace.data -= np.median(trace.data)  # Ensure that the rotational components have a median of 0
     trace.taper(0.05)
+
+data[0].data *= -1
+data[3].data *= -1
+data[2].data *= -1
+data[4].data *= -1
+
+data.resample(100)
 ########################################################################################################################
 # Now we train the machine learning model for the detection of Love and Rayleigh waves. We additionally train the model
 # to be able to detect body waves because we want to avoid leakage of body waves into our Love and Rayleigh wave
 # dispersion curves. We choose a velocity range that is typical for the near-surface in the frequency range we are
 # interested in.
-
-svm = SupportVectorMachine(name='dispersion_analysis')
+svm = SupportVectorMachine(name='dispersion_analysis2')
 svm.train(wave_types=['R', 'L', 'P', 'SV', 'Noise'], scaling_velocity=scaling_velocity, phi=(0, 360), vp=(400, 3000),
           vp_to_vs=(1.7, 2.4), vr=(100, 3000), vl=(100, 3000), xi=(-90, 90), theta=(0, 80), C=100)
 
@@ -52,6 +58,7 @@ window = {'number_of_periods': 2, 'overlap': 0.5}
 da = DispersionAnalysis(traN=data[1], traE=data[2], traZ=data[0], rotN=data[4], rotE=data[5], rotZ=data[3],
                         window=window, scaling_velocity=scaling_velocity, verbose=True, fmin=1., fmax=20., octaves=0.25,
                         svm=svm)
+da.save('swm_test.pkl')
 ########################################################################################################################
 # After running the analysis, we can save it to disk (e.g. da.save('dispersion_analysis.pkl')) or simply plot it using
 # the provided plot() method.

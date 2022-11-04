@@ -1,7 +1,7 @@
 from __future__ import (absolute_import, division, print_function, unicode_literals)
 
 import pickle
-from builtins import *
+from builtins import ValueError
 from typing import List, Dict, Tuple
 
 import matplotlib.pyplot as plt
@@ -258,9 +258,8 @@ class TimeFrequencyAnalysis6C:
                                    + (eigenvalues[:, 2] - eigenvalues[:, 5]) ** 2
                                    + (eigenvalues[:, 3] - eigenvalues[:, 4]) ** 2
                                    + (eigenvalues[:, 3] - eigenvalues[:, 5]) ** 2
-                                   + (eigenvalues[:, 4] - eigenvalues[:, 5]) ** 2) / (
-                                              5 * np.sum(eigenvalues, axis=-1) ** 2),
-                                  (len(self.f_pol), len(self.t_pol)))
+                                   + (eigenvalues[:, 4] - eigenvalues[:, 5]) ** 2)
+                                  / (5 * np.sum(eigenvalues, axis=-1) ** 2), (len(self.f_pol), len(self.t_pol)))
 
         # The eigenvectors are initially arbitrarily oriented in the complex plane, here we ensure that
         # the real and imaginary parts are orthogonal. See Samson (1980): Some comments on the descriptions of the
@@ -354,7 +353,11 @@ class TimeFrequencyAnalysis6C:
                     phi_love = np.arctan2(np.real(eigenvector_wtype[:, 1]), np.real(eigenvector_wtype[:, 0]))
                     a_t = np.cos(phi_love) * eigenvector_wtype[:, 0] + np.sin(phi_love) * eigenvector_wtype[:, 1]
                     phi_love += np.pi / 2
-                    phi_love[np.sign(eigenvector_wtype[:, 0].real) == np.sign(eigenvector_wtype[:, 1].real)] += np.pi
+
+                    # Resolve 180 degrees ambiguity by checking the sign of the vertical rotation and the transverse
+                    # acceleration
+                    phi_love[np.sign(a_t) == np.sign(eigenvector_wtype[:, 5].real)] = \
+                        phi_love[np.sign(a_t) == np.sign(eigenvector_wtype[:, 5].real)] + np.pi
                     phi_love[phi_love > 2 * np.pi] -= 2 * np.pi
                     phi_love[phi_love < 0] += 2 * np.pi
                     # Love wave velocity: transverse acceleration divided by 2*vertical rotation
@@ -372,10 +375,7 @@ class TimeFrequencyAnalysis6C:
                                       np.linalg.norm(np.abs(eigenvector_wtype[:, 0:2].imag), axis=1)] = \
                         eigenvector_wtype[np.linalg.norm(np.abs(eigenvector_wtype[:, 0:2].real), axis=1) >
                                           np.linalg.norm(np.abs(eigenvector_wtype[:, 0:2].imag), axis=1)].conj() * 1j
-                    eigenvector_wtype[eigenvector_wtype[:, 2] < 0, :] *= -1  # Ensure that eigenvectors point into
-                    # the same direction with translational z-component positive
                     phi_rayleigh = np.arctan2(np.imag(eigenvector_wtype[:, 1]), np.imag(eigenvector_wtype[:, 0]))
-                    phi_rayleigh[phi_rayleigh < 0] += np.pi
                     # Compute radial translational component t_r and transverse rotational component r_t
                     r_t = -np.sin(phi_rayleigh) * eigenvector_wtype[:, 3].real + np.cos(phi_rayleigh) * \
                           eigenvector_wtype[:, 4].real
@@ -384,11 +384,15 @@ class TimeFrequencyAnalysis6C:
                     # Account for 180 degree ambiguity by evaluating signs
                     phi_rayleigh[np.sign(t_r) < np.sign(r_t)] += np.pi
                     phi_rayleigh[(np.sign(t_r) > 0) & (np.sign(r_t) > 0)] += np.pi
+                    phi_rayleigh[phi_rayleigh < 0] += 2 * np.pi
+                    phi_rayleigh[phi_rayleigh > 2 * np.pi] -= 2 * np.pi
+                    phi_rayleigh[np.sign(eigenvector_wtype[:, 2].real) < np.sign(t_r)] -= np.pi
+                    phi_rayleigh[phi_rayleigh < 0.] += 2 * np.pi
 
                     # Compute Rayleigh wave ellipticity angle
-                    elli_rayleigh = -np.arctan(t_r / eigenvector_wtype[:, 2].real)
-                    elli_rayleigh[np.sign(t_r) == np.sign(r_t)] *= -1
-
+                    elli_rayleigh = np.arctan(t_r / eigenvector_wtype[:, 2].real)
+                    elli_rayleigh[np.sign(r_t) < np.sign(t_r)] *= -1
+                    elli_rayleigh[np.sign(eigenvector_wtype[:, 2].real) < np.sign(t_r)] *= -1
                     # Compute Rayleigh wave phase velocity
                     c_rayleigh = self.scaling_velocity * np.abs(eigenvector_wtype[:, 2].real) / np.abs(r_t)
                     self.xi[indices] = np.degrees(elli_rayleigh)
@@ -444,13 +448,13 @@ class TimeFrequencyAnalysis6C:
                                              estimator_configuration.phi_n,
                                              estimator_configuration.xi_n))
 
-                    self.wave_parameters['R']['vr'] = np.reshape(estimator_configuration.vr[0] \
+                    self.wave_parameters['R']['vr'] = np.reshape(estimator_configuration.vr[0]
                                                                  + indx[0] * estimator_configuration.vr[2],
                                                                  (len(self.f_pol), len(self.t_pol)))
-                    self.wave_parameters['R']['phi'] = np.reshape(estimator_configuration.phi[0] \
+                    self.wave_parameters['R']['phi'] = np.reshape(estimator_configuration.phi[0]
                                                                   + indx[1] * estimator_configuration.phi[2],
                                                                   (len(self.f_pol), len(self.t_pol)))
-                    self.wave_parameters['R']['xi'] = np.reshape(estimator_configuration.xi[0] \
+                    self.wave_parameters['R']['xi'] = np.reshape(estimator_configuration.xi[0]
                                                                  + indx[2] * estimator_configuration.xi[2],
                                                                  (len(self.f_pol), len(self.t_pol)))
                 elif wave_type == 'L':
@@ -459,10 +463,10 @@ class TimeFrequencyAnalysis6C:
                                              estimator_configuration.phi_n))
                     self.wave_parameters['L']['lh'] = np.reshape(P.max(axis=1),
                                                                  (len(self.f_pol), len(self.t_pol)))
-                    self.wave_parameters['L']['vl'] = np.reshape(estimator_configuration.vl[0] \
+                    self.wave_parameters['L']['vl'] = np.reshape(estimator_configuration.vl[0]
                                                                  + indx[0] * estimator_configuration.vl[2],
                                                                  (len(self.f_pol), len(self.t_pol)))
-                    self.wave_parameters['L']['phi'] = np.reshape(estimator_configuration.phi[0] \
+                    self.wave_parameters['L']['phi'] = np.reshape(estimator_configuration.phi[0]
                                                                   + indx[1] * estimator_configuration.phi[2],
                                                                   (len(self.f_pol), len(self.t_pol)))
                 elif wave_type == 'P':
@@ -473,16 +477,16 @@ class TimeFrequencyAnalysis6C:
                                              estimator_configuration.phi_n))
                     self.wave_parameters['P']['lh'] = np.reshape(P.max(axis=1),
                                                                  (len(self.f_pol), len(self.t_pol)))
-                    self.wave_parameters['P']['vp'] = np.reshape(estimator_configuration.vp[0] \
+                    self.wave_parameters['P']['vp'] = np.reshape(estimator_configuration.vp[0]
                                                                  + indx[0] * estimator_configuration.vp[2],
                                                                  (len(self.f_pol), len(self.t_pol)))
-                    self.wave_parameters['P']['vp_to_vs'] = np.reshape(estimator_configuration.vp_to_vs[0] \
+                    self.wave_parameters['P']['vp_to_vs'] = np.reshape(estimator_configuration.vp_to_vs[0]
                                                                        + indx[1] * estimator_configuration.vp_to_vs[2],
                                                                        (len(self.f_pol), len(self.t_pol)))
-                    self.wave_parameters['P']['theta'] = np.reshape(estimator_configuration.theta[0] \
+                    self.wave_parameters['P']['theta'] = np.reshape(estimator_configuration.theta[0]
                                                                     + indx[2] * estimator_configuration.theta[2],
                                                                     (len(self.f_pol), len(self.t_pol)))
-                    self.wave_parameters['P']['phi'] = np.reshape(estimator_configuration.phi[0] \
+                    self.wave_parameters['P']['phi'] = np.reshape(estimator_configuration.phi[0]
                                                                   + indx[3] * estimator_configuration.phi[2],
                                                                   (len(self.f_pol), len(self.t_pol)))
                 elif wave_type == 'SV':
@@ -493,16 +497,16 @@ class TimeFrequencyAnalysis6C:
                                              estimator_configuration.phi_n))
                     self.wave_parameters['SV']['lh'] = np.reshape(np.nanmax(P, axis=1),
                                                                   (len(self.f_pol), len(self.t_pol)))
-                    self.wave_parameters['SV']['vp'] = np.reshape(estimator_configuration.vp[0] \
+                    self.wave_parameters['SV']['vp'] = np.reshape(estimator_configuration.vp[0]
                                                                   + indx[0] * estimator_configuration.vp[2],
                                                                   (len(self.f_pol), len(self.t_pol)))
-                    self.wave_parameters['SV']['vp_to_vs'] = np.reshape(estimator_configuration.vp_to_vs[0] \
+                    self.wave_parameters['SV']['vp_to_vs'] = np.reshape(estimator_configuration.vp_to_vs[0]
                                                                         + indx[1] * estimator_configuration.vp_to_vs[2],
                                                                         (len(self.f_pol), len(self.t_pol)))
-                    self.wave_parameters['SV']['theta'] = np.reshape(estimator_configuration.theta[0] \
+                    self.wave_parameters['SV']['theta'] = np.reshape(estimator_configuration.theta[0]
                                                                      + indx[2] * estimator_configuration.theta[2],
                                                                      (len(self.f_pol), len(self.t_pol)))
-                    self.wave_parameters['SV']['phi'] = np.reshape(estimator_configuration.phi[0] \
+                    self.wave_parameters['SV']['phi'] = np.reshape(estimator_configuration.phi[0]
                                                                    + indx[3] * estimator_configuration.phi[2],
                                                                    (len(self.f_pol), len(self.t_pol)))
                 elif wave_type == 'SH':
@@ -512,13 +516,13 @@ class TimeFrequencyAnalysis6C:
                                              estimator_configuration.phi_n))
                     self.wave_parameters['SH']['lh'] = np.reshape(P.max(axis=1),
                                                                   (len(self.f_pol), len(self.t_pol)))
-                    self.wave_parameters['SH']['vs'] = np.reshape(estimator_configuration.vs[0] \
+                    self.wave_parameters['SH']['vs'] = np.reshape(estimator_configuration.vs[0]
                                                                   + indx[0] * estimator_configuration.vs[2],
                                                                   (len(self.f_pol), len(self.t_pol)))
-                    self.wave_parameters['SH']['theta'] = np.reshape(estimator_configuration.theta[0] \
+                    self.wave_parameters['SH']['theta'] = np.reshape(estimator_configuration.theta[0]
                                                                      + indx[1] * estimator_configuration.theta[2],
                                                                      (len(self.f_pol), len(self.t_pol)))
-                    self.wave_parameters['SH']['phi'] = np.reshape(estimator_configuration.phi[0] \
+                    self.wave_parameters['SH']['phi'] = np.reshape(estimator_configuration.phi[0]
                                                                    + indx[1] * estimator_configuration.phi[2],
                                                                    (len(self.f_pol), len(self.t_pol)))
                 if self.verbose:
@@ -562,7 +566,7 @@ class TimeFrequencyAnalysis6C:
                     cbarmap = ScalarMappable(Normalize(vmin=lh_min,
                                                        vmax=lh_max), cmap='inferno')
                     cbar = plt.colorbar(cbarmap, ax=ax[0], extend='max')
-                    cbar.set_label(f"Estimator power")
+                    cbar.set_label("Estimator power")
 
                     ax[1].imshow(self.wave_parameters['P']['vp'], origin='lower', cmap='inferno', aspect='auto',
                                  extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
@@ -571,7 +575,7 @@ class TimeFrequencyAnalysis6C:
                     cbarmap = ScalarMappable(Normalize(vmin=estimator_configuration.vp[0],
                                                        vmax=estimator_configuration.vp[1]), cmap='inferno')
                     cbar = plt.colorbar(cbarmap, ax=ax[1], extend='max')
-                    cbar.set_label(f"m/s")
+                    cbar.set_label("m/s")
 
                     ax[2].imshow(self.wave_parameters['P']['vp_to_vs'], origin='lower', cmap='inferno', aspect='auto',
                                  extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
@@ -581,7 +585,7 @@ class TimeFrequencyAnalysis6C:
                     cbarmap = ScalarMappable(Normalize(vmin=estimator_configuration.vp_to_vs[0],
                                                        vmax=estimator_configuration.vp_to_vs[1]), cmap='inferno')
                     cbar = plt.colorbar(cbarmap, ax=ax[2], extend='max')
-                    cbar.set_label(f"Vp/Vs")
+                    cbar.set_label("Vp/Vs")
 
                     ax[3].imshow(self.wave_parameters['P']['theta'], origin='lower', cmap='inferno', aspect='auto',
                                  extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
@@ -591,7 +595,7 @@ class TimeFrequencyAnalysis6C:
                     cbarmap = ScalarMappable(Normalize(vmin=estimator_configuration.theta[0],
                                                        vmax=estimator_configuration.theta[1]), cmap='inferno')
                     cbar = plt.colorbar(cbarmap, ax=ax[3], extend='max')
-                    cbar.set_label(f"Degrees")
+                    cbar.set_label("Degrees")
 
                     ax[4].imshow(self.wave_parameters['P']['phi'], origin='lower', cmap='hsv', aspect='auto',
                                  extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
@@ -600,7 +604,7 @@ class TimeFrequencyAnalysis6C:
                     cbarmap = ScalarMappable(Normalize(vmin=0,
                                                        vmax=360), cmap='hsv')
                     cbar = plt.colorbar(cbarmap, ax=ax[4], extend='max')
-                    cbar.set_label(f"Degrees")
+                    cbar.set_label("Degrees")
 
                     for axis in ax:
                         axis.set_ylabel('Frequency (Hz)')
@@ -630,7 +634,7 @@ class TimeFrequencyAnalysis6C:
                     cbarmap = ScalarMappable(Normalize(vmin=lh_min,
                                                        vmax=lh_max), cmap='inferno')
                     cbar = plt.colorbar(cbarmap, ax=ax[0], extend='max')
-                    cbar.set_label(f"Estimator power")
+                    cbar.set_label("Estimator power")
 
                     ax[1].imshow(self.wave_parameters['SV']['vp'], origin='lower', cmap='inferno', aspect='auto',
                                  extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
@@ -639,7 +643,7 @@ class TimeFrequencyAnalysis6C:
                     cbarmap = ScalarMappable(Normalize(vmin=estimator_configuration.vp[0],
                                                        vmax=estimator_configuration.vp[1]), cmap='inferno')
                     cbar = plt.colorbar(cbarmap, ax=ax[1], extend='max')
-                    cbar.set_label(f"m/s")
+                    cbar.set_label("m/s")
 
                     ax[2].imshow(self.wave_parameters['SV']['vp_to_vs'], origin='lower', cmap='inferno', aspect='auto',
                                  extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
@@ -649,7 +653,7 @@ class TimeFrequencyAnalysis6C:
                     cbarmap = ScalarMappable(Normalize(vmin=estimator_configuration.vp_to_vs[0],
                                                        vmax=estimator_configuration.vp_to_vs[1]), cmap='inferno')
                     cbar = plt.colorbar(cbarmap, ax=ax[2], extend='max')
-                    cbar.set_label(f"Vp/Vs")
+                    cbar.set_label("Vp/Vs")
 
                     ax[3].imshow(self.wave_parameters['SV']['theta'], origin='lower', cmap='inferno', aspect='auto',
                                  extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
@@ -659,7 +663,7 @@ class TimeFrequencyAnalysis6C:
                     cbarmap = ScalarMappable(Normalize(vmin=estimator_configuration.theta[0],
                                                        vmax=estimator_configuration.theta[1]), cmap='inferno')
                     cbar = plt.colorbar(cbarmap, ax=ax[3], extend='max')
-                    cbar.set_label(f"Degrees")
+                    cbar.set_label("Degrees")
 
                     ax[4].imshow(self.wave_parameters['SV']['phi'], origin='lower', cmap='hsv', aspect='auto',
                                  extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
@@ -668,7 +672,7 @@ class TimeFrequencyAnalysis6C:
                     cbarmap = ScalarMappable(Normalize(vmin=0,
                                                        vmax=360), cmap='hsv')
                     cbar = plt.colorbar(cbarmap, ax=ax[4], extend='max')
-                    cbar.set_label(f"Degrees")
+                    cbar.set_label("Degrees")
 
                     for axis in ax:
                         axis.set_ylabel('Frequency (Hz)')
@@ -698,7 +702,7 @@ class TimeFrequencyAnalysis6C:
                     cbarmap = ScalarMappable(Normalize(vmin=lh_min,
                                                        vmax=lh_max), cmap='inferno')
                     cbar = plt.colorbar(cbarmap, ax=ax[0], extend='max')
-                    cbar.set_label(f"Estimator power")
+                    cbar.set_label("Estimator power")
 
                     ax[1].imshow(self.wave_parameters['R']['vr'], origin='lower', cmap='inferno', aspect='auto',
                                  extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
@@ -707,7 +711,7 @@ class TimeFrequencyAnalysis6C:
                     cbarmap = ScalarMappable(Normalize(vmin=estimator_configuration.vr[0],
                                                        vmax=estimator_configuration.vr[1]), cmap='inferno')
                     cbar = plt.colorbar(cbarmap, ax=ax[1], extend='max')
-                    cbar.set_label(f"m/s")
+                    cbar.set_label("m/s")
 
                     ax[2].imshow(self.wave_parameters['R']['phi'], origin='lower', cmap='hsv', aspect='auto',
                                  extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
@@ -717,7 +721,7 @@ class TimeFrequencyAnalysis6C:
                     cbarmap = ScalarMappable(Normalize(vmin=0,
                                                        vmax=360), cmap='hsv')
                     cbar = plt.colorbar(cbarmap, ax=ax[2], extend='max')
-                    cbar.set_label(f"Degrees")
+                    cbar.set_label("Degrees")
 
                     ax[3].imshow(self.wave_parameters['R']['xi'], origin='lower', cmap='Spectral', aspect='auto',
                                  extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
@@ -726,7 +730,7 @@ class TimeFrequencyAnalysis6C:
                     cbarmap = ScalarMappable(Normalize(vmin=-90,
                                                        vmax=90), cmap='Spectral')
                     cbar = plt.colorbar(cbarmap, ax=ax[3], extend='max')
-                    cbar.set_label(f"Degrees")
+                    cbar.set_label("Degrees")
 
                     for axis in ax:
                         axis.set_ylabel('Frequency (Hz)')
@@ -755,7 +759,7 @@ class TimeFrequencyAnalysis6C:
                     cbarmap = ScalarMappable(Normalize(vmin=lh_min,
                                                        vmax=lh_max), cmap='inferno')
                     cbar = plt.colorbar(cbarmap, ax=ax[0], extend='max')
-                    cbar.set_label(f"Estimator power")
+                    cbar.set_label("Estimator power")
 
                     ax[1].imshow(self.wave_parameters['L']['vl'], origin='lower', cmap='inferno', aspect='auto',
                                  extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
@@ -764,7 +768,7 @@ class TimeFrequencyAnalysis6C:
                     cbarmap = ScalarMappable(Normalize(vmin=estimator_configuration.vl[0],
                                                        vmax=estimator_configuration.vl[1]), cmap='inferno')
                     cbar = plt.colorbar(cbarmap, ax=ax[1], extend='max')
-                    cbar.set_label(f"m/s")
+                    cbar.set_label("m/s")
 
                     ax[2].imshow(self.wave_parameters['L']['phi'], origin='lower', cmap='hsv', aspect='auto',
                                  extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
@@ -774,7 +778,7 @@ class TimeFrequencyAnalysis6C:
                     cbarmap = ScalarMappable(Normalize(vmin=estimator_configuration.phi[0],
                                                        vmax=estimator_configuration.phi[1]), cmap='hsv')
                     cbar = plt.colorbar(cbarmap, ax=ax[2], extend='max')
-                    cbar.set_label(f"Degrees")
+                    cbar.set_label("Degrees")
 
                     for axis in ax:
                         axis.set_ylabel('Frequency (Hz)')
@@ -802,7 +806,7 @@ class TimeFrequencyAnalysis6C:
                     cbarmap = ScalarMappable(Normalize(vmin=lh_min,
                                                        vmax=lh_max), cmap='inferno')
                     cbar = plt.colorbar(cbarmap, ax=ax[0], extend='max')
-                    cbar.set_label(f"Estimator power")
+                    cbar.set_label("Estimator power")
 
                     ax[1].imshow(self.wave_parameters['SH']['vs'], origin='lower', cmap='inferno', aspect='auto',
                                  extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
@@ -811,7 +815,7 @@ class TimeFrequencyAnalysis6C:
                     cbarmap = ScalarMappable(Normalize(vmin=estimator_configuration.vs[0],
                                                        vmax=estimator_configuration.vs[1]), cmap='inferno')
                     cbar = plt.colorbar(cbarmap, ax=ax[1], extend='max')
-                    cbar.set_label(f"m/s")
+                    cbar.set_label("m/s")
 
                     ax[2].imshow(self.wave_parameters['SH']['theta'], origin='lower', cmap='inferno', aspect='auto',
                                  extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
@@ -821,7 +825,7 @@ class TimeFrequencyAnalysis6C:
                     cbarmap = ScalarMappable(Normalize(vmin=estimator_configuration.theta[0],
                                                        vmax=estimator_configuration.theta[1]), cmap='inferno')
                     cbar = plt.colorbar(cbarmap, ax=ax[2], extend='max')
-                    cbar.set_label(f"Degrees")
+                    cbar.set_label("Degrees")
 
                     ax[3].imshow(self.wave_parameters['SH']['phi'], origin='lower', cmap='hsv', aspect='auto',
                                  extent=[float(self.t_pol[0]), float(self.t_pol[-1]), self.f_pol[0], self.f_pol[-1]],
@@ -831,7 +835,7 @@ class TimeFrequencyAnalysis6C:
                     cbarmap = ScalarMappable(Normalize(vmin=estimator_configuration.phi[0],
                                                        vmax=estimator_configuration.phi[1]), cmap='hsv')
                     cbar = plt.colorbar(cbarmap, ax=ax[3], extend='max')
-                    cbar.set_label(f"Degrees")
+                    cbar.set_label("Degrees")
 
                     for axis in ax:
                         axis.set_ylabel('Frequency (Hz)')
@@ -871,7 +875,7 @@ class TimeFrequencyAnalysis6C:
             self.classify(svm=svm, eigenvector_to_classify=eigenvector)
 
         data_filtered = {}
-        d = {'P': 0, 'S': 1, 'SV': 1, 'SH': 2, 'R': 3, 'Noise': 4}
+        # d = {'P': 0, 'S': 1, 'SV': 1, 'SH': 2, 'R': 3, 'Noise': 4}
 
         # Compute eigenvectors for projection
         _, eigenvectors = np.linalg.eigh(self.C)
@@ -967,7 +971,7 @@ class TimeFrequencyAnalysis6C:
             cbar = plt.colorbar(map, ax=ax, extend='max')
             cbar.set_ticks([0.4, 1.2, 2.0, 2.8, 3.6])
             cbar.set_ticklabels(['P', 'SV', 'SH', 'R', 'Noise'])
-            cbar.set_label(f"Wave type")
+            cbar.set_label("Wave type")
             if self.timeaxis == 'utc':
                 ax.xaxis_date()
                 ax.set_xlabel('Time (UTC)')
@@ -1210,8 +1214,7 @@ class TimeFrequencyAnalysis3C:
         # polarization states of waves, Geophysical Journal of the Royal Astronomical Society, Eq. (18)
         self.dop = ((eigenvalues[:, 0] - eigenvalues[:, 1]) ** 2
                     + (eigenvalues[:, 0] - eigenvalues[:, 2]) ** 2
-                    + (eigenvalues[:, 1] - eigenvalues[:, 2]) ** 2) \
-                   / (2 * np.sum(eigenvalues, axis=-1) ** 2)
+                    + (eigenvalues[:, 1] - eigenvalues[:, 2]) ** 2) / (2 * np.sum(eigenvalues, axis=-1) ** 2)
         self.dop = np.reshape(self.dop, (len(self.f_pol), len(self.t_pol)))
         self.azi1 = np.degrees(np.pi / 2 - np.arctan2(eigenvectors[:, 0, -1].real, eigenvectors[:, 1, -1].real))
         self.azi2 = np.degrees(np.pi / 2 - np.arctan2(eigenvectors[:, 0, -1].imag, eigenvectors[:, 1, -1].imag))
@@ -1401,7 +1404,7 @@ class TimeFrequencyAnalysis3C:
                      vmin=0, vmax=1)
         map_elli = ScalarMappable(Normalize(vmin=0, vmax=1), cmap='inferno')
         cbar_elli = plt.colorbar(map_elli, ax=ax[1], extend='max')
-        cbar_elli.set_label(f"Ellipticity")
+        cbar_elli.set_label("Ellipticity")
         ax[1].set_title('Ellipticity')
         ax[1].set_ylabel('Frequency (Hz)')
 
@@ -1411,7 +1414,7 @@ class TimeFrequencyAnalysis3C:
                          vmin=0, vmax=90)
             map_inc1 = ScalarMappable(Normalize(vmin=0, vmax=90), cmap='inferno')
             cbar_inc1 = plt.colorbar(map_inc1, ax=ax[2], extend='max')
-            cbar_inc1.set_label(f"Inclination (Degrees)")
+            cbar_inc1.set_label("Inclination (Degrees)")
             ax[2].set_title('Inclination of major semi-axis')
         else:
             ax[2].imshow(self.inc2, origin='lower', aspect='auto', alpha=alpha_channel,
@@ -1419,7 +1422,7 @@ class TimeFrequencyAnalysis3C:
                          vmin=0, vmax=90)
             map_inc2 = ScalarMappable(Normalize(vmin=0, vmax=90), cmap='inferno')
             cbar_inc2 = plt.colorbar(map_inc2, ax=ax[2], extend='max')
-            cbar_inc2.set_label(f"Inclination (Degrees)")
+            cbar_inc2.set_label("Inclination (Degrees)")
             ax[2].set_title('Inclination of minor semi-axis')
         ax[2].set_ylabel('Frequency (Hz)')
 
@@ -1429,7 +1432,7 @@ class TimeFrequencyAnalysis3C:
                          vmin=0, vmax=180)
             map_azi1 = ScalarMappable(Normalize(vmin=0, vmax=180), cmap='twilight')
             cbar_azi1 = plt.colorbar(map_azi1, ax=ax[3], extend='max')
-            cbar_azi1.set_label(f"Azimuth (Degrees)")
+            cbar_azi1.set_label("Azimuth (Degrees)")
             ax[3].set_title('Azimuth of major semi-axis')
         else:
             ax[3].imshow(self.azi2, origin='lower', aspect='auto', alpha=alpha_channel,
@@ -1437,7 +1440,7 @@ class TimeFrequencyAnalysis3C:
                          vmin=0, vmax=180)
             map_azi2 = ScalarMappable(Normalize(vmin=0, vmax=180), cmap='twilight')
             cbar_azi2 = plt.colorbar(map_azi2, ax=ax[3], extend='max')
-            cbar_azi2.set_label(f"Azimuth (Degrees)")
+            cbar_azi2.set_label("Azimuth (Degrees)")
             ax[3].set_title('Azimuth of minor semi-axis')
         ax[3].set_ylabel('Frequency (Hz)')
 
@@ -1446,7 +1449,7 @@ class TimeFrequencyAnalysis3C:
                      vmin=0, vmax=1)
         map_dop = ScalarMappable(Normalize(vmin=0, vmax=1), cmap='inferno')
         cbar_dop = plt.colorbar(map_dop, ax=ax[4], extend='max')
-        cbar_dop.set_label(f"DOP")
+        cbar_dop.set_label("DOP")
         ax[4].set_title('Degree of polarization')
         ax[4].set_ylabel('Frequency (Hz)')
 

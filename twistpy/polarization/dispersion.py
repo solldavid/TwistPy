@@ -1,7 +1,7 @@
 from __future__ import (absolute_import, division, print_function, unicode_literals)
 
 import pickle
-from builtins import *
+from builtins import ValueError
 from typing import Tuple
 
 import matplotlib.pyplot as plt
@@ -245,10 +245,10 @@ class DispersionAnalysis:
                              extent=[self.f[-1], self.f[0], velocity_range[0], velocity_range[1]])
         im.set_data(np.flip(self.f), np.linspace(velocity_range[0], velocity_range[1], nbins), np.flip(counts_r,
                                                                                                        axis=1))
-        im.set_clim([0.005 * np.max(np.max(counts_r)), 0.6 * np.max(np.max(counts_r))])
+        im.set_clim([0.005 * np.max(np.max(counts_r)), 0.2 * np.max(np.max(counts_r))])
         ax1.images.append(im)
         ax1.set_ylim([velocity_range[0], velocity_range[1]])
-        ax1.set_ylabel(f"Phase velocity (ms)")
+        ax1.set_ylabel("Phase velocity (ms)")
         ax1.set_xlabel("Frequency (Hz)")
         ax1.set_title("Rayleigh")
 
@@ -256,10 +256,10 @@ class DispersionAnalysis:
                              extent=[self.f[-1], self.f[0], velocity_range[0], velocity_range[1]])
         im.set_data(np.flip(self.f), np.linspace(velocity_range[0], velocity_range[1], nbins),
                     np.flip(counts_l, axis=1))
-        im.set_clim([0.005 * np.max(np.max(counts_l)), 0.6 * np.max(np.max(counts_l))])
+        im.set_clim([0.005 * np.max(np.max(counts_l)), 0.5 * np.max(np.max(counts_l))])
         ax2.images.append(im)
         ax2.set_ylim([velocity_range[0], velocity_range[1]])
-        ax2.set_ylabel(f"Phase velocity (ms)")
+        ax2.set_ylabel("Phase velocity (ms)")
         ax2.set_xlabel("Frequency (Hz)")
         ax2.set_title("Love")
 
@@ -281,7 +281,7 @@ class DispersionAnalysis:
         im.set_clim([0.005 * np.max(np.max(counts_elli)), 0.6 * np.max(np.max(counts_elli))])
         ax5.images.append(im)
         ax5.set_ylim([-90, 90])
-        ax5.set_ylabel(f"Ellipticity angle (degrees)")
+        ax5.set_ylabel("Ellipticity angle (degrees)")
         ax5.set_xlabel("Frequency (Hz)")
         ax5.set_title("Rayleigh")
 
@@ -302,7 +302,7 @@ class DispersionAnalysis:
         im.set_clim([0.005 * np.max(np.max(counts_dop_l)), 0.6 * np.max(np.max(counts_dop_l))])
         ax7.images.append(im)
         ax7.set_ylim([0, 1])
-        ax7.set_ylabel(f"Degree of polarization")
+        ax7.set_ylabel("Degree of polarization")
         ax7.set_xlabel("Frequency (Hz)")
 
         im = NonUniformImage(ax8, interpolation='nearest', cmap='magma',

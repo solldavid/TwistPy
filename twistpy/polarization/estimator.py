@@ -1,6 +1,6 @@
 from __future__ import (absolute_import, division, print_function, unicode_literals)
 
-from builtins import *
+from builtins import ValueError
 from typing import List, Tuple, Callable
 
 import numpy as np

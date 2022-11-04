@@ -1,7 +1,7 @@
 from __future__ import (absolute_import, division, print_function, unicode_literals)
 
 import pickle
-from builtins import *
+from builtins import ValueError
 from typing import List, Dict
 
 import h5py
@@ -114,13 +114,18 @@ class TimeDomainAnalysis6C:
         self.timeaxis = timeaxis
 
         # Assert that input traces are ObsPy Trace objects
-        assert isinstance(self.traN, Trace) and isinstance(self.traE, Trace) and isinstance(self.traZ, Trace) \
-               and isinstance(self.rotN, Trace) and isinstance(self.rotE, Trace) and isinstance(self.rotZ, Trace), \
-            "Input data must be objects of class obspy.core.Trace()!"
+        assert isinstance(self.traN, Trace) \
+               and isinstance(self.traE, Trace) \
+               and isinstance(self.traZ, Trace) \
+               and isinstance(self.rotN, Trace) \
+               and isinstance(self.rotE, Trace) \
+               and isinstance(self.rotZ, Trace), "Input data must be objects of class obspy.core.Trace()!"
 
         # Assert that all traces have the same number of samples
-        assert self.traN.stats.npts == self.traE.stats.npts and self.traN.stats.npts == self.traZ.stats.npts \
-               and self.traN.stats.npts == self.rotN.stats.npts and self.traN.stats.npts == self.rotE.stats.npts \
+        assert self.traN.stats.npts == self.traE.stats.npts \
+               and self.traN.stats.npts == self.traZ.stats.npts \
+               and self.traN.stats.npts == self.rotN.stats.npts \
+               and self.traN.stats.npts == self.rotE.stats.npts \
                and self.traN.stats.npts == self.rotZ.stats.npts, "All six traces must have the same number of samples!"
 
         self.window = window
@@ -194,8 +199,7 @@ class TimeDomainAnalysis6C:
                         + (eigenvalues[:, 2] - eigenvalues[:, 5]) ** 2
                         + (eigenvalues[:, 3] - eigenvalues[:, 4]) ** 2
                         + (eigenvalues[:, 3] - eigenvalues[:, 5]) ** 2
-                        + (eigenvalues[:, 4] - eigenvalues[:, 5]) ** 2) / (
-                               5 * np.sum(eigenvalues, axis=-1) ** 2)
+                        + (eigenvalues[:, 4] - eigenvalues[:, 5]) ** 2) / (5 * np.sum(eigenvalues, axis=-1) ** 2)
 
         # The eigenvectors are initially arbitrarily oriented in the complex plane, here we ensure that
         # the real and imaginary parts are orthogonal. See Samson (1980): Some comments on the descriptions of the
@@ -284,10 +288,14 @@ class TimeDomainAnalysis6C:
                         eigenvector_wtype[np.linalg.norm(np.abs(eigenvector_wtype[:, 0:2].real), axis=1) <
                                           np.linalg.norm(np.abs(eigenvector_wtype[:, 0:2].imag), axis=1)].conj() * 1j
                     phi_love = np.arctan2(np.real(eigenvector_wtype[:, 1]), np.real(eigenvector_wtype[:, 0]))
-                    a_t = np.cos(phi_love) * eigenvector_wtype[:, 0].real + np.sin(phi_love) * eigenvector_wtype[:,
-                                                                                               1].real
+                    a_t = np.cos(phi_love) * eigenvector_wtype[:, 0].real \
+                          + np.sin(phi_love) * eigenvector_wtype[:, 1].real
                     phi_love += np.pi / 2
-                    phi_love[np.sign(eigenvector_wtype[:, 0].real) == np.sign(eigenvector_wtype[:, 1].real)] += np.pi
+
+                    # Resolve 180 degrees ambiguity by checking the sign of the vertical rotation and the transverse
+                    # acceleration
+                    phi_love[np.sign(a_t) == np.sign(eigenvector_wtype[:, 5].real)] = \
+                        phi_love[np.sign(a_t) == np.sign(eigenvector_wtype[:, 5].real)] + np.pi
                     phi_love[phi_love > 2 * np.pi] -= 2 * np.pi
                     phi_love[phi_love < 0] += 2 * np.pi
                     # Love wave velocity: transverse acceleration divided by 2*vertical rotation
@@ -305,23 +313,24 @@ class TimeDomainAnalysis6C:
                                       np.linalg.norm(np.abs(eigenvector_wtype[:, 0:2].imag), axis=1)] = \
                         eigenvector_wtype[np.linalg.norm(np.abs(eigenvector_wtype[:, 0:2].real), axis=1) >
                                           np.linalg.norm(np.abs(eigenvector_wtype[:, 0:2].imag), axis=1)].conj() * 1j
-                    eigenvector_wtype[eigenvector_wtype[:, 2] < 0, :] *= -1  # Ensure that eigenvectors point into
-                    # the same direction with translational z-component positive
                     phi_rayleigh = np.arctan2(np.imag(eigenvector_wtype[:, 1]), np.imag(eigenvector_wtype[:, 0]))
-                    phi_rayleigh[phi_rayleigh < 0] += np.pi
                     # Compute radial translational component t_r and transverse rotational component r_t
-                    r_t = -np.sin(phi_rayleigh) * eigenvector_wtype[:, 3].real + np.cos(phi_rayleigh) * \
-                          eigenvector_wtype[:, 4].real
-                    t_r = np.cos(phi_rayleigh) * eigenvector_wtype[:, 0].imag + np.sin(phi_rayleigh) * \
-                          eigenvector_wtype[:, 1].imag
+                    r_t = -np.sin(phi_rayleigh) * eigenvector_wtype[:, 3].real \
+                          + np.cos(phi_rayleigh) * eigenvector_wtype[:, 4].real
+                    t_r = np.cos(phi_rayleigh) * eigenvector_wtype[:, 0].imag \
+                          + np.sin(phi_rayleigh) * eigenvector_wtype[:, 1].imag
                     # Account for 180 degree ambiguity by evaluating signs
                     phi_rayleigh[np.sign(t_r) < np.sign(r_t)] += np.pi
                     phi_rayleigh[(np.sign(t_r) > 0) & (np.sign(r_t) > 0)] += np.pi
+                    phi_rayleigh[phi_rayleigh < 0] += 2 * np.pi
+                    phi_rayleigh[phi_rayleigh > 2 * np.pi] -= 2 * np.pi
+                    phi_rayleigh[np.sign(eigenvector_wtype[:, 2].real) < np.sign(t_r)] -= np.pi
+                    phi_rayleigh[phi_rayleigh < 0.] += 2 * np.pi
 
                     # Compute Rayleigh wave ellipticity angle
-                    elli_rayleigh = -np.arctan(t_r / eigenvector_wtype[:, 2].real)
-                    elli_rayleigh[np.sign(t_r) == np.sign(r_t)] *= -1
-
+                    elli_rayleigh = np.arctan(t_r / eigenvector_wtype[:, 2].real)
+                    elli_rayleigh[np.sign(r_t) < np.sign(t_r)] *= -1
+                    elli_rayleigh[np.sign(eigenvector_wtype[:, 2].real) < np.sign(t_r)] *= -1
                     # Compute Rayleigh wave phase velocity
                     c_rayleigh = self.scaling_velocity * np.abs(eigenvector_wtype[:, 2].real) / np.abs(r_t)
                     self.xi[indices] = np.degrees(elli_rayleigh)
@@ -601,8 +610,7 @@ class TimeDomainAnalysis3C:
         # polarization states of waves, Geophysical Journal of the Royal Astronomical Society, Eq. (18)
         self.dop = ((eigenvalues[:, 0] - eigenvalues[:, 1]) ** 2
                     + (eigenvalues[:, 0] - eigenvalues[:, 2]) ** 2
-                    + (eigenvalues[:, 1] - eigenvalues[:, 2]) ** 2) \
-                   / (2 * np.sum(eigenvalues, axis=-1) ** 2)
+                    + (eigenvalues[:, 1] - eigenvalues[:, 2]) ** 2) / (2 * np.sum(eigenvalues, axis=-1) ** 2)
         self.azi1 = np.degrees(np.pi / 2 - np.arctan2(eigenvectors[:, 0, -1].real, eigenvectors[:, 1, -1].real))
         self.azi2 = np.degrees(np.pi / 2 - np.arctan2(eigenvectors[:, 0, -1].imag, eigenvectors[:, 1, -1].imag))
         self.azi1[self.azi1 < 0] += 180

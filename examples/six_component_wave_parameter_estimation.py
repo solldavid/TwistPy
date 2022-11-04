@@ -56,8 +56,8 @@ wave2 = PolarizationModel6C(wave_type='SV', theta=20., phi=30., vp=1000.,
                             vs=400.)  # Generate an SV-wave polarization model
 wave3 = PolarizationModel6C(wave_type='SH', theta=20., phi=30., vs=400.,
                             vl=400.)  # Generate an SH-wave polarization model
-wave4 = PolarizationModel6C(wave_type='L', phi=350., vl=300.)  # Generate a Love-wave polarization model
-wave5 = PolarizationModel6C(wave_type='R', phi=30., vr=300.,
+wave4 = PolarizationModel6C(wave_type='L', phi=270., vl=300.)  # Generate a Love-wave polarization model
+wave5 = PolarizationModel6C(wave_type='R', phi=290., vr=300.,
                             xi=-45.)  # Generate a Rayleigh-wave polarization model with a
 # Rayleigh wave ellipticity angle of -45 degrees.
 
@@ -167,7 +167,7 @@ svm.train(wave_types=['R', 'P', 'SV', 'L', 'Noise'],
 # domain and use a sliding time window that is 0.05 s long (50 samples) with an overlap between subsequent windows of
 # 50%.
 
-window = {'window_length_seconds': 20. * dt, 'overlap': 1.}
+window = {'window_length_seconds': 50. * dt, 'overlap': 1.}
 analysis = TimeDomainAnalysis6C(traN=data[0], traE=data[1], traZ=data[2], rotN=data[3], rotE=data[4], rotZ=data[5],
                                 window=window, scaling_velocity=scaling_velocity, timeaxis='rel')
 
@@ -186,3 +186,4 @@ est = EstimatorConfiguration(wave_types=['L', 'R'], method='ML', scaling_velocit
                              svm=svm)
 analysis.polarization_analysis(estimator_configuration=est)
 analysis.plot(estimator_configuration=est, dop_clip=0.9)
+test = 1

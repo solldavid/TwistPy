@@ -1238,7 +1238,7 @@ class TimeFrequencyAnalysis3C:
             print('Polarization attributes have been computed!')
 
     def filter(self, plot_filtered_attributes: bool = False, suppress: bool = False, smooth_mask: bool = False,
-               clip: float = 0.05, **kwargs) -> Stream:
+               return_mask: bool = False, clip: float = 0.05, **kwargs) -> Tuple:
         r"""Filter data based on polarization attributes.
 
         Parameters
@@ -1251,6 +1251,8 @@ class TimeFrequencyAnalysis3C:
         smooth_mask : :obj:`bool`, default = False
             If set to True, the filter mask will be smoothed within the same time-frequency window that was used to
             compute the polarization attributes
+        return_mask : :obj:´bool´, default = False
+            If set to True, the filter mask will be returned after the function is called.
         clip : :obj:`float`, default = 0.05
             Only used if plot_filtered_attributes = True. Results are only plotted at time-frequency points where the
             signal amplitudes exceed a value of amplitudes * maximum amplitude in the signal (given by the l2-norm of
@@ -1360,8 +1362,10 @@ class TimeFrequencyAnalysis3C:
 
         if plot_filtered_attributes:
             self.plot(show=False, alpha=mask, seismograms=data_filtered, clip=clip)
-
-        return data_filtered
+        if return_mask:
+            return data_filtered, mask
+        else:
+            return data_filtered
 
     def plot(self, clip: float = 0.05, major_semi_axis: bool = True, show: bool = True,
              alpha: np.ndarray = None, seismograms: Stream = None) -> None:

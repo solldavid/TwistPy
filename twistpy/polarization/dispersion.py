@@ -189,7 +189,10 @@ class DispersionAnalysis:
                 cr_ndec[i] = len(c_r)
             counts, values_r = np.histogram(c_r, bins=nbins, range=[velocity_range[0], velocity_range[1]], density=True)
             counts_r[:, i] = counts.T
-            median_cr[i] = np.median(c_r)
+            if c_r.any():
+                median_cr[i] = np.median(c_r)
+            else:
+                median_cr[i] = np.array(np.nan)
 
             counts, _ = np.histogram(dop_r, bins=nbins, range=[0, 1], density=True)
             counts_dop_r[:, i] = counts
@@ -288,9 +291,9 @@ class DispersionAnalysis:
         ax1.plot(np.flip(self.f), np.flip(median_cr), '-.r')
         ax5.plot(np.flip(self.f), np.flip(median_elli), '-.r')
         ax2.plot(np.flip(self.f), np.flip(median_cl), '-.r')
-        ax4.set_xlim(ax2.get_xlim())
-        ax3.set_xlim(ax1.get_xlim())
-        ax6.set_xlim(ax1.get_xlim())
+        ax4.set_xlim([self.f_lower[-1], self.f_higher[0]])
+        ax3.set_xlim([self.f_lower[-1], self.f_higher[0]])
+        ax6.set_xlim([self.f_lower[-1], self.f_higher[0]])
         ax4.set_ylim([0, 1.2 * np.max([cr_ndec.max(), cl_ndec.max()])])
         ax3.set_ylim([0, 1.2 * np.max([cr_ndec.max(), cl_ndec.max()])])
         ax6.set_ylim([0, 1.2 * np.max([cr_ndec.max(), cl_ndec.max()])])

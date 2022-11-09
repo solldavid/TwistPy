@@ -1237,7 +1237,7 @@ class TimeFrequencyAnalysis3C:
         if self.verbose:
             print('Polarization attributes have been computed!')
 
-    def filter(self, plot_filtered_attributes: bool = False, suppress: bool = False, smooth_mask: bool = True,
+    def filter(self, plot_filtered_attributes: bool = False, suppress: bool = False, smooth_mask: bool = False,
                clip: float = 0.05, **kwargs) -> Stream:
         r"""Filter data based on polarization attributes.
 
@@ -1248,7 +1248,7 @@ class TimeFrequencyAnalysis3C:
         suppress : :obj:`bool`, default = False
             If set to True the polarization states that fulfill the filtering criterion will be suppressed from the data
             while preserving any underlying signal that is orthogonal to the polarization state.
-        smooth_mask : :obj:`bool`, default = True
+        smooth_mask : :obj:`bool`, default = False
             If set to True, the filter mask will be smoothed within the same time-frequency window that was used to
             compute the polarization attributes
         clip : :obj:`float`, default = 0.05

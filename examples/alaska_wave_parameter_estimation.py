@@ -41,7 +41,7 @@ window = {'number_of_periods': 1, 'frequency_extent': 0.01}
 # sample in time and in frequency:
 
 analysis = TimeFrequencyAnalysis6C(traN=data[0], traE=data[1], traZ=data[2], rotN=data[3], rotE=data[4], rotZ=data[5],
-                                   window=window, dsfacf=5, dsfact=5, frange=[0.01, 0.15])
+                                   window=window, dsfacf=20, dsfact=20, frange=[0.01, 0.15])
 
 ########################################################################################################################
 # Now we set up an EstimaatorConfiguration, specifying for which wave types we want to estimate wave parameters (in

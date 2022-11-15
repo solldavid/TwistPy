@@ -136,20 +136,18 @@ class PolarizationModel6C:
                                                  self.vs[index]).astype('complex')
                 alpha_ss[index] = (4 * (np.sin(theta_rad[index]) ** 2 - kappa[index] ** (-2)) * np.sin(
                     2 * theta_rad[index]) ** 2 * np.sin(theta_rad[index]) ** 2 - np.cos(theta_rad[index]) ** 4
-                                   + 4 * 1j * (np.sin(theta_rad[index]) ** 2 - kappa[index] ** -2) ** (1 / 2.)
-                                   * np.sin(2 * theta_rad[index]) * np.sin(theta_rad[index])
-                                   * (np.cos(2 * theta_rad[index])) ** 2) \
-                                  / (np.cos(2 * theta_rad[index]) ** 4 + 4 * (
-                            np.sin(theta_rad[index]) ** 2 - kappa[index] ** -2)
-                                     * np.sin(2 * theta_rad[index]) ** 2 * np.sin(theta_rad[index]) ** 2)
+                    + 4 * 1j * (np.sin(theta_rad[index]) ** 2 - kappa[index] ** -2) ** (1 / 2.)
+                        * np.sin(2 * theta_rad[index]) * np.sin(theta_rad[index])
+                        * (np.cos(2 * theta_rad[index])) ** 2) \
+                    / (np.cos(2 * theta_rad[index]) ** 4 + 4 * (np.sin(theta_rad[index]) ** 2 - kappa[index] ** -2)
+                        * np.sin(2 * theta_rad[index]) ** 2 * np.sin(theta_rad[index]) ** 2)
                 alpha_sp[index] = (2 * kappa[index] ** -1 * np.sin(2 * theta_rad[index]) * np.cos(2 * theta_rad[index])
                                    * (np.cos(2 * theta_rad[index]) ** 2 - 2 * 1j
                                       * (np.sin(theta_rad[index]) ** 2 - kappa[index] ** (-2)) ** (1 / 2.)
                                       * np.sin(2 * theta_rad[index])
                                       * np.sin(theta_rad[index]))) \
-                                  / (np.cos(2 * theta_rad[index]) ** 4 + 4 * (
-                            np.sin(theta_rad[index]) ** 2 - kappa[index] ** -2)
-                                     * np.sin(2 * theta_rad[index]) ** 2 * np.sin(theta_rad[index]) ** 2)
+                    / (np.cos(2 * theta_rad[index]) ** 4 + 4 * (np.sin(theta_rad[index]) ** 2 - kappa[index] ** -2)
+                        * np.sin(2 * theta_rad[index]) ** 2 * np.sin(theta_rad[index]) ** 2)
                 # Sub-critical
                 index = theta_rad < theta_crit
                 theta_p[index] = np.arcsin(np.sin(theta_rad[index]) * self.vp[index] / self.vs[index])
@@ -157,8 +155,8 @@ class PolarizationModel6C:
                     np.cos(2 * theta_rad[index])) ** 2) / (np.sin(2 * theta_rad[index]) * np.sin(2 * theta_p[index])
                                                            + kappa[index] ** 2 * (np.cos(2 * theta_rad[index])) ** 2)
                 alpha_sp[index] = -(kappa[index] * np.sin(4 * theta_rad[index])) \
-                                  / (np.sin(2 * theta_rad[index]) * np.sin(2 * theta_p[index]) + kappa[index] ** 2
-                                     * (np.cos(2 * theta_rad[index])) ** 2)
+                    / (np.sin(2 * theta_rad[index]) * np.sin(2 * theta_p[index]) + kappa[index] ** 2
+                        * (np.cos(2 * theta_rad[index])) ** 2)
 
                 v_x = (np.cos(theta_rad) * np.cos(phi_rad)
                        - alpha_ss * np.cos(theta_rad) * np.cos(phi_rad)
@@ -389,8 +387,8 @@ class PolarizationModel3C:
                                   (np.sin(2 * theta_rad[index]) * np.sin(2 * theta_p[index]) + kappa[index] ** 2
                                    * (np.cos(2 * theta_rad[index])) ** 2)
                 alpha_sp[index] = - (kappa[index] * np.sin(4 * theta_rad[index])) \
-                                  / (np.sin(2 * theta_rad[index]) * np.sin(2 * theta_p[index])
-                                     + kappa[index] ** 2 * (np.cos(2 * theta_rad[index])) ** 2)
+                    / (np.sin(2 * theta_rad[index]) * np.sin(2 * theta_p[index])
+                       + kappa[index] ** 2 * (np.cos(2 * theta_rad[index])) ** 2)
 
                 v_x = (np.cos(theta_rad) * np.cos(phi_rad)
                        - alpha_ss * np.cos(theta_rad) * np.cos(phi_rad)

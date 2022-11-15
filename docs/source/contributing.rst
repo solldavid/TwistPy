@@ -8,10 +8,10 @@ Bug reports
 
 If you find any bugs, please report them at https://github.com/solldavid/TwistPy/issues.
 
-When reporting a bug, please state the following:
-* Your operating system name and version.
-* Any details about your Python environment.
-* A minimal example to reproduce the bug.
+When reporting a bug, please include the following information:
+* TwistPy version, Python version, operating system.
+* If this is a new bug that did not exist in previous versions, please state in which version it last worked.
+* If possible, provide a minimal example to reproduce the bug.
 
 New feature suggestion
 ======================
@@ -28,70 +28,47 @@ We are always happy to include new examples in the gallery!
 
 Step-by-step instructions for contributing
 ******************************************
-
-Ready to contribute?
-
-1. Follow all instructions in :ref:`DevInstall`.
-
-2. Create a branch for local development, usually starting from the dev branch:
+1. Fork the repository.
+2. Create a new branch for local development, based at the main branch:
 
 .. code-block:: bash
 
-   >> git checkout -b name-of-your-branch dev
+   >> git checkout -b name-of-your-branch main
 
 Now you can make your changes locally.
 
-3. When you're done making changes, check that your code follows the guidelines for :ref:`addingoperator` and
-that the both old and new tests pass successfully:
+3. Add a test for your changes.
+
+4. Make sure that all tests pass using pytest.
+
+5. Run flake8 to check that your code follows the style guide:
 
 .. code-block:: bash
 
-   >> make tests
-
-4. Run flake8 to check the quality of your code:
-
-.. code-block:: bash
-
-   >> make lint
-
-Note that PyLops does not enforce full compliance with flake8, rather this is used as a
-guideline and will also be run as part of our CI.
-Make sure to limit to a minimum flake8 warnings before making a PR.
-
-5. Update the docs
-
-.. code-block:: bash
-
-   >> make docupdate
+   >> flake8 twistpy
 
 
-6. Commit your changes and push your branch to GitHub:
+5. Push to your fork.
 
 .. code-block:: bash
 
    >> git add .
-   >> git commit -m "Your detailed description of your changes."
+   >> git commit -m "Commit message"
    >> git push origin name-of-your-branch
 
 Remember to add ``-u`` when pushing the branch for the first time.
 
-7. Submit a pull request through the GitHub website.
+6. Submit a pull request via the GitHub website.
 
+CI
+**
 
-Pull Request Guidelines
-***********************
+CI is implemented with GitHub Actions with workflows that are run upon each commit to the repository for testing.
 
-Before you submit a pull request, check that it meets these guidelines:
+Style Guide
+***********
 
-1. The pull request should include new tests for all the core routines that have been developed.
-2. If the pull request adds functionality, the docs should be updated accordingly.
-3. Ensure that the updated code passes all tests.
-
-Project structure
-#################
-This repository is organized as follows:
-* **twistpy**:      Python library
-* **pytests**:      set of pytests
-* **example_data**: sample datasets used in pytests and documentation
-* **docs**:         Sphinx documentation
-* **examples**:     Set of TwistPy examples to be embedded in documentation using sphinx-gallery
+1. We use a default line length of 120 characters, which should not be exceeded.
+2. Source code must follow the PEP8 coding standards.
+3. For better readability, docstrings need to be in `numpydoc <https://numpydoc.readthedocs.io/en/latest/format.html>`_ format. Please refer to the numpydoc style guide!
+4. Use type hints whenever possible!

@@ -20,7 +20,6 @@ Some of the tools available in TwistPy are:
 - Six-component polarization analysis and filtering (both time domain and S-transform).
 - Single-station six-component Love- and Rayleigh-wave dispersion and Rayleigh wave ellipticity angle estimation.
 - Beamforming (Bartlett, MVDR, and MUSIC algorithm).
-- Rotation and strain estimation from small-aperture arrays.
 - Forward and inverse S-transform (Stockwell transform).
 
 .. toctree::
@@ -36,6 +35,7 @@ Some of the tools available in TwistPy are:
     installation.rst
     examples/index.rst
     contributing.rst
+    contributors.rst
 
 .. toctree::
     :maxdepth: 3

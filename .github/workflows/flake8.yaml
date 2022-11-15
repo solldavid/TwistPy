@@ -18,6 +18,7 @@ jobs:
       - name: Run black
         uses: psf/black@stable
         with:
+          options: "--check" 
           src: "./twistpy"
       - name: Run flake8
         uses: py-actions/flake8@v2

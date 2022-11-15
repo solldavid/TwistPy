@@ -29,7 +29,14 @@ We are always happy to include new examples in the gallery!
 Step-by-step instructions for contributing
 ******************************************
 1. Fork the repository.
-2. Create a new branch for local development, based at the main branch:
+
+2. Install pre-commit hooks. The repository comes with a pre-commit configuration to check the code with flake8 before each commit.
+
+.. code-block:: bash
+
+   >> pre-commit install
+
+3. Create a new branch for local development, based at the main branch:
 
 .. code-block:: bash
 
@@ -37,18 +44,12 @@ Step-by-step instructions for contributing
 
 Now you can make your changes locally.
 
-3. Add a test for your changes.
+4. Add a test for your changes.
 
-4. Make sure that all tests pass using pytest.
-
-5. Run flake8 to check that your code follows the style guide:
-
-.. code-block:: bash
-
-   >> flake8 twistpy
+5. Make sure that all tests pass using pytest.
 
 
-5. Push to your fork.
+6. Push to your fork.
 
 .. code-block:: bash
 
@@ -58,7 +59,7 @@ Now you can make your changes locally.
 
 Remember to add ``-u`` when pushing the branch for the first time.
 
-6. Submit a pull request via the GitHub website.
+7. Submit a pull request via the GitHub website.
 
 CI
 **

@@ -378,9 +378,9 @@ class TimeFrequencyAnalysis6C:
                     phi_rayleigh = np.arctan2(np.imag(eigenvector_wtype[:, 1]), np.imag(eigenvector_wtype[:, 0]))
                     # Compute radial translational component t_r and transverse rotational component r_t
                     r_t = -np.sin(phi_rayleigh) * eigenvector_wtype[:, 3].real + np.cos(phi_rayleigh) * \
-                          eigenvector_wtype[:, 4].real
+                        eigenvector_wtype[:, 4].real
                     t_r = np.cos(phi_rayleigh) * eigenvector_wtype[:, 0].imag + np.sin(phi_rayleigh) * \
-                          eigenvector_wtype[:, 1].imag
+                        eigenvector_wtype[:, 1].imag
                     # Account for 180 degree ambiguity by evaluating signs
                     phi_rayleigh[np.sign(t_r) < np.sign(r_t)] += np.pi
                     phi_rayleigh[(np.sign(t_r) > 0) & (np.sign(r_t) > 0)] += np.pi

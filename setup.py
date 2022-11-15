@@ -8,12 +8,13 @@ from setuptools import setup, find_packages
 
 setup(
     name='twistpy',
-    version='0.0',
+    version='0.0.1',
     description='Toolbox for Wavefield Inertial Sensing',
     url='github.com/solldavid/twistpy',
-    author='David Sollberger',
-    author_email='david.sollberger@gmail.com',
-    license='None',
+    author='The TwistPy Developers',
+    maintainer='David Sollberger',
+    maintainer_email='david.sollberger@gmail.com',
+    license='LGPLv3',
     packages=find_packages(),
     platforms='OS Independent',
     classifiers=[

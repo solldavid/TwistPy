@@ -1,13 +1,13 @@
-# This workflow runs Flake8 on the PR
+# This workflow runs black and flake8 on the PR
 # For more information see: https://github.com/marketplace/actions/python-flake8-lint
-name: TwistPy-flake8
+name: TwistPy-lint
 
 on: [ push, pull_request ]
 
 jobs:
   flake8-lint:
     runs-on: ubuntu-latest
-    name: Run flake8
+    name: lint
     steps:
       - name: Check out source repository
         uses: actions/checkout@v2
@@ -15,7 +15,11 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: "3.7"
-      - name: flake8 Lint
+      - name: Run black
+        uses: psf/black@stable
+        with:
+          src: "./twistpy"
+      - name: Run flake8
         uses: py-actions/flake8@v2
         with:
           ignore: "W503,W504,W605"

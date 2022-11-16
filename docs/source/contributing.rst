@@ -68,10 +68,10 @@ Remember to add ``-u`` when pushing the branch for the first time.
 
 9. Submit a pull request via the GitHub website.
 
-CI
-==
+Continuous Integration
+======================
 
-CI is implemented with GitHub Actions with workflows that are run upon each commit to the repository for testing and linting.
+CI is implemented with GitHub Actions with workflows that are run upon each commit to the repository for testing, linting, and documentation building.
 
 Style Guide
 ===========

@@ -251,10 +251,14 @@ class SupportVectorMachine:
             )
             plt.show()
 
-    def load_model(self: str = None) -> SVC:
+    def load_model(self) -> SVC:
         """
-        Loads a previously trained support vector machine from disk
-        :return: sklearn.svm.SVC object
+        Loads a previously trained support vector machine from disk.
+
+        Returns
+        -------
+        model : :obj:`~sklearn.svm.SVC`
+            Scikit-learn SVC object.
         """
         file_name = join(sys.path[0], "SVC_models", self.name + ".pkl")
         if not exists(file_name):

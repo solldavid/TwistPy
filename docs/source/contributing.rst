@@ -25,33 +25,38 @@ Open an issue at https://github.com/solldavid/TwistPy/issues with tag *enhanceme
 Add examples or improve documentation
 =====================================
 
-We are always happy to include new examples in the gallery!
+We are always happy to include new examples in the gallery and improve our documentation!
 
 Step-by-step instructions for developers
 ========================================
 
 1. Fork the repository.
 
-2. Install pre-commit hooks. The repository comes with a pre-commit configuration to check the code with flake8 before each commit.
+2. If you have not done so already, install ``black`` and ``flake8``:
+
+.. code-block:: bash
+
+   >> pip install black flake8
+
+3. Install pre-commit hooks. The repository comes with a pre-commit configuration to reformat the code with ``black`` and check the code with ``flake8`` before each commit.
 
 .. code-block:: bash
 
    >> pre-commit install
 
-3. Create a new branch for local development, based at the main branch:
+4. Create a new branch for local development, based at the main branch:
 
 .. code-block:: bash
 
    >> git checkout -b name-of-your-branch main
 
-Now you can make your changes locally.
+5. Now you can make your changes locally.
 
-4. Add a test for your changes.
+6. Add a test for your changes.
 
-5. Make sure that all tests pass using pytest.
+7. Make sure that all tests pass using pytest.
 
-
-6. Push to your fork.
+8. Push to your fork.
 
 .. code-block:: bash
 
@@ -61,17 +66,17 @@ Now you can make your changes locally.
 
 Remember to add ``-u`` when pushing the branch for the first time.
 
-7. Submit a pull request via the GitHub website.
+9. Submit a pull request via the GitHub website.
 
 CI
 ==
 
-CI is implemented with GitHub Actions with workflows that are run upon each commit to the repository for testing.
+CI is implemented with GitHub Actions with workflows that are run upon each commit to the repository for testing and linting.
 
 Style Guide
 ===========
 
-1. We use a default line length of 120 characters, which should not be exceeded.
+1. We use a default line length of 88 characters, which is the default of the ``black`` formatter. Note that this line length is not enforced for docstrings.
 2. Source code must follow the PEP8 coding standards.
 3. For better readability, docstrings need to be in `numpydoc <https://numpydoc.readthedocs.io/en/latest/format.html>`_ format. Please refer to the numpydoc style guide!
 4. Use type hints whenever possible!

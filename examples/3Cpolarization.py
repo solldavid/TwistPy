@@ -13,6 +13,7 @@ from scipy.signal import hilbert, convolve
 
 from twistpy.convenience import ricker
 from twistpy.polarization import TimeDomainAnalysis3C, PolarizationModel3C
+from twistpy.utils import load_analysis
 
 rng = np.random.default_rng(1)
 
@@ -31,11 +32,15 @@ signal3 = np.zeros((N, 3))
 signal4 = np.zeros((N, 3))
 signal5 = np.zeros((N, 3))
 
-dt = 1. / 1000.  # sampling interval
+dt = 1.0 / 1000.0  # sampling interval
 t = np.arange(0, signal1.shape[0]) * dt  # time axis
-wavelet, t_wav, wcenter = ricker(t, 30.0)  # generate a Ricker wavelet with 30 Hz center frequency
-wavelet = wavelet[wcenter - int(len(t) / 2): wcenter + int(len(t) / 2)]
-wavelet_hilb = np.imag(hilbert(wavelet))  # Here we make use of the Hilbert transform to generate a Ricker wavelet
+wavelet, t_wav, wcenter = ricker(
+    t, 30.0
+)  # generate a Ricker wavelet with 30 Hz center frequency
+wavelet = wavelet[wcenter - int(len(t) / 2) : wcenter + int(len(t) / 2)]
+wavelet_hilb = np.imag(
+    hilbert(wavelet)
+)  # Here we make use of the Hilbert transform to generate a Ricker wavelet
 # with a 90 degree phase shift. This is to account for the fact that, for Rayleigh waves, the horizontal components are
 # phase-shifted by 90 degrees with respect to the other components.
 
@@ -47,16 +52,23 @@ wavelet_hilb = np.imag(hilbert(wavelet))  # Here we make use of the Hilbert tran
 # local P-wave and S-wave velocities at the recording station are assumed to be 1000 m/s and 400 m/s, respectively. The
 # Rayleigh wave ellipticity angle is set to be -45 degrees resulting in a circular polarization.
 
-wave1 = PolarizationModel3C(wave_type='P', theta=20., phi=60., vp=1000., vs=400., free_surface=True)
+wave1 = PolarizationModel3C(
+    wave_type="P", theta=20.0, phi=60.0, vp=1000.0, vs=400.0, free_surface=True
+)
 # Generate a P-wave polarization model for
 # a P-wave recorded at the free surface with an inclination of 20 degrees, an azimuth of 60 degrees. The local P- and
 # S-wave velocities are 1000 m/s and 400 m/s
-wave2 = PolarizationModel3C(wave_type='SV', theta=20., phi=30., vp=1000.,
-                            vs=400., free_surface=True)  # Generate an SV-wave polarization model
-wave3 = PolarizationModel3C(wave_type='SH', theta=20., phi=30., free_surface=True)
+wave2 = PolarizationModel3C(
+    wave_type="SV", theta=20.0, phi=30.0, vp=1000.0, vs=400.0, free_surface=True
+)  # Generate an SV-wave polarization model
+wave3 = PolarizationModel3C(wave_type="SH", theta=20.0, phi=30.0, free_surface=True)
 # Generate an SH-wave polarization model
-wave4 = PolarizationModel3C(wave_type='L', phi=30.)  # Generate a Love-wave polarization model
-wave5 = PolarizationModel3C(wave_type='R', phi=30., xi=-45.)  # Generate a Rayleigh-wave polarization model with a
+wave4 = PolarizationModel3C(
+    wave_type="L", phi=30.0
+)  # Generate a Love-wave polarization model
+wave5 = PolarizationModel3C(
+    wave_type="R", phi=30.0, xi=-45.0
+)  # Generate a Rayleigh-wave polarization model with a
 # Rayleigh wave ellipticity angle of -45 degrees.
 
 
@@ -73,14 +85,16 @@ signal5[900, 2:] = np.real(wave5.polarization[2:].T)
 signal5[900, 0:2] = np.imag(wave5.polarization[0:2].T)
 
 for j in range(0, signal1.shape[1]):
-    signal1[:, j] = convolve(signal1[:, j], wavelet, mode='same')
-    signal2[:, j] = convolve(signal2[:, j], wavelet, mode='same')
-    signal3[:, j] = convolve(signal3[:, j], wavelet, mode='same')
-    signal4[:, j] = convolve(signal4[:, j], wavelet, mode='same')
-    if j == 0 or j == 1:  # Special case for horizontal translational components of the Rayleigh wave
-        signal5[:, j] = convolve(signal5[:, j], wavelet_hilb, mode='same')
+    signal1[:, j] = convolve(signal1[:, j], wavelet, mode="same")
+    signal2[:, j] = convolve(signal2[:, j], wavelet, mode="same")
+    signal3[:, j] = convolve(signal3[:, j], wavelet, mode="same")
+    signal4[:, j] = convolve(signal4[:, j], wavelet, mode="same")
+    if (
+        j == 0 or j == 1
+    ):  # Special case for horizontal translational components of the Rayleigh wave
+        signal5[:, j] = convolve(signal5[:, j], wavelet_hilb, mode="same")
     else:
-        signal5[:, j] = convolve(signal5[:, j], wavelet, mode='same')
+        signal5[:, j] = convolve(signal5[:, j], wavelet, mode="same")
 
 signal = signal1 + signal2 + signal3 + signal4 + signal5  # sum all signals together
 
@@ -90,23 +104,26 @@ signal += 0.1 * noise
 
 # Plot the data
 plt.figure(figsize=(10, 5))
-plt.plot(t, signal[:, 0], 'k:', label='N')
-plt.plot(t, signal[:, 1], 'k--', label='E')
-plt.plot(t, signal[:, 2], 'k', label='Z')
-plt.text((100 - 100) * dt, 0.7, 'P-wave')
-plt.text((300 - 100) * dt, 0.7, 'SV-wave')
-plt.text((500 - 100) * dt, 0.7, 'SH-wave')
-plt.text((700 - 100) * dt, 0.7, 'Love-wave')
-plt.text((900 - 100) * dt, 0.7, 'Rayleigh-wave')
-plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-plt.xlabel('Time (s)')
+plt.plot(t, signal[:, 0], "k:", label="N")
+plt.plot(t, signal[:, 1], "k--", label="E")
+plt.plot(t, signal[:, 2], "k", label="Z")
+plt.text((100 - 100) * dt, 0.7, "P-wave")
+plt.text((300 - 100) * dt, 0.7, "SV-wave")
+plt.text((500 - 100) * dt, 0.7, "SH-wave")
+plt.text((700 - 100) * dt, 0.7, "Love-wave")
+plt.text((900 - 100) * dt, 0.7, "Rayleigh-wave")
+plt.legend(loc="center left", bbox_to_anchor=(1, 0.5))
+plt.xlabel("Time (s)")
 
 ########################################################################################################################
 # To make the synthetics accessible to TwistPy, we convert them to an Obspy Stream object.
 
 data = Stream()
 for n in range(signal.shape[1]):
-    trace = Trace(data=signal[:, n], header={"delta": t[1] - t[0], "npts": int(signal.shape[0]), "starttime": 0.})
+    trace = Trace(
+        data=signal[:, n],
+        header={"delta": t[1] - t[0], "npts": int(signal.shape[0]), "starttime": 0.0},
+    )
     data += trace
 
 ########################################################################################################################
@@ -114,12 +131,14 @@ for n in range(signal.shape[1]):
 # we choose a window that extends over 20 samples in time (20 milliseconds). Overlap, specifies the percentage of
 # overlap of neighbouring windows, as the window is slided down the signal. Here, we specify an overlap of 50 Percent.
 
-window = {'window_length_seconds': 20. * dt, 'overlap': 0.8}
+window = {"window_length_seconds": 20.0 * dt, "overlap": 0.8}
 
 ########################################################################################################################
 # To run the analysis, we use:
 
-analysis = TimeDomainAnalysis3C(N=data[0], E=data[1], Z=data[2], window=window, timeaxis='rel')
+analysis = TimeDomainAnalysis3C(
+    N=data[0], E=data[1], Z=data[2], window=window, timeaxis="rel"
+)
 analysis.polarization_analysis()
 
 ########################################################################################################################
@@ -132,14 +151,12 @@ analysis.plot(show=False)
 # expensive. If you do not want to recompute the polarization attributes, everytime you try a new filter, consider
 # saving them to disk with:
 
-analysis.save('my_analysis.pkl')
+analysis.save("my_analysis.pkl")
 
 ########################################################################################################################
 # To reload your analysis from the disk, use:
 
-from twistpy.utils import load_analysis
-
-analysis = load_analysis('my_analysis.pkl')
+analysis = load_analysis("my_analysis.pkl")
 
 ########################################################################################################################
 # Once the polarization attributes are computed, you can access them as c lass attributes. The available attributes are:
@@ -160,8 +177,10 @@ time = analysis.t_windows
 # we recompute the analysis above but specify that adjacent time windows should fully overlap (except for the 1 sample
 # that the window is moved):
 
-window = {'window_length_seconds': 20. * dt, 'overlap': 1.}
-analysis = TimeDomainAnalysis3C(N=data[0], E=data[1], Z=data[2], window=window, timeaxis='rel')
+window = {"window_length_seconds": 20.0 * dt, "overlap": 1.0}
+analysis = TimeDomainAnalysis3C(
+    N=data[0], E=data[1], Z=data[2], window=window, timeaxis="rel"
+)
 analysis.plot(show=False)
 
 ########################################################################################################################
@@ -171,18 +190,24 @@ analysis.plot(show=False)
 # polarization (inclination angle of the major semi-axis smaller than 40). The inclination is measured from the vertical
 # axis downward, meaning that a wave at completely vertical incidence has an inclination of 0 degrees.
 
-data_filtered = analysis.filter(plot_filtered_attributes=True, elli=[0.0, 0.2], dop=[0.7, 1], inc1=[0, 40])
+data_filtered = analysis.filter(
+    plot_filtered_attributes=True, elli=[0.0, 0.2], dop=[0.7, 1], inc1=[0, 40]
+)
 
 ########################################################################################################################
 # Similarly, we could devise a filter that only retains the elliptically polarized parts of the signal (e.g., surface
 # waves).
 
-data_filtered_rayleigh = analysis.filter(elli=[0.7, 1.0], dop=[0.7, 1], plot_filtered_attributes=True)
+data_filtered_rayleigh = analysis.filter(
+    elli=[0.7, 1.0], dop=[0.7, 1], plot_filtered_attributes=True
+)
 
 ########################################################################################################################
 # To filter out parts of the signal that exhibit particle motion along a specific direction (e.g., an azimuth around 60
 # degrees), we could use:
 
-data_filtered_60degrees_azimuth = analysis.filter(azi1=[55, 65], dop=[0.7, 1], plot_filtered_attributes=True)
+data_filtered_60degrees_azimuth = analysis.filter(
+    azi1=[55, 65], dop=[0.7, 1], plot_filtered_attributes=True
+)
 
 plt.show()

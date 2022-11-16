@@ -18,8 +18,9 @@ Some of the tools available in TwistPy are:
 
 - Three-component polarization analysis and filtering (both time domain and S-transform).
 - Six-component polarization analysis and filtering (both time domain and S-transform).
-- Dynamic tilt corrections for seismometers using direct rotation measurements.
+- Six-component wave type fingerprinting.
 - Single-station six-component Love- and Rayleigh-wave dispersion and Rayleigh wave ellipticity angle estimation.
+- Dynamic tilt corrections for seismometers using direct rotation measurements.
 - Beamforming (Bartlett, MVDR, and MUSIC algorithm).
 - Forward and inverse S-transform (Stockwell transform).
 

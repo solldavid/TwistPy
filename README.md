@@ -11,7 +11,7 @@ seismic data obtained from dedicated rotational seismometers or small-aperture a
 
 Some of the tools available in TwistPy are:
 
- Three-component polarization analysis and filtering (both time domain and S-transform).
+- Three-component polarization analysis and filtering (both time domain and S-transform).
 - Six-component polarization analysis and filtering (both time domain and S-transform).
 - Six-component wave type fingerprinting.
 - Single-station six-component Love- and Rayleigh-wave dispersion and Rayleigh wave ellipticity angle estimation.

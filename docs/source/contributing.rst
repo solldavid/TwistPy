@@ -9,25 +9,27 @@ Bug reports
 If you find any bugs, please report them at https://github.com/solldavid/TwistPy/issues.
 
 When reporting a bug, please include the following information:
-* TwistPy version, Python version, operating system.
-* If this is a new bug that did not exist in previous versions, please state in which version it last worked.
-* If possible, provide a minimal example to reproduce the bug.
+
+*  TwistPy version, Python version, operating system.
+*  If this is a new bug that did not exist in previous versions, please state in which version it last worked.
+*  If possible, provide a minimal example to reproduce the bug.
 
 New feature suggestion
 ======================
 
 Open an issue at https://github.com/solldavid/TwistPy/issues with tag *enhancement*.
 
-* Explain in detail what your new feature should include.
-* Keep the scope as narrow as possible, to make it easier to implement.
+*  Explain in detail what your new feature should include.
+*  Keep the scope as narrow as possible, to make it easier to implement.
 
 Add examples or improve documentation
 =====================================
 
 We are always happy to include new examples in the gallery!
 
-Step-by-step instructions for contributing
-******************************************
+Step-by-step instructions for developers
+========================================
+
 1. Fork the repository.
 
 2. Install pre-commit hooks. The repository comes with a pre-commit configuration to check the code with flake8 before each commit.
@@ -62,12 +64,12 @@ Remember to add ``-u`` when pushing the branch for the first time.
 7. Submit a pull request via the GitHub website.
 
 CI
-**
+==
 
 CI is implemented with GitHub Actions with workflows that are run upon each commit to the repository for testing.
 
 Style Guide
-***********
+===========
 
 1. We use a default line length of 120 characters, which should not be exceeded.
 2. Source code must follow the PEP8 coding standards.

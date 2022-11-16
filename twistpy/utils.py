@@ -28,8 +28,8 @@ def load_analysis(file: str) -> Any:
     """
 
     if file is None:
-        raise Exception('Please specify the name of the file that you want to load!')
-    fid = open(file, 'rb')
+        raise Exception("Please specify the name of the file that you want to load!")
+    fid = open(file, "rb")
     obj = pickle.load(fid)
     fid.close()
 
@@ -92,8 +92,11 @@ def stransform(signal, dsfacf: int = 1, k: float = 1) -> Tuple[np.ndarray, np.nd
     m = m[::dsfacf]
     m = m[1:]
     strides = U.strides[0]
-    U_toeplitz = as_strided(np.concatenate([U, U[:-1]]), shape=(m.shape[0] + 1, N),
-                            strides=(strides * dsfacf, strides))
+    U_toeplitz = as_strided(
+        np.concatenate([U, U[:-1]]),
+        shape=(m.shape[0] + 1, N),
+        strides=(strides * dsfacf, strides),
+    )
     gaussian = np.exp(-2 * (np.pi * q * k / m) ** 2)
     U_toeplitz = U_toeplitz[1:, :]
     stran = scipy.fft.ifft(U_toeplitz * gaussian, axis=-1)
@@ -104,7 +107,9 @@ def stransform(signal, dsfacf: int = 1, k: float = 1) -> Tuple[np.ndarray, np.nd
     return stran, f[::dsfacf]
 
 
-def istransform(st: np.ndarray, f: np.ndarray, k: float = 1., use_filter: bool = False) -> np.ndarray:
+def istransform(
+    st: np.ndarray, f: np.ndarray, k: float = 1.0, use_filter: bool = False
+) -> np.ndarray:
     r"""Compute the inverse S-transform.
 
     This function computes the approximate inverse S-transform after Schimmel et al. (2005) [1]. This inverse has some
@@ -160,7 +165,9 @@ def istransform(st: np.ndarray, f: np.ndarray, k: float = 1., use_filter: bool =
     st, f = st.copy(), f.copy()
     st /= np.abs(weight)
     st *= k * np.sqrt(2 * np.pi)
-    u = np.diag(np.fft.irfft(st, axis=0))  # Approximate inverse after Schimmel, which is a filtered version of the
+    u = np.diag(
+        np.fft.irfft(st, axis=0)
+    )  # Approximate inverse after Schimmel, which is a filtered version of the
     # exact inverse
     if use_filter:
         M = len(u)

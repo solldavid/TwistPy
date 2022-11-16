@@ -41,15 +41,26 @@ class SupportVectorMachine:
         self.plot_confusion_matrix: bool = None
         self.scaling_velocity: float = None
         if not self.name:
-            raise Exception('Please specify a name for this SupportVectorMachine!')
+            raise Exception("Please specify a name for this SupportVectorMachine!")
 
-    def train(self, wave_types: List[str] = ['R', 'L', 'P', 'SV', 'SH', 'Noise'],
-              N: int = 5000, scaling_velocity: float = 1., vp: Tuple[float, float] = (50., 2000.),
-              vp_to_vs: Tuple[float, float] = (1.7, 2.4), vl: Tuple[float, float] = (50, 2000),
-              vr: Tuple[float, float] = (50, 2000), phi: Tuple[float, float] = (0, 360),
-              theta: Tuple[float, float] = (0, 90), xi: Tuple[float, float] = (-90, 90),
-              free_surface: bool = True, C: float = 10., kernel: str = 'rbf', gamma: Union[str, float] = 'scale',
-              plot_confusion_matrix: bool = True) -> None:
+    def train(
+        self,
+        wave_types: List[str] = ["R", "L", "P", "SV", "SH", "Noise"],
+        N: int = 5000,
+        scaling_velocity: float = 1.0,
+        vp: Tuple[float, float] = (50.0, 2000.0),
+        vp_to_vs: Tuple[float, float] = (1.7, 2.4),
+        vl: Tuple[float, float] = (50, 2000),
+        vr: Tuple[float, float] = (50, 2000),
+        phi: Tuple[float, float] = (0, 360),
+        theta: Tuple[float, float] = (0, 90),
+        xi: Tuple[float, float] = (-90, 90),
+        free_surface: bool = True,
+        C: float = 10.0,
+        kernel: str = "rbf",
+        gamma: Union[str, float] = "scale",
+        plot_confusion_matrix: bool = True,
+    ) -> None:
         """Train support vector machine with random polarization models from the specified parameter range.
 
         Parameters
@@ -96,10 +107,12 @@ class SupportVectorMachine:
             Specify whether a confusion matrix will be plotted after training
         """
         # Initial sanity checks
-        wtypes_implemented = ['R', 'L', 'P', 'SV', 'SH', 'Noise']
+        wtypes_implemented = ["R", "L", "P", "SV", "SH", "Noise"]
         for w_type in wave_types:
-            assert w_type in wtypes_implemented, f"Invalid wave type specified: {w_type}! Must be in " \
-                                                 f"[{wtypes_implemented}]"
+            assert w_type in wtypes_implemented, (
+                f"Invalid wave type specified: {w_type}! Must be in "
+                f"[{wtypes_implemented}]"
+            )
         # Set class attributes
         self.C, self.kernel, self.free_surface = C, kernel, free_surface
         self.N, self.scaling_velocity = N, scaling_velocity
@@ -109,12 +122,31 @@ class SupportVectorMachine:
 
         pkl_filename = join(sys.path[0], "SVC_models", self.name + ".pkl")
         if exists(pkl_filename):
-            print(f"A trained model already exists with this name and is saved at '{pkl_filename}'")
-            print('Nothing will be done! Please delete the file above if you want to re-train this model.')
+            print(
+                f"A trained model already exists with this name and is saved at '{pkl_filename}'"
+            )
+            print(
+                "Nothing will be done! Please delete the file above if you want to re-train this model."
+            )
             return
-        df = pd.DataFrame(index=np.arange(0, len(wave_types) * N),
-                          columns=['t1_real', 't2_real', 't3_real', 'r1_real', 'r2_real', 'r3_real',
-                                   't1_imag', 't2_imag', 't3_imag', 'r1_imag', 'r2_imag', 'r3_imag', 'wave_type'])
+        df = pd.DataFrame(
+            index=np.arange(0, len(wave_types) * N),
+            columns=[
+                "t1_real",
+                "t2_real",
+                "t3_real",
+                "r1_real",
+                "r2_real",
+                "r3_real",
+                "t1_imag",
+                "t2_imag",
+                "t3_imag",
+                "r1_imag",
+                "r2_imag",
+                "r3_imag",
+                "wave_type",
+            ],
+        )
         phi = np.random.uniform(phi[0], phi[1], (N, 1))
         theta = np.random.uniform(theta[0], theta[1], (N, 1))
         xi = np.random.uniform(xi[0], xi[1], (N, 1))
@@ -123,62 +155,100 @@ class SupportVectorMachine:
         vp_to_vs = np.random.uniform(vp_to_vs[0], vp_to_vs[1], (N, 1))
         vp = np.random.uniform(vp[0], vp[1], (N, 1))
 
-        print('Generating random polarization models for training! \n')
+        print("Generating random polarization models for training! \n")
         # Generate random P-wave polarization models drawn from a uniform distribution
         # Generate random Rayleigh-wave polarization models drawn from a uniform distribution
-        columns = ['t1_real', 't2_real', 't3_real', 'r1_real', 'r2_real', 'r3_real',
-                   't1_imag', 't2_imag', 't3_imag', 'r1_imag', 'r2_imag', 'r3_imag']
+        columns = [
+            "t1_real",
+            "t2_real",
+            "t3_real",
+            "r1_real",
+            "r2_real",
+            "r3_real",
+            "t1_imag",
+            "t2_imag",
+            "t3_imag",
+            "r1_imag",
+            "r2_imag",
+            "r3_imag",
+        ]
         for it, w_type in enumerate(wave_types):
 
-            if w_type == 'Noise':
+            if w_type == "Noise":
                 u1_real: np.ndarray = np.random.normal(0.0, 1, size=(6, N))
                 u1_imag: np.ndarray = np.random.normal(0.0, 1, size=(6, N))
                 u1: np.ndarray = u1_real + 1j * u1_imag
-                u1: np.ndarray = (u1 / np.linalg.norm(u1, axis=0))
+                u1: np.ndarray = u1 / np.linalg.norm(u1, axis=0)
                 u1: np.ndarray = np.random.choice([-1, 1]) * u1
-                gamma_samson = np.arctan2(2 * np.einsum('ij,ij->j', u1.real, u1.imag, optimize=True),
-                                          np.einsum('ij,ij->j', u1.real, u1.real, optimize=True) -
-                                          np.einsum('ij,ij->j', u1.imag, u1.imag, optimize=True))
+                gamma_samson = np.arctan2(
+                    2 * np.einsum("ij,ij->j", u1.real, u1.imag, optimize=True),
+                    np.einsum("ij,ij->j", u1.real, u1.real, optimize=True)
+                    - np.einsum("ij,ij->j", u1.imag, u1.imag, optimize=True),
+                )
                 phi1 = -0.5 * gamma_samson
                 pol_noise = np.exp(1j * phi1) * u1
-                df.loc[it * N:(it + 1) * N - 1, 'wave_type'] = w_type
+                df.loc[it * N : (it + 1) * N - 1, "wave_type"] = w_type
                 for idx, column in enumerate(columns):
                     if idx < 6:
-                        df.loc[it * N:(it + 1) * N - 1, column] = pol_noise[idx, :].real.tolist()
+                        df.loc[it * N : (it + 1) * N - 1, column] = pol_noise[
+                            idx, :
+                        ].real.tolist()
                     else:
-                        df.loc[it * N:(it + 1) * N - 1, column] = pol_noise[idx - 6, :].imag.tolist()
+                        df.loc[it * N : (it + 1) * N - 1, column] = pol_noise[
+                            idx - 6, :
+                        ].imag.tolist()
             else:
                 # Generate random 6C wave polarization models drawn from a uniform distribution
-                pm = PolarizationModel6C(wave_type=w_type, vr=vr, vp=vp, vs=vp / vp_to_vs, phi=phi, xi=xi,
-                                         theta=theta, vl=vl, scaling_velocity=scaling_velocity,
-                                         free_surface=free_surface)
+                pm = PolarizationModel6C(
+                    wave_type=w_type,
+                    vr=vr,
+                    vp=vp,
+                    vs=vp / vp_to_vs,
+                    phi=phi,
+                    xi=xi,
+                    theta=theta,
+                    vl=vl,
+                    scaling_velocity=scaling_velocity,
+                    free_surface=free_surface,
+                )
                 # Direction of polarization can either be positive or negative
                 pol = np.random.choice([-1, 1], (1, N)) * pm.polarization_vector
-                df.loc[it * N:(it + 1) * N - 1, 'wave_type'] = w_type
+                df.loc[it * N : (it + 1) * N - 1, "wave_type"] = w_type
                 for idx, column in enumerate(columns):
                     if idx < 6:
-                        df.loc[it * N:(it + 1) * N - 1, column] = pol[idx, :].real.tolist()
+                        df.loc[it * N : (it + 1) * N - 1, column] = pol[
+                            idx, :
+                        ].real.tolist()
                     else:
-                        df.loc[it * N:(it + 1) * N - 1, column] = pol[idx - 6, :].imag.tolist()
+                        df.loc[it * N : (it + 1) * N - 1, column] = pol[
+                            idx - 6, :
+                        ].imag.tolist()
 
-        print('Training Support Vector Machine!')
+        print("Training Support Vector Machine!")
         df = df.dropna()
-        X = df.drop(['wave_type'], axis='columns')
+        X = df.drop(["wave_type"], axis="columns")
         y = df.wave_type
         Xtrain, Xtest, ytrain, ytest = train_test_split(X, y, test_size=0.2)
         model = SVC(kernel=kernel, C=C, gamma=gamma)
         model.fit(Xtrain, ytrain)
-        with open(pkl_filename, 'wb') as file:
+        with open(pkl_filename, "wb") as file:
             pickle.dump(model, file)
 
         print(
-            f"Training successfully completed. Model score on independent test data is '{model.score(Xtest, ytest)}'!")
+            f"Training successfully completed. Model score on independent test data is '{model.score(Xtest, ytest)}'!"
+        )
         print(f"Model has been saved as '{pkl_filename}'!'")
 
         if plot_confusion_matrix:
             from sklearn.metrics import ConfusionMatrixDisplay
-            ConfusionMatrixDisplay.from_predictions(ytest, model.predict(Xtest), labels=model.classes_,
-                                                    cmap='binary', normalize='true')
+
+            ConfusionMatrixDisplay.from_predictions(
+                ytest,
+                model.predict(Xtest),
+                labels=model.classes_,
+                cmap="binary",
+                normalize="true",
+            )
             plt.show()
 
     def load_model(self: str = None) -> SVC:
@@ -186,10 +256,10 @@ class SupportVectorMachine:
         Loads a previously trained support vector machine from disk
         :return: sklearn.svm.SVC object
         """
-        file_name = join(sys.path[0], "SVC_models", self.name + '.pkl')
+        file_name = join(sys.path[0], "SVC_models", self.name + ".pkl")
         if not exists(file_name):
             raise Exception(f"The model '{self.name}' has not been trained yet")
         else:
-            with open(file_name, 'rb') as file:
+            with open(file_name, "rb") as file:
                 model = pickle.load(file)
         return model

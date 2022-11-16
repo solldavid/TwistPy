@@ -1,4 +1,4 @@
-from __future__ import (absolute_import, division, print_function, unicode_literals)
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 from builtins import ValueError
 from typing import List, Tuple, Callable
@@ -74,35 +74,50 @@ class EstimatorConfiguration:
         Define the search space for the Rayleigh wave ellipticity angle in degrees.
     """
 
-    def __init__(self, wave_types: List[str] = ['R', 'L', 'P', 'SV', 'SH'],
-                 method: str = 'ML', free_surface: bool = True, scaling_velocity: float = 1.,
-                 use_ml_classification: bool = True, svm: SupportVectorMachine = None,
-                 eigenvector: int = 0,
-                 music_signal_space_dimension: int = 1,
-                 vp: Tuple[float, float, float] = (100., 2000., 100.),
-                 vp_to_vs: Tuple[float, float, float] = (1.7, 2.2, 0.1),
-                 vs: Tuple[float, float, float] = (50., 1000., 100.),
-                 vl: Tuple[float, float, float] = (100, 2000, 100),
-                 vr: Tuple[float, float, float] = (100, 2000, 100),
-                 phi: Tuple[float, float, float] = (0, 360, 1), theta: Tuple[float, float, float] = (0, 90, 1),
-                 xi: Tuple[float, float, float] = (-90, 90, 1)) -> None:
+    def __init__(
+        self,
+        wave_types: List[str] = ["R", "L", "P", "SV", "SH"],
+        method: str = "ML",
+        free_surface: bool = True,
+        scaling_velocity: float = 1.0,
+        use_ml_classification: bool = True,
+        svm: SupportVectorMachine = None,
+        eigenvector: int = 0,
+        music_signal_space_dimension: int = 1,
+        vp: Tuple[float, float, float] = (100.0, 2000.0, 100.0),
+        vp_to_vs: Tuple[float, float, float] = (1.7, 2.2, 0.1),
+        vs: Tuple[float, float, float] = (50.0, 1000.0, 100.0),
+        vl: Tuple[float, float, float] = (100, 2000, 100),
+        vr: Tuple[float, float, float] = (100, 2000, 100),
+        phi: Tuple[float, float, float] = (0, 360, 1),
+        theta: Tuple[float, float, float] = (0, 90, 1),
+        xi: Tuple[float, float, float] = (-90, 90, 1),
+    ) -> None:
 
         # Initial sanity checks
-        methods = ['ML', 'MUSIC', 'MVDR', 'BARTLETT', 'DOT']
-        wtypes_implemented = ['P', 'SV', 'SH', 'L', 'R']
-        assert method in methods, f"Invalid option '{method}' selected for method! Must be one of [{methods}]!"
+        methods = ["ML", "MUSIC", "MVDR", "BARTLETT", "DOT"]
+        wtypes_implemented = ["P", "SV", "SH", "L", "R"]
+        assert (
+            method in methods
+        ), f"Invalid option '{method}' selected for method! Must be one of [{methods}]!"
         for w_type in wave_types:
-            assert w_type in wtypes_implemented, f"Invalid wave type specified: {w_type}! Must be one of " \
-                                                 f"[{wtypes_implemented}]"
-        if method == 'ML' or use_ml_classification:
+            assert w_type in wtypes_implemented, (
+                f"Invalid wave type specified: {w_type}! Must be one of "
+                f"[{wtypes_implemented}]"
+            )
+        if method == "ML" or use_ml_classification:
             if svm is None:
-                raise ValueError("A SupportVectorMachine object needs to be provided for machine-learning based wave "
-                                 "type classification!")
+                raise ValueError(
+                    "A SupportVectorMachine object needs to be provided for machine-learning based wave "
+                    "type classification!"
+                )
             model = svm.load_model()
             for w_type in wave_types:
-                assert w_type in model.classes_, f"The provided SupportVectorMachine model was not trained for " \
-                                                 f"wave_type '{w_type}'. Please use a different SupportVectorMachine" \
-                                                 f"that was trained for this particular wave type."
+                assert w_type in model.classes_, (
+                    f"The provided SupportVectorMachine model was not trained for "
+                    f"wave_type '{w_type}'. Please use a different SupportVectorMachine"
+                    f"that was trained for this particular wave type."
+                )
         self.wave_types = wave_types
         self.method = method
         self.use_ml_classification = use_ml_classification
@@ -141,67 +156,107 @@ class EstimatorConfiguration:
         steering_vectors : :obj:`ndarray` (6, N)
             6-C steering vectors. N is the search-space dimension.
         """
-        if wave_type == 'P':
+        if wave_type == "P":
             vp = np.arange(self.vp[0], self.vp[1] + self.vp[2], self.vp[2])
-            vp_to_vs = np.arange(self.vp_to_vs[0], self.vp_to_vs[1] + self.vp_to_vs[2], self.vp_to_vs[2])
+            vp_to_vs = np.arange(
+                self.vp_to_vs[0], self.vp_to_vs[1] + self.vp_to_vs[2], self.vp_to_vs[2]
+            )
             if vp_to_vs[-1] > self.vp_to_vs[1]:
                 vp_to_vs = vp_to_vs[:-1]
-            theta = np.arange(self.theta[0], self.theta[1] + self.theta[2], self.theta[2])
+            theta = np.arange(
+                self.theta[0], self.theta[1] + self.theta[2], self.theta[2]
+            )
             phi = np.arange(self.phi[0], self.phi[1] + self.phi[2], self.phi[2])
 
-            vp, vp_to_vs, theta, phi = np.meshgrid(vp, vp_to_vs, theta, phi, indexing='ij')
+            vp, vp_to_vs, theta, phi = np.meshgrid(
+                vp, vp_to_vs, theta, phi, indexing="ij"
+            )
 
-            pm = PolarizationModel6C(wave_type=wave_type, vp=vp.ravel(), vs=vp.ravel() / vp_to_vs.ravel(),
-                                     theta=theta.ravel(), phi=phi.ravel(), scaling_velocity=self.scaling_velocity,
-                                     free_surface=self.free_surface)
+            pm = PolarizationModel6C(
+                wave_type=wave_type,
+                vp=vp.ravel(),
+                vs=vp.ravel() / vp_to_vs.ravel(),
+                theta=theta.ravel(),
+                phi=phi.ravel(),
+                scaling_velocity=self.scaling_velocity,
+                free_surface=self.free_surface,
+            )
             return pm.polarization
 
-        elif wave_type == 'SV':
+        elif wave_type == "SV":
             vp = np.arange(self.vp[0], self.vp[1] + self.vp[2], self.vp[2])
-            vp_to_vs = np.arange(self.vp_to_vs[0], self.vp_to_vs[1] + self.vp_to_vs[2], self.vp_to_vs[2])
+            vp_to_vs = np.arange(
+                self.vp_to_vs[0], self.vp_to_vs[1] + self.vp_to_vs[2], self.vp_to_vs[2]
+            )
             if vp_to_vs[-1] > self.vp_to_vs[1]:
                 vp_to_vs = vp_to_vs[:-1]
-            theta = np.arange(self.theta[0], self.theta[1] + self.theta[2], self.theta[2])
+            theta = np.arange(
+                self.theta[0], self.theta[1] + self.theta[2], self.theta[2]
+            )
             phi = np.arange(self.phi[0], self.phi[1] + self.phi[2], self.phi[2])
 
-            vp, vp_to_vs, theta, phi = np.meshgrid(vp, vp_to_vs, theta, phi, indexing='ij')
+            vp, vp_to_vs, theta, phi = np.meshgrid(
+                vp, vp_to_vs, theta, phi, indexing="ij"
+            )
 
-            pm = PolarizationModel6C(wave_type=wave_type, vp=vp.ravel(), vs=vp.ravel() / vp_to_vs.ravel(),
-                                     theta=theta.ravel(), phi=phi.ravel(), scaling_velocity=self.scaling_velocity,
-                                     free_surface=self.free_surface)
+            pm = PolarizationModel6C(
+                wave_type=wave_type,
+                vp=vp.ravel(),
+                vs=vp.ravel() / vp_to_vs.ravel(),
+                theta=theta.ravel(),
+                phi=phi.ravel(),
+                scaling_velocity=self.scaling_velocity,
+                free_surface=self.free_surface,
+            )
             return pm.polarization
 
-        elif wave_type == 'SH':
+        elif wave_type == "SH":
             vs = np.arange(self.vs[0], self.vs[1] + self.vs[2], self.vs[2])
-            theta = np.arange(self.theta[0], self.theta[1] + self.theta[2], self.theta[2])
+            theta = np.arange(
+                self.theta[0], self.theta[1] + self.theta[2], self.theta[2]
+            )
             phi = np.arange(self.phi[0], self.phi[1] + self.phi[2], self.phi[2])
 
-            vs, theta, phi = np.meshgrid(vs, theta, phi, indexing='ij')
+            vs, theta, phi = np.meshgrid(vs, theta, phi, indexing="ij")
 
-            pm = PolarizationModel6C(wave_type=wave_type, vs=vs.ravel(),
-                                     theta=theta.ravel(), phi=phi.ravel(), scaling_velocity=self.scaling_velocity,
-                                     free_surface=self.free_surface)
+            pm = PolarizationModel6C(
+                wave_type=wave_type,
+                vs=vs.ravel(),
+                theta=theta.ravel(),
+                phi=phi.ravel(),
+                scaling_velocity=self.scaling_velocity,
+                free_surface=self.free_surface,
+            )
             return pm.polarization
 
-        elif wave_type == 'R':
+        elif wave_type == "R":
             vr = np.arange(self.vr[0], self.vr[1] + self.vr[2], self.vr[2])
             phi = np.arange(self.phi[0], self.phi[1] + self.phi[2], self.phi[2])
             xi = np.arange(self.xi[0], self.xi[1] + self.xi[2], self.xi[2])
 
-            vr, phi, xi = np.meshgrid(vr, phi, xi, indexing='ij')
+            vr, phi, xi = np.meshgrid(vr, phi, xi, indexing="ij")
 
-            pm = PolarizationModel6C(wave_type=wave_type, vr=vr.ravel(), phi=phi.ravel(), xi=xi.ravel(),
-                                     scaling_velocity=self.scaling_velocity,
-                                     free_surface=self.free_surface)
+            pm = PolarizationModel6C(
+                wave_type=wave_type,
+                vr=vr.ravel(),
+                phi=phi.ravel(),
+                xi=xi.ravel(),
+                scaling_velocity=self.scaling_velocity,
+                free_surface=self.free_surface,
+            )
             return pm.polarization
 
-        elif wave_type == 'L':
+        elif wave_type == "L":
             vl = np.arange(self.vl[0], self.vl[1] + self.vl[2], self.vl[2])
             phi = np.arange(self.phi[0], self.phi[1] + self.phi[2], self.phi[2])
 
-            vl, phi = np.meshgrid(vl, phi, indexing='ij')
+            vl, phi = np.meshgrid(vl, phi, indexing="ij")
 
-            pm = PolarizationModel6C(wave_type=wave_type, vl=vl.ravel(), phi=phi.ravel(),
-                                     scaling_velocity=self.scaling_velocity,
-                                     free_surface=self.free_surface)
+            pm = PolarizationModel6C(
+                wave_type=wave_type,
+                vl=vl.ravel(),
+                phi=phi.ravel(),
+                scaling_velocity=self.scaling_velocity,
+                free_surface=self.free_surface,
+            )
             return pm.polarization

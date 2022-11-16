@@ -74,7 +74,6 @@ Tools for array processing.
     :nosignatures:
 
     BeamformingArray
-    GradiometryArray
 
 Machine Learning
 ----------------

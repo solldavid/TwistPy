@@ -32,11 +32,11 @@ Step-by-step instructions for developers
 
 1. Fork the repository.
 
-2. If you have not done so already, install ``black`` and ``flake8``:
+2. If you have not done so already, install ``pre-commit``, ``black`` and ``flake8``:
 
 .. code-block:: bash
 
-   >> pip install black flake8
+   >> pip install pre-commit black flake8
 
 3. Install pre-commit hooks. The repository comes with a pre-commit configuration to reformat the code with ``black`` and check the code with ``flake8`` before each commit.
 

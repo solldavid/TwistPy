@@ -2046,7 +2046,7 @@ class TimeFrequencyAnalysis3C:
         Returns
         -------
         data_filtered : :obj:`~obspy.core.stream.Stream`
-            Filtered data. The order of traces in the stream is N, E, Z.
+            Filtered data. The order of traces in the stream is Z, N, E.
         """
 
         if self.dsfacf != 1 or self.dsfact != 1:

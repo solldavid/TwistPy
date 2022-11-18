@@ -1,11 +1,10 @@
 .. TwistPy documentation master file, created by David Sollberger
 
+Home
+----
+
 .. image:: _static/logo_adobe_title.png
     :alt: TwistPy Logo
-
-
-
-
 
 TwistPy is a small Python package for seismic data processing. It includes routines for single-station
 polarization analysis and filtering, as well as array processing tools.

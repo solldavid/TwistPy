@@ -196,7 +196,7 @@ data_filtered = analysis.filter(
 # Compute S-transform of vertical component for plotting
 Z_stran, f = stransform(data[2].data, k=1)
 Z_stran_filtered, _ = stransform(
-    data_filtered[2].data, k=1
+    data_filtered[0].data, k=1
 )  # S-transform of filtered data for comparison
 f /= dt
 
@@ -221,7 +221,7 @@ ax[1, 0].imshow(
 ax[1, 0].set_xlabel("Time (s)")
 ax[1, 0].set_title("S-transform Input Data")
 
-ax[0, 1].plot(analysis.t_pol, data_filtered[2].data, "k")
+ax[0, 1].plot(analysis.t_pol, data_filtered[0].data, "k")
 ax[0, 1].set_title("Z-Component Filtered Data")
 ax[0, 1].set_ylim([-0.4, 1])
 ax[1, 1].imshow(

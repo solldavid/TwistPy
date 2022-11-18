@@ -442,7 +442,7 @@ the P-wave is retained, while all other signals are suppressed.
     # Compute S-transform of vertical component for plotting
     Z_stran, f = stransform(data[2].data, k=1)
     Z_stran_filtered, _ = stransform(
-        data_filtered[2].data, k=1
+        data_filtered[0].data, k=1
     )  # S-transform of filtered data for comparison
     f /= dt
 
@@ -467,7 +467,7 @@ the P-wave is retained, while all other signals are suppressed.
     ax[1, 0].set_xlabel("Time (s)")
     ax[1, 0].set_title("S-transform Input Data")
 
-    ax[0, 1].plot(analysis.t_pol, data_filtered[2].data, "k")
+    ax[0, 1].plot(analysis.t_pol, data_filtered[0].data, "k")
     ax[0, 1].set_title("Z-Component Filtered Data")
     ax[0, 1].set_ylim([-0.4, 1])
     ax[1, 1].imshow(
@@ -562,7 +562,7 @@ degrees), we could use:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  2.139 seconds)
+   **Total running time of the script:** ( 0 minutes  2.159 seconds)
 
 
 .. _sphx_glr_download_examples_3Cpolarization_timefrequency.py:

@@ -18,3 +18,6 @@ Some of the tools available in TwistPy are:
 - Dynamic tilt corrections for seismometers using direct rotation measurements.
 - Beamforming (Bartlett, MVDR, and MUSIC algorithm).
 - Forward and inverse S-transform (Stockwell transform).
+
+Check out the documentation at:
+https://solldavid.github.io/TwistPy/

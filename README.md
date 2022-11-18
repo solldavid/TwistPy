@@ -20,4 +20,4 @@ Some of the tools available in TwistPy are:
 - Forward and inverse S-transform (Stockwell transform).
 
 Check out the documentation at:
-https://solldavid.github.io/TwistPy/
+www.twistpy.org

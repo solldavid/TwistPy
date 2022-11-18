@@ -247,7 +247,7 @@ class DispersionAnalysis:
                 c_r = c_r[c_r < velocity_range[1]]
                 dop_r = dop_r[c_r > velocity_range[0]]
                 c_r = c_r[c_r > velocity_range[0]]
-                cr_ndec[i] = len(c_r)
+                cr_ndec[i] = len(c_r) / len(self.parameters[i]["c_r"])
             counts, values_r = np.histogram(
                 c_r,
                 bins=nbins,
@@ -296,7 +296,7 @@ class DispersionAnalysis:
                 c_l = c_l[c_l < velocity_range[1]]
                 dop_l = dop_l[c_l > velocity_range[0]]
                 c_l = c_l[c_l > velocity_range[0]]
-                cl_ndec[i] = len(c_l)
+                cl_ndec[i] = len(c_l) / len(self.parameters[i]["c_l"])
             counts, values_l = np.histogram(
                 c_l,
                 bins=nbins,
@@ -358,21 +358,21 @@ class DispersionAnalysis:
             rect_l = Rectangle(
                 (self.f_lower[n], 0),
                 self.f_higher[n] - self.f_lower[n],
-                cl_ndec[n],
+                cl_ndec[n] * 100,
                 edgecolor="k",
                 facecolor="none",
             )
             rect_r = Rectangle(
                 (self.f_lower[n], 0),
                 self.f_higher[n] - self.f_lower[n],
-                cr_ndec[n],
+                cr_ndec[n] * 100,
                 edgecolor="k",
                 facecolor="none",
             )
             rect_re = Rectangle(
                 (self.f_lower[n], 0),
                 self.f_higher[n] - self.f_lower[n],
-                cr_ndec[n],
+                cr_ndec[n] * 100,
                 edgecolor="k",
                 facecolor="none",
             )
@@ -405,10 +405,10 @@ class DispersionAnalysis:
         ax4.set_xlim([self.f_lower[-1], self.f_higher[0]])
         ax3.set_xlim([self.f_lower[-1], self.f_higher[0]])
         ax6.set_xlim([self.f_lower[-1], self.f_higher[0]])
-        ax4.set_ylim([0, 1.2 * np.max([cr_ndec.max(), cl_ndec.max()])])
-        ax3.set_ylim([0, 1.2 * np.max([cr_ndec.max(), cl_ndec.max()])])
-        ax6.set_ylim([0, 1.2 * np.max([cr_ndec.max(), cl_ndec.max()])])
-        ax4.set_ylabel("No. of detections")
+        ax4.set_ylim([0, 100 * 1.2 * np.max([cr_ndec.max(), cl_ndec.max()])])
+        ax3.set_ylim([0, 100 * 1.2 * np.max([cr_ndec.max(), cl_ndec.max()])])
+        ax6.set_ylim([0, 100 * 1.2 * np.max([cr_ndec.max(), cl_ndec.max()])])
+        ax4.set_ylabel("Detection rate (%)")
 
         im = NonUniformImage(
             ax7,

@@ -247,7 +247,7 @@ ax2.set_ylabel("Classification label")
 ########################################################################################################################
 # If we wish to do so, we can perform the same analysis on a time-frequency representation of the signal obtained via
 # the S-transform. For this, we specify an analysis window that extends over both time and frequency. The window that
-# we choose here is frequency-dependent and extends over a fifth of a period in time and 2 Hz in frequency.
+# we choose here is frequency-dependent and extends over a single period in time and 2 Hz in frequency.
 
 window = {"number_of_periods": 1, "frequency_extent": 2}
 

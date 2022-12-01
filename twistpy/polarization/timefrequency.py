@@ -40,13 +40,13 @@ class TimeFrequencyAnalysis6C:
     traE : :obj:`~obspy.core.trace.Trace`
         East component of translation
     traZ : :obj:`~obspy.core.trace.Trace`
-        Vertical component of translation
+        Vertical component of translation (positive downwards!)
     rotN : :obj:`~obspy.core.trace.Trace`
         North component of rotation
     rotE : :obj:`~obspy.core.trace.Trace`
         East component of rotation
     rotZ : :obj:`~obspy.core.trace.Trace`
-        Vertical component of rotation
+        Vertical component of rotation (right-handed, pointing downwards!)
     window : :obj:`dict`
         2-D time-frequency window within which the covariance matrices are averaged:
 

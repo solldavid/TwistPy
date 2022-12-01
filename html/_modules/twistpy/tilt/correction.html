@@ -1,0 +1,824 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>twistpy.tilt.correction &#8212; TwistPy</title>
+    
+  <link href="../../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-book-theme.css?digest=84ace793992934648b4de8eed757e5a2" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
+    
+  <link rel="preload" as="script" href="../../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
+    <link rel="shortcut icon" href="../../../_static/twistpy.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<div class="col-12 col-md-3 bd-sidebar site-navigation " id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../../_static/logo_textbelow_oneaxis_adobe.png" class="logo" alt="logo">
+      
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Instructions:
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../installation.html">
+   Installation Instructions
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../examples/index.html">
+   Examples
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../examples/3Cpolarization.html">
+     3-C Polarization analysis and filtering in the time domain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../examples/3Cpolarization_timefrequency.html">
+     3-C Polarization analysis and filtering in the time-frequency domain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../examples/marsquake.html">
+     3-C Polarization analysis and filtering: Real data example using a marsquake recorded by InSight
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../examples/six_component_wave_parameter_estimation.html">
+     6-C Polarization Analysis: Time-domain wave parameter estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../examples/ml_wave_type_estimation.html">
+     6-C Polarization Analysis: Wave type classification
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../examples/alaska_wave_parameter_estimation.html">
+     6-C Wave parameter estimation: gulf of alaska earthquake
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../examples/beamforming.html">
+     Array Processing: Beamforming
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../examples/stransform.html">
+     S-transform
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../examples/dispersion.html">
+     Six-component dispersion analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../examples/tilt.html">
+     Tilt correction
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../contributing.html">
+   Contributing
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference documentation:
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../api/index.html">
+   TwistPy API
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeDomainAnalysis3C.html">
+     twistpy.polarization.TimeDomainAnalysis3C
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeDomainAnalysis3C.filter.html">
+       twistpy.polarization.TimeDomainAnalysis3C.filter
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeDomainAnalysis3C.plot.html">
+       twistpy.polarization.TimeDomainAnalysis3C.plot
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeDomainAnalysis3C.polarization_analysis.html">
+       twistpy.polarization.TimeDomainAnalysis3C.polarization_analysis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeDomainAnalysis3C.save.html">
+       twistpy.polarization.TimeDomainAnalysis3C.save
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeFrequencyAnalysis3C.html">
+     twistpy.polarization.TimeFrequencyAnalysis3C
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <label for="toctree-checkbox-4">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeFrequencyAnalysis3C.filter.html">
+       twistpy.polarization.TimeFrequencyAnalysis3C.filter
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeFrequencyAnalysis3C.plot.html">
+       twistpy.polarization.TimeFrequencyAnalysis3C.plot
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeFrequencyAnalysis3C.polarization_analysis.html">
+       twistpy.polarization.TimeFrequencyAnalysis3C.polarization_analysis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeFrequencyAnalysis3C.save.html">
+       twistpy.polarization.TimeFrequencyAnalysis3C.save
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../../api/generated/twistpy.polarization.PolarizationModel3C.html">
+     twistpy.polarization.PolarizationModel3C
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+    <label for="toctree-checkbox-5">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.PolarizationModel3C.polarization_vector.html">
+       twistpy.polarization.PolarizationModel3C.polarization_vector
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../../api/generated/twistpy.polarization.DispersionAnalysis.html">
+     twistpy.polarization.DispersionAnalysis
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.DispersionAnalysis.plot.html">
+       twistpy.polarization.DispersionAnalysis.plot
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.DispersionAnalysis.plot_baz.html">
+       twistpy.polarization.DispersionAnalysis.plot_baz
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.DispersionAnalysis.save.html">
+       twistpy.polarization.DispersionAnalysis.save
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeDomainAnalysis6C.html">
+     twistpy.polarization.TimeDomainAnalysis6C
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeDomainAnalysis6C.classify.html">
+       twistpy.polarization.TimeDomainAnalysis6C.classify
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeDomainAnalysis6C.plot.html">
+       twistpy.polarization.TimeDomainAnalysis6C.plot
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeDomainAnalysis6C.polarization_analysis.html">
+       twistpy.polarization.TimeDomainAnalysis6C.polarization_analysis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeDomainAnalysis6C.save.html">
+       twistpy.polarization.TimeDomainAnalysis6C.save
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeFrequencyAnalysis6C.html">
+     twistpy.polarization.TimeFrequencyAnalysis6C
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeFrequencyAnalysis6C.classify.html">
+       twistpy.polarization.TimeFrequencyAnalysis6C.classify
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeFrequencyAnalysis6C.filter.html">
+       twistpy.polarization.TimeFrequencyAnalysis6C.filter
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeFrequencyAnalysis6C.plot_classification.html">
+       twistpy.polarization.TimeFrequencyAnalysis6C.plot_classification
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeFrequencyAnalysis6C.plot_wave_parameters.html">
+       twistpy.polarization.TimeFrequencyAnalysis6C.plot_wave_parameters
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeFrequencyAnalysis6C.polarization_analysis.html">
+       twistpy.polarization.TimeFrequencyAnalysis6C.polarization_analysis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeFrequencyAnalysis6C.save.html">
+       twistpy.polarization.TimeFrequencyAnalysis6C.save
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../../api/generated/twistpy.polarization.EstimatorConfiguration.html">
+     twistpy.polarization.EstimatorConfiguration
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+    <label for="toctree-checkbox-9">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.EstimatorConfiguration.compute_steering_vectors.html">
+       twistpy.polarization.EstimatorConfiguration.compute_steering_vectors
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../../api/generated/twistpy.polarization.SupportVectorMachine.html">
+     twistpy.polarization.SupportVectorMachine
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+    <label for="toctree-checkbox-10">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.SupportVectorMachine.load_model.html">
+       twistpy.polarization.SupportVectorMachine.load_model
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.SupportVectorMachine.train.html">
+       twistpy.polarization.SupportVectorMachine.train
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../../api/generated/twistpy.polarization.PolarizationModel6C.html">
+     twistpy.polarization.PolarizationModel6C
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+    <label for="toctree-checkbox-11">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.PolarizationModel6C.polarization_vector.html">
+       twistpy.polarization.PolarizationModel6C.polarization_vector
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/twistpy.tilt.correction.remove_tilt.html">
+     twistpy.tilt.correction.remove_tilt
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/twistpy.tilt.correction.transfer_function.html">
+     twistpy.tilt.correction.transfer_function
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../../api/generated/twistpy.array_processing.BeamformingArray.html">
+     twistpy.array_processing.BeamformingArray
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+    <label for="toctree-checkbox-12">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.array_processing.BeamformingArray.add_data.html">
+       twistpy.array_processing.BeamformingArray.add_data
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.array_processing.BeamformingArray.beamforming.html">
+       twistpy.array_processing.BeamformingArray.beamforming
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.array_processing.BeamformingArray.compute_steering_vectors.html">
+       twistpy.array_processing.BeamformingArray.compute_steering_vectors
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/twistpy.utils.stransform.html">
+     twistpy.utils.stransform
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/twistpy.utils.istransform.html">
+     twistpy.utils.istransform
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/twistpy.utils.load_analysis.html">
+     twistpy.utils.load_analysis
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  References:
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../references.html">
+   Relevant Publications
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../contributors.html">
+   Contributors
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../contact.html">
+   Contact
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../acknowledgments.html">
+   Acknowledgments
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<!-- This is an invisible pixel that we watch to see if we've scrolled. -->
+<div class="sbt-scroll-pixel-helper"></div>
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            <div class="topbar-left">
+                
+                <label class="nav-toggle-button" for="__navigation">
+                    <div class="visually-hidden">Toggle navigation</div>
+                    <i class="fas fa-bars"></i>
+                </label>
+                
+            </div>
+            
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/solldavid/TwistPy"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1></h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <h1>Source code for twistpy.tilt.correction</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<span class="k">def</span> <span class="nf">_next_pow2</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">2</span> <span class="o">**</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)))</span>
+
+
+<span class="k">def</span> <span class="nf">_nearest_pow2</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Get nearest power of 2 for a given input x.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : :obj:`float`</span>
+<span class="sd">        Arbitrary number</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    y : :obj:`float`</span>
+<span class="sd">        Nearest power of 2 from x</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">abs</span><span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">a</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">b</span>
+
+
+<div class="viewcode-block" id="transfer_function"><a class="viewcode-back" href="../../../api/generated/twistpy.tilt.correction.transfer_function.html#twistpy.tilt.correction.transfer_function">[docs]</a><span class="k">def</span> <span class="nf">transfer_function</span><span class="p">(</span>
+    <span class="n">response</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">smooth</span><span class="p">:</span> <span class="nb">float</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate transfer function and complex coherence between two signals.</span>
+<span class="sd">    The transfer function is calculated from smoothed cross- and non-smoothed</span>
+<span class="sd">    autospectral densities of source and response signal. Smoothing is done by</span>
+<span class="sd">    convolution with a Blackman window.</span>
+<span class="sd">    The complex transfer function, the autospectral densities, and a</span>
+<span class="sd">    corresponding frequency vector are returned.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    response : :obj:`numpy.ndarray`</span>
+<span class="sd">        Sample data of the response signal.</span>
+<span class="sd">    source : :obj:`numpy.ndarray`</span>
+<span class="sd">        Sample data of the source signal.</span>
+<span class="sd">    dt : :obj:`float`</span>
+<span class="sd">        Sampling interval [s].</span>
+<span class="sd">    smooth : :obj:`float`</span>
+<span class="sd">        Size of the Blackman window used for smoothing [Hz].</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    output : 5-:obj:`tuple` of :obj:`numpy.ndarray`</span>
+<span class="sd">        (``freq``, ``XX``, ``YY``, ``Ars``, ``coh``)</span>
+<span class="sd">        ``freq``: array of frequencies</span>
+<span class="sd">        ``Grr``: autospectral density of response signal,</span>
+<span class="sd">        ``Gss``: autospectral density of source signal,</span>
+<span class="sd">        ``Ars``: source to response transfer function,</span>
+<span class="sd">        ``coh``: smoothed complex coherence between source and response signal</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">source</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">ndat</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">size</span>
+
+    <span class="n">nfft</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">_nearest_pow2</span><span class="p">(</span><span class="n">ndat</span><span class="p">))</span>
+    <span class="n">nfft</span> <span class="o">*=</span> <span class="mi">2</span>
+    <span class="n">gr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nfft</span><span class="p">)</span>
+    <span class="n">gs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nfft</span><span class="p">)</span>
+    <span class="n">gr</span><span class="p">[:</span><span class="n">ndat</span><span class="p">]</span> <span class="o">=</span> <span class="n">response</span>
+    <span class="n">gs</span><span class="p">[:</span><span class="n">ndat</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span>
+
+    <span class="c1"># perform ffts</span>
+    <span class="n">Gr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">gr</span><span class="p">)</span> <span class="o">*</span> <span class="n">dt</span>
+    <span class="n">Gs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">gs</span><span class="p">)</span> <span class="o">*</span> <span class="n">dt</span>
+    <span class="n">freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfftfreq</span><span class="p">(</span><span class="n">nfft</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+
+    <span class="c1"># calculate autospectral and crossspectral densities</span>
+    <span class="n">Grs</span> <span class="o">=</span> <span class="n">Gr</span> <span class="o">*</span> <span class="n">Gs</span><span class="o">.</span><span class="n">conjugate</span><span class="p">()</span>
+    <span class="n">Grr</span> <span class="o">=</span> <span class="n">Gr</span> <span class="o">*</span> <span class="n">Gr</span><span class="o">.</span><span class="n">conjugate</span><span class="p">()</span>
+    <span class="n">Gss</span> <span class="o">=</span> <span class="n">Gs</span> <span class="o">*</span> <span class="n">Gs</span><span class="o">.</span><span class="n">conjugate</span><span class="p">()</span>
+
+    <span class="n">nsmooth</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">smooth</span> <span class="o">/</span> <span class="p">(</span><span class="n">freq</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">freq</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+    <span class="k">if</span> <span class="n">nsmooth</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">blackman</span><span class="p">(</span><span class="n">nsmooth</span><span class="p">)</span>
+        <span class="n">Grs_smooth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span><span class="n">Grs</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;same&quot;</span><span class="p">)</span>
+        <span class="n">Grr_smooth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span><span class="n">Grr</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;same&quot;</span><span class="p">)</span>
+        <span class="n">Gss_smooth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span><span class="n">Gss</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;same&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">Grs_smooth</span> <span class="o">=</span> <span class="n">Grs</span>
+        <span class="n">Grr_smooth</span> <span class="o">=</span> <span class="n">Grr</span>
+        <span class="n">Gss_smooth</span> <span class="o">=</span> <span class="n">Gss</span>
+
+    <span class="n">Crs_smooth</span> <span class="o">=</span> <span class="n">Grs_smooth</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Grr_smooth</span> <span class="o">*</span> <span class="n">Gss_smooth</span><span class="p">)</span>
+
+    <span class="c1"># calculate transfer function</span>
+    <span class="n">Ars</span> <span class="o">=</span> <span class="n">Crs_smooth</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Grr</span> <span class="o">/</span> <span class="n">Gss</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">freq</span><span class="p">,</span> <span class="n">Grr</span><span class="p">,</span> <span class="n">Gss</span><span class="p">,</span> <span class="n">Ars</span><span class="p">,</span> <span class="n">Crs_smooth</span></div>
+
+
+<div class="viewcode-block" id="remove_tilt"><a class="viewcode-back" href="../../../api/generated/twistpy.tilt.correction.remove_tilt.html#twistpy.tilt.correction.remove_tilt">[docs]</a><span class="k">def</span> <span class="nf">remove_tilt</span><span class="p">(</span>
+    <span class="n">response</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">source</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">fmin</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">fmax</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">parallel</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">smooth</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">g</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">9.81</span><span class="p">,</span>
+    <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;coh&quot;</span><span class="p">,</span>
+    <span class="n">trans_coh</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Remove tilt noise from translational accelerometer recordings.</span>
+<span class="sd">    See the ``method`` argument for different correction options.</span>
+<span class="sd">    The correction can optionally be applied only in a selected frequency band.</span>
+<span class="sd">    The method is described in Bernauer et al. (2022) and is based on the work of</span>
+<span class="sd">    Crawford and Webb (2000).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    response : :obj:`numpy.ndarray`</span>
+<span class="sd">        Data samples of the accelerometer signal [m/s**2].</span>
+<span class="sd">    source : :obj:`numpy.ndarray`</span>
+<span class="sd">        Data samples of the tilt signal [rad].</span>
+<span class="sd">    dt : :obj:`float`</span>
+<span class="sd">        Sampling interval [s].</span>
+<span class="sd">    fmin : :obj:`float`, optional</span>
+<span class="sd">        Minimum frequency for band-limited correction [Hz]. Only applicable in</span>
+<span class="sd">        ``&#39;coh&#39;`` and ``&#39;freq&#39;`` methods.</span>
+<span class="sd">    fmax : :obj:`float`, optional</span>
+<span class="sd">        Maximum frequency for band-limited correction [Hz]. Only applicable in</span>
+<span class="sd">        ``&#39;coh&#39;`` and ``&#39;freq&#39;`` methods.</span>
+<span class="sd">    parallel : :obj:`bool`, optional, Default=True</span>
+<span class="sd">        Flag to indicate if tilt and acceleration axes are parallel (``True``)</span>
+<span class="sd">        or antiparallel (``False``).</span>
+<span class="sd">    threshold : :obj:`float`, optional, Default=0.5</span>
+<span class="sd">        Correction is applied only where ``abs(coherence) &gt;= threshold``. Only</span>
+<span class="sd">        applicable in ``&#39;coh&#39;`` method.</span>
+<span class="sd">    smooth : :obj:`float`, optional, Defaault=1.0</span>
+<span class="sd">        Size of the Blackman window [Hz] used for smoothing when calculating</span>
+<span class="sd">        the coherence with :py:func:`tilt_utils.transfer_function`. Only</span>
+<span class="sd">        applicable in ``&#39;coh&#39;`` and ``&#39;freq&#39;`` methods.</span>
+<span class="sd">    g : :obj:`float`, optional, Default=9.81</span>
+<span class="sd">        Gravitational acceleration [m/s**2].</span>
+<span class="sd">    method : :obj:`str`, optional, Default=&#39;coh&#39;</span>
+<span class="sd">        Correction method to use.</span>
+
+<span class="sd">        ..hint:: &#39;coh&#39;:  apply theoretical transfer</span>
+<span class="sd">                 function where coherence is significant (via frequency domain),</span>
+
+<span class="sd">            &#39;freq&#39;: Use empirical transfer function estimate (via frequency</span>
+<span class="sd">            domain)</span>
+
+<span class="sd">            &#39;direct&#39;: Apply theoretical transfer function directly (in time domain).</span>
+
+<span class="sd">    trans_coh : (:obj:`numpy.ndarray`, :obj:`numpy.ndaarray`), optional</span>
+<span class="sd">        If given, previously calculated transfer function and complex coherence</span>
+<span class="sd">        between the tilt and accelerometer signals, used to decide where</span>
+<span class="sd">        to apply the correction. The size of the given arrays must match the</span>
+<span class="sd">        size of the spectra of ``source`` and ``response`` (the same</span>
+<span class="sd">        zero-padding has to be applied). If set to ``None``, it is computed</span>
+<span class="sd">        from ``response`` and ``source`` using</span>
+<span class="sd">        :py:func:`twistpy.tilt.correction.transfer_function`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    signal_out : :obj:`numpy.ndarray`</span>
+<span class="sd">        Data samples of corrected accelerometer signal [m/s**2].</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">source</span><span class="o">.</span><span class="n">size</span>
+    <span class="k">assert</span> <span class="n">method</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;direct&quot;</span><span class="p">,</span> <span class="s2">&quot;coh&quot;</span><span class="p">,</span> <span class="s2">&quot;freq&quot;</span><span class="p">)</span>
+
+    <span class="n">sign</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="k">if</span> <span class="n">parallel</span> <span class="k">else</span> <span class="o">-</span><span class="mf">1.0</span>
+
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;direct&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">response</span> <span class="o">-</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">g</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+
+    <span class="n">ndat</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">size</span>
+
+    <span class="n">nfft</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">_nearest_pow2</span><span class="p">(</span><span class="n">ndat</span><span class="p">))</span>
+    <span class="n">nfft</span> <span class="o">*=</span> <span class="mi">2</span>
+
+    <span class="k">if</span> <span class="n">trans_coh</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">Ars</span><span class="p">,</span> <span class="n">coh</span> <span class="o">=</span> <span class="n">transfer_function</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">smooth</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">Ars</span><span class="p">,</span> <span class="n">coh</span> <span class="o">=</span> <span class="n">trans_coh</span>
+
+    <span class="n">Gr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">nfft</span><span class="p">)</span>
+    <span class="n">Gs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">nfft</span><span class="p">)</span>
+    <span class="n">freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfftfreq</span><span class="p">(</span><span class="n">nfft</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">Ars</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">Gr</span><span class="o">.</span><span class="n">shape</span>
+    <span class="k">assert</span> <span class="n">coh</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">Gr</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">coh</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">threshold</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">fmin</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">mask</span><span class="p">[</span><span class="n">freq</span> <span class="o">&lt;</span> <span class="n">fmin</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="k">if</span> <span class="n">fmax</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">mask</span><span class="p">[</span><span class="n">freq</span> <span class="o">&gt;</span> <span class="n">fmax</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;coh&quot;</span><span class="p">:</span>
+        <span class="n">corr</span> <span class="o">=</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">g</span> <span class="o">*</span> <span class="n">Gs</span> <span class="o">*</span> <span class="n">mask</span>
+
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;freq&quot;</span><span class="p">:</span>
+        <span class="n">corr</span> <span class="o">=</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">conjugate</span><span class="p">(</span><span class="n">Ars</span><span class="p">)</span> <span class="o">*</span> <span class="n">Gs</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid `method` argument: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">method</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">irfft</span><span class="p">(</span><span class="n">Gr</span> <span class="o">-</span> <span class="n">corr</span><span class="p">)[:</span><span class="n">ndat</span><span class="p">]</span></div>
+</pre></div>
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+        &copy; Copyright 2022, The TwistPy Developers.<br/>
+      Last updated on Dec 01, 2022.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

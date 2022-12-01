@@ -1,0 +1,781 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3-C Polarization analysis and filtering: Real data example using a marsquake recorded by InSight &#8212; TwistPy</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet">
+  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-book-theme.css?digest=84ace793992934648b4de8eed757e5a2" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
+    <link rel="shortcut icon" href="../_static/twistpy.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="6-C Polarization Analysis: Time-domain wave parameter estimation" href="six_component_wave_parameter_estimation.html" />
+    <link rel="prev" title="3-C Polarization analysis and filtering in the time-frequency domain" href="3Cpolarization_timefrequency.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<div class="col-12 col-md-3 bd-sidebar site-navigation " id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/logo_textbelow_oneaxis_adobe.png" class="logo" alt="logo">
+      
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Instructions:
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../installation.html">
+   Installation Instructions
+  </a>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="index.html">
+   Examples
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="3Cpolarization.html">
+     3-C Polarization analysis and filtering in the time domain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="3Cpolarization_timefrequency.html">
+     3-C Polarization analysis and filtering in the time-frequency domain
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     3-C Polarization analysis and filtering: Real data example using a marsquake recorded by InSight
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="six_component_wave_parameter_estimation.html">
+     6-C Polarization Analysis: Time-domain wave parameter estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="ml_wave_type_estimation.html">
+     6-C Polarization Analysis: Wave type classification
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="alaska_wave_parameter_estimation.html">
+     6-C Wave parameter estimation: gulf of alaska earthquake
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="beamforming.html">
+     Array Processing: Beamforming
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="stransform.html">
+     S-transform
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dispersion.html">
+     Six-component dispersion analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="tilt.html">
+     Tilt correction
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../contributing.html">
+   Contributing
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference documentation:
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../api/index.html">
+   TwistPy API
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../api/generated/twistpy.polarization.TimeDomainAnalysis3C.html">
+     twistpy.polarization.TimeDomainAnalysis3C
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeDomainAnalysis3C.filter.html">
+       twistpy.polarization.TimeDomainAnalysis3C.filter
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeDomainAnalysis3C.plot.html">
+       twistpy.polarization.TimeDomainAnalysis3C.plot
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeDomainAnalysis3C.polarization_analysis.html">
+       twistpy.polarization.TimeDomainAnalysis3C.polarization_analysis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeDomainAnalysis3C.save.html">
+       twistpy.polarization.TimeDomainAnalysis3C.save
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../api/generated/twistpy.polarization.TimeFrequencyAnalysis3C.html">
+     twistpy.polarization.TimeFrequencyAnalysis3C
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <label for="toctree-checkbox-4">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeFrequencyAnalysis3C.filter.html">
+       twistpy.polarization.TimeFrequencyAnalysis3C.filter
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeFrequencyAnalysis3C.plot.html">
+       twistpy.polarization.TimeFrequencyAnalysis3C.plot
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeFrequencyAnalysis3C.polarization_analysis.html">
+       twistpy.polarization.TimeFrequencyAnalysis3C.polarization_analysis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeFrequencyAnalysis3C.save.html">
+       twistpy.polarization.TimeFrequencyAnalysis3C.save
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../api/generated/twistpy.polarization.PolarizationModel3C.html">
+     twistpy.polarization.PolarizationModel3C
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+    <label for="toctree-checkbox-5">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.PolarizationModel3C.polarization_vector.html">
+       twistpy.polarization.PolarizationModel3C.polarization_vector
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../api/generated/twistpy.polarization.DispersionAnalysis.html">
+     twistpy.polarization.DispersionAnalysis
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.DispersionAnalysis.plot.html">
+       twistpy.polarization.DispersionAnalysis.plot
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.DispersionAnalysis.plot_baz.html">
+       twistpy.polarization.DispersionAnalysis.plot_baz
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.DispersionAnalysis.save.html">
+       twistpy.polarization.DispersionAnalysis.save
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../api/generated/twistpy.polarization.TimeDomainAnalysis6C.html">
+     twistpy.polarization.TimeDomainAnalysis6C
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeDomainAnalysis6C.classify.html">
+       twistpy.polarization.TimeDomainAnalysis6C.classify
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeDomainAnalysis6C.plot.html">
+       twistpy.polarization.TimeDomainAnalysis6C.plot
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeDomainAnalysis6C.polarization_analysis.html">
+       twistpy.polarization.TimeDomainAnalysis6C.polarization_analysis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeDomainAnalysis6C.save.html">
+       twistpy.polarization.TimeDomainAnalysis6C.save
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../api/generated/twistpy.polarization.TimeFrequencyAnalysis6C.html">
+     twistpy.polarization.TimeFrequencyAnalysis6C
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeFrequencyAnalysis6C.classify.html">
+       twistpy.polarization.TimeFrequencyAnalysis6C.classify
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeFrequencyAnalysis6C.filter.html">
+       twistpy.polarization.TimeFrequencyAnalysis6C.filter
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeFrequencyAnalysis6C.plot_classification.html">
+       twistpy.polarization.TimeFrequencyAnalysis6C.plot_classification
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeFrequencyAnalysis6C.plot_wave_parameters.html">
+       twistpy.polarization.TimeFrequencyAnalysis6C.plot_wave_parameters
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeFrequencyAnalysis6C.polarization_analysis.html">
+       twistpy.polarization.TimeFrequencyAnalysis6C.polarization_analysis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeFrequencyAnalysis6C.save.html">
+       twistpy.polarization.TimeFrequencyAnalysis6C.save
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../api/generated/twistpy.polarization.EstimatorConfiguration.html">
+     twistpy.polarization.EstimatorConfiguration
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+    <label for="toctree-checkbox-9">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.EstimatorConfiguration.compute_steering_vectors.html">
+       twistpy.polarization.EstimatorConfiguration.compute_steering_vectors
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../api/generated/twistpy.polarization.SupportVectorMachine.html">
+     twistpy.polarization.SupportVectorMachine
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+    <label for="toctree-checkbox-10">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.SupportVectorMachine.load_model.html">
+       twistpy.polarization.SupportVectorMachine.load_model
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.SupportVectorMachine.train.html">
+       twistpy.polarization.SupportVectorMachine.train
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../api/generated/twistpy.polarization.PolarizationModel6C.html">
+     twistpy.polarization.PolarizationModel6C
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+    <label for="toctree-checkbox-11">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.PolarizationModel6C.polarization_vector.html">
+       twistpy.polarization.PolarizationModel6C.polarization_vector
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/twistpy.tilt.correction.remove_tilt.html">
+     twistpy.tilt.correction.remove_tilt
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/twistpy.tilt.correction.transfer_function.html">
+     twistpy.tilt.correction.transfer_function
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../api/generated/twistpy.array_processing.BeamformingArray.html">
+     twistpy.array_processing.BeamformingArray
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+    <label for="toctree-checkbox-12">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.array_processing.BeamformingArray.add_data.html">
+       twistpy.array_processing.BeamformingArray.add_data
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.array_processing.BeamformingArray.beamforming.html">
+       twistpy.array_processing.BeamformingArray.beamforming
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.array_processing.BeamformingArray.compute_steering_vectors.html">
+       twistpy.array_processing.BeamformingArray.compute_steering_vectors
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/twistpy.utils.stransform.html">
+     twistpy.utils.stransform
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/twistpy.utils.istransform.html">
+     twistpy.utils.istransform
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/twistpy.utils.load_analysis.html">
+     twistpy.utils.load_analysis
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  References:
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../references.html">
+   Relevant Publications
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../contributors.html">
+   Contributors
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../contact.html">
+   Contact
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../acknowledgments.html">
+   Acknowledgments
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<!-- This is an invisible pixel that we watch to see if we've scrolled. -->
+<div class="sbt-scroll-pixel-helper"></div>
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            <div class="topbar-left">
+                
+                <label class="nav-toggle-button" for="__navigation">
+                    <div class="visually-hidden">Toggle navigation</div>
+                    <i class="fas fa-bars"></i>
+                </label>
+                
+            </div>
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/examples/marsquake.rst.txt"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.rst</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/solldavid/TwistPy"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>3-C Polarization analysis and filtering: Real data example using a marsquake recorded by InSight</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-examples-marsquake-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="c-polarization-analysis-and-filtering-real-data-example-using-a-marsquake-recorded-by-insight">
+<span id="sphx-glr-examples-marsquake-py"></span><h1>3-C Polarization analysis and filtering: Real data example using a marsquake recorded by InSight<a class="headerlink" href="#c-polarization-analysis-and-filtering-real-data-example-using-a-marsquake-recorded-by-insight" title="Permalink to this headline">¶</a></h1>
+<p>This example shows the application of TwistPy’s polarization analysis and filtering tools to a marsquake that was
+recorded by NASA’s InSight Mars lander on mission sol 173. Here, we  extract time- and frequency-dependent
+polarization attributes of the three-component particle motion such as the ellipticity, the degree-of-polarization and
+the directionality. We then devise a polarization filter to enhance certain phases in the data (in this case, we try
+to enhance S-phases). The filtering that is demonstrated hereafter has, for example, been used to detect seismic phases
+that bounce off the Martian core (see Stähler et al., 2021, <em>Seismic detection of the martian core</em>, Science,
+<a class="reference external" href="https://www.science.org/doi/10.1126/science.abi7730">https://www.science.org/doi/10.1126/science.abi7730</a>).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">obspy.core</span> <span class="kn">import</span> <span class="n">read</span>
+
+<span class="kn">from</span> <span class="nn">twistpy.polarization</span> <span class="kn">import</span> <a href="../api/generated/twistpy.polarization.TimeFrequencyAnalysis3C.html#twistpy.polarization.TimeFrequencyAnalysis3C" title="twistpy.polarization.TimeFrequencyAnalysis3C" class="sphx-glr-backref-module-twistpy-polarization sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="../api/generated/twistpy.polarization.TimeFrequencyAnalysis3C.html#twistpy.polarization.TimeFrequencyAnalysis3C" title="twistpy.polarization.TimeFrequencyAnalysis3C" class="sphx-glr-backref-module-twistpy-polarization sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">TimeFrequencyAnalysis3C</span></a></a>
+<span class="kn">from</span> <span class="nn">twistpy.utils</span> <span class="kn">import</span> <a href="../api/generated/twistpy.utils.stransform.html#twistpy.utils.stransform" title="twistpy.utils.stransform" class="sphx-glr-backref-module-twistpy-utils sphx-glr-backref-type-py-function"><a href="../api/generated/twistpy.utils.stransform.html#twistpy.utils.stransform" title="twistpy.utils.stransform" class="sphx-glr-backref-module-twistpy-utils sphx-glr-backref-type-py-function"><span class="n">stransform</span></a></a>
+
+<span class="c1"># sphinx_gallery_thumbnail_number = 1</span>
+</pre></div>
+</div>
+<p>We start by reading in the data, which has already been corrected for the instrument response and rotated to
+a ZNE configuration.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="s2">&quot;../example_data/S0173a.mseed&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now we specify the parameters of the time-frequency window that we use for polarization analysis. The spectral
+matrices for polarization analysis will be smoothed in a 2D  window extending over the number of periods specified
+by ‘number_of_periods’ and over the frequency range (in Hz) specified by ‘frequency’. Here, we
+specify a window that is frequency-dependent and extends over a single period in time (1/frequency). In the
+frequency-direction the window extends over 50 mHz.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">window</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;number_of_periods&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;frequency_extent&quot;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Now we can set up the polarizaiton analysis interface. To compute the S-transform, we use the default value of k=1.
+(see the example on the S-transform for more information on this parameter).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">analysis</span> <span class="o">=</span> <a href="../api/generated/twistpy.polarization.TimeFrequencyAnalysis3C.html#twistpy.polarization.TimeFrequencyAnalysis3C" title="twistpy.polarization.TimeFrequencyAnalysis3C" class="sphx-glr-backref-module-twistpy-polarization sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="../api/generated/twistpy.polarization.TimeFrequencyAnalysis3C.html#twistpy.polarization.TimeFrequencyAnalysis3C" title="twistpy.polarization.TimeFrequencyAnalysis3C" class="sphx-glr-backref-module-twistpy-polarization sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">TimeFrequencyAnalysis3C</span></a></a><span class="p">(</span>
+    <span class="n">N</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">E</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">Z</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">window</span><span class="o">=</span><span class="n">window</span><span class="p">,</span> <span class="n">timeaxis</span><span class="o">=</span><span class="s2">&quot;utc&quot;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Computing covariance matrices...
+Covariance matrices computed!
+</pre></div>
+</div>
+<p>To estimate polarization attributes, we use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">analysis</span><span class="o">.</span><span class="n">polarization_analysis</span><span class="p">()</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Computing polarization attributes...
+Polarization attributes have been computed!
+</pre></div>
+</div>
+<p>To plot the result, we can make use of the plot_polarization_analysis() method. We want to plot the inclination and
+azimuth of the major semi-axis of the polarization ellipse and only plot the polarization attributes at time frequency
+pixels where the signal strength in all three-components exceeds 5 percent of the maximum value:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">analysis</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">major_semi_axis</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">clip</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../_images/sphx_glr_marsquake_001.png" srcset="../_images/sphx_glr_marsquake_001.png" alt="Ellipticity, Inclination of major semi-axis, Azimuth of major semi-axis, Degree of polarization" class = "sphx-glr-single-img"/><p>Let us now devise a polarization filter that enhances the S-waves in the signal. For S-waves at close-to-
+vertical incidence, we would expect the ground to vibrate predominantly in the horizontal direction, we therefore
+devise a filter that suppresses vertically polarized signals (incidence angle measured from vertical smaller than 60
+degrees). Additionally, we only want to keep the part of the signal that is rectilinearly polarized (i.e., the body
+waves with an ellipticity smaller than 0.4). To automatically generate a plot of the filtered data and the filtered
+polarization attributes by setting plot_filtered_attributes=True.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data_filtered</span> <span class="o">=</span> <span class="n">analysis</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+    <span class="n">elli</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">],</span> <span class="n">inc1</span><span class="o">=</span><span class="p">[</span><span class="mi">60</span><span class="p">,</span> <span class="mi">90</span><span class="p">],</span> <span class="n">plot_filtered_attributes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">clip</span><span class="o">=</span><span class="mf">0.0</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<img src="../_images/sphx_glr_marsquake_002.png" srcset="../_images/sphx_glr_marsquake_002.png" alt="Ellipticity, Inclination of major semi-axis, Azimuth of major semi-axis, Degree of polarization" class = "sphx-glr-single-img"/><p>Note that P-wave energy is now widely suppressed, while the S-waves are retained. However, there seems to be a
+strong horizontally polarized pulse just on top of the P-wave arrival. This pulse corresponds to a data glitch and is
+not related to the marsquake. Another glitch can be observed at 02:38 UTC. If you look closely, you can see that a
+horizontally and rectilinearly polarized phase seems to arrive at about 02:31 UTC (about 500 seconds after the
+P-wave arrival). This phase is interpreted to be an ScS core phase, bouncing off the martian core-mantle boundary
+(Stähler et al., 2021, Seismic detection of the martian core, Science). Sometimes, it is helpful to plot the
+time-frequency representation (S-transform) of the signal for interpretation. This can be done in the following way:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute S-transform of North component for plotting</span>
+<span class="n">N_stran</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <a href="../api/generated/twistpy.utils.stransform.html#twistpy.utils.stransform" title="twistpy.utils.stransform" class="sphx-glr-backref-module-twistpy-utils sphx-glr-backref-type-py-function"><a href="../api/generated/twistpy.utils.stransform.html#twistpy.utils.stransform" title="twistpy.utils.stransform" class="sphx-glr-backref-module-twistpy-utils sphx-glr-backref-type-py-function"><span class="n">stransform</span></a></a><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">N_stran_filtered</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <a href="../api/generated/twistpy.utils.stransform.html#twistpy.utils.stransform" title="twistpy.utils.stransform" class="sphx-glr-backref-module-twistpy-utils sphx-glr-backref-type-py-function"><a href="../api/generated/twistpy.utils.stransform.html#twistpy.utils.stransform" title="twistpy.utils.stransform" class="sphx-glr-backref-module-twistpy-utils sphx-glr-backref-type-py-function"><span class="n">stransform</span></a></a><span class="p">(</span>
+    <span class="n">data_filtered</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>  <span class="c1"># S-transform of filtered data for comparison</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;ggplot&quot;</span><span class="p">)</span>
+
+<span class="c1"># Plot the result</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="matplotlib.pyplot.subplots" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="matplotlib.pyplot.subplots" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a></a><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">analysis</span><span class="o">.</span><span class="n">t_pol</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;N-Component Input Data&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">6e-9</span><span class="p">,</span> <span class="mf">6e-9</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">xaxis_date</span><span class="p">()</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">N_stran</span><span class="p">),</span>
+    <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">,</span>
+    <span class="n">aspect</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+    <span class="n">extent</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">analysis</span><span class="o">.</span><span class="n">t_pol</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">analysis</span><span class="o">.</span><span class="n">t_pol</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">analysis</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">analysis</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time (UTC)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;S-transform Input Data&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">xaxis_date</span><span class="p">()</span>
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">analysis</span><span class="o">.</span><span class="n">t_pol</span><span class="p">,</span> <span class="n">data_filtered</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;N-Component Filtered Data&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">6e-9</span><span class="p">,</span> <span class="mf">6e-9</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">xaxis_date</span><span class="p">()</span>
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">N_stran_filtered</span><span class="p">),</span>
+    <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">,</span>
+    <span class="n">aspect</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+    <span class="n">extent</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">analysis</span><span class="o">.</span><span class="n">t_pol</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">analysis</span><span class="o">.</span><span class="n">t_pol</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">analysis</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">analysis</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time (UTC)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;S-transform Filtered Data&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">xaxis_date</span><span class="p">()</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a></a><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../_images/sphx_glr_marsquake_003.png" srcset="../_images/sphx_glr_marsquake_003.png" alt="N-Component Input Data, N-Component Filtered Data, S-transform Input Data, S-transform Filtered Data" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  23.367 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-marsquake-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/0e9e58b28ac84a0ec9c72ed2355bd880/marsquake.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">marsquake.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/a5584efb91dace2722b3e6040df0d831/marsquake.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">marsquake.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="3Cpolarization_timefrequency.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">3-C Polarization analysis and filtering in the time-frequency domain</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="six_component_wave_parameter_estimation.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">6-C Polarization Analysis: Time-domain wave parameter estimation</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+        &copy; Copyright 2022, The TwistPy Developers.<br/>
+      Last updated on Dec 01, 2022.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

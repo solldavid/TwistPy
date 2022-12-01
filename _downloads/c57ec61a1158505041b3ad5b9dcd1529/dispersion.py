@@ -21,7 +21,7 @@ from twistpy.polarization.machinelearning import SupportVectorMachine
 # scaling velocity (see other examples on 6C polarization analysis). After scaling, the translational and rotational
 # components should have comparable amplitudes. This makes the analysis more stable.
 
-data = read("../example_data/SWM/SWM_proper_preprocessing.mseed")
+data = read("../example_data/6C_urban_noise.mseed")
 scaling_velocity = 800.0
 for i, trace in enumerate(data):
     if i < 3:

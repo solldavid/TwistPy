@@ -57,7 +57,7 @@ components should have comparable amplitudes. This makes the analysis more stabl
 .. code-block:: default
 
 
-    data = read("../example_data/SWM/SWM_proper_preprocessing.mseed")
+    data = read("../example_data/6C_urban_noise.mseed")
     scaling_velocity = 800.0
     for i, trace in enumerate(data):
         if i < 3:
@@ -227,7 +227,7 @@ To plot the back-azimuth at a specific frequency, use the plot_baz() method:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 5 minutes  16.556 seconds)
+   **Total running time of the script:** ( 5 minutes  24.309 seconds)
 
 
 .. _sphx_glr_download_examples_dispersion.py:

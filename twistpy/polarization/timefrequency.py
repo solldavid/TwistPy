@@ -5,7 +5,6 @@ from builtins import ValueError
 from typing import List, Dict, Tuple
 
 import matplotlib.pyplot as plt
-from matplotlib.image import NonUniformImage
 import numpy as np
 import pandas as pd
 from matplotlib.axes import Axes

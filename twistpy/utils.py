@@ -155,6 +155,7 @@ def istransform(
         Scaling factor that controls the number of oscillations in the window.
     use_filter : :obj:`bool`, default = False
         Deconvolve the filter that describes the approximation
+
     Returns
     -------
     signal : :obj:`numpy.ndarray` of :obj:`float`

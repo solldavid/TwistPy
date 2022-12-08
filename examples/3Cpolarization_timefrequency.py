@@ -145,11 +145,16 @@ analysis = TimeFrequencyAnalysis3C(
 analysis.polarization_analysis()
 
 ########################################################################################################################
-# To plot the result, we can make use of the plot_polarization_analysis() method. We want to plot the inclination and
+# To plot the result, we can make use of the plot() method. We want to plot the inclination and
 # azimuth of the major semi-axis of the polarization ellipse and only plot the polarization attributes at time frequency
 # points where the signal strength in all three-components exceeds 5 percent of the maximum value:
 
-analysis.plot(major_semi_axis=True, clip=0.05, show=False)
+analysis.plot(major_semi_axis=True, clip=0.00, show=False)
+
+########################################################################################################################
+# You can also plot the polarization attributes with a logarithmic frequency axis.
+
+analysis.plot(major_semi_axis=True, clip=0.00, show=False, log_frequency=True, fmin=10., fmax=30.)
 
 ########################################################################################################################
 # We can now use the computed polarization attributes to devise a polarization filter.

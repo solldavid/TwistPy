@@ -5,6 +5,7 @@ from builtins import ValueError
 from typing import List, Dict, Tuple
 
 import matplotlib.pyplot as plt
+from matplotlib.image import NonUniformImage
 import numpy as np
 import pandas as pd
 from matplotlib.axes import Axes
@@ -51,7 +52,7 @@ class TimeFrequencyAnalysis6C:
         2-D time-frequency window within which the covariance matrices are averaged:
 
         |  window = {'number_of_periods': :obj:`float`, 'frequency_extent': :obj:`float`}
-        |  The extent of the window in time is frequency-dependent and stretches over 'number_of_periods' periods, where
+        |  The width of the window in time is frequency-dependent and stretches over 'number_of_periods' periods, where
             the period is defined as 1/f. In frequency, the window stretches over the specified 'frequency_extent' in
             Hz.
     dsfact : :obj:`int`, default=1
@@ -1727,7 +1728,7 @@ class TimeFrequencyAnalysis3C:
         2-D time-frequency window within which the covariance matrices are averaged:
 
         |  window = {'number_of_periods': :obj:`float`, 'frequency_extent': :obj:`float`}
-        |  The extent of the window in time is frequency-dependent and stretches over 'number_of_periods' periods, where
+        |  The width of the window in time is frequency-dependent and stretches over 'number_of_periods' periods, where
             the period is defined as 1/f. In frequency, the window stretches over the specified 'frequency_extent' in
             Hz.
     dsfact : :obj:`int`, default=1
@@ -2003,27 +2004,16 @@ class TimeFrequencyAnalysis3C:
         smooth_mask: bool = False,
         return_mask: bool = False,
         clip: float = 0.05,
+        log_frequency: bool = False,
+        fmin: float = None,
+        fmax: float = None,
         **kwargs,
     ) -> Tuple:
         r"""Filter data based on polarization attributes.
 
         Parameters
         ----------
-        plot_filtered_attributes : :obj:`bool`, default = False
-            If set to True, a plot will be generated that shows the polarization attributes after filtering
-        suppress : :obj:`bool`, default = False
-            If set to True the polarization states that fulfill the filtering criterion will be suppressed from the data
-            while preserving any underlying signal that is orthogonal to the polarization state.
-        smooth_mask : :obj:`bool`, default = False
-            If set to True, the filter mask will be smoothed within the same time-frequency window that was used to
-            compute the polarization attributes
-        return_mask : :obj:´bool´, default = False
-            If set to True, the filter mask will be returned after the function is called.
-        clip : :obj:`float`, default = 0.05
-            Only used if plot_filtered_attributes = True. Results are only plotted at time-frequency points where the
-            signal amplitudes exceed a value of amplitudes * maximum amplitude in the signal (given by the l2-norm of
-            all three components).
-        **kwargs : For example elli=[0, 0.3]
+         **kwargs : For example elli=[0, 0.3]
             Polarization attributes used for filtering. The filter parameters are specified as a list with two entries,
             specifying the range of the polarization attributes that are kept by the filter. In the above example the
             filter would only retain all signal with an ellipticity between 0 and 0.3 and suppress all signal
@@ -2042,6 +2032,27 @@ class TimeFrequencyAnalysis3C:
                 azi1 (Azimuth of the major semi axis)
 
                 azi2 (Azimuth of the minor semi axis)
+
+        plot_filtered_attributes : :obj:`bool`, default = False
+            If set to True, a plot will be generated that shows the polarization attributes after filtering
+        suppress : :obj:`bool`, default = False
+            If set to True the polarization states that fulfill the filtering criterion will be suppressed from the data
+            while preserving any underlying signal that is orthogonal to the polarization state.
+        smooth_mask : :obj:`bool`, default = False
+            If set to True, the filter mask will be smoothed within the same time-frequency window that was used to
+            compute the polarization attributes
+        return_mask : :obj:´bool´, default = False
+            If set to True, the filter mask will be returned after the function is called.
+        clip : :obj:`float`, default = 0.05
+            Only used if plot_filtered_attributes = True. Results are only plotted at time-frequency points where the
+            signal amplitudes exceed a value of amplitudes * maximum amplitude in the signal (given by the l2-norm of
+            all three components).
+        log_frequency : :obj:`bool` = False
+            Only used if plot_filtered_attributes = True. Plot polarization attributes on a logarithmic frequency axis.
+        fmin : :obj:`float`, optional
+            Only used if plot_filtered_attributes = True. Set the lower limit of the frequency axis.
+        fmax : :obj:`float`, optional
+            Only used if plot_filtered_attributes = True. Set the upper limit of the frequency axis
 
         Returns
         -------
@@ -2142,7 +2153,15 @@ class TimeFrequencyAnalysis3C:
         data_filtered[2].data = E_sep
 
         if plot_filtered_attributes:
-            self.plot(show=False, alpha=mask, seismograms=data_filtered, clip=clip)
+            self.plot(
+                show=False,
+                alpha=mask,
+                seismograms=data_filtered,
+                clip=clip,
+                log_frequency=log_frequency,
+                fmin=fmin,
+                fmax=fmax,
+            )
         if return_mask:
             return data_filtered, mask
         else:
@@ -2155,6 +2174,9 @@ class TimeFrequencyAnalysis3C:
         show: bool = True,
         alpha: np.ndarray = None,
         seismograms: Stream = None,
+        log_frequency: bool = False,
+        fmin: float = None,
+        fmax: float = None,
     ) -> None:
         """Plot polarization analysis.
 
@@ -2174,6 +2196,12 @@ class TimeFrequencyAnalysis3C:
             plotted on the alpha channel.
         seismograms : :obj:`obspy.core.Stream`, default = None
             Manually provide seismograms to be plotted in the first panel. By default, the input data is plotted.
+        log_frequency : :obj:`bool` Optional, Default = False
+            Plot polarization attributes on a logarithmic frequency axis.
+        fmin : :obj:`float`, optional
+            Set the lower limit of the frequency axis.
+        fmax : :obj:`float`, optional
+            Set the upper limit of the frequency axis
         """
         assert (
             self.elli is not None
@@ -2194,16 +2222,26 @@ class TimeFrequencyAnalysis3C:
         alpha_channel[alpha_channel > 1] = 1
         alpha_channel[alpha_channel < 0] = 0
 
-        ax[1].imshow(
+        if log_frequency:
+            ax[1].set_yscale("log")
+        ax[1].pcolorfast(
+            self.t_pol,
+            self.f_pol,
             self.elli,
-            origin="lower",
-            aspect="auto",
             alpha=alpha_channel,
-            extent=[self.t_pol[0], self.t_pol[-1], self.f_pol[0], self.f_pol[-1]],
             cmap="inferno",
             vmin=0,
             vmax=1,
         )
+        if fmin is None and fmax is None:
+            ax[1].set_ylim(bottom=self.f_pol[1], top=self.f_pol[-1])
+        elif fmin is None:
+            ax[1].set_ylim(bottom=self.f_pol[1], top=fmax)
+        elif fmax is None:
+            ax[1].set_ylim(bottom=fmin, top=self.f_pol[-1])
+        else:
+            ax[1].set_ylim(bottom=fmin, top=fmax)
+
         map_elli = ScalarMappable(Normalize(vmin=0, vmax=1), cmap="inferno")
         cbar_elli = plt.colorbar(map_elli, ax=ax[1], extend="max")
         cbar_elli.set_label("Ellipticity")
@@ -2211,31 +2249,49 @@ class TimeFrequencyAnalysis3C:
         ax[1].set_ylabel("Frequency (Hz)")
 
         if major_semi_axis:
-            ax[2].imshow(
+            if log_frequency:
+                ax[2].set_yscale("log")
+            ax[2].pcolorfast(
+                self.t_pol,
+                self.f_pol,
                 self.inc1,
-                origin="lower",
-                aspect="auto",
                 alpha=alpha_channel,
-                extent=[self.t_pol[0], self.t_pol[-1], self.f_pol[0], self.f_pol[-1]],
                 cmap="inferno",
                 vmin=0,
                 vmax=90,
             )
+            if fmin is None and fmax is None:
+                ax[2].set_ylim(bottom=self.f_pol[1], top=self.f_pol[-1])
+            elif fmin is None:
+                ax[2].set_ylim(bottom=self.f_pol[1], top=fmax)
+            elif fmax is None:
+                ax[2].set_ylim(bottom=fmin, top=self.f_pol[-1])
+            else:
+                ax[2].set_ylim(bottom=fmin, top=fmax)
             map_inc1 = ScalarMappable(Normalize(vmin=0, vmax=90), cmap="inferno")
             cbar_inc1 = plt.colorbar(map_inc1, ax=ax[2], extend="max")
             cbar_inc1.set_label("Inclination (Degrees)")
             ax[2].set_title("Inclination of major semi-axis")
         else:
-            ax[2].imshow(
+            if log_frequency:
+                ax[2].set_yscale("log")
+            ax[2].pcolorfast(
+                self.t_pol,
+                self.f_pol,
                 self.inc2,
-                origin="lower",
-                aspect="auto",
                 alpha=alpha_channel,
-                extent=[self.t_pol[0], self.t_pol[-1], self.f_pol[0], self.f_pol[-1]],
                 cmap="inferno",
                 vmin=0,
                 vmax=90,
             )
+            if fmin is None and fmax is None:
+                ax[2].set_ylim(bottom=self.f_pol[1], top=self.f_pol[-1])
+            elif fmin is None:
+                ax[2].set_ylim(bottom=self.f_pol[1], top=fmax)
+            elif fmax is None:
+                ax[2].set_ylim(bottom=fmin, top=self.f_pol[-1])
+            else:
+                ax[2].set_ylim(bottom=fmin, top=fmax)
             map_inc2 = ScalarMappable(Normalize(vmin=0, vmax=90), cmap="inferno")
             cbar_inc2 = plt.colorbar(map_inc2, ax=ax[2], extend="max")
             cbar_inc2.set_label("Inclination (Degrees)")
@@ -2243,47 +2299,74 @@ class TimeFrequencyAnalysis3C:
         ax[2].set_ylabel("Frequency (Hz)")
 
         if major_semi_axis:
-            ax[3].imshow(
+            if log_frequency:
+                ax[3].set_yscale("log")
+            ax[3].pcolorfast(
+                self.t_pol,
+                self.f_pol,
                 self.azi1,
-                origin="lower",
-                aspect="auto",
                 alpha=alpha_channel,
-                extent=[self.t_pol[0], self.t_pol[-1], self.f_pol[0], self.f_pol[-1]],
                 cmap="twilight",
                 vmin=0,
                 vmax=180,
             )
+            if fmin is None and fmax is None:
+                ax[3].set_ylim(bottom=self.f_pol[1], top=self.f_pol[-1])
+            elif fmin is None:
+                ax[3].set_ylim(bottom=self.f_pol[1], top=fmax)
+            elif fmax is None:
+                ax[3].set_ylim(bottom=fmin, top=self.f_pol[-1])
+            else:
+                ax[3].set_ylim(bottom=fmin, top=fmax)
             map_azi1 = ScalarMappable(Normalize(vmin=0, vmax=180), cmap="twilight")
             cbar_azi1 = plt.colorbar(map_azi1, ax=ax[3], extend="max")
             cbar_azi1.set_label("Azimuth (Degrees)")
             ax[3].set_title("Azimuth of major semi-axis")
         else:
-            ax[3].imshow(
+            if log_frequency:
+                ax[3].set_yscale("log")
+            ax[3].pcolorfast(
+                self.t_pol,
+                self.f_pol,
                 self.azi2,
-                origin="lower",
-                aspect="auto",
                 alpha=alpha_channel,
-                extent=[self.t_pol[0], self.t_pol[-1], self.f_pol[0], self.f_pol[-1]],
                 cmap="twilight",
                 vmin=0,
                 vmax=180,
             )
+            if fmin is None and fmax is None:
+                ax[3].set_ylim(bottom=self.f_pol[1], top=self.f_pol[-1])
+            elif fmin is None:
+                ax[3].set_ylim(bottom=self.f_pol[1], top=fmax)
+            elif fmax is None:
+                ax[3].set_ylim(bottom=fmin, top=self.f_pol[-1])
+            else:
+                ax[3].set_ylim(bottom=fmin, top=fmax)
             map_azi2 = ScalarMappable(Normalize(vmin=0, vmax=180), cmap="twilight")
             cbar_azi2 = plt.colorbar(map_azi2, ax=ax[3], extend="max")
             cbar_azi2.set_label("Azimuth (Degrees)")
             ax[3].set_title("Azimuth of minor semi-axis")
         ax[3].set_ylabel("Frequency (Hz)")
 
-        ax[4].imshow(
+        if log_frequency:
+            ax[4].set_yscale("log")
+        ax[4].pcolorfast(
+            self.t_pol,
+            self.f_pol,
             self.dop,
-            origin="lower",
-            aspect="auto",
             alpha=alpha_channel,
-            extent=[self.t_pol[0], self.t_pol[-1], self.f_pol[0], self.f_pol[-1]],
             cmap="inferno",
             vmin=0,
             vmax=1,
         )
+        if fmin is None and fmax is None:
+            ax[4].set_ylim(bottom=self.f_pol[1], top=self.f_pol[-1])
+        elif fmin is None:
+            ax[4].set_ylim(bottom=self.f_pol[1], top=fmax)
+        elif fmax is None:
+            ax[4].set_ylim(bottom=fmin, top=self.f_pol[-1])
+        else:
+            ax[4].set_ylim(bottom=fmin, top=fmax)
         map_dop = ScalarMappable(Normalize(vmin=0, vmax=1), cmap="inferno")
         cbar_dop = plt.colorbar(map_dop, ax=ax[4], extend="max")
         cbar_dop.set_label("DOP")

@@ -298,7 +298,7 @@ To compute the polarization attributes, we run:
 
 .. GENERATED FROM PYTHON SOURCE LINES 148-151
 
-To plot the result, we can make use of the plot_polarization_analysis() method. We want to plot the inclination and
+To plot the result, we can make use of the plot() method. We want to plot the inclination and
 azimuth of the major semi-axis of the polarization ellipse and only plot the polarization attributes at time frequency
 points where the signal strength in all three-components exceeds 5 percent of the maximum value:
 
@@ -321,101 +321,17 @@ points where the signal strength in all three-components exceeds 5 percent of th
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 155-159
+.. GENERATED FROM PYTHON SOURCE LINES 155-157
 
-We can now use the computed polarization attributes to devise a polarization filter.
-Depending on the number of samples in the seismograms, the computation of the polarization attributes can become quite
-expensive. If you do not want to recompute the polarization attributes, everytime you try a new filter, consider
-saving them to disk with:
+You can also plot the polarization attributes with a logarithmic frequency axis and restrict the frequency range that
+is plotted (here we only plot results between 1 Hz and 100 Hz).
 
-.. GENERATED FROM PYTHON SOURCE LINES 159-162
+.. GENERATED FROM PYTHON SOURCE LINES 157-160
 
 .. code-block:: default
 
 
-    analysis.save("my_analysis.pkl")
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 163-164
-
-To reload your analysis from the disk, use:
-
-.. GENERATED FROM PYTHON SOURCE LINES 164-167
-
-.. code-block:: default
-
-
-    analysis = load_analysis("my_analysis.pkl")
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 168-172
-
-Once the polarization attributes are computed, you can access them as c lass attributes. The available attributes are:
-'dop' (degree of polarization), 'elli' (Ellipticity), 'inc1' (Inclination of the major semi-axis of the polarization
-ellipse), 'inc2' (Inclination of the minor semi-axis), 'azi1' (Azimuth of the major semi-axis), and 'azi2' (Azimuth of
-the minor semi-axis). So, for example, if you want to access the ellipticity, you would do:
-
-.. GENERATED FROM PYTHON SOURCE LINES 172-175
-
-.. code-block:: default
-
-
-    elli = analysis.elli
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 176-177
-
-The corresponding frequency and time axes are:
-
-.. GENERATED FROM PYTHON SOURCE LINES 177-180
-
-.. code-block:: default
-
-    time = analysis.t_pol
-    frequency = analysis.f_pol
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 181-187
-
-Now, let us devise a simple polarization filter. For this, we make use of the filter() method.  The method takes
-arbitrary polarization attributes as an input for filtering. For example, we can
-devise a filter that will only keep the parts of the signal that are rectilinearly polarized (i.e., low ellipticity
-below 0.2), show a high degree of polarization (larger than 0.7), and that have a predominantly vertical polarization
-(inclination angle of the major semi-axis smaller than 40). The inclination is measured from the vertical axis
-downward, meaning that a wave at completely vertical incidence has an inclination of 0 degrees.
-
-.. GENERATED FROM PYTHON SOURCE LINES 187-192
-
-.. code-block:: default
-
-
-    data_filtered = analysis.filter(
-        plot_filtered_attributes=True, elli=[0.0, 0.2], dop=[0.7, 1], inc1=[0, 40]
-    )
+    analysis.plot(major_semi_axis=True, clip=0.05, show=False, log_frequency=True, fmin=1., fmax=100.)
 
 
 
@@ -429,12 +345,120 @@ downward, meaning that a wave at completely vertical incidence has an inclinatio
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 193-195
+.. GENERATED FROM PYTHON SOURCE LINES 161-165
+
+We can now use the computed polarization attributes to devise a polarization filter.
+Depending on the number of samples in the seismograms, the computation of the polarization attributes can become quite
+expensive. If you do not want to recompute the polarization attributes, everytime you try a new filter, consider
+saving them to disk with:
+
+.. GENERATED FROM PYTHON SOURCE LINES 165-168
+
+.. code-block:: default
+
+
+    analysis.save("my_analysis.pkl")
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 169-170
+
+To reload your analysis from the disk, use:
+
+.. GENERATED FROM PYTHON SOURCE LINES 170-173
+
+.. code-block:: default
+
+
+    analysis = load_analysis("my_analysis.pkl")
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 174-178
+
+Once the polarization attributes are computed, you can access them as c lass attributes. The available attributes are:
+'dop' (degree of polarization), 'elli' (Ellipticity), 'inc1' (Inclination of the major semi-axis of the polarization
+ellipse), 'inc2' (Inclination of the minor semi-axis), 'azi1' (Azimuth of the major semi-axis), and 'azi2' (Azimuth of
+the minor semi-axis). So, for example, if you want to access the ellipticity, you would do:
+
+.. GENERATED FROM PYTHON SOURCE LINES 178-181
+
+.. code-block:: default
+
+
+    elli = analysis.elli
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 182-183
+
+The corresponding frequency and time axes are:
+
+.. GENERATED FROM PYTHON SOURCE LINES 183-186
+
+.. code-block:: default
+
+    time = analysis.t_pol
+    frequency = analysis.f_pol
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 187-193
+
+Now, let us devise a simple polarization filter. For this, we make use of the filter() method.  The method takes
+arbitrary polarization attributes as an input for filtering. For example, we can
+devise a filter that will only keep the parts of the signal that are rectilinearly polarized (i.e., low ellipticity
+below 0.2), show a high degree of polarization (larger than 0.7), and that have a predominantly vertical polarization
+(inclination angle of the major semi-axis smaller than 40). The inclination is measured from the vertical axis
+downward, meaning that a wave at completely vertical incidence has an inclination of 0 degrees.
+
+.. GENERATED FROM PYTHON SOURCE LINES 193-198
+
+.. code-block:: default
+
+
+    data_filtered = analysis.filter(
+        plot_filtered_attributes=True, elli=[0.0, 0.2], dop=[0.7, 1], inc1=[0, 40]
+    )
+
+
+
+
+.. image-sg:: /examples/images/sphx_glr_3Cpolarization_timefrequency_004.png
+   :alt: Ellipticity, Inclination of major semi-axis, Azimuth of major semi-axis, Degree of polarization
+   :srcset: /examples/images/sphx_glr_3Cpolarization_timefrequency_004.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 199-201
 
 If we have a look at the output of this filter both in the time-domain and in the S-transform, we will see that only
 the P-wave is retained, while all other signals are suppressed.
 
-.. GENERATED FROM PYTHON SOURCE LINES 195-243
+.. GENERATED FROM PYTHON SOURCE LINES 201-249
 
 .. code-block:: default
 
@@ -489,9 +513,9 @@ the P-wave is retained, while all other signals are suppressed.
 
 
 
-.. image-sg:: /examples/images/sphx_glr_3Cpolarization_timefrequency_004.png
+.. image-sg:: /examples/images/sphx_glr_3Cpolarization_timefrequency_005.png
    :alt: Z-Component Input Data, Z-Component Filtered Data, S-transform Input Data, S-transform Filtered Data
-   :srcset: /examples/images/sphx_glr_3Cpolarization_timefrequency_004.png
+   :srcset: /examples/images/sphx_glr_3Cpolarization_timefrequency_005.png
    :class: sphx-glr-single-img
 
 
@@ -506,12 +530,12 @@ the P-wave is retained, while all other signals are suppressed.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 244-246
+.. GENERATED FROM PYTHON SOURCE LINES 250-252
 
 Similarly, we could devise a filter that only retains the elliptically polarized parts of the signal (e.g., surface
 waves).
 
-.. GENERATED FROM PYTHON SOURCE LINES 246-251
+.. GENERATED FROM PYTHON SOURCE LINES 252-257
 
 .. code-block:: default
 
@@ -520,33 +544,6 @@ waves).
         plot_filtered_attributes=True, elli=[0.7, 1.0], dop=[0.7, 1]
     )
 
-
-
-
-.. image-sg:: /examples/images/sphx_glr_3Cpolarization_timefrequency_005.png
-   :alt: Ellipticity, Inclination of major semi-axis, Azimuth of major semi-axis, Degree of polarization
-   :srcset: /examples/images/sphx_glr_3Cpolarization_timefrequency_005.png
-   :class: sphx-glr-single-img
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 252-254
-
-To filter out parts of the signal that exhibit particle motion along a specific direction (e.g., an azimuth around 60
-degrees), we could use:
-
-.. GENERATED FROM PYTHON SOURCE LINES 254-260
-
-.. code-block:: default
-
-
-    data_filtered_60degrees_azimuth = analysis.filter(
-        plot_filtered_attributes=True, azi1=[50, 70], dop=[0.7, 1]
-    )
-
-    plt.show()
 
 
 
@@ -559,10 +556,37 @@ degrees), we could use:
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 258-260
+
+To filter out parts of the signal that exhibit particle motion along a specific direction (e.g., an azimuth around 60
+degrees), we could use:
+
+.. GENERATED FROM PYTHON SOURCE LINES 260-266
+
+.. code-block:: default
+
+
+    data_filtered_60degrees_azimuth = analysis.filter(
+        plot_filtered_attributes=True, azi1=[50, 70], dop=[0.7, 1]
+    )
+
+    plt.show()
+
+
+
+.. image-sg:: /examples/images/sphx_glr_3Cpolarization_timefrequency_007.png
+   :alt: Ellipticity, Inclination of major semi-axis, Azimuth of major semi-axis, Degree of polarization
+   :srcset: /examples/images/sphx_glr_3Cpolarization_timefrequency_007.png
+   :class: sphx-glr-single-img
+
+
+
+
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  2.166 seconds)
+   **Total running time of the script:** ( 0 minutes  3.423 seconds)
 
 
 .. _sphx_glr_download_examples_3Cpolarization_timefrequency.py:

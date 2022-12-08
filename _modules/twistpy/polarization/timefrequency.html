@@ -39,6 +39,7 @@
     <script src="../../../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
+    <link rel="canonical" href="https://twistpy.org/_modules/twistpy/polarization/timefrequency.html" />
     <link rel="shortcut icon" href="../../../_static/twistpy.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -629,7 +630,7 @@
 <span class="sd">        2-D time-frequency window within which the covariance matrices are averaged:</span>
 
 <span class="sd">        |  window = {&#39;number_of_periods&#39;: :obj:`float`, &#39;frequency_extent&#39;: :obj:`float`}</span>
-<span class="sd">        |  The extent of the window in time is frequency-dependent and stretches over &#39;number_of_periods&#39; periods, where</span>
+<span class="sd">        |  The width of the window in time is frequency-dependent and stretches over &#39;number_of_periods&#39; periods, where</span>
 <span class="sd">            the period is defined as 1/f. In frequency, the window stretches over the specified &#39;frequency_extent&#39; in</span>
 <span class="sd">            Hz.</span>
 <span class="sd">    dsfact : :obj:`int`, default=1</span>
@@ -2305,7 +2306,7 @@
 <span class="sd">        2-D time-frequency window within which the covariance matrices are averaged:</span>
 
 <span class="sd">        |  window = {&#39;number_of_periods&#39;: :obj:`float`, &#39;frequency_extent&#39;: :obj:`float`}</span>
-<span class="sd">        |  The extent of the window in time is frequency-dependent and stretches over &#39;number_of_periods&#39; periods, where</span>
+<span class="sd">        |  The width of the window in time is frequency-dependent and stretches over &#39;number_of_periods&#39; periods, where</span>
 <span class="sd">            the period is defined as 1/f. In frequency, the window stretches over the specified &#39;frequency_extent&#39; in</span>
 <span class="sd">            Hz.</span>
 <span class="sd">    dsfact : :obj:`int`, default=1</span>
@@ -2581,27 +2582,16 @@
         <span class="n">smooth_mask</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">return_mask</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">clip</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+        <span class="n">log_frequency</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">fmin</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">fmax</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">:</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Filter data based on polarization attributes.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        plot_filtered_attributes : :obj:`bool`, default = False</span>
-<span class="sd">            If set to True, a plot will be generated that shows the polarization attributes after filtering</span>
-<span class="sd">        suppress : :obj:`bool`, default = False</span>
-<span class="sd">            If set to True the polarization states that fulfill the filtering criterion will be suppressed from the data</span>
-<span class="sd">            while preserving any underlying signal that is orthogonal to the polarization state.</span>
-<span class="sd">        smooth_mask : :obj:`bool`, default = False</span>
-<span class="sd">            If set to True, the filter mask will be smoothed within the same time-frequency window that was used to</span>
-<span class="sd">            compute the polarization attributes</span>
-<span class="sd">        return_mask : :obj:´bool´, default = False</span>
-<span class="sd">            If set to True, the filter mask will be returned after the function is called.</span>
-<span class="sd">        clip : :obj:`float`, default = 0.05</span>
-<span class="sd">            Only used if plot_filtered_attributes = True. Results are only plotted at time-frequency points where the</span>
-<span class="sd">            signal amplitudes exceed a value of amplitudes * maximum amplitude in the signal (given by the l2-norm of</span>
-<span class="sd">            all three components).</span>
-<span class="sd">        **kwargs : For example elli=[0, 0.3]</span>
+<span class="sd">         **kwargs : For example elli=[0, 0.3]</span>
 <span class="sd">            Polarization attributes used for filtering. The filter parameters are specified as a list with two entries,</span>
 <span class="sd">            specifying the range of the polarization attributes that are kept by the filter. In the above example the</span>
 <span class="sd">            filter would only retain all signal with an ellipticity between 0 and 0.3 and suppress all signal</span>
@@ -2620,6 +2610,27 @@
 <span class="sd">                azi1 (Azimuth of the major semi axis)</span>
 
 <span class="sd">                azi2 (Azimuth of the minor semi axis)</span>
+
+<span class="sd">        plot_filtered_attributes : :obj:`bool`, default = False</span>
+<span class="sd">            If set to True, a plot will be generated that shows the polarization attributes after filtering</span>
+<span class="sd">        suppress : :obj:`bool`, default = False</span>
+<span class="sd">            If set to True the polarization states that fulfill the filtering criterion will be suppressed from the data</span>
+<span class="sd">            while preserving any underlying signal that is orthogonal to the polarization state.</span>
+<span class="sd">        smooth_mask : :obj:`bool`, default = False</span>
+<span class="sd">            If set to True, the filter mask will be smoothed within the same time-frequency window that was used to</span>
+<span class="sd">            compute the polarization attributes</span>
+<span class="sd">        return_mask : :obj:´bool´, default = False</span>
+<span class="sd">            If set to True, the filter mask will be returned after the function is called.</span>
+<span class="sd">        clip : :obj:`float`, default = 0.05</span>
+<span class="sd">            Only used if plot_filtered_attributes = True. Results are only plotted at time-frequency points where the</span>
+<span class="sd">            signal amplitudes exceed a value of amplitudes * maximum amplitude in the signal (given by the l2-norm of</span>
+<span class="sd">            all three components).</span>
+<span class="sd">        log_frequency : :obj:`bool` = False</span>
+<span class="sd">            Only used if plot_filtered_attributes = True. Plot polarization attributes on a logarithmic frequency axis.</span>
+<span class="sd">        fmin : :obj:`float`, optional</span>
+<span class="sd">            Only used if plot_filtered_attributes = True. Set the lower limit of the frequency axis.</span>
+<span class="sd">        fmax : :obj:`float`, optional</span>
+<span class="sd">            Only used if plot_filtered_attributes = True. Set the upper limit of the frequency axis.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -2720,7 +2731,15 @@
         <span class="n">data_filtered</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">E_sep</span>
 
         <span class="k">if</span> <span class="n">plot_filtered_attributes</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">mask</span><span class="p">,</span> <span class="n">seismograms</span><span class="o">=</span><span class="n">data_filtered</span><span class="p">,</span> <span class="n">clip</span><span class="o">=</span><span class="n">clip</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">alpha</span><span class="o">=</span><span class="n">mask</span><span class="p">,</span>
+                <span class="n">seismograms</span><span class="o">=</span><span class="n">data_filtered</span><span class="p">,</span>
+                <span class="n">clip</span><span class="o">=</span><span class="n">clip</span><span class="p">,</span>
+                <span class="n">log_frequency</span><span class="o">=</span><span class="n">log_frequency</span><span class="p">,</span>
+                <span class="n">fmin</span><span class="o">=</span><span class="n">fmin</span><span class="p">,</span>
+                <span class="n">fmax</span><span class="o">=</span><span class="n">fmax</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="k">if</span> <span class="n">return_mask</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">data_filtered</span><span class="p">,</span> <span class="n">mask</span>
         <span class="k">else</span><span class="p">:</span>
@@ -2733,6 +2752,9 @@
         <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">alpha</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">seismograms</span><span class="p">:</span> <span class="n">Stream</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">log_frequency</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">fmin</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">fmax</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Plot polarization analysis.</span>
 
@@ -2752,6 +2774,12 @@
 <span class="sd">            plotted on the alpha channel.</span>
 <span class="sd">        seismograms : :obj:`obspy.core.Stream`, default = None</span>
 <span class="sd">            Manually provide seismograms to be plotted in the first panel. By default, the input data is plotted.</span>
+<span class="sd">        log_frequency : :obj:`bool` Optional, Default = False</span>
+<span class="sd">            Plot polarization attributes on a logarithmic frequency axis.</span>
+<span class="sd">        fmin : :obj:`float`, optional</span>
+<span class="sd">            Set the lower limit of the frequency axis.</span>
+<span class="sd">        fmax : :obj:`float`, optional</span>
+<span class="sd">            Set the upper limit of the frequency axis.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">elli</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
@@ -2772,16 +2800,26 @@
         <span class="n">alpha_channel</span><span class="p">[</span><span class="n">alpha_channel</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="n">alpha_channel</span><span class="p">[</span><span class="n">alpha_channel</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
-        <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+        <span class="k">if</span> <span class="n">log_frequency</span><span class="p">:</span>
+            <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">pcolorfast</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">t_pol</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">elli</span><span class="p">,</span>
-            <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">,</span>
-            <span class="n">aspect</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
             <span class="n">alpha</span><span class="o">=</span><span class="n">alpha_channel</span><span class="p">,</span>
-            <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">t_pol</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_pol</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span>
             <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;inferno&quot;</span><span class="p">,</span>
             <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
             <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
         <span class="p">)</span>
+        <span class="k">if</span> <span class="n">fmin</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">fmax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">top</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">fmin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">top</span><span class="o">=</span><span class="n">fmax</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">fmax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="n">fmin</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="n">fmin</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="n">fmax</span><span class="p">)</span>
+
         <span class="n">map_elli</span> <span class="o">=</span> <span class="n">ScalarMappable</span><span class="p">(</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;inferno&quot;</span><span class="p">)</span>
         <span class="n">cbar_elli</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">map_elli</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">extend</span><span class="o">=</span><span class="s2">&quot;max&quot;</span><span class="p">)</span>
         <span class="n">cbar_elli</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;Ellipticity&quot;</span><span class="p">)</span>
@@ -2789,31 +2827,49 @@
         <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Frequency (Hz)&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">major_semi_axis</span><span class="p">:</span>
-            <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+            <span class="k">if</span> <span class="n">log_frequency</span><span class="p">:</span>
+                <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+            <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">pcolorfast</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">t_pol</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">inc1</span><span class="p">,</span>
-                <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">,</span>
-                <span class="n">aspect</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
                 <span class="n">alpha</span><span class="o">=</span><span class="n">alpha_channel</span><span class="p">,</span>
-                <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">t_pol</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_pol</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span>
                 <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;inferno&quot;</span><span class="p">,</span>
                 <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                 <span class="n">vmax</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span>
             <span class="p">)</span>
+            <span class="k">if</span> <span class="n">fmin</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">fmax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">top</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="n">fmin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">top</span><span class="o">=</span><span class="n">fmax</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">fmax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="n">fmin</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="n">fmin</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="n">fmax</span><span class="p">)</span>
             <span class="n">map_inc1</span> <span class="o">=</span> <span class="n">ScalarMappable</span><span class="p">(</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">90</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;inferno&quot;</span><span class="p">)</span>
             <span class="n">cbar_inc1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">map_inc1</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">extend</span><span class="o">=</span><span class="s2">&quot;max&quot;</span><span class="p">)</span>
             <span class="n">cbar_inc1</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;Inclination (Degrees)&quot;</span><span class="p">)</span>
             <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Inclination of major semi-axis&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+            <span class="k">if</span> <span class="n">log_frequency</span><span class="p">:</span>
+                <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+            <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">pcolorfast</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">t_pol</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">inc2</span><span class="p">,</span>
-                <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">,</span>
-                <span class="n">aspect</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
                 <span class="n">alpha</span><span class="o">=</span><span class="n">alpha_channel</span><span class="p">,</span>
-                <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">t_pol</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_pol</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span>
                 <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;inferno&quot;</span><span class="p">,</span>
                 <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                 <span class="n">vmax</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span>
             <span class="p">)</span>
+            <span class="k">if</span> <span class="n">fmin</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">fmax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">top</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="n">fmin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">top</span><span class="o">=</span><span class="n">fmax</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">fmax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="n">fmin</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="n">fmin</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="n">fmax</span><span class="p">)</span>
             <span class="n">map_inc2</span> <span class="o">=</span> <span class="n">ScalarMappable</span><span class="p">(</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">90</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;inferno&quot;</span><span class="p">)</span>
             <span class="n">cbar_inc2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">map_inc2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">extend</span><span class="o">=</span><span class="s2">&quot;max&quot;</span><span class="p">)</span>
             <span class="n">cbar_inc2</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;Inclination (Degrees)&quot;</span><span class="p">)</span>
@@ -2821,47 +2877,74 @@
         <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Frequency (Hz)&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">major_semi_axis</span><span class="p">:</span>
-            <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+            <span class="k">if</span> <span class="n">log_frequency</span><span class="p">:</span>
+                <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+            <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">pcolorfast</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">t_pol</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">azi1</span><span class="p">,</span>
-                <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">,</span>
-                <span class="n">aspect</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
                 <span class="n">alpha</span><span class="o">=</span><span class="n">alpha_channel</span><span class="p">,</span>
-                <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">t_pol</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_pol</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span>
                 <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;twilight&quot;</span><span class="p">,</span>
                 <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                 <span class="n">vmax</span><span class="o">=</span><span class="mi">180</span><span class="p">,</span>
             <span class="p">)</span>
+            <span class="k">if</span> <span class="n">fmin</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">fmax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">top</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="n">fmin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">top</span><span class="o">=</span><span class="n">fmax</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">fmax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="n">fmin</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="n">fmin</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="n">fmax</span><span class="p">)</span>
             <span class="n">map_azi1</span> <span class="o">=</span> <span class="n">ScalarMappable</span><span class="p">(</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">180</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;twilight&quot;</span><span class="p">)</span>
             <span class="n">cbar_azi1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">map_azi1</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">extend</span><span class="o">=</span><span class="s2">&quot;max&quot;</span><span class="p">)</span>
             <span class="n">cbar_azi1</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;Azimuth (Degrees)&quot;</span><span class="p">)</span>
             <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Azimuth of major semi-axis&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+            <span class="k">if</span> <span class="n">log_frequency</span><span class="p">:</span>
+                <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+            <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">pcolorfast</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">t_pol</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">azi2</span><span class="p">,</span>
-                <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">,</span>
-                <span class="n">aspect</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
                 <span class="n">alpha</span><span class="o">=</span><span class="n">alpha_channel</span><span class="p">,</span>
-                <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">t_pol</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_pol</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span>
                 <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;twilight&quot;</span><span class="p">,</span>
                 <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                 <span class="n">vmax</span><span class="o">=</span><span class="mi">180</span><span class="p">,</span>
             <span class="p">)</span>
+            <span class="k">if</span> <span class="n">fmin</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">fmax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">top</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="n">fmin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">top</span><span class="o">=</span><span class="n">fmax</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">fmax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="n">fmin</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="n">fmin</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="n">fmax</span><span class="p">)</span>
             <span class="n">map_azi2</span> <span class="o">=</span> <span class="n">ScalarMappable</span><span class="p">(</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">180</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;twilight&quot;</span><span class="p">)</span>
             <span class="n">cbar_azi2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">map_azi2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">extend</span><span class="o">=</span><span class="s2">&quot;max&quot;</span><span class="p">)</span>
             <span class="n">cbar_azi2</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;Azimuth (Degrees)&quot;</span><span class="p">)</span>
             <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Azimuth of minor semi-axis&quot;</span><span class="p">)</span>
         <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Frequency (Hz)&quot;</span><span class="p">)</span>
 
-        <span class="n">ax</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+        <span class="k">if</span> <span class="n">log_frequency</span><span class="p">:</span>
+            <span class="n">ax</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">pcolorfast</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">t_pol</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">dop</span><span class="p">,</span>
-            <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">,</span>
-            <span class="n">aspect</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
             <span class="n">alpha</span><span class="o">=</span><span class="n">alpha_channel</span><span class="p">,</span>
-            <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">t_pol</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_pol</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span>
             <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;inferno&quot;</span><span class="p">,</span>
             <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
             <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
         <span class="p">)</span>
+        <span class="k">if</span> <span class="n">fmin</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">fmax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ax</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">top</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">fmin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ax</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">top</span><span class="o">=</span><span class="n">fmax</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">fmax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ax</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="n">fmin</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">f_pol</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ax</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="n">fmin</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="n">fmax</span><span class="p">)</span>
         <span class="n">map_dop</span> <span class="o">=</span> <span class="n">ScalarMappable</span><span class="p">(</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;inferno&quot;</span><span class="p">)</span>
         <span class="n">cbar_dop</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">map_dop</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">extend</span><span class="o">=</span><span class="s2">&quot;max&quot;</span><span class="p">)</span>
         <span class="n">cbar_dop</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;DOP&quot;</span><span class="p">)</span>
@@ -2938,7 +3021,7 @@
   <p>
     
         &copy; Copyright 2022, The TwistPy Developers.<br/>
-      Last updated on Dec 01, 2022.<br/>
+      Last updated on Dec 08, 2022.<br/>
   </p>
 </footer>
 </main>

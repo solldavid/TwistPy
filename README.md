@@ -3,7 +3,7 @@
 ![OS-support](https://img.shields.io/badge/OS-linux,win,osx-850A8B.svg)
 
 
-TwistPy is a small Python package for seismic data processing. It includes routines for single-station polarization
+TwistPy is a small open-source Python package for seismic data processing. It includes routines for single-station polarization
 analysis and filtering, as well as array processing tools.
 
 A special focus lies on innovative techniques to process spatial wavefield gradient data and, in particular, rotational

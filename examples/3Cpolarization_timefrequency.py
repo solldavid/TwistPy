@@ -149,12 +149,13 @@ analysis.polarization_analysis()
 # azimuth of the major semi-axis of the polarization ellipse and only plot the polarization attributes at time frequency
 # points where the signal strength in all three-components exceeds 5 percent of the maximum value:
 
-analysis.plot(major_semi_axis=True, clip=0.00, show=False)
+analysis.plot(major_semi_axis=True, clip=0.05, show=False)
 
 ########################################################################################################################
-# You can also plot the polarization attributes with a logarithmic frequency axis.
+# You can also plot the polarization attributes with a logarithmic frequency axis and restrict the frequency range that
+# is plotted (here we only plot results between 10 Hz and 100 Hz).
 
-analysis.plot(major_semi_axis=True, clip=0.00, show=False, log_frequency=True, fmin=10., fmax=30.)
+analysis.plot(major_semi_axis=True, clip=0.05, show=False, log_frequency=True, fmin=10., fmax=100.)
 
 ########################################################################################################################
 # We can now use the computed polarization attributes to devise a polarization filter.

@@ -2051,7 +2051,7 @@ class TimeFrequencyAnalysis3C:
         fmin : :obj:`float`, optional
             Only used if plot_filtered_attributes = True. Set the lower limit of the frequency axis.
         fmax : :obj:`float`, optional
-            Only used if plot_filtered_attributes = True. Set the upper limit of the frequency axis
+            Only used if plot_filtered_attributes = True. Set the upper limit of the frequency axis.
 
         Returns
         -------
@@ -2200,7 +2200,7 @@ class TimeFrequencyAnalysis3C:
         fmin : :obj:`float`, optional
             Set the lower limit of the frequency axis.
         fmax : :obj:`float`, optional
-            Set the upper limit of the frequency axis
+            Set the upper limit of the frequency axis.
         """
         assert (
             self.elli is not None

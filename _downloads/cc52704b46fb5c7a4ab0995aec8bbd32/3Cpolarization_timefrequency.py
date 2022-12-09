@@ -153,9 +153,9 @@ analysis.plot(major_semi_axis=True, clip=0.05, show=False)
 
 ########################################################################################################################
 # You can also plot the polarization attributes with a logarithmic frequency axis and restrict the frequency range that
-# is plotted (here we only plot results between 1 Hz and 100 Hz).
+# is plotted (here we only plot results between 10 Hz and 100 Hz).
 
-analysis.plot(major_semi_axis=True, clip=0.05, show=False, log_frequency=True, fmin=1., fmax=100.)
+analysis.plot(major_semi_axis=True, clip=0.05, show=False, log_frequency=True, fmin=10., fmax=100.)
 
 ########################################################################################################################
 # We can now use the computed polarization attributes to devise a polarization filter.

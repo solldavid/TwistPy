@@ -515,7 +515,7 @@ before we run the analysis:
  .. code-block:: none
 
 
-    <obspy.core.stream.Stream object at 0x7fdaa9a749d0>
+    <obspy.core.stream.Stream object at 0x7fe778728c50>
 
 
 
@@ -645,7 +645,7 @@ plot the S-transform of the vertical translational component.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 2 minutes  36.784 seconds)
+   **Total running time of the script:** ( 2 minutes  59.582 seconds)
 
 
 .. _sphx_glr_download_examples_ml_wave_type_estimation.py:

@@ -44,7 +44,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="S-transform" href="stransform.html" />
-    <link rel="prev" title="6-C Wave parameter estimation: gulf of alaska earthquake" href="alaska_wave_parameter_estimation.html" />
+    <link rel="prev" title="6-C wave type fingerprinting" href="ml_wave_type_estimation.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -126,13 +126,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="ml_wave_type_estimation.html">
-     6-C Polarization Analysis: Wave type classification
+    <a class="reference internal" href="alaska_wave_parameter_estimation.html">
+     6-C Wave parameter estimation: gulf of alaska earthquake
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="alaska_wave_parameter_estimation.html">
-     6-C Wave parameter estimation: gulf of alaska earthquake
+    <a class="reference internal" href="ml_wave_type_estimation.html">
+     6-C wave type fingerprinting
     </a>
    </li>
    <li class="toctree-l2 current active">
@@ -687,7 +687,7 @@ of a reference receiver, all phase delays inside the array are computed with res
 </pre></div>
 </div>
 <img src="../_images/sphx_glr_beamforming_002.png" srcset="../_images/sphx_glr_beamforming_002.png" alt="beamforming" class = "sphx-glr-single-img"/><p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend object at 0x7fe77892d110&gt;
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend object at 0x7f90f954c290&gt;
 </pre></div>
 </div>
 <p>We now need to feed the data to our BeamformingArray object. BeamformingArray objects only accept data in ObsPy
@@ -968,8 +968,8 @@ Text(0.5, 1.0773428912783753, &#39;BARTLETT&#39;)
 <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_beamforming_005.png" srcset="../_images/sphx_glr_beamforming_005.png" alt="MUSIC, MVDR (Capon), BARTLETT" class = "sphx-glr-single-img"/><p>If multiple arrays are available, the beamforming results can be summed to provide a location.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  13.415 seconds)</p>
+<img src="../_images/sphx_glr_beamforming_005.png" srcset="../_images/sphx_glr_beamforming_005.png" alt="MUSIC, MVDR (Capon), BARTLETT" class = "sphx-glr-single-img"/><p>If multiple arrays are available, the beamforming results can be combined (e.g., multiplied) to provide a location.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  15.423 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-beamforming-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/fb084950318b7a31787f2e88c0504d21/beamforming.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">beamforming.py</span></code></a></p>
@@ -987,11 +987,11 @@ Text(0.5, 1.0773428912783753, &#39;BARTLETT&#39;)
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="alaska_wave_parameter_estimation.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="ml_wave_type_estimation.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">6-C Wave parameter estimation: gulf of alaska earthquake</p>
+            <p class="prev-next-title">6-C wave type fingerprinting</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="stransform.html" title="next page">
@@ -1009,7 +1009,7 @@ Text(0.5, 1.0773428912783753, &#39;BARTLETT&#39;)
   <p>
     
         &copy; Copyright 2022, The TwistPy Developers.<br/>
-      Last updated on Dec 09, 2022.<br/>
+      Last updated on Dec 19, 2022.<br/>
   </p>
 </footer>
 </main>

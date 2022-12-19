@@ -126,13 +126,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../examples/ml_wave_type_estimation.html">
-     6-C Polarization Analysis: Wave type classification
+    <a class="reference internal" href="../../examples/alaska_wave_parameter_estimation.html">
+     6-C Wave parameter estimation: gulf of alaska earthquake
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../examples/alaska_wave_parameter_estimation.html">
-     6-C Wave parameter estimation: gulf of alaska earthquake
+    <a class="reference internal" href="../../examples/ml_wave_type_estimation.html">
+     6-C wave type fingerprinting
     </a>
    </li>
    <li class="toctree-l2">
@@ -722,11 +722,11 @@ list_with_classification_of_second_eigenvector, … , ‘5’: list_with_classif
 </dd>
 <dt><strong>t_pol</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.utcdatetime.UTCDateTime.html#obspy.core.utcdatetime.UTCDateTime" title="(in ObsPy v1.4.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UTCDateTime</span></code></a></span></dt><dd><p>Time axis of the computed polarization attributes.</p>
 </dd>
-<dt><strong>f_pol</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndarray</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Frequency axis of the computed polarization attributes.</p>
+<dt><strong>f_pol</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndarray</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Frequency axis of the computed polarization attributes.</p>
 </dd>
-<dt><strong>C</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndarray</span></code></a> of <a class="reference external" href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.complex128" title="(in NumPy v1.23)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">complex128</span></code></a></span></dt><dd><p>Complex covariance matrices at each window position</p>
+<dt><strong>C</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndarray</span></code></a> of <a class="reference external" href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.complex128" title="(in NumPy v1.24)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">complex128</span></code></a></span></dt><dd><p>Complex covariance matrices at each window position</p>
 </dd>
-<dt><strong>dop</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndarray</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Degree of polarization as a function of time- and frequency.</p>
+<dt><strong>dop</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndarray</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Degree of polarization as a function of time- and frequency.</p>
 </dd>
 <dt><strong>time</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.utcdatetime.UTCDateTime.html#obspy.core.utcdatetime.UTCDateTime" title="(in ObsPy v1.4.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UTCDateTime</span></code></a></span></dt><dd><p>Time axis of the input traces</p>
 </dd>
@@ -766,13 +766,13 @@ list_with_classification_of_second_eigenvector, … , ‘5’: list_with_classif
 
 <div class="section" id="examples-using-twistpy-polarization-timefrequencyanalysis6c">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">twistpy.polarization.TimeFrequencyAnalysis6C</span></code><a class="headerlink" href="#examples-using-twistpy-polarization-timefrequencyanalysis6c" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="6-C Polarization Analysis: Wave type classification"><div class="figure align-default" id="id1">
-<img alt="6-C Polarization Analysis: Wave type classification" src="../../_images/sphx_glr_ml_wave_type_estimation_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/ml_wave_type_estimation.html#sphx-glr-examples-ml-wave-type-estimation-py"><span class="std std-ref">6-C Polarization Analysis: Wave type classification</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="6-C Wave parameter estimation: gulf of alaska earthquake"><div class="figure align-default" id="id2">
+<div class="sphx-glr-thumbcontainer" tooltip="6-C Wave parameter estimation: gulf of alaska earthquake"><div class="figure align-default" id="id1">
 <img alt="6-C Wave parameter estimation: gulf of alaska earthquake" src="../../_images/sphx_glr_alaska_wave_parameter_estimation_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/alaska_wave_parameter_estimation.html#sphx-glr-examples-alaska-wave-parameter-estimation-py"><span class="std std-ref">6-C Wave parameter estimation: gulf of alaska earthquake</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/alaska_wave_parameter_estimation.html#sphx-glr-examples-alaska-wave-parameter-estimation-py"><span class="std std-ref">6-C Wave parameter estimation: gulf of alaska earthquake</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="6-C wave type fingerprinting"><div class="figure align-default" id="id2">
+<img alt="6-C wave type fingerprinting" src="../../_images/sphx_glr_ml_wave_type_estimation_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/ml_wave_type_estimation.html#sphx-glr-examples-ml-wave-type-estimation-py"><span class="std std-ref">6-C wave type fingerprinting</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 </div><div style='clear:both'></div></div>
 </div>
@@ -805,7 +805,7 @@ list_with_classification_of_second_eigenvector, … , ‘5’: list_with_classif
   <p>
     
         &copy; Copyright 2022, The TwistPy Developers.<br/>
-      Last updated on Dec 09, 2022.<br/>
+      Last updated on Dec 19, 2022.<br/>
   </p>
 </footer>
 </main>

@@ -1,6 +1,6 @@
 r"""
-6-C Polarization Analysis: Wave type classification
-===================================================
+6-C wave type fingerprinting
+============================
 In this tutorial, you will learn how to train a machine learning model that enables the
 efficient classification of wave types using six-component polarization analysis.
 """

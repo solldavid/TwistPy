@@ -96,27 +96,6 @@ Examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="6-C Polarization Analysis: Wave type classification">
-
-.. only:: html
-
- .. figure:: /examples/images/thumb/sphx_glr_ml_wave_type_estimation_thumb.png
-     :alt: 6-C Polarization Analysis: Wave type classification
-
-     :ref:`sphx_glr_examples_ml_wave_type_estimation.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /examples/ml_wave_type_estimation
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="6-C Wave parameter estimation: gulf of alaska earthquake">
 
 .. only:: html
@@ -135,6 +114,27 @@ Examples
    :hidden:
 
    /examples/alaska_wave_parameter_estimation
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="6-C wave type fingerprinting">
+
+.. only:: html
+
+ .. figure:: /examples/images/thumb/sphx_glr_ml_wave_type_estimation_thumb.png
+     :alt: 6-C wave type fingerprinting
+
+     :ref:`sphx_glr_examples_ml_wave_type_estimation.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/ml_wave_type_estimation
 
 .. raw:: html
 

@@ -126,13 +126,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../examples/ml_wave_type_estimation.html">
-     6-C Polarization Analysis: Wave type classification
+    <a class="reference internal" href="../../examples/alaska_wave_parameter_estimation.html">
+     6-C Wave parameter estimation: gulf of alaska earthquake
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../examples/alaska_wave_parameter_estimation.html">
-     6-C Wave parameter estimation: gulf of alaska earthquake
+    <a class="reference internal" href="../../examples/ml_wave_type_estimation.html">
+     6-C wave type fingerprinting
     </a>
    </li>
    <li class="toctree-l2">
@@ -635,7 +635,7 @@
 <h1>twistpy.array_processing.BeamformingArray<a class="headerlink" href="#twistpy-array-processing-beamformingarray" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="twistpy.array_processing.BeamformingArray">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BeamformingArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><span class="pre">numpy.ndarray</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_receiver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/twistpy/array_processing.html#BeamformingArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#twistpy.array_processing.BeamformingArray" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BeamformingArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><span class="pre">numpy.ndarray</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_receiver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/twistpy/array_processing.html#BeamformingArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#twistpy.array_processing.BeamformingArray" title="Permalink to this definition">¶</a></dt>
 <dd><p>Beamforming for arbitrarily-shaped arrays.</p>
 <p>This class serves as an interface to apply various beamforming techniques to single-component data recorded on
 arbitrarly-shaped arrays. It makes use of the multi-taper method for spectral estimation [1],[2].
@@ -670,7 +670,7 @@ earthquake, GRL, <a class="reference external" href="https://doi.org/10.1029/201
 <dd class="field-odd"><dl>
 <dt><strong>name</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Array name</p>
 </dd>
-<dt><strong>coordinates</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndarray</span></code></a></span></dt><dd><p>Coordinates of each receiver. Array of dimensions (Nx3), with N being the number of receivers</p>
+<dt><strong>coordinates</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndarray</span></code></a></span></dt><dd><p>Coordinates of each receiver. Array of dimensions (Nx3), with N being the number of receivers</p>
 </dd>
 <dt><strong>reference_receiver</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>Index of receiver to use as a reference station (time delays are computed relative to
 this receiver). Defaults to 0 (the first receiver that is passed)</p>
@@ -683,7 +683,7 @@ this receiver). Defaults to 0 (the first receiver that is passed)</p>
 </dd>
 <dt><strong>data</strong><span class="classifier"><a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.html#obspy.core.stream.Stream" title="(in ObsPy v1.4.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Stream</span></code></a></span></dt><dd><p>Seismic data in ObsPy format. len(data) = N</p>
 </dd>
-<dt><strong>steering_vectors</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndarray</span></code></a></span></dt><dd><p>Steering vectors used for beamforming.</p>
+<dt><strong>steering_vectors</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndarray</span></code></a></span></dt><dd><p>Steering vectors used for beamforming.</p>
 </dd>
 <dt><strong>has_data</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a></span></dt><dd><p>True if wqveform data was already added to this array object.</p>
 </dd>
@@ -747,7 +747,7 @@ this receiver). Defaults to 0 (the first receiver that is passed)</p>
   <p>
     
         &copy; Copyright 2022, The TwistPy Developers.<br/>
-      Last updated on Dec 09, 2022.<br/>
+      Last updated on Dec 19, 2022.<br/>
   </p>
 </footer>
 </main>

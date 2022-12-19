@@ -128,13 +128,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../examples/ml_wave_type_estimation.html">
-     6-C Polarization Analysis: Wave type classification
+    <a class="reference internal" href="../../examples/alaska_wave_parameter_estimation.html">
+     6-C Wave parameter estimation: gulf of alaska earthquake
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../examples/alaska_wave_parameter_estimation.html">
-     6-C Wave parameter estimation: gulf of alaska earthquake
+    <a class="reference internal" href="../../examples/ml_wave_type_estimation.html">
+     6-C wave type fingerprinting
     </a>
    </li>
    <li class="toctree-l2">
@@ -699,7 +699,7 @@ list_with_classification_of_second_eigenvector, … , ‘5’: list_with_classif
 </dd>
 <dt><strong>t_windows</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.utcdatetime.UTCDateTime.html#obspy.core.utcdatetime.UTCDateTime" title="(in ObsPy v1.4.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UTCDateTime</span></code></a></span></dt><dd><p>Window positions of the sliding time window on the time axis (center point of the window)</p>
 </dd>
-<dt><strong>C</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndarray</span></code></a> of <a class="reference external" href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.complex128" title="(in NumPy v1.23)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">complex128</span></code></a></span></dt><dd><p>Complex covariance matrices at each window position</p>
+<dt><strong>C</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndarray</span></code></a> of <a class="reference external" href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.complex128" title="(in NumPy v1.24)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">complex128</span></code></a></span></dt><dd><p>Complex covariance matrices at each window position</p>
 </dd>
 <dt><strong>time</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.obspy.org/packages/autogen/obspy.core.utcdatetime.UTCDateTime.html#obspy.core.utcdatetime.UTCDateTime" title="(in ObsPy v1.4.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UTCDateTime</span></code></a></span></dt><dd><p>Time axis of the input traces</p>
 </dd>
@@ -707,7 +707,7 @@ list_with_classification_of_second_eigenvector, … , ‘5’: list_with_classif
 </dd>
 <dt><strong>window_length_samples</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>Window length in samples</p>
 </dd>
-<dt><strong>dop</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Degree of polarization estimated at each window position.</p>
+<dt><strong>dop</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Degree of polarization estimated at each window position.</p>
 <div class="admonition hint">
 <p class="admonition-title">Hint</p>
 <p>The definition of the degree of polarization follows the one from Samson &amp; Olson (1980): <em>Some comments
@@ -751,9 +751,9 @@ covariance matrix.</p>
 <img alt="6-C Polarization Analysis: Time-domain wave parameter estimation" src="../../_images/sphx_glr_six_component_wave_parameter_estimation_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/six_component_wave_parameter_estimation.html#sphx-glr-examples-six-component-wave-parameter-estimation-py"><span class="std std-ref">6-C Polarization Analysis: Time-domain wave parameter estimation</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="6-C Polarization Analysis: Wave type classification"><div class="figure align-default" id="id2">
-<img alt="6-C Polarization Analysis: Wave type classification" src="../../_images/sphx_glr_ml_wave_type_estimation_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/ml_wave_type_estimation.html#sphx-glr-examples-ml-wave-type-estimation-py"><span class="std std-ref">6-C Polarization Analysis: Wave type classification</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div><div class="sphx-glr-thumbcontainer" tooltip="6-C wave type fingerprinting"><div class="figure align-default" id="id2">
+<img alt="6-C wave type fingerprinting" src="../../_images/sphx_glr_ml_wave_type_estimation_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/ml_wave_type_estimation.html#sphx-glr-examples-ml-wave-type-estimation-py"><span class="std std-ref">6-C wave type fingerprinting</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 </div><div style='clear:both'></div></div>
 </div>
@@ -786,7 +786,7 @@ covariance matrix.</p>
   <p>
     
         &copy; Copyright 2022, The TwistPy Developers.<br/>
-      Last updated on Dec 09, 2022.<br/>
+      Last updated on Dec 19, 2022.<br/>
   </p>
 </footer>
 </main>

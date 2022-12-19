@@ -586,7 +586,7 @@ degrees), we could use:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  3.208 seconds)
+   **Total running time of the script:** ( 0 minutes  3.254 seconds)
 
 
 .. _sphx_glr_download_examples_3Cpolarization_timefrequency.py:

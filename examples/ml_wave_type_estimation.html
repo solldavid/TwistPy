@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>6-C Polarization Analysis: Wave type classification &#8212; TwistPy</title>
+    <title>6-C wave type fingerprinting &#8212; TwistPy</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -43,8 +43,8 @@
     <link rel="shortcut icon" href="../_static/twistpy.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="6-C Wave parameter estimation: gulf of alaska earthquake" href="alaska_wave_parameter_estimation.html" />
-    <link rel="prev" title="6-C Polarization Analysis: Time-domain wave parameter estimation" href="six_component_wave_parameter_estimation.html" />
+    <link rel="next" title="Array Processing: Beamforming" href="beamforming.html" />
+    <link rel="prev" title="6-C Wave parameter estimation: gulf of alaska earthquake" href="alaska_wave_parameter_estimation.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -125,14 +125,14 @@
      6-C Polarization Analysis: Time-domain wave parameter estimation
     </a>
    </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
-     6-C Polarization Analysis: Wave type classification
-    </a>
-   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="alaska_wave_parameter_estimation.html">
      6-C Wave parameter estimation: gulf of alaska earthquake
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     6-C wave type fingerprinting
     </a>
    </li>
    <li class="toctree-l2">
@@ -584,7 +584,7 @@
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>6-C Polarization Analysis: Wave type classification</h1>
+                <h1>6-C wave type fingerprinting</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -600,8 +600,8 @@
 <p>Click <a class="reference internal" href="#sphx-glr-download-examples-ml-wave-type-estimation-py"><span class="std std-ref">here</span></a>
 to download the full example code</p>
 </div>
-<div class="sphx-glr-example-title section" id="c-polarization-analysis-wave-type-classification">
-<span id="sphx-glr-examples-ml-wave-type-estimation-py"></span><h1>6-C Polarization Analysis: Wave type classification<a class="headerlink" href="#c-polarization-analysis-wave-type-classification" title="Permalink to this headline">¶</a></h1>
+<div class="sphx-glr-example-title section" id="c-wave-type-fingerprinting">
+<span id="sphx-glr-examples-ml-wave-type-estimation-py"></span><h1>6-C wave type fingerprinting<a class="headerlink" href="#c-wave-type-fingerprinting" title="Permalink to this headline">¶</a></h1>
 <p>In this tutorial, you will learn how to train a machine learning model that enables the
 efficient classification of wave types using six-component polarization analysis.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -873,7 +873,7 @@ before we run the analysis:</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;obspy.core.stream.Stream object at 0x7fe778728c50&gt;
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;obspy.core.stream.Stream object at 0x7f912cf8a2d0&gt;
 </pre></div>
 </div>
 <p>Now we set up the polarization analysis in the time-frequency domain and classify the waves:</p>
@@ -959,7 +959,7 @@ Estimating wave parameters for R-Waves...
 Done!
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 2 minutes  59.582 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 3 minutes  9.989 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-ml-wave-type-estimation-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/d2ac51db589e99de5dc32fd50c63bbea/ml_wave_type_estimation.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">ml_wave_type_estimation.py</span></code></a></p>
@@ -977,17 +977,17 @@ Done!
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="six_component_wave_parameter_estimation.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="alaska_wave_parameter_estimation.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">6-C Polarization Analysis: Time-domain wave parameter estimation</p>
+            <p class="prev-next-title">6-C Wave parameter estimation: gulf of alaska earthquake</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="alaska_wave_parameter_estimation.html" title="next page">
+    <a class='right-next' id="next-link" href="beamforming.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">6-C Wave parameter estimation: gulf of alaska earthquake</p>
+        <p class="prev-next-title">Array Processing: Beamforming</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
@@ -999,7 +999,7 @@ Done!
   <p>
     
         &copy; Copyright 2022, The TwistPy Developers.<br/>
-      Last updated on Dec 09, 2022.<br/>
+      Last updated on Dec 19, 2022.<br/>
   </p>
 </footer>
 </main>

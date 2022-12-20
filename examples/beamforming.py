@@ -344,4 +344,4 @@ ax_beam[2].set_box_aspect(
 ax_beam[2].set_title("BARTLETT")
 plt.show()
 ########################################################################################################################
-# If multiple arrays are available, the beamforming results can be summed to provide a location.
+# If multiple arrays are available, the beamforming results can be combined (e.g., multiplied) to provide a location.

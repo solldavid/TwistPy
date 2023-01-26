@@ -121,7 +121,9 @@ class SupportVectorMachine:
         self.phi, self.theta, self.xi = phi, theta, xi
         self.plot_confusion_matrix = plot_confusion_matrix
 
-        pkl_filename = join(get_project_root(), "twistpy", "SVC_models", self.name + ".pkl")
+        pkl_filename = join(
+            get_project_root(), "twistpy", "SVC_models", self.name + ".pkl"
+        )
 
         if exists(pkl_filename):
             print(

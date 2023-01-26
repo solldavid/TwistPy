@@ -1823,7 +1823,7 @@ class TimeFrequencyAnalysis3C:
             isinstance(self.N, Trace)
             and isinstance(self.E, Trace)
             and isinstance(self.Z, Trace)
-        ), "Input data " "must be " "objects of " "class " "obspy.core" ".Trace()! "
+        ), ("Input data " "must be " "objects of " "class " "obspy.core" ".Trace()! ")
 
         # Assert that all traces have the same number of samples
         assert (
@@ -2201,7 +2201,7 @@ class TimeFrequencyAnalysis3C:
         fmax : :obj:`float`, optional
             Set the upper limit of the frequency axis.
         """
-        plt.rcParams['axes.grid'] = False
+        plt.rcParams["axes.grid"] = False
         assert (
             self.elli is not None
         ), "No polarization attributes for Love waves have been computed so far!"

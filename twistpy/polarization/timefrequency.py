@@ -1710,7 +1710,7 @@ class TimeFrequencyAnalysis6C:
 
 
 class TimeFrequencyAnalysis3C:
-    """Time-frequency domain three-component polarization analysis.
+    r"""Time-frequency domain three-component polarization analysis.
 
     Single-station three-component polarization analysis on time-frequency decomposed signals. The time-frequency
     representation is obtained via the S-transform (:func:`twistpy.utils.s_transform`).
@@ -1793,7 +1793,6 @@ class TimeFrequencyAnalysis3C:
         Azimuth of the major semi-axis of the polarization ellipse estimated at each window position
     azi2 : 2D :obj:`numpy.ndarray` of :obj:`float`
         Azimuth of the minor semi-axis of the polarization ellipse estimated at each window position
-
     """
 
     def __init__(
@@ -1824,7 +1823,7 @@ class TimeFrequencyAnalysis3C:
             isinstance(self.N, Trace)
             and isinstance(self.E, Trace)
             and isinstance(self.Z, Trace)
-        ), ("Input data " "must be " "objects of " "class " "obspy.core" ".Trace()! ")
+        ), "Input data " "must be " "objects of " "class " "obspy.core" ".Trace()! "
 
         # Assert that all traces have the same number of samples
         assert (
@@ -2202,6 +2201,7 @@ class TimeFrequencyAnalysis3C:
         fmax : :obj:`float`, optional
             Set the upper limit of the frequency axis.
         """
+        plt.rcParams['axes.grid'] = False
         assert (
             self.elli is not None
         ), "No polarization attributes for Love waves have been computed so far!"

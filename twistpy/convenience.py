@@ -6,17 +6,18 @@ by limiting the ammount of code that needs to be included.
 
 import numpy as np
 from obspy.core import UTCDateTime, Stream, Trace
+from pathlib import Path
 from scipy import fft
 
 from twistpy.array_processing import BeamformingArray
 
 
 def generate_synthetics(
-    source_coordinates: np.ndarray,
-    array: BeamformingArray,
-    t: np.ndarray,
-    velocity: float = 6000,
-    center_frequency: float = 10,
+        source_coordinates: np.ndarray,
+        array: BeamformingArray,
+        t: np.ndarray,
+        velocity: float = 6000,
+        center_frequency: float = 10,
 ):
     """Generates synthetics for a given BeamformingArray object assuming a homogeneous velocity model.
 
@@ -40,17 +41,17 @@ def generate_synthetics(
         of time samples
     """
     tt = (
-        np.linalg.norm(
-            array.coordinates - np.tile(source_coordinates, (array.N, 1)), axis=1
-        )
-    ) / velocity
+             np.linalg.norm(
+                 array.coordinates - np.tile(source_coordinates, (array.N, 1)), axis=1
+             )
+         ) / velocity
     dt = t[1] - t[0]
     wavelet, t_wavelet, wcenter = ricker(t, f0=center_frequency)
     data = fft_roll(wavelet, tt, dt)
     data = data[:, wcenter:]
     if len(t) % 2 == 0:
         data_pad = np.zeros((array.N, len(t)))
-        data_pad[:, 0 : data.shape[1]] = data
+        data_pad[:, 0: data.shape[1]] = data
         data = data_pad
     return np.asarray(data, dtype="float")
 
@@ -159,3 +160,7 @@ def to_obspy_stream(data: np.ndarray, starttime: UTCDateTime, dt: float) -> Stre
         tr = Trace(data=data[n, :], header=header)
         st += tr
     return st
+
+
+def get_project_root() -> Path:
+    return Path(__file__).parent.parent

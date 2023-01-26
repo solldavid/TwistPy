@@ -10,6 +10,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
 
 from twistpy.polarization.model import PolarizationModel6C
+from twistpy.convenience import get_project_root
 
 
 class SupportVectorMachine:
@@ -120,7 +121,8 @@ class SupportVectorMachine:
         self.phi, self.theta, self.xi = phi, theta, xi
         self.plot_confusion_matrix = plot_confusion_matrix
 
-        pkl_filename = join(sys.path[0], "SVC_models", self.name + ".pkl")
+        pkl_filename = join(get_project_root(), "twistpy", "SVC_models", self.name + ".pkl")
+
         if exists(pkl_filename):
             print(
                 f"A trained model already exists with this name and is saved at '{pkl_filename}'"

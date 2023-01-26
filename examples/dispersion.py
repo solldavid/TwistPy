@@ -60,7 +60,7 @@ svm.train(
 # filtered to various frequency bands in the interval 1 to 20 Hz, each frequency band extends over the number of octaves
 # specified by the parameter 'octaves'. Here, we choose quarter octave frequency bands.
 
-window = {"number_of_periods": 3, "overlap": 0.5}
+window = {"number_of_periods": 3, "overlap": 1.0}
 da = DispersionAnalysis(
     traN=data[1],
     traE=data[0],
@@ -79,7 +79,7 @@ da = DispersionAnalysis(
 ########################################################################################################################
 # After running the analysis, we can save it to disk (e.g. da.save('dispersion_analysis.pkl')) or simply plot it using
 # the provided plot() method.
-
+da.save('urban_noise_analysis_fullOverlap.pkl')
 da.plot()
 
 ########################################################################################################################

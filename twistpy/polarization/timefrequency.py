@@ -796,7 +796,7 @@ class TimeFrequencyAnalysis6C:
                     indx = np.unravel_index(
                         indx_max,
                         (
-                            estimator_configuration.v_s_n,
+                            estimator_configuration.vs_n,
                             estimator_configuration.theta_n,
                             estimator_configuration.phi_n,
                         ),

@@ -7,4 +7,4 @@ pytest
 h5py
 scikit-learn~=1.0.2
 spectrum~=0.7.5
-setuptools~=56.5.1
+setuptools~=57.0.0

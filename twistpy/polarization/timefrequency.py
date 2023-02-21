@@ -2204,7 +2204,7 @@ class TimeFrequencyAnalysis3C:
         plt.rcParams["axes.grid"] = False
         assert (
             self.elli is not None
-        ), "No polarization attributes for Love waves have been computed so far!"
+        ), "No polarization attributes have been computed so far!"
         fig, ax = plt.subplots(5, 1, sharex=True, figsize=(10, 10))
         if seismograms is None:
             self._plot_seismograms(ax[0])

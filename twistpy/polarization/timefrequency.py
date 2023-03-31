@@ -283,11 +283,15 @@ class TimeFrequencyAnalysis6C:
         for j in range(C.shape[2]):
             for k in range(C.shape[3]):
                 C[..., j, k] = uniform_filter1d(
-                    C[..., j, k], size=window_f_samples, axis=0
+                    C[..., j, k].real, size=window_f_samples, axis=0
+                ) + 1j * uniform_filter1d(
+                    C[..., j, k].imag, size=window_f_samples, axis=0
                 )
                 for i in range(C.shape[0]):
                     C[i, :, j, k] = uniform_filter1d(
-                        C[i, :, j, k], size=window_t_samples[i]
+                        C[i, :, j, k].real, size=window_t_samples[i]
+                    ) + 1j * uniform_filter1d(
+                        C[i, :, j, k].imag, size=window_t_samples[i]
                     )
         self.C = np.reshape(
             C[indx_f[0] : indx_f[1], indx_t[0] : indx_t[1] : dsfact, :, :],
@@ -1920,11 +1924,15 @@ class TimeFrequencyAnalysis3C:
         for j in range(C.shape[2]):
             for k in range(C.shape[3]):
                 C[..., j, k] = uniform_filter1d(
-                    C[..., j, k], size=window_f_samples, axis=0
+                    C[..., j, k].real, size=window_f_samples, axis=0
+                ) + 1j * uniform_filter1d(
+                    C[..., j, k].imag, size=window_f_samples, axis=0
                 )
                 for i in range(C.shape[0]):
                     C[i, :, j, k] = uniform_filter1d(
-                        C[i, :, j, k], size=window_t_samples[i]
+                        C[i, :, j, k].real, size=window_t_samples[i]
+                    ) + 1j * uniform_filter1d(
+                        C[i, :, j, k].imag, size=window_t_samples[i]
                     )
         self.C = np.reshape(
             C[indx_f[0] : indx_f[1], indx_t[0] : indx_t[1] : dsfact, :, :],

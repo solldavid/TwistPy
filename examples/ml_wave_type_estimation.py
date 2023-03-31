@@ -2,7 +2,9 @@ r"""
 6-C wave type fingerprinting
 ============================
 In this tutorial, you will learn how to train a machine learning model that enables the
-efficient classification of wave types using six-component polarization analysis.
+efficient classification of wave types using six-component polarization analysis. The underlying theory is described in
+the accompanying paper: Sollberger et al. (2023) *Efficient wave type fingerprinting and filtering by six-component
+polarization analysis*, Geophysical Journal International, https://doi.org/10.1093/gji/ggad071.
 """
 
 import matplotlib.pyplot as plt

@@ -193,7 +193,9 @@ class TimeDomainAnalysis6C:
         for j in range(C.shape[2]):
             for k in range(C.shape[1]):
                 C[..., j, k] = uniform_filter1d(
-                    C[..., j, k], size=self.window_length_samples
+                    C[..., j, k].real, size=self.window_length_samples
+                ) + 1j * uniform_filter1d(
+                    C[..., j, k].imag, size=self.window_length_samples
                 )
         self.C = C[start:stop:incr, :, :]
         if self.verbose:
@@ -779,7 +781,9 @@ class TimeDomainAnalysis3C:
         for j in range(C.shape[2]):
             for k in range(C.shape[1]):
                 C[..., j, k] = uniform_filter1d(
-                    C[..., j, k], size=self.window_length_samples
+                    C[..., j, k].real, size=self.window_length_samples
+                ) + 1j * uniform_filter1d(
+                    C[..., j, k].imag, size=self.window_length_samples
                 )
         self.C = C[start:stop:incr, :, :]
         if self.verbose:

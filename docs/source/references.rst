@@ -5,7 +5,8 @@ TwistPy codes are based on the papers listed below.
 
 6-C polarization analysis
 -------------------------
-
+- Sollberger, D., Bradley, N., Edme, P., Robertsson, J. O. A. (2023). *Efficient
+  wave type fingerprinting and filtering by six-component polarization analysis*. Geophysical Journal International. 234, 25-39, https://doi.org/10.1093/gji/ggad071.
 - Sollberger, D., Igel, H., Schmelzbach, C., Edme, P., van Manen, D. J., Bernauer, F., Yuan, S., Schreiber, U.,
   Wassermann, J.,Robertsson, J. O. A. (2020).
   *Seismological processing of six degree-of-freedom ground-motion data*. Sensors, 20(23), 1–32.

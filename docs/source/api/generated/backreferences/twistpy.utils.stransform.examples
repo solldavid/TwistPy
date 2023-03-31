@@ -1,0 +1,80 @@
+
+
+Examples using ``twistpy.utils.stransform``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="3-C Polarization analysis and filtering in the time-frequency domain">
+
+.. only:: html
+
+ .. figure:: /examples/images/thumb/sphx_glr_3Cpolarization_timefrequency_thumb.png
+     :alt: 3-C Polarization analysis and filtering in the time-frequency domain
+
+     :ref:`sphx_glr_examples_3Cpolarization_timefrequency.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_examples_3Cpolarization_timefrequency.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="3-C Polarization analysis and filtering: Real data example using a marsquake recorded by InSigh...">
+
+.. only:: html
+
+ .. figure:: /examples/images/thumb/sphx_glr_marsquake_thumb.png
+     :alt: 3-C Polarization analysis and filtering: Real data example using a marsquake recorded by InSight
+
+     :ref:`sphx_glr_examples_marsquake.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_examples_marsquake.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="6-C wave type fingerprinting">
+
+.. only:: html
+
+ .. figure:: /examples/images/thumb/sphx_glr_ml_wave_type_estimation_thumb.png
+     :alt: 6-C wave type fingerprinting
+
+     :ref:`sphx_glr_examples_ml_wave_type_estimation.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_examples_ml_wave_type_estimation.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="S-transform">
+
+.. only:: html
+
+ .. figure:: /examples/images/thumb/sphx_glr_stransform_thumb.png
+     :alt: S-transform
+
+     :ref:`sphx_glr_examples_stransform.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_examples_stransform.py`

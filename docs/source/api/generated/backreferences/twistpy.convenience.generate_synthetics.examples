@@ -1,0 +1,23 @@
+
+
+Examples using ``twistpy.convenience.generate_synthetics``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Array Processing: Beamforming">
+
+.. only:: html
+
+ .. figure:: /examples/images/thumb/sphx_glr_beamforming_thumb.png
+     :alt: Array Processing: Beamforming
+
+     :ref:`sphx_glr_examples_beamforming.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_examples_beamforming.py`

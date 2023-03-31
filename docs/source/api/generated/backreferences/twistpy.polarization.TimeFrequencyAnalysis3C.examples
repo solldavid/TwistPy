@@ -1,0 +1,42 @@
+
+
+Examples using ``twistpy.polarization.TimeFrequencyAnalysis3C``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="3-C Polarization analysis and filtering in the time-frequency domain">
+
+.. only:: html
+
+ .. figure:: /examples/images/thumb/sphx_glr_3Cpolarization_timefrequency_thumb.png
+     :alt: 3-C Polarization analysis and filtering in the time-frequency domain
+
+     :ref:`sphx_glr_examples_3Cpolarization_timefrequency.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_examples_3Cpolarization_timefrequency.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="3-C Polarization analysis and filtering: Real data example using a marsquake recorded by InSigh...">
+
+.. only:: html
+
+ .. figure:: /examples/images/thumb/sphx_glr_marsquake_thumb.png
+     :alt: 3-C Polarization analysis and filtering: Real data example using a marsquake recorded by InSight
+
+     :ref:`sphx_glr_examples_marsquake.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_examples_marsquake.py`

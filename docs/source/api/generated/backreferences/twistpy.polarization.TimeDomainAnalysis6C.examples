@@ -1,0 +1,42 @@
+
+
+Examples using ``twistpy.polarization.TimeDomainAnalysis6C``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="6-C Polarization Analysis: Time-domain wave parameter estimation">
+
+.. only:: html
+
+ .. figure:: /examples/images/thumb/sphx_glr_six_component_wave_parameter_estimation_thumb.png
+     :alt: 6-C Polarization Analysis: Time-domain wave parameter estimation
+
+     :ref:`sphx_glr_examples_six_component_wave_parameter_estimation.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_examples_six_component_wave_parameter_estimation.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="6-C wave type fingerprinting">
+
+.. only:: html
+
+ .. figure:: /examples/images/thumb/sphx_glr_ml_wave_type_estimation_thumb.png
+     :alt: 6-C wave type fingerprinting
+
+     :ref:`sphx_glr_examples_ml_wave_type_estimation.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_examples_ml_wave_type_estimation.py`

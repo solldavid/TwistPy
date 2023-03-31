@@ -1,0 +1,23 @@
+
+
+Examples using ``twistpy.tilt.util.calc_height_of_mass``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This script implements a simple example for dynamic tilt correction. It reproduces the tilt tab...">
+
+.. only:: html
+
+ .. figure:: /examples/images/thumb/sphx_glr_tilt_thumb.png
+     :alt: Tilt correction
+
+     :ref:`sphx_glr_examples_tilt.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_examples_tilt.py`

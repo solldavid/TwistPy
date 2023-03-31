@@ -1,0 +1,23 @@
+
+
+Examples using ``twistpy.polarization.DispersionAnalysis``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Six-component dispersion analysis">
+
+.. only:: html
+
+ .. figure:: /examples/images/thumb/sphx_glr_dispersion_thumb.png
+     :alt: Six-component dispersion analysis
+
+     :ref:`sphx_glr_examples_dispersion.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_examples_dispersion.py`

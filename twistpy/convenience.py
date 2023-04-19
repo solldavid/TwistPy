@@ -13,11 +13,11 @@ from twistpy.array_processing import BeamformingArray
 
 
 def generate_synthetics(
-        source_coordinates: np.ndarray,
-        array: BeamformingArray,
-        t: np.ndarray,
-        velocity: float = 6000,
-        center_frequency: float = 10,
+    source_coordinates: np.ndarray,
+    array: BeamformingArray,
+    t: np.ndarray,
+    velocity: float = 6000,
+    center_frequency: float = 10,
 ):
     """Generates synthetics for a given BeamformingArray object assuming a homogeneous velocity model.
 
@@ -41,28 +41,28 @@ def generate_synthetics(
         of time samples
     """
     tt = (
-             np.linalg.norm(
-                 array.coordinates - np.tile(source_coordinates, (array.N, 1)), axis=1
-             )
-         ) / velocity
+        np.linalg.norm(
+            array.coordinates - np.tile(source_coordinates, (array.N, 1)), axis=1
+        )
+    ) / velocity
     dt = t[1] - t[0]
     wavelet, t_wavelet, wcenter = ricker(t, f0=center_frequency)
     data = fft_roll(wavelet, tt, dt)
     data = data[:, wcenter:]
     if len(t) % 2 == 0:
         data_pad = np.zeros((array.N, len(t)))
-        data_pad[:, 0: data.shape[1]] = data
+        data_pad[:, 0 : data.shape[1]] = data
         data = data_pad
     return np.asarray(data, dtype="float")
 
 
 def generate_multicomponent_synthetics(
-        source_coordinates: np.ndarray,
-        receiver_coordinates: np.ndarray,
-        t: np.ndarray,
-        velocity: float = 6000,
-        center_frequency: float = 10,
-        wave_type: str = "P",
+    source_coordinates: np.ndarray,
+    receiver_coordinates: np.ndarray,
+    t: np.ndarray,
+    velocity: float = 6000,
+    center_frequency: float = 10,
+    wave_type: str = "P",
 ) -> list:
     r"""Generates multicomponent synthetics for a given wave_type and source-receiver configuration
      object assuming a homogeneous velocity model.
@@ -92,17 +92,19 @@ def generate_multicomponent_synthetics(
         raise ValueError("wave_type must be either 'P', 'SV' or 'SH'")
 
     tt = (
-             np.linalg.norm(
-                 receiver_coordinates - np.tile(source_coordinates, (receiver_coordinates.shape[0], 1)), axis=1
-             )
-         ) / velocity
+        np.linalg.norm(
+            receiver_coordinates
+            - np.tile(source_coordinates, (receiver_coordinates.shape[0], 1)),
+            axis=1,
+        )
+    ) / velocity
     dt = t[1] - t[0]
     wavelet, t_wavelet, wcenter = ricker(t, f0=center_frequency)
     data = fft_roll(wavelet, tt, dt)
     data = data[:, wcenter:]
     if len(t) % 2 == 0:
         data_pad = np.zeros((receiver_coordinates.shape[0], len(t)))
-        data_pad[:, 0: data.shape[1]] = data
+        data_pad[:, 0 : data.shape[1]] = data
         data = data_pad
     data_3C = []
 
@@ -246,9 +248,11 @@ def to_spherical(xyz):
         Array of shape (N, 3) containing Spherical coordinates
     """
     polar = np.zeros(xyz.shape)
-    xy = xyz[:, 0]**2 + xyz[:, 1]**2
-    polar[:, 0] = np.sqrt(xy + xyz[:, 2]**2)
-    polar[:, 1] = np.arctan2(np.sqrt(xy), xyz[:, 2])  # for elevation angle defined from Z-axis down
+    xy = xyz[:, 0] ** 2 + xyz[:, 1] ** 2
+    polar[:, 0] = np.sqrt(xy + xyz[:, 2] ** 2)
+    polar[:, 1] = np.arctan2(
+        np.sqrt(xy), xyz[:, 2]
+    )  # for elevation angle defined from Z-axis down
     # polar[:, 1] = np.arctan2(xyz[:, 2], np.sqrt(xy))  # for elevation angle defined from XY-plane up
     polar[:, 2] = np.arctan2(xyz[:, 1], xyz[:, 0])
     return polar

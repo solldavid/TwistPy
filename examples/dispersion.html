@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Examples &#8212; TwistPy</title>
+    <title>Six-component dispersion analysis &#8212; TwistPy</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -42,12 +42,12 @@
     <script src="../_static/sphinx_highlight.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
-    <link rel="canonical" href="https://twistpy.org/examples/index.html" />
+    <link rel="canonical" href="https://twistpy.org/examples/dispersion.html" />
     <link rel="shortcut icon" href="../_static/twistpy.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="3-C Polarization analysis and filtering in the time domain" href="3Cpolarization.html" />
-    <link rel="prev" title="Installation Instructions" href="../installation.html" />
+    <link rel="next" title="Tilt correction" href="tilt.html" />
+    <link rel="prev" title="S-transform" href="stransform.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en">
     
@@ -99,7 +99,7 @@
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
-  <a class="current reference internal" href="#">
+  <a class="reference internal" href="index.html">
    Examples
   </a>
   <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
@@ -107,7 +107,7 @@
    <i class="fas fa-chevron-down">
    </i>
   </label>
-  <ul>
+  <ul class="current">
    <li class="toctree-l2">
     <a class="reference internal" href="3Cpolarization.html">
      3-C Polarization analysis and filtering in the time domain
@@ -148,8 +148,8 @@
      S-transform
     </a>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="dispersion.html">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
      Six-component dispersion analysis
     </a>
    </li>
@@ -542,7 +542,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/examples/index.rst.txt"><button type="button"
+        <a class="dropdown-buttons" href="../_sources/examples/dispersion.rst.txt"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.rst</button></a>
         <!-- Download PDF via print -->
@@ -587,7 +587,7 @@
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Examples</h1>
+                <h1>Six-component dispersion analysis</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -598,89 +598,137 @@
             
               <div>
                 
-  <section id="examples">
-<span id="sphx-glr-examples"></span><span id="id1"></span><h1>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h1>
-<div class="sphx-glr-thumbcontainer" tooltip="3-C Polarization analysis and filtering in the time domain"><figure class="align-default" id="id2">
-<img alt="3-C Polarization analysis and filtering in the time domain" src="../_images/sphx_glr_3Cpolarization_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="3Cpolarization.html#sphx-glr-examples-3cpolarization-py"><span class="std std-ref">3-C Polarization analysis and filtering in the time domain</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div class="toctree-wrapper compound">
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-examples-dispersion-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="3-C Polarization analysis and filtering in the time-frequency domain"><figure class="align-default" id="id3">
-<img alt="3-C Polarization analysis and filtering in the time-frequency domain" src="../_images/sphx_glr_3Cpolarization_timefrequency_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="3Cpolarization_timefrequency.html#sphx-glr-examples-3cpolarization-timefrequency-py"><span class="std std-ref">3-C Polarization analysis and filtering in the time-frequency domain</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div class="toctree-wrapper compound">
+<section class="sphx-glr-example-title" id="six-component-dispersion-analysis">
+<span id="sphx-glr-examples-dispersion-py"></span><h1>Six-component dispersion analysis<a class="headerlink" href="#six-component-dispersion-analysis" title="Permalink to this heading">¶</a></h1>
+<p>In this tutorial, you will learn how to extract dispersion curves and frequency-dependent Rayleigh wave ellipticity
+angles from single-station six-component recordings of ambient noise.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">obspy.core</span> <span class="kn">import</span> <span class="n">read</span>
+
+<span class="kn">from</span> <span class="nn">twistpy.polarization</span> <span class="kn">import</span> <a href="../api/generated/twistpy.polarization.DispersionAnalysis.html#twistpy.polarization.DispersionAnalysis" title="twistpy.polarization.DispersionAnalysis" class="sphx-glr-backref-module-twistpy-polarization sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">DispersionAnalysis</span></a>
+<span class="kn">from</span> <span class="nn">twistpy.polarization.machinelearning</span> <span class="kn">import</span> <a href="../api/generated/twistpy.polarization.SupportVectorMachine.html#twistpy.polarization.SupportVectorMachine" title="twistpy.polarization.SupportVectorMachine" class="sphx-glr-backref-module-twistpy-polarization sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SupportVectorMachine</span></a>
+</pre></div>
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="3-C Polarization analysis and filtering: Real data example using a marsquake recorded by InSigh..."><figure class="align-default" id="id4">
-<img alt="3-C Polarization analysis and filtering: Real data example using a marsquake recorded by InSight" src="../_images/sphx_glr_marsquake_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="marsquake.html#sphx-glr-examples-marsquake-py"><span class="std std-ref">3-C Polarization analysis and filtering: Real data example using a marsquake recorded by InSight</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div class="toctree-wrapper compound">
+<p>We start by reading in the data. The data corresponds to a recording of 2h40min of ambient noise recorded in the city
+of Munich with a BlueSeis rotational seismometer and a co-located seismometer. Both sensors were mounted on the same
+concrete base plate. With TwistPy, dispersion curves are estimated by 6C polarization analysis. First, Rayleigh waves
+and Love waves are detected using a machine learning algorithm. In time windows, where a Love or Rayleigh wave is
+detected, the phase velocity and ellipticity is estimated from the first eigenvector of the data covariance matrix.
+For polarization analysis, we convert our data to dimensionless units by scaling the translational components with a
+scaling velocity (see other examples on 6C polarization analysis). After scaling, the translational and rotational
+components should have comparable amplitudes. This makes the analysis more stable.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="s2">&quot;../example_data/6C_urban_noise.mseed&quot;</span><span class="p">)</span>
+<span class="n">scaling_velocity</span> <span class="o">=</span> <span class="mf">800.0</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">trace</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">trace</span><span class="o">.</span><span class="n">differentiate</span><span class="p">()</span>
+        <span class="n">trace</span><span class="o">.</span><span class="n">data</span> <span class="o">/=</span> <span class="n">scaling_velocity</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">trace</span><span class="o">.</span><span class="n">data</span> <span class="o">-=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.median.html#numpy.median" title="numpy.median" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">median</span></a><span class="p">(</span>
+            <span class="n">trace</span><span class="o">.</span><span class="n">data</span>
+        <span class="p">)</span>  <span class="c1"># Ensure that the rotational components have a median of 0</span>
+    <span class="n">trace</span><span class="o">.</span><span class="n">taper</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>
+</pre></div>
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="6-C Polarization Analysis: Time-domain wave parameter estimation"><figure class="align-default" id="id5">
-<img alt="6-C Polarization Analysis: Time-domain wave parameter estimation" src="../_images/sphx_glr_six_component_wave_parameter_estimation_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="six_component_wave_parameter_estimation.html#sphx-glr-examples-six-component-wave-parameter-estimation-py"><span class="std std-ref">6-C Polarization Analysis: Time-domain wave parameter estimation</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div class="toctree-wrapper compound">
+<p>Now we train the machine learning model for the detection of Love and Rayleigh waves. We additionally train the model
+to be able to detect body waves because we want to avoid leakage of body waves into our Love and Rayleigh wave
+dispersion curves. We choose a velocity range that is typical for the near-surface in the frequency range we are
+interested in.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">svm</span> <span class="o">=</span> <a href="../api/generated/twistpy.polarization.SupportVectorMachine.html#twistpy.polarization.SupportVectorMachine" title="twistpy.polarization.SupportVectorMachine" class="sphx-glr-backref-module-twistpy-polarization sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SupportVectorMachine</span></a><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;dispersion_analysis2&quot;</span><span class="p">)</span>
+<span class="n">svm</span><span class="o">.</span><span class="n">train</span><span class="p">(</span>
+    <span class="n">wave_types</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;R&quot;</span><span class="p">,</span> <span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="s2">&quot;SV&quot;</span><span class="p">,</span> <span class="s2">&quot;Noise&quot;</span><span class="p">],</span>
+    <span class="n">scaling_velocity</span><span class="o">=</span><span class="n">scaling_velocity</span><span class="p">,</span>
+    <span class="n">phi</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">),</span>
+    <span class="n">vp</span><span class="o">=</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">3000</span><span class="p">),</span>
+    <span class="n">vp_to_vs</span><span class="o">=</span><span class="p">(</span><span class="mf">1.7</span><span class="p">,</span> <span class="mf">2.4</span><span class="p">),</span>
+    <span class="n">vr</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">3000</span><span class="p">),</span>
+    <span class="n">vl</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">3000</span><span class="p">),</span>
+    <span class="n">xi</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">),</span>
+    <span class="n">theta</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">80</span><span class="p">),</span>
+    <span class="n">C</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">plot_confusion_matrix</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="6-C Wave parameter estimation: gulf of alaska earthquake"><figure class="align-default" id="id6">
-<img alt="6-C Wave parameter estimation: gulf of alaska earthquake" src="../_images/sphx_glr_alaska_wave_parameter_estimation_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="alaska_wave_parameter_estimation.html#sphx-glr-examples-alaska-wave-parameter-estimation-py"><span class="std std-ref">6-C Wave parameter estimation: gulf of alaska earthquake</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div class="toctree-wrapper compound">
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Generating random polarization models for training!
+
+/Users/Dave/Documents/TwistPy/twistpy/polarization/model.py:217: RuntimeWarning: invalid value encountered in reciprocal
+  * (
+Training Support Vector Machine!
+Training successfully completed. Model score on independent test data is &#39;0.9956&#39;!
+Model has been saved as &#39;/Users/Dave/Documents/TwistPy/twistpy/SVC_models/dispersion_analysis2.pkl&#39;!&#39;
+</pre></div>
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="6-C wave type fingerprinting"><figure class="align-default" id="id7">
-<img alt="6-C wave type fingerprinting" src="../_images/sphx_glr_ml_wave_type_estimation_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="ml_wave_type_estimation.html#sphx-glr-examples-ml-wave-type-estimation-py"><span class="std std-ref">6-C wave type fingerprinting</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div class="toctree-wrapper compound">
+<p>We now have everything we need to extract dispersion curves from our ambient noise data. We specify that the time
+window for the analysis should stretch over 2 dominant periods at each frequency of interest. Additionally, we specify
+that neighbouring windows should overlap by half the window width in this case (‘overlap’: 0.5). We want to extract
+Love and Rayleigh wave dispersion curves in the frequency range between 1 and 20 Hz. The data is automatically
+filtered to various frequency bands in the interval 1 to 20 Hz, each frequency band extends over the number of octaves
+specified by the parameter ‘octaves’. Here, we choose quarter octave frequency bands.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">window</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;number_of_periods&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;overlap&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">}</span>
+<span class="n">da</span> <span class="o">=</span> <a href="../api/generated/twistpy.polarization.DispersionAnalysis.html#twistpy.polarization.DispersionAnalysis" title="twistpy.polarization.DispersionAnalysis" class="sphx-glr-backref-module-twistpy-polarization sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">DispersionAnalysis</span></a><span class="p">(</span>
+    <span class="n">traN</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+    <span class="n">traE</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">traZ</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+    <span class="n">rotN</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span>
+    <span class="n">rotE</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span>
+    <span class="n">rotZ</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+    <span class="n">window</span><span class="o">=</span><span class="n">window</span><span class="p">,</span>
+    <span class="n">scaling_velocity</span><span class="o">=</span><span class="n">scaling_velocity</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">fmin</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">fmax</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span>
+    <span class="n">octaves</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span>
+    <span class="n">svm</span><span class="o">=</span><span class="n">svm</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="Array Processing: Beamforming"><figure class="align-default" id="id8">
-<img alt="Array Processing: Beamforming" src="../_images/sphx_glr_beamforming_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="beamforming.html#sphx-glr-examples-beamforming-py"><span class="std std-ref">Array Processing: Beamforming</span></a></span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div class="toctree-wrapper compound">
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Estimating surface wave parameters at frequency f =  20.00 Hz. Frequency step 1 out of 18.
+Estimating surface wave parameters at frequency f =  16.82 Hz. Frequency step 2 out of 18.
+Estimating surface wave parameters at frequency f =  14.14 Hz. Frequency step 3 out of 18.
+Estimating surface wave parameters at frequency f =  11.89 Hz. Frequency step 4 out of 18.
+Estimating surface wave parameters at frequency f =  10.00 Hz. Frequency step 5 out of 18.
+Estimating surface wave parameters at frequency f =  8.41 Hz. Frequency step 6 out of 18.
+Estimating surface wave parameters at frequency f =  7.07 Hz. Frequency step 7 out of 18.
+Estimating surface wave parameters at frequency f =  5.95 Hz. Frequency step 8 out of 18.
+Estimating surface wave parameters at frequency f =  5.00 Hz. Frequency step 9 out of 18.
+Estimating surface wave parameters at frequency f =  4.20 Hz. Frequency step 10 out of 18.
+Estimating surface wave parameters at frequency f =  3.54 Hz. Frequency step 11 out of 18.
+Estimating surface wave parameters at frequency f =  2.97 Hz. Frequency step 12 out of 18.
+Estimating surface wave parameters at frequency f =  2.50 Hz. Frequency step 13 out of 18.
+Estimating surface wave parameters at frequency f =  2.10 Hz. Frequency step 14 out of 18.
+Estimating surface wave parameters at frequency f =  1.77 Hz. Frequency step 15 out of 18.
+Estimating surface wave parameters at frequency f =  1.49 Hz. Frequency step 16 out of 18.
+Estimating surface wave parameters at frequency f =  1.25 Hz. Frequency step 17 out of 18.
+Estimating surface wave parameters at frequency f =  1.05 Hz. Frequency step 18 out of 18.
+</pre></div>
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="S-transform"><figure class="align-default" id="id9">
-<img alt="S-transform" src="../_images/sphx_glr_stransform_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="stransform.html#sphx-glr-examples-stransform-py"><span class="std std-ref">S-transform</span></a></span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div class="toctree-wrapper compound">
+<p>After running the analysis, we can save it to disk (e.g. da.save(‘dispersion_analysis.pkl’)) or simply plot it using
+the provided plot() method.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">da</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="Six-component dispersion analysis"><figure class="align-default" id="id10">
-<img alt="Six-component dispersion analysis" src="../_images/sphx_glr_dispersion_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="dispersion.html#sphx-glr-examples-dispersion-py"><span class="std std-ref">Six-component dispersion analysis</span></a></span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div class="toctree-wrapper compound">
+<img src="../_images/sphx_glr_dispersion_001.png" srcset="../_images/sphx_glr_dispersion_001.png" alt="Love, Rayleigh, Rayleigh" class = "sphx-glr-single-img"/><p>To plot the back-azimuth at a specific frequency, use the plot_baz() method:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">da</span><span class="o">.</span><span class="n">plot_baz</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="mf">14.0</span><span class="p">)</span>
+</pre></div>
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="This script implements a simple example for dynamic tilt correction. It reproduces the tilt tab..."><figure class="align-default" id="id11">
-<img alt="Tilt correction" src="../_images/sphx_glr_tilt_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="tilt.html#sphx-glr-examples-tilt-py"><span class="std std-ref">Tilt correction</span></a></span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div class="toctree-wrapper compound">
+<img src="../_images/sphx_glr_dispersion_002.png" srcset="../_images/sphx_glr_dispersion_002.png" alt="Back-azimuth at   14.14 Hz, Love waves, Rayleigh waves" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 6 minutes  19.698 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-dispersion-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/c57ec61a1158505041b3ad5b9dcd1529/dispersion.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">dispersion.py</span></code></a></p>
 </div>
-<div class="sphx-glr-clear"></div><p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/4a08ec0e27f3633df1132e78997b4483/dispersion.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">dispersion.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </section>
 
 
@@ -689,17 +737,17 @@
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="../installation.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="stransform.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Installation Instructions</p>
+            <p class="prev-next-title">S-transform</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="3Cpolarization.html" title="next page">
+    <a class='right-next' id="next-link" href="tilt.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">3-C Polarization analysis and filtering in the time domain</p>
+        <p class="prev-next-title">Tilt correction</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

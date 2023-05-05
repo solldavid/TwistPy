@@ -56,7 +56,9 @@ Adding new features: Step-by-step instructions for developers
 
 7. Make sure that all tests pass using pytest.
 
-8. Push to your fork.
+8. Add your name to the list of contributors in /docs/source/contributors.rst.
+
+9. Push to your fork.
 
 .. code-block:: bash
 
@@ -66,7 +68,7 @@ Adding new features: Step-by-step instructions for developers
 
 Remember to add ``-u`` when pushing the branch for the first time.
 
-9. Submit a pull request via the GitHub website.
+10. Submit a pull request via the GitHub website.
 
 Continuous Integration
 ======================

@@ -27,8 +27,8 @@ Add examples or improve documentation
 
 We are always happy to include new examples in the gallery and improve our documentation!
 
-Step-by-step instructions for developers
-========================================
+Adding new features: Step-by-step instructions for developers
+=============================================================
 
 1. Fork the repository.
 

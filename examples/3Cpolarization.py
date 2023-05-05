@@ -195,6 +195,13 @@ data_filtered = analysis.filter(
 )
 
 ########################################################################################################################
+# By using the option suppress=True, we can alternatively suppress all signal parts that meet the filter criteria.
+
+data_filtered = analysis.filter(
+    plot_filtered_attributes=True, suppress = True, elli=[0.0, 0.2], dop=[0.7, 1], inc1=[0, 40]
+)
+
+########################################################################################################################
 # Similarly, we could devise a filter that only retains the elliptically polarized parts of the signal (e.g., surface
 # waves).
 

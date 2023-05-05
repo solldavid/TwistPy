@@ -845,13 +845,17 @@ class TimeDomainAnalysis3C:
         if self.verbose:
             print("Polarization attributes have been computed!")
 
-    def filter(self, plot_filtered_attributes: bool = False, **kwargs):
+    def filter(
+        self,
+        suppress: bool = False,
+        smooth_mask: bool = False,
+        plot_filtered_attributes: bool = False,
+        **kwargs,
+    ):
         r"""Filter data based on polarization attributes.
 
         Parameters
         ----------
-        plot_filtered_attributes : :obj:`bool`, default = False
-            If set to True, a plot will be generated that shows the polarization attributes after filtering
         **kwargs : For example elli=[0, 0.3]
             Polarization attributes used for filtering. The filter parameters are specified as a list with two entries,
             specifying the range of the polarization attributes that are kept by the filter. In the above example the
@@ -871,6 +875,13 @@ class TimeDomainAnalysis3C:
                 azi1 (Azimuth of the major semi axis)
 
                 azi2 (Azimuth of the minor semi axis)
+        suppress : :obj:`bool`, default = False
+            If set to True the polarization states that fulfill the filtering criterion will be suppressed from the data
+            while preserving any underlying signal that is orthogonal to the polarization state.
+        smooth_mask : :obj:`bool`, default = False
+            If set to True, the filter mask will be additionally smoothed.
+        plot_filtered_attributes : :obj:`bool`, default = False
+            If set to True, a plot will be generated that shows the polarization attributes after filtering
 
         Returns
         -------
@@ -922,12 +933,19 @@ class TimeDomainAnalysis3C:
                 ).astype("int")
             mask *= alpha
 
-        mask = uniform_filter1d(mask, size=self.window_length_samples, axis=0)
+        if smooth_mask:
+            mask = uniform_filter1d(mask, size=self.window_length_samples, axis=0)
+
         indx = mask > 0
 
-        Z_sep = np.zeros_like(self.Z.data)
-        N_sep = np.zeros_like(self.N.data)
-        E_sep = np.zeros_like(self.E.data)
+        if suppress:
+            Z_sep = self.Z.data.copy()
+            N_sep = self.N.data.copy()
+            E_sep = self.E.data.copy()
+        else:
+            Z_sep = np.zeros_like(self.Z.data)
+            N_sep = np.zeros_like(self.N.data)
+            E_sep = np.zeros_like(self.E.data)
 
         N_hilbert, E_hilbert, Z_hilbert = (
             hilbert(self.N.data),
@@ -942,8 +960,12 @@ class TimeDomainAnalysis3C:
             "...i, ...ij -> ...j", data_hilbert, eigenvectors[indx, :, :], optimize=True
         )
 
-        # Only keep data that is aligned with the principal eigenvector
-        data_proj[:, 0:2] = 0
+        if suppress:
+            # Only keep data that is orthogonal to the principal eigenvector
+            data_proj[:, 2] = 0
+        else:
+            # Only keep data that is aligned with the principal eigenvector
+            data_proj[:, 0:2] = 0
 
         # Back-projection into original coordinate frame
         data_filt = np.einsum(
@@ -956,9 +978,10 @@ class TimeDomainAnalysis3C:
         N_sep[indx] = data_filt[:, 0].real
         E_sep[indx] = data_filt[:, 1].real
 
-        Z_sep = mask * Z_sep
-        N_sep = mask * N_sep
-        E_sep = mask * E_sep
+        if not suppress:
+            Z_sep = mask * Z_sep
+            N_sep = mask * N_sep
+            E_sep = mask * E_sep
         #
         data_filtered = Stream(traces=[self.Z.copy(), self.N.copy(), self.E.copy()])
         data_filtered[0].data = Z_sep

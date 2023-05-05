@@ -56,7 +56,7 @@ Adding new features: Step-by-step instructions for developers
 
 7. Make sure that all tests pass using pytest.
 
-8. Add your name to the list of contributors in /docs/source/contributors.rst.
+8. Add your name to the list of contributors in ``/docs/source/contributors.rst``.
 
 9. Push to your fork.
 

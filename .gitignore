@@ -19,3 +19,5 @@ Thumbs.db
 .idea/*
 static/*
 db.sqlite3
+.ipynb_checkpoints
+twistpy.egg-info

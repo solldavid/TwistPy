@@ -1,11 +1,10 @@
 /docs/build
 /docs/source/api/generated/backreferences/
+/docs/source/api/generated/twistpy*
 /docs/source/examples/
 /docs/source/tutorials/
 /docs/source/_static/
 /example_data/
-/examples/
-
 
 # OS generated files #
 .*.swp

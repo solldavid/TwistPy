@@ -1426,13 +1426,17 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Polarization attributes have been computed!&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="TimeDomainAnalysis3C.filter"><a class="viewcode-back" href="../../../api/generated/twistpy.polarization.TimeDomainAnalysis3C.filter.html#twistpy.polarization.TimeDomainAnalysis3C.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plot_filtered_attributes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="TimeDomainAnalysis3C.filter"><a class="viewcode-back" href="../../../api/generated/twistpy.polarization.TimeDomainAnalysis3C.filter.html#twistpy.polarization.TimeDomainAnalysis3C.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">suppress</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">smooth_mask</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">plot_filtered_attributes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Filter data based on polarization attributes.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        plot_filtered_attributes : :obj:`bool`, default = False</span>
-<span class="sd">            If set to True, a plot will be generated that shows the polarization attributes after filtering</span>
 <span class="sd">        **kwargs : For example elli=[0, 0.3]</span>
 <span class="sd">            Polarization attributes used for filtering. The filter parameters are specified as a list with two entries,</span>
 <span class="sd">            specifying the range of the polarization attributes that are kept by the filter. In the above example the</span>
@@ -1452,6 +1456,13 @@
 <span class="sd">                azi1 (Azimuth of the major semi axis)</span>
 
 <span class="sd">                azi2 (Azimuth of the minor semi axis)</span>
+<span class="sd">        suppress : :obj:`bool`, default = False</span>
+<span class="sd">            If set to True the polarization states that fulfill the filtering criterion will be suppressed from the data</span>
+<span class="sd">            while preserving any underlying signal that is orthogonal to the polarization state.</span>
+<span class="sd">        smooth_mask : :obj:`bool`, default = False</span>
+<span class="sd">            If set to True, the filter mask will be additionally smoothed.</span>
+<span class="sd">        plot_filtered_attributes : :obj:`bool`, default = False</span>
+<span class="sd">            If set to True, a plot will be generated that shows the polarization attributes after filtering</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1503,12 +1514,19 @@
                 <span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;int&quot;</span><span class="p">)</span>
             <span class="n">mask</span> <span class="o">*=</span> <span class="n">alpha</span>
 
-        <span class="n">mask</span> <span class="o">=</span> <span class="n">uniform_filter1d</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">window_length_samples</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">smooth_mask</span><span class="p">:</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">uniform_filter1d</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">window_length_samples</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
         <span class="n">indx</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">&gt;</span> <span class="mi">0</span>
 
-        <span class="n">Z_sep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-        <span class="n">N_sep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-        <span class="n">E_sep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">E</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">suppress</span><span class="p">:</span>
+            <span class="n">Z_sep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">N_sep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">E_sep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">E</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">Z_sep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">N_sep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">E_sep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">E</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 
         <span class="n">N_hilbert</span><span class="p">,</span> <span class="n">E_hilbert</span><span class="p">,</span> <span class="n">Z_hilbert</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">hilbert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="o">.</span><span class="n">data</span><span class="p">),</span>
@@ -1523,8 +1541,12 @@
             <span class="s2">&quot;...i, ...ij -&gt; ...j&quot;</span><span class="p">,</span> <span class="n">data_hilbert</span><span class="p">,</span> <span class="n">eigenvectors</span><span class="p">[</span><span class="n">indx</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
 
-        <span class="c1"># Only keep data that is aligned with the principal eigenvector</span>
-        <span class="n">data_proj</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">suppress</span><span class="p">:</span>
+            <span class="c1"># Only keep data that is orthogonal to the principal eigenvector</span>
+            <span class="n">data_proj</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Only keep data that is aligned with the principal eigenvector</span>
+            <span class="n">data_proj</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="c1"># Back-projection into original coordinate frame</span>
         <span class="n">data_filt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
@@ -1537,9 +1559,10 @@
         <span class="n">N_sep</span><span class="p">[</span><span class="n">indx</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_filt</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>
         <span class="n">E_sep</span><span class="p">[</span><span class="n">indx</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_filt</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>
 
-        <span class="n">Z_sep</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">*</span> <span class="n">Z_sep</span>
-        <span class="n">N_sep</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">*</span> <span class="n">N_sep</span>
-        <span class="n">E_sep</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">*</span> <span class="n">E_sep</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">suppress</span><span class="p">:</span>
+            <span class="n">Z_sep</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">*</span> <span class="n">Z_sep</span>
+            <span class="n">N_sep</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">*</span> <span class="n">N_sep</span>
+            <span class="n">E_sep</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">*</span> <span class="n">E_sep</span>
         <span class="c1">#</span>
         <span class="n">data_filtered</span> <span class="o">=</span> <span class="n">Stream</span><span class="p">(</span><span class="n">traces</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">E</span><span class="o">.</span><span class="n">copy</span><span class="p">()])</span>
         <span class="n">data_filtered</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">Z_sep</span>
@@ -1659,7 +1682,7 @@
   <p>
     
         &copy; Copyright 2023, The TwistPy Developers.<br/>
-      Last updated on Mar 31, 2023.<br/>
+      Last updated on May 05, 2023.<br/>
   </p>
 </footer>
 </main>

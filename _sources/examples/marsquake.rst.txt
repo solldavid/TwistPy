@@ -159,7 +159,7 @@ pixels where the signal strength in all three-components exceeds 5 percent of th
 .. code-block:: default
 
 
-    analysis.plot(major_semi_axis=True, clip=0.05, show=False)
+    analysis.plot(major_semi_axis=True, clip=0.00, show=False)
 
 
 
@@ -281,7 +281,7 @@ time-frequency representation (S-transform) of the signal for interpretation. Th
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  54.903 seconds)
+   **Total running time of the script:** ( 0 minutes  43.597 seconds)
 
 
 .. _sphx_glr_download_examples_marsquake.py:

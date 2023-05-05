@@ -445,18 +445,17 @@ axis downward, meaning that a wave at completely vertical incidence has an incli
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 198-200
+.. GENERATED FROM PYTHON SOURCE LINES 198-199
 
-Similarly, we could devise a filter that only retains the elliptically polarized parts of the signal (e.g., surface
-waves).
+By using the option suppress=True, we can alternatively suppress all signal parts that meet the filter criteria.
 
-.. GENERATED FROM PYTHON SOURCE LINES 200-205
+.. GENERATED FROM PYTHON SOURCE LINES 199-204
 
 .. code-block:: default
 
 
-    data_filtered_rayleigh = analysis.filter(
-        elli=[0.7, 1.0], dop=[0.7, 1], plot_filtered_attributes=True
+    data_filtered = analysis.filter(
+        plot_filtered_attributes=True, suppress = True, elli=[0.0, 0.2], dop=[0.7, 1], inc1=[0, 40]
     )
 
 
@@ -471,21 +470,20 @@ waves).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 206-208
+.. GENERATED FROM PYTHON SOURCE LINES 205-207
 
-To filter out parts of the signal that exhibit particle motion along a specific direction (e.g., an azimuth around 60
-degrees), we could use:
+Similarly, we could devise a filter that only retains the elliptically polarized parts of the signal (e.g., surface
+waves).
 
-.. GENERATED FROM PYTHON SOURCE LINES 208-214
+.. GENERATED FROM PYTHON SOURCE LINES 207-212
 
 .. code-block:: default
 
 
-    data_filtered_60degrees_azimuth = analysis.filter(
-        azi1=[55, 65], dop=[0.7, 1], plot_filtered_attributes=True
+    data_filtered_rayleigh = analysis.filter(
+        elli=[0.7, 1.0], dop=[0.7, 1], plot_filtered_attributes=True
     )
 
-    plt.show()
 
 
 
@@ -498,10 +496,37 @@ degrees), we could use:
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 213-215
+
+To filter out parts of the signal that exhibit particle motion along a specific direction (e.g., an azimuth around 60
+degrees), we could use:
+
+.. GENERATED FROM PYTHON SOURCE LINES 215-221
+
+.. code-block:: default
+
+
+    data_filtered_60degrees_azimuth = analysis.filter(
+        azi1=[55, 65], dop=[0.7, 1], plot_filtered_attributes=True
+    )
+
+    plt.show()
+
+
+
+.. image-sg:: /examples/images/sphx_glr_3Cpolarization_007.png
+   :alt: Ellipticity, Inclination of major and minor semi-axis, Azimuth of major and minor semi-axis, Degree of polarization
+   :srcset: /examples/images/sphx_glr_3Cpolarization_007.png
+   :class: sphx-glr-single-img
+
+
+
+
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.822 seconds)
+   **Total running time of the script:** ( 0 minutes  1.965 seconds)
 
 
 .. _sphx_glr_download_examples_3Cpolarization.py:

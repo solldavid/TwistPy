@@ -5,26 +5,26 @@
 
 Computation times
 =================
-**11:01.248** total execution time for **examples** files:
+**10:54.875** total execution time for **examples** files:
 
 +----------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_dispersion.py` (``dispersion.py``)                                                           | 06:18.972 | 0.0 MB |
+| :ref:`sphx_glr_examples_dispersion.py` (``dispersion.py``)                                                           | 06:19.698 | 0.0 MB |
 +----------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_ml_wave_type_estimation.py` (``ml_wave_type_estimation.py``)                                 | 02:49.836 | 0.0 MB |
+| :ref:`sphx_glr_examples_ml_wave_type_estimation.py` (``ml_wave_type_estimation.py``)                                 | 02:56.730 | 0.0 MB |
 +----------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_marsquake.py` (``marsquake.py``)                                                             | 00:54.903 | 0.0 MB |
+| :ref:`sphx_glr_examples_marsquake.py` (``marsquake.py``)                                                             | 00:43.597 | 0.0 MB |
 +----------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_alaska_wave_parameter_estimation.py` (``alaska_wave_parameter_estimation.py``)               | 00:19.985 | 0.0 MB |
+| :ref:`sphx_glr_examples_alaska_wave_parameter_estimation.py` (``alaska_wave_parameter_estimation.py``)               | 00:19.110 | 0.0 MB |
 +----------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_six_component_wave_parameter_estimation.py` (``six_component_wave_parameter_estimation.py``) | 00:15.348 | 0.0 MB |
+| :ref:`sphx_glr_examples_six_component_wave_parameter_estimation.py` (``six_component_wave_parameter_estimation.py``) | 00:14.663 | 0.0 MB |
 +----------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_beamforming.py` (``beamforming.py``)                                                         | 00:13.428 | 0.0 MB |
+| :ref:`sphx_glr_examples_beamforming.py` (``beamforming.py``)                                                         | 00:12.792 | 0.0 MB |
 +----------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_3Cpolarization_timefrequency.py` (``3Cpolarization_timefrequency.py``)                       | 00:04.617 | 0.0 MB |
+| :ref:`sphx_glr_examples_3Cpolarization_timefrequency.py` (``3Cpolarization_timefrequency.py``)                       | 00:04.013 | 0.0 MB |
 +----------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_tilt.py` (``tilt.py``)                                                                       | 00:01.887 | 0.0 MB |
+| :ref:`sphx_glr_examples_3Cpolarization.py` (``3Cpolarization.py``)                                                   | 00:01.965 | 0.0 MB |
 +----------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_3Cpolarization.py` (``3Cpolarization.py``)                                                   | 00:01.822 | 0.0 MB |
+| :ref:`sphx_glr_examples_tilt.py` (``tilt.py``)                                                                       | 00:01.885 | 0.0 MB |
 +----------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_stransform.py` (``stransform.py``)                                                           | 00:00.450 | 0.0 MB |
+| :ref:`sphx_glr_examples_stransform.py` (``stransform.py``)                                                           | 00:00.423 | 0.0 MB |
 +----------------------------------------------------------------------------------------------------------------------+-----------+--------+

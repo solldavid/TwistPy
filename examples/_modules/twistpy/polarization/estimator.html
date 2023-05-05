@@ -1,0 +1,881 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>twistpy.polarization.estimator &#8212; TwistPy</title>
+    
+  <link href="../../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-book-theme.css?digest=84ace793992934648b4de8eed757e5a2" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
+    
+  <link rel="preload" as="script" href="../../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
+    <link rel="canonical" href="https://twistpy.org/_modules/twistpy/polarization/estimator.html" />
+    <link rel="shortcut icon" href="../../../_static/twistpy.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<div class="col-12 col-md-3 bd-sidebar site-navigation " id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../../_static/logo_textbelow_oneaxis_adobe.png" class="logo" alt="logo">
+      
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Instructions:
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../installation.html">
+   Installation Instructions
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../examples/index.html">
+   Examples
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../examples/3Cpolarization.html">
+     3-C Polarization analysis and filtering in the time domain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../examples/3Cpolarization_timefrequency.html">
+     3-C Polarization analysis and filtering in the time-frequency domain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../examples/marsquake.html">
+     3-C Polarization analysis and filtering: Real data example using a marsquake recorded by InSight
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../examples/six_component_wave_parameter_estimation.html">
+     6-C Polarization Analysis: Time-domain wave parameter estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../examples/alaska_wave_parameter_estimation.html">
+     6-C Wave parameter estimation: gulf of alaska earthquake
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../examples/ml_wave_type_estimation.html">
+     6-C wave type fingerprinting
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../examples/beamforming.html">
+     Array Processing: Beamforming
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../examples/stransform.html">
+     S-transform
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../examples/dispersion.html">
+     Six-component dispersion analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../examples/tilt.html">
+     Tilt correction
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../contributing.html">
+   Contributing
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference documentation:
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../api/index.html">
+   TwistPy API
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeDomainAnalysis3C.html">
+     twistpy.polarization.TimeDomainAnalysis3C
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeDomainAnalysis3C.filter.html">
+       twistpy.polarization.TimeDomainAnalysis3C.filter
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeDomainAnalysis3C.plot.html">
+       twistpy.polarization.TimeDomainAnalysis3C.plot
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeDomainAnalysis3C.polarization_analysis.html">
+       twistpy.polarization.TimeDomainAnalysis3C.polarization_analysis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeDomainAnalysis3C.save.html">
+       twistpy.polarization.TimeDomainAnalysis3C.save
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeFrequencyAnalysis3C.html">
+     twistpy.polarization.TimeFrequencyAnalysis3C
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <label for="toctree-checkbox-4">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeFrequencyAnalysis3C.filter.html">
+       twistpy.polarization.TimeFrequencyAnalysis3C.filter
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeFrequencyAnalysis3C.plot.html">
+       twistpy.polarization.TimeFrequencyAnalysis3C.plot
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeFrequencyAnalysis3C.polarization_analysis.html">
+       twistpy.polarization.TimeFrequencyAnalysis3C.polarization_analysis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeFrequencyAnalysis3C.save.html">
+       twistpy.polarization.TimeFrequencyAnalysis3C.save
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../../api/generated/twistpy.polarization.PolarizationModel3C.html">
+     twistpy.polarization.PolarizationModel3C
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+    <label for="toctree-checkbox-5">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.PolarizationModel3C.polarization_vector.html">
+       twistpy.polarization.PolarizationModel3C.polarization_vector
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../../api/generated/twistpy.polarization.DispersionAnalysis.html">
+     twistpy.polarization.DispersionAnalysis
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.DispersionAnalysis.plot.html">
+       twistpy.polarization.DispersionAnalysis.plot
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.DispersionAnalysis.plot_baz.html">
+       twistpy.polarization.DispersionAnalysis.plot_baz
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.DispersionAnalysis.save.html">
+       twistpy.polarization.DispersionAnalysis.save
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeDomainAnalysis6C.html">
+     twistpy.polarization.TimeDomainAnalysis6C
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeDomainAnalysis6C.classify.html">
+       twistpy.polarization.TimeDomainAnalysis6C.classify
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeDomainAnalysis6C.plot.html">
+       twistpy.polarization.TimeDomainAnalysis6C.plot
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeDomainAnalysis6C.polarization_analysis.html">
+       twistpy.polarization.TimeDomainAnalysis6C.polarization_analysis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeDomainAnalysis6C.save.html">
+       twistpy.polarization.TimeDomainAnalysis6C.save
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeFrequencyAnalysis6C.html">
+     twistpy.polarization.TimeFrequencyAnalysis6C
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeFrequencyAnalysis6C.classify.html">
+       twistpy.polarization.TimeFrequencyAnalysis6C.classify
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeFrequencyAnalysis6C.filter.html">
+       twistpy.polarization.TimeFrequencyAnalysis6C.filter
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeFrequencyAnalysis6C.plot_classification.html">
+       twistpy.polarization.TimeFrequencyAnalysis6C.plot_classification
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeFrequencyAnalysis6C.plot_wave_parameters.html">
+       twistpy.polarization.TimeFrequencyAnalysis6C.plot_wave_parameters
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeFrequencyAnalysis6C.polarization_analysis.html">
+       twistpy.polarization.TimeFrequencyAnalysis6C.polarization_analysis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.TimeFrequencyAnalysis6C.save.html">
+       twistpy.polarization.TimeFrequencyAnalysis6C.save
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../../api/generated/twistpy.polarization.EstimatorConfiguration.html">
+     twistpy.polarization.EstimatorConfiguration
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+    <label for="toctree-checkbox-9">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.EstimatorConfiguration.compute_steering_vectors.html">
+       twistpy.polarization.EstimatorConfiguration.compute_steering_vectors
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../../api/generated/twistpy.polarization.SupportVectorMachine.html">
+     twistpy.polarization.SupportVectorMachine
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+    <label for="toctree-checkbox-10">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.SupportVectorMachine.load_model.html">
+       twistpy.polarization.SupportVectorMachine.load_model
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.SupportVectorMachine.train.html">
+       twistpy.polarization.SupportVectorMachine.train
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../../api/generated/twistpy.polarization.PolarizationModel6C.html">
+     twistpy.polarization.PolarizationModel6C
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+    <label for="toctree-checkbox-11">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.polarization.PolarizationModel6C.polarization_vector.html">
+       twistpy.polarization.PolarizationModel6C.polarization_vector
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/twistpy.tilt.correction.remove_tilt.html">
+     twistpy.tilt.correction.remove_tilt
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/twistpy.tilt.correction.transfer_function.html">
+     twistpy.tilt.correction.transfer_function
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../../api/generated/twistpy.array_processing.BeamformingArray.html">
+     twistpy.array_processing.BeamformingArray
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+    <label for="toctree-checkbox-12">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.array_processing.BeamformingArray.add_data.html">
+       twistpy.array_processing.BeamformingArray.add_data
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.array_processing.BeamformingArray.beamforming.html">
+       twistpy.array_processing.BeamformingArray.beamforming
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../api/generated/twistpy.array_processing.BeamformingArray.compute_steering_vectors.html">
+       twistpy.array_processing.BeamformingArray.compute_steering_vectors
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/twistpy.utils.stransform.html">
+     twistpy.utils.stransform
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/twistpy.utils.istransform.html">
+     twistpy.utils.istransform
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/twistpy.utils.load_analysis.html">
+     twistpy.utils.load_analysis
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  References:
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../references.html">
+   Relevant Publications
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../contributors.html">
+   Contributors
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../contact.html">
+   Contact
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../acknowledgments.html">
+   Acknowledgments
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<!-- This is an invisible pixel that we watch to see if we've scrolled. -->
+<div class="sbt-scroll-pixel-helper"></div>
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            <div class="topbar-left">
+                
+                <label class="nav-toggle-button" for="__navigation">
+                    <div class="visually-hidden">Toggle navigation</div>
+                    <i class="fas fa-bars"></i>
+                </label>
+                
+            </div>
+            
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/solldavid/TwistPy"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1></h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <h1>Source code for twistpy.polarization.estimator</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
+
+<span class="kn">from</span> <span class="nn">builtins</span> <span class="kn">import</span> <span class="ne">ValueError</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Callable</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">ndarray</span>
+
+<span class="kn">from</span> <span class="nn">twistpy.polarization.machinelearning</span> <span class="kn">import</span> <span class="n">SupportVectorMachine</span>
+<span class="kn">from</span> <span class="nn">twistpy.polarization.model</span> <span class="kn">import</span> <span class="n">PolarizationModel6C</span>
+
+
+<div class="viewcode-block" id="EstimatorConfiguration"><a class="viewcode-back" href="../../../api/generated/twistpy.polarization.EstimatorConfiguration.html#twistpy.polarization.EstimatorConfiguration">[docs]</a><span class="k">class</span> <span class="nc">EstimatorConfiguration</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Configure the type of estimator used for 6C polarization analysis.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    wave_types : :obj:`list` of :obj:`str`, default = [&#39;R&#39;, &#39;L&#39;, &#39;P&#39;, &#39;SV&#39;, &#39;SH&#39;]</span>
+<span class="sd">        List of wave types for which wave parameters are estimated.</span>
+<span class="sd">    method : :obj:`str`, default=&#39;ML&#39;</span>
+<span class="sd">        Method that is used for the estimation of wave parameters and polarization attributes.</span>
+
+<span class="sd">        .. hint:: &#39;ML&#39;: Machine Learning: Initially classify the wave types using a machine learning model. Wave</span>
+<span class="sd">            parameters are then directly estimated from the specified eigenvector. This is the most efficient way to</span>
+<span class="sd">            estimate wave parameters with 6C polarization analysis</span>
+
+<span class="sd">            &#39;MUSIC&#39;: Wave parameters are estimated using multiple signal classification. This is a grid search approach</span>
+<span class="sd">            and can be computationally expensive to compute. Enables the estimation of wave parameters for</span>
+<span class="sd">            multiple overlapping signals.</span>
+
+<span class="sd">            &#39;MVDR&#39;: Wave parameters are estimated using the minimum variance distortionless response or Capon method</span>
+<span class="sd">            (grid search approach).</span>
+
+<span class="sd">            &#39;BARTLETT&#39;: Wave parameters are estimated using the Bartlett method (grid search approach).</span>
+
+<span class="sd">            &#39;DOT&#39;: Minimize great-circle distance / dot  product (corresponding to the angle between the model</span>
+<span class="sd">            polarization vector and the polarization direction in the data) on the 5-sphere between the</span>
+<span class="sd">            measured and tested polarization vector</span>
+<span class="sd">    free_surface : :obj:`bool`, default=True</span>
+<span class="sd">        Specify whether free-surface polarization models should be used</span>
+<span class="sd">    scaling_velocity : :obj:`float`, default = 1.</span>
+<span class="sd">        Scaling velocity applied to the translational components in m/s</span>
+<span class="sd">    use_ml_classification : :obj:`bool`, default = True</span>
+<span class="sd">        For grid-search approaches: Specify whether an initial step of wave classification is performed using a</span>
+<span class="sd">        machine learning model. Wave parameters are then only estimated in windows where the wave type of interest is</span>
+<span class="sd">        detected. Results in a speed-up.</span>
+<span class="sd">    svm : :obj:`~twistpy.machinelearning.SupportVectorMachine`, optional</span>
+<span class="sd">        Pre-trained support vector machine for wave type classification. Needs to be provided if method=&#39;ML&#39; or</span>
+<span class="sd">        use_ml_classification = True.</span>
+<span class="sd">    eigenvector : :obj:`int`, default=0</span>
+<span class="sd">        Integer value identifying the eigenvector that will be used for wave parameter estimation. The eigenvectors are</span>
+<span class="sd">        sorted in descending order of their corresponding eigenvalue</span>
+
+<span class="sd">        |  If 0: first eigenvector, corresponding to the dominant signal in</span>
+<span class="sd">                the time window (associated with the largest eigenvalue).</span>
+<span class="sd">    music_signal_space_dimension : :obj:´int´, default=1</span>
+<span class="sd">        Specify the number of overlapping waves for which wave parameters will be estimated using the MUSIC algorithm.</span>
+<span class="sd">    vp : :obj:`tuple` (vp_min, vp_max, increment)</span>
+<span class="sd">        Define the search space for the P-wave velocity in m/s for grid-search methods.</span>
+<span class="sd">    vp_to_vs : :obj:`tuple` (vp_to_vs_min, vp_to_vs_max, increment)</span>
+<span class="sd">        Define the search space for the P-wave to S-wave velocity ratio.</span>
+<span class="sd">    vl : :obj:`tuple` (vl_min, vl_max, increment)</span>
+<span class="sd">        Define the search space for the Love wave velocity in m/s.</span>
+<span class="sd">    vr : :obj:`tuple` (vr_min, vr_max, increment)</span>
+<span class="sd">        Define the search space for the Rayleigh wave velocity in m/s.</span>
+<span class="sd">    vs : :obj:`tuple` (vr_min, vr_max, increment)</span>
+<span class="sd">        Define the search space for the S wave velocity in m/s. Only relevant for SH waves for P-, and SV-waves,</span>
+<span class="sd">        the S-wave velocity is computed over the vp-/vs-ratio</span>
+<span class="sd">    phi : :obj:`tuple` (phi_min, phi_max, increment)</span>
+<span class="sd">        Define the search space for the Azimuth in degrees.</span>
+<span class="sd">    theta : :obj:`tuple` (theta_min, theta_max, increment)</span>
+<span class="sd">        Define the search space for the inclination angle in degrees.</span>
+<span class="sd">    xi : :obj:`tuple` (xi_min, xi_max, increment)</span>
+<span class="sd">        Define the search space for the Rayleigh wave ellipticity angle in degrees.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">wave_types</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;R&quot;</span><span class="p">,</span> <span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="s2">&quot;SV&quot;</span><span class="p">,</span> <span class="s2">&quot;SH&quot;</span><span class="p">],</span>
+        <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;ML&quot;</span><span class="p">,</span>
+        <span class="n">free_surface</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">scaling_velocity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">use_ml_classification</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">svm</span><span class="p">:</span> <span class="n">SupportVectorMachine</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">eigenvector</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">music_signal_space_dimension</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">vp</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">100.0</span><span class="p">,</span> <span class="mf">2000.0</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">),</span>
+        <span class="n">vp_to_vs</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.7</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
+        <span class="n">vs</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">50.0</span><span class="p">,</span> <span class="mf">1000.0</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">),</span>
+        <span class="n">vl</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+        <span class="n">vr</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+        <span class="n">phi</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">theta</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">xi</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="c1"># Initial sanity checks</span>
+        <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ML&quot;</span><span class="p">,</span> <span class="s2">&quot;MUSIC&quot;</span><span class="p">,</span> <span class="s2">&quot;MVDR&quot;</span><span class="p">,</span> <span class="s2">&quot;BARTLETT&quot;</span><span class="p">,</span> <span class="s2">&quot;DOT&quot;</span><span class="p">]</span>
+        <span class="n">wtypes_implemented</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="s2">&quot;SV&quot;</span><span class="p">,</span> <span class="s2">&quot;SH&quot;</span><span class="p">,</span> <span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">method</span> <span class="ow">in</span> <span class="n">methods</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Invalid option &#39;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&#39; selected for method! Must be one of [</span><span class="si">{</span><span class="n">methods</span><span class="si">}</span><span class="s2">]!&quot;</span>
+        <span class="k">for</span> <span class="n">w_type</span> <span class="ow">in</span> <span class="n">wave_types</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">w_type</span> <span class="ow">in</span> <span class="n">wtypes_implemented</span><span class="p">,</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Invalid wave type specified: </span><span class="si">{</span><span class="n">w_type</span><span class="si">}</span><span class="s2">! Must be one of &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">wtypes_implemented</span><span class="si">}</span><span class="s2">]&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;ML&quot;</span> <span class="ow">or</span> <span class="n">use_ml_classification</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">svm</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;A SupportVectorMachine object needs to be provided for machine-learning based wave &quot;</span>
+                    <span class="s2">&quot;type classification!&quot;</span>
+                <span class="p">)</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">load_model</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">w_type</span> <span class="ow">in</span> <span class="n">wave_types</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="n">w_type</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">classes_</span><span class="p">,</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;The provided SupportVectorMachine model was not trained for &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;wave_type &#39;</span><span class="si">{</span><span class="n">w_type</span><span class="si">}</span><span class="s2">&#39;. Please use a different SupportVectorMachine&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;that was trained for this particular wave type.&quot;</span>
+                <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wave_types</span> <span class="o">=</span> <span class="n">wave_types</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="n">method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_ml_classification</span> <span class="o">=</span> <span class="n">use_ml_classification</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vs</span> <span class="o">=</span> <span class="n">vs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vp</span> <span class="o">=</span> <span class="n">vp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vp_to_vs</span> <span class="o">=</span> <span class="n">vp_to_vs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vl</span> <span class="o">=</span> <span class="n">vl</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vr</span> <span class="o">=</span> <span class="n">vr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">phi</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xi</span> <span class="o">=</span> <span class="n">xi</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">free_surface</span> <span class="o">=</span> <span class="n">free_surface</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">svm</span> <span class="o">=</span> <span class="n">svm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eigenvector</span> <span class="o">=</span> <span class="n">eigenvector</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">music_signal_space_dimension</span> <span class="o">=</span> <span class="n">music_signal_space_dimension</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scaling_velocity</span> <span class="o">=</span> <span class="n">scaling_velocity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vp_n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">vp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">vp</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">vp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">vp</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vs_n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">vs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">vs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">vs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">vs</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vp_to_vs_n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">vp_to_vs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">vp_to_vs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">vp_to_vs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">vp_to_vs</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vl_n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">vl</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">vl</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">vl</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">vl</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vr_n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">vr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">vr</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">vr</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">vr</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phi_n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">phi</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">phi</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">phi</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">phi</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">theta_n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">theta</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">theta</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">theta</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">theta</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xi_n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">xi</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">xi</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">xi</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">xi</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+<div class="viewcode-block" id="EstimatorConfiguration.compute_steering_vectors"><a class="viewcode-back" href="../../../api/generated/twistpy.polarization.EstimatorConfiguration.compute_steering_vectors.html#twistpy.polarization.EstimatorConfiguration.compute_steering_vectors">[docs]</a>    <span class="k">def</span> <span class="nf">compute_steering_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wave_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute steering vectors for polarization analysis with grid search methods for the specified wave type.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        wave_type : :obj:`str`</span>
+<span class="sd">            Wave type for which steering vectors should be computed.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        steering_vectors : :obj:`ndarray` (6, N)</span>
+<span class="sd">            6-C steering vectors. N is the search-space dimension.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">wave_type</span> <span class="o">==</span> <span class="s2">&quot;P&quot;</span><span class="p">:</span>
+            <span class="n">vp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">vp_to_vs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">vp_to_vs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">vp_to_vs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">vp_to_vs</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">vp_to_vs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">vp_to_vs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">vp_to_vs</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">vp_to_vs</span> <span class="o">=</span> <span class="n">vp_to_vs</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">theta</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+            <span class="n">vp</span><span class="p">,</span> <span class="n">vp_to_vs</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span>
+                <span class="n">vp</span><span class="p">,</span> <span class="n">vp_to_vs</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s2">&quot;ij&quot;</span>
+            <span class="p">)</span>
+
+            <span class="n">pm</span> <span class="o">=</span> <span class="n">PolarizationModel6C</span><span class="p">(</span>
+                <span class="n">wave_type</span><span class="o">=</span><span class="n">wave_type</span><span class="p">,</span>
+                <span class="n">vp</span><span class="o">=</span><span class="n">vp</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+                <span class="n">vs</span><span class="o">=</span><span class="n">vp</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="o">/</span> <span class="n">vp_to_vs</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+                <span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+                <span class="n">scaling_velocity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scaling_velocity</span><span class="p">,</span>
+                <span class="n">free_surface</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">free_surface</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">pm</span><span class="o">.</span><span class="n">polarization</span>
+
+        <span class="k">elif</span> <span class="n">wave_type</span> <span class="o">==</span> <span class="s2">&quot;SV&quot;</span><span class="p">:</span>
+            <span class="n">vp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">vp_to_vs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">vp_to_vs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">vp_to_vs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">vp_to_vs</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">vp_to_vs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">vp_to_vs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">vp_to_vs</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">vp_to_vs</span> <span class="o">=</span> <span class="n">vp_to_vs</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">theta</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+            <span class="n">vp</span><span class="p">,</span> <span class="n">vp_to_vs</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span>
+                <span class="n">vp</span><span class="p">,</span> <span class="n">vp_to_vs</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s2">&quot;ij&quot;</span>
+            <span class="p">)</span>
+
+            <span class="n">pm</span> <span class="o">=</span> <span class="n">PolarizationModel6C</span><span class="p">(</span>
+                <span class="n">wave_type</span><span class="o">=</span><span class="n">wave_type</span><span class="p">,</span>
+                <span class="n">vp</span><span class="o">=</span><span class="n">vp</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+                <span class="n">vs</span><span class="o">=</span><span class="n">vp</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="o">/</span> <span class="n">vp_to_vs</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+                <span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+                <span class="n">scaling_velocity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scaling_velocity</span><span class="p">,</span>
+                <span class="n">free_surface</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">free_surface</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">pm</span><span class="o">.</span><span class="n">polarization</span>
+
+        <span class="k">elif</span> <span class="n">wave_type</span> <span class="o">==</span> <span class="s2">&quot;SH&quot;</span><span class="p">:</span>
+            <span class="n">vs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">vs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">vs</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">vs</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">theta</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+            <span class="n">vs</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">vs</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s2">&quot;ij&quot;</span><span class="p">)</span>
+
+            <span class="n">pm</span> <span class="o">=</span> <span class="n">PolarizationModel6C</span><span class="p">(</span>
+                <span class="n">wave_type</span><span class="o">=</span><span class="n">wave_type</span><span class="p">,</span>
+                <span class="n">vs</span><span class="o">=</span><span class="n">vs</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+                <span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+                <span class="n">scaling_velocity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scaling_velocity</span><span class="p">,</span>
+                <span class="n">free_surface</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">free_surface</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">pm</span><span class="o">.</span><span class="n">polarization</span>
+
+        <span class="k">elif</span> <span class="n">wave_type</span> <span class="o">==</span> <span class="s2">&quot;R&quot;</span><span class="p">:</span>
+            <span class="n">vr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vr</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">vr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">vr</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">vr</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">xi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xi</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">xi</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">xi</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">xi</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+            <span class="n">vr</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">xi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">vr</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s2">&quot;ij&quot;</span><span class="p">)</span>
+
+            <span class="n">pm</span> <span class="o">=</span> <span class="n">PolarizationModel6C</span><span class="p">(</span>
+                <span class="n">wave_type</span><span class="o">=</span><span class="n">wave_type</span><span class="p">,</span>
+                <span class="n">vr</span><span class="o">=</span><span class="n">vr</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+                <span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+                <span class="n">xi</span><span class="o">=</span><span class="n">xi</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+                <span class="n">scaling_velocity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scaling_velocity</span><span class="p">,</span>
+                <span class="n">free_surface</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">free_surface</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">pm</span><span class="o">.</span><span class="n">polarization</span>
+
+        <span class="k">elif</span> <span class="n">wave_type</span> <span class="o">==</span> <span class="s2">&quot;L&quot;</span><span class="p">:</span>
+            <span class="n">vl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vl</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">vl</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">vl</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">vl</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+            <span class="n">vl</span><span class="p">,</span> <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">vl</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s2">&quot;ij&quot;</span><span class="p">)</span>
+
+            <span class="n">pm</span> <span class="o">=</span> <span class="n">PolarizationModel6C</span><span class="p">(</span>
+                <span class="n">wave_type</span><span class="o">=</span><span class="n">wave_type</span><span class="p">,</span>
+                <span class="n">vl</span><span class="o">=</span><span class="n">vl</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+                <span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+                <span class="n">scaling_velocity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scaling_velocity</span><span class="p">,</span>
+                <span class="n">free_surface</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">free_surface</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">pm</span><span class="o">.</span><span class="n">polarization</span></div></div>
+</pre></div>
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+        &copy; Copyright 2023, The TwistPy Developers.<br/>
+      Last updated on Mar 31, 2023.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MYGG4BF95D"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MYGG4BF95D');
+</script>
+
+  </body>
+</html>

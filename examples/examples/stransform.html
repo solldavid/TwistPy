@@ -1,0 +1,810 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>S-transform &#8212; TwistPy</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet">
+  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-book-theme.css?digest=84ace793992934648b4de8eed757e5a2" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
+    <link rel="canonical" href="https://twistpy.org/examples/stransform.html" />
+    <link rel="shortcut icon" href="../_static/twistpy.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Six-component dispersion analysis" href="dispersion.html" />
+    <link rel="prev" title="Array Processing: Beamforming" href="beamforming.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<div class="col-12 col-md-3 bd-sidebar site-navigation " id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/logo_textbelow_oneaxis_adobe.png" class="logo" alt="logo">
+      
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Instructions:
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../installation.html">
+   Installation Instructions
+  </a>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="index.html">
+   Examples
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="3Cpolarization.html">
+     3-C Polarization analysis and filtering in the time domain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="3Cpolarization_timefrequency.html">
+     3-C Polarization analysis and filtering in the time-frequency domain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="marsquake.html">
+     3-C Polarization analysis and filtering: Real data example using a marsquake recorded by InSight
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="six_component_wave_parameter_estimation.html">
+     6-C Polarization Analysis: Time-domain wave parameter estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="alaska_wave_parameter_estimation.html">
+     6-C Wave parameter estimation: gulf of alaska earthquake
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="ml_wave_type_estimation.html">
+     6-C wave type fingerprinting
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="beamforming.html">
+     Array Processing: Beamforming
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     S-transform
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="dispersion.html">
+     Six-component dispersion analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="tilt.html">
+     Tilt correction
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../contributing.html">
+   Contributing
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference documentation:
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../api/index.html">
+   TwistPy API
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../api/generated/twistpy.polarization.TimeDomainAnalysis3C.html">
+     twistpy.polarization.TimeDomainAnalysis3C
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeDomainAnalysis3C.filter.html">
+       twistpy.polarization.TimeDomainAnalysis3C.filter
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeDomainAnalysis3C.plot.html">
+       twistpy.polarization.TimeDomainAnalysis3C.plot
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeDomainAnalysis3C.polarization_analysis.html">
+       twistpy.polarization.TimeDomainAnalysis3C.polarization_analysis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeDomainAnalysis3C.save.html">
+       twistpy.polarization.TimeDomainAnalysis3C.save
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../api/generated/twistpy.polarization.TimeFrequencyAnalysis3C.html">
+     twistpy.polarization.TimeFrequencyAnalysis3C
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <label for="toctree-checkbox-4">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeFrequencyAnalysis3C.filter.html">
+       twistpy.polarization.TimeFrequencyAnalysis3C.filter
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeFrequencyAnalysis3C.plot.html">
+       twistpy.polarization.TimeFrequencyAnalysis3C.plot
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeFrequencyAnalysis3C.polarization_analysis.html">
+       twistpy.polarization.TimeFrequencyAnalysis3C.polarization_analysis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeFrequencyAnalysis3C.save.html">
+       twistpy.polarization.TimeFrequencyAnalysis3C.save
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../api/generated/twistpy.polarization.PolarizationModel3C.html">
+     twistpy.polarization.PolarizationModel3C
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+    <label for="toctree-checkbox-5">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.PolarizationModel3C.polarization_vector.html">
+       twistpy.polarization.PolarizationModel3C.polarization_vector
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../api/generated/twistpy.polarization.DispersionAnalysis.html">
+     twistpy.polarization.DispersionAnalysis
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.DispersionAnalysis.plot.html">
+       twistpy.polarization.DispersionAnalysis.plot
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.DispersionAnalysis.plot_baz.html">
+       twistpy.polarization.DispersionAnalysis.plot_baz
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.DispersionAnalysis.save.html">
+       twistpy.polarization.DispersionAnalysis.save
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../api/generated/twistpy.polarization.TimeDomainAnalysis6C.html">
+     twistpy.polarization.TimeDomainAnalysis6C
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeDomainAnalysis6C.classify.html">
+       twistpy.polarization.TimeDomainAnalysis6C.classify
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeDomainAnalysis6C.plot.html">
+       twistpy.polarization.TimeDomainAnalysis6C.plot
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeDomainAnalysis6C.polarization_analysis.html">
+       twistpy.polarization.TimeDomainAnalysis6C.polarization_analysis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeDomainAnalysis6C.save.html">
+       twistpy.polarization.TimeDomainAnalysis6C.save
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../api/generated/twistpy.polarization.TimeFrequencyAnalysis6C.html">
+     twistpy.polarization.TimeFrequencyAnalysis6C
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeFrequencyAnalysis6C.classify.html">
+       twistpy.polarization.TimeFrequencyAnalysis6C.classify
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeFrequencyAnalysis6C.filter.html">
+       twistpy.polarization.TimeFrequencyAnalysis6C.filter
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeFrequencyAnalysis6C.plot_classification.html">
+       twistpy.polarization.TimeFrequencyAnalysis6C.plot_classification
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeFrequencyAnalysis6C.plot_wave_parameters.html">
+       twistpy.polarization.TimeFrequencyAnalysis6C.plot_wave_parameters
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeFrequencyAnalysis6C.polarization_analysis.html">
+       twistpy.polarization.TimeFrequencyAnalysis6C.polarization_analysis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.TimeFrequencyAnalysis6C.save.html">
+       twistpy.polarization.TimeFrequencyAnalysis6C.save
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../api/generated/twistpy.polarization.EstimatorConfiguration.html">
+     twistpy.polarization.EstimatorConfiguration
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+    <label for="toctree-checkbox-9">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.EstimatorConfiguration.compute_steering_vectors.html">
+       twistpy.polarization.EstimatorConfiguration.compute_steering_vectors
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../api/generated/twistpy.polarization.SupportVectorMachine.html">
+     twistpy.polarization.SupportVectorMachine
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+    <label for="toctree-checkbox-10">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.SupportVectorMachine.load_model.html">
+       twistpy.polarization.SupportVectorMachine.load_model
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.SupportVectorMachine.train.html">
+       twistpy.polarization.SupportVectorMachine.train
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../api/generated/twistpy.polarization.PolarizationModel6C.html">
+     twistpy.polarization.PolarizationModel6C
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+    <label for="toctree-checkbox-11">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.polarization.PolarizationModel6C.polarization_vector.html">
+       twistpy.polarization.PolarizationModel6C.polarization_vector
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/twistpy.tilt.correction.remove_tilt.html">
+     twistpy.tilt.correction.remove_tilt
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/twistpy.tilt.correction.transfer_function.html">
+     twistpy.tilt.correction.transfer_function
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../api/generated/twistpy.array_processing.BeamformingArray.html">
+     twistpy.array_processing.BeamformingArray
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+    <label for="toctree-checkbox-12">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.array_processing.BeamformingArray.add_data.html">
+       twistpy.array_processing.BeamformingArray.add_data
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.array_processing.BeamformingArray.beamforming.html">
+       twistpy.array_processing.BeamformingArray.beamforming
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../api/generated/twistpy.array_processing.BeamformingArray.compute_steering_vectors.html">
+       twistpy.array_processing.BeamformingArray.compute_steering_vectors
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/twistpy.utils.stransform.html">
+     twistpy.utils.stransform
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/twistpy.utils.istransform.html">
+     twistpy.utils.istransform
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/twistpy.utils.load_analysis.html">
+     twistpy.utils.load_analysis
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  References:
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../references.html">
+   Relevant Publications
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../contributors.html">
+   Contributors
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../contact.html">
+   Contact
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../acknowledgments.html">
+   Acknowledgments
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<!-- This is an invisible pixel that we watch to see if we've scrolled. -->
+<div class="sbt-scroll-pixel-helper"></div>
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            <div class="topbar-left">
+                
+                <label class="nav-toggle-button" for="__navigation">
+                    <div class="visually-hidden">Toggle navigation</div>
+                    <i class="fas fa-bars"></i>
+                </label>
+                
+            </div>
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/examples/stransform.rst.txt"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.rst</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/solldavid/TwistPy"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>S-transform</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-examples-stransform-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
+</div>
+<section class="sphx-glr-example-title" id="s-transform">
+<span id="sphx-glr-examples-stransform-py"></span><h1>S-transform<a class="headerlink" href="#s-transform" title="Permalink to this heading">¶</a></h1>
+<p>This example illustrates the use of TwistPy’s S-transform functions
+(<a class="reference internal" href="../api/generated/twistpy.utils.stransform.html#twistpy.utils.stransform" title="twistpy.utils.stransform"><code class="xref py py-func docutils literal notranslate"><span class="pre">twistpy.utils.stransform</span></code></a> and <a class="reference internal" href="../api/generated/twistpy.utils.istransform.html#twistpy.utils.istransform" title="twistpy.utils.istransform"><code class="xref py py-func docutils literal notranslate"><span class="pre">twistpy.utils.istransform</span></code></a>) to compute a
+time-frequency representation of a signal and perform some filtering on the time-frequency spectrum.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.fft</span> <span class="kn">import</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.fft.irfft.html#scipy.fft.irfft" title="scipy.fft.irfft" class="sphx-glr-backref-module-scipy-fft sphx-glr-backref-type-py-function"><span class="n">irfft</span></a>
+<span class="kn">from</span> <span class="nn">scipy.signal.windows</span> <span class="kn">import</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.windows.tukey.html#scipy.signal.windows.tukey" title="scipy.signal.windows.tukey" class="sphx-glr-backref-module-scipy-signal-windows sphx-glr-backref-type-py-function"><span class="n">tukey</span></a>
+
+<span class="kn">from</span> <span class="nn">twistpy.utils</span> <span class="kn">import</span> <a href="../api/generated/twistpy.utils.stransform.html#twistpy.utils.stransform" title="twistpy.utils.stransform" class="sphx-glr-backref-module-twistpy-utils sphx-glr-backref-type-py-function"><span class="n">stransform</span></a><span class="p">,</span> <a href="../api/generated/twistpy.utils.istransform.html#twistpy.utils.istransform" title="twistpy.utils.istransform" class="sphx-glr-backref-module-twistpy-utils sphx-glr-backref-type-py-function"><span class="n">istransform</span></a>
+</pre></div>
+</div>
+<p>Here, we generate a simple signal consisting of two superimposed sinusoids at 10 and 30 Hz.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dt</span> <span class="o">=</span> <span class="mf">0.005</span>  <span class="c1"># Sampling interval (s)</span>
+<span class="n">tmin</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Start time of the signal (s)</span>
+<span class="n">tmax</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># End time of the signal (s)</span>
+
+<span class="n">t</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>  <span class="c1"># Time axis</span>
+
+<span class="n">f1</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1"># Frequency of first sinusoid</span>
+<span class="n">f2</span> <span class="o">=</span> <span class="mi">30</span>  <span class="c1"># Frequency of second sinusoid</span>
+
+<span class="n">u</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.sin.html#numpy.sin" title="numpy.sin" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">sin</span></a><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <a href="https://numpy.org/doc/stable/reference/constants.html#numpy.pi" title="numpy.pi" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">pi</span></a> <span class="o">*</span> <span class="n">f1</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">*</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.sin.html#numpy.sin" title="numpy.sin" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">sin</span></a><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <a href="https://numpy.org/doc/stable/reference/constants.html#numpy.pi" title="numpy.pi" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">pi</span></a> <span class="o">*</span> <span class="n">f2</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>  <span class="c1"># Generate signal</span>
+
+<span class="n">taper</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.windows.tukey.html#scipy.signal.windows.tukey" title="scipy.signal.windows.tukey" class="sphx-glr-backref-module-scipy-signal-windows sphx-glr-backref-type-py-function"><span class="n">tukey</span></a><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>  <span class="c1"># Taper the signal to avoid edge artifacts</span>
+<span class="n">u</span> <span class="o">*=</span> <span class="n">taper</span>
+</pre></div>
+</div>
+<p>The S-transform can be obtained with different k-values as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">u_stran_k1</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <a href="../api/generated/twistpy.utils.stransform.html#twistpy.utils.stransform" title="twistpy.utils.stransform" class="sphx-glr-backref-module-twistpy-utils sphx-glr-backref-type-py-function"><span class="n">stransform</span></a><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Compute the S-transform with k=1</span>
+<span class="n">u_stran_k3</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <a href="../api/generated/twistpy.utils.stransform.html#twistpy.utils.stransform" title="twistpy.utils.stransform" class="sphx-glr-backref-module-twistpy-utils sphx-glr-backref-type-py-function"><span class="n">stransform</span></a><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># Compute the S-transform with k=3</span>
+<span class="n">f_Hz</span> <span class="o">=</span> <span class="n">f</span> <span class="o">/</span> <span class="n">dt</span>  <span class="c1"># Convert frequency vector to Hz</span>
+
+<span class="n">figure</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="matplotlib.pyplot.subplots" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># Plot the time domain signal</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Signal amplitude u(t)&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Time domain signal&quot;</span><span class="p">)</span>
+
+<span class="c1"># Plot the magnitude of the S-transform for k=1</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">u_stran_k1</span><span class="p">),</span>
+    <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">,</span>
+    <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">f_Hz</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">f_Hz</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span>
+    <span class="n">aspect</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Frequency (Hz)&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;S-transform (k=1)&quot;</span><span class="p">)</span>
+
+<span class="c1"># Plot the magnitude of the S-transform for k=2</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">u_stran_k3</span><span class="p">),</span>
+    <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">,</span>
+    <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">f_Hz</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">f_Hz</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span>
+    <span class="n">aspect</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time (s)&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Frequency (Hz)&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;S-transform (k=3)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../_images/sphx_glr_stransform_001.png" srcset="../_images/sphx_glr_stransform_001.png" alt="Time domain signal, S-transform (k=1), S-transform (k=3)" class = "sphx-glr-single-img"/><p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;S-transform (k=3)&#39;)
+</pre></div>
+</div>
+<p>Note that increasing the value of <em>k</em> increases the frequency-resolution. However, this comes at the expense of a
+lower time-resolution. The inverse S-transform after Schimmel and Gallart (2005,
+<a class="reference external" href="https://doi.org/10.1109/TSP.2005.857065">https://doi.org/10.1109/TSP.2005.857065</a>) can now be obtained as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">u_ist_k1</span> <span class="o">=</span> <a href="../api/generated/twistpy.utils.istransform.html#twistpy.utils.istransform" title="twistpy.utils.istransform" class="sphx-glr-backref-module-twistpy-utils sphx-glr-backref-type-py-function"><span class="n">istransform</span></a><span class="p">(</span><span class="n">u_stran_k1</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+<span class="n">u_ist_k3</span> <span class="o">=</span> <a href="../api/generated/twistpy.utils.istransform.html#twistpy.utils.istransform" title="twistpy.utils.istransform" class="sphx-glr-backref-module-twistpy-utils sphx-glr-backref-type-py-function"><span class="n">istransform</span></a><span class="p">(</span><span class="n">u_stran_k3</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="matplotlib.pyplot.figure" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="matplotlib.pyplot.plot" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Original signal&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="matplotlib.pyplot.plot" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">u_ist_k1</span><span class="p">,</span> <span class="s2">&quot;r--&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Inverse ST (k=1)&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="matplotlib.pyplot.plot" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">u_ist_k3</span><span class="p">,</span> <span class="s2">&quot;g:&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Inverse ST (k=3)&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.legend.html#matplotlib.pyplot.legend" title="matplotlib.pyplot.legend" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">legend</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="matplotlib.pyplot.xlabel" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="s2">&quot;Time (s)&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="matplotlib.pyplot.ylabel" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="s2">&quot;Signal amplitude u(t)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../_images/sphx_glr_stransform_002.png" srcset="../_images/sphx_glr_stransform_002.png" alt="stransform" class = "sphx-glr-single-img"/><p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Text(44.222222222222214, 0.5, &#39;Signal amplitude u(t)&#39;)
+</pre></div>
+</div>
+<p>To investigate the effect of time-frequency filtering on the inverse transform,
+we perform some filtering of the time-frequency decomposed
+signal. Here, we try to isolate the 10 Hz signal between 0.4 and 0.6 seconds. We then evaluate the differences between
+the inverse transform after Schimmel and Gallart and the conventional inverse S-transform.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">filter_mask_time</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.asarray.html#numpy.asarray" title="numpy.asarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">asarray</span></a><span class="p">(</span>
+    <span class="p">[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float&quot;</span>
+<span class="p">)</span>  <span class="c1"># Filter signal between 0.4 and 0.6 s</span>
+<span class="n">filter_mask_frequency</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.asarray.html#numpy.asarray" title="numpy.asarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">asarray</span></a><span class="p">(</span>
+    <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">15</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float&quot;</span>
+<span class="p">)</span>  <span class="c1"># Filter signal between 5 and 15 Hz</span>
+
+<span class="n">filter_mask_index</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="n">filter_mask_time</span> <span class="o">/</span> <span class="n">dt</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;int&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">filter_mask_frequency</span> <span class="o">/</span> <span class="p">(</span><span class="n">f_Hz</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">f_Hz</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;int&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+<span class="n">filter_mask</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.zeros_like.html#numpy.zeros_like" title="numpy.zeros_like" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span></a><span class="p">(</span><span class="n">u_stran_k1</span><span class="p">)</span>
+<span class="n">filter_mask</span><span class="p">[</span>
+    <span class="n">filter_mask_index</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="p">:</span> <span class="n">filter_mask_index</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span>
+    <span class="n">filter_mask_index</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="p">:</span> <span class="n">filter_mask_index</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span>
+<span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">u_filt_schimmel</span> <span class="o">=</span> <a href="../api/generated/twistpy.utils.istransform.html#twistpy.utils.istransform" title="twistpy.utils.istransform" class="sphx-glr-backref-module-twistpy-utils sphx-glr-backref-type-py-function"><span class="n">istransform</span></a><span class="p">(</span>
+    <span class="n">u_stran_k1</span> <span class="o">*</span> <span class="n">filter_mask</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>  <span class="c1"># Inverse S-transform after Schimmel</span>
+<span class="n">u_filt_conventional</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.fft.irfft.html#scipy.fft.irfft" title="scipy.fft.irfft" class="sphx-glr-backref-module-scipy-fft sphx-glr-backref-type-py-function"><span class="n">irfft</span></a><span class="p">(</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.sum.html#numpy.sum" title="numpy.sum" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">sum</span></a><span class="p">(</span><span class="n">u_stran_k1</span> <span class="o">*</span> <span class="n">filter_mask</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">)</span>  <span class="c1"># Conventional inverse S-transform</span>
+
+<span class="n">fig2</span><span class="p">,</span> <span class="n">axes2</span> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="matplotlib.pyplot.subplots" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">axes2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">u_stran_k1</span> <span class="o">*</span> <span class="n">filter_mask</span><span class="p">),</span>
+    <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">,</span>
+    <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">f_Hz</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">f_Hz</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span>
+    <span class="n">aspect</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">axes2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Frequency (Hz)&quot;</span><span class="p">)</span>
+<span class="n">axes2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Filtered S-transform (k=1)&quot;</span><span class="p">)</span>
+
+<span class="n">axes2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">u_filt_schimmel</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">)</span>
+<span class="n">axes2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Inverse transform after Schimmel &amp; Gallart (2005)&quot;</span><span class="p">)</span>
+<span class="n">axes2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Signal amplitude u(t)&quot;</span><span class="p">)</span>
+
+<span class="n">axes2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">u_filt_conventional</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">)</span>
+<span class="n">axes2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time (s)&quot;</span><span class="p">)</span>
+<span class="n">axes2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Signal amplitude u(t)&quot;</span><span class="p">)</span>
+<span class="n">axes2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Conventional inverse S-transform&quot;</span><span class="p">)</span>
+
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../_images/sphx_glr_stransform_003.png" srcset="../_images/sphx_glr_stransform_003.png" alt="Filtered S-transform (k=1), Inverse transform after Schimmel & Gallart (2005), Conventional inverse S-transform" class = "sphx-glr-single-img"/><p>Note that the inverse transform after Schimmel &amp; Gallart provides a better time-localization of the filtered signal
+compared to the conventional inverse. However, it has to be noted that this inverse transform is only an approximation
+to the true inverse (the level of approximation is described in Simon, C., Ventosa, S., Schimmel, M., Heldring, A.,
+Dañobeitia, J. J., Gallart, J., &amp; Mànuel, A. 2007. <strong>The S-transform and its inverses: Side effects of discretizing
+and filtering</strong>. <em>IEEE Transactions on Signal Processing</em>, <strong>55</strong> (10), 4928–4937.
+<a class="reference external" href="https://doi.org/10.1109/TSP.2007.897893">https://doi.org/10.1109/TSP.2007.897893</a>). For filtering purposes, the inverse transform after Schimmel et al. is
+usually still the better choice.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.450 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-stransform-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/80bf8a9cc061fd483b9fc0b7ce529943/stransform.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">stransform.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/719597b0521ba8e1f2209bc4f40cdc5f/stransform.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">stransform.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="beamforming.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Array Processing: Beamforming</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="dispersion.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Six-component dispersion analysis</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+        &copy; Copyright 2023, The TwistPy Developers.<br/>
+      Last updated on Mar 31, 2023.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MYGG4BF95D"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MYGG4BF95D');
+</script>
+
+  </body>
+</html>

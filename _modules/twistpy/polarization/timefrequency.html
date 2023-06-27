@@ -2594,6 +2594,7 @@
         <span class="n">log_frequency</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">fmin</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">fmax</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">no_of_eigenvectors</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Filter data based on polarization attributes.</span>
@@ -2625,6 +2626,10 @@
 <span class="sd">        suppress : :obj:`bool`, default = False</span>
 <span class="sd">            If set to True the polarization states that fulfill the filtering criterion will be suppressed from the data</span>
 <span class="sd">            while preserving any underlying signal that is orthogonal to the polarization state.</span>
+<span class="sd">        no_of_eigenvectors : :obj:`int`, optional</span>
+<span class="sd">            Number of eigenvectors to be isolate or suppress from the signal. For example, no_of_eigenvectors=2 and</span>
+<span class="sd">            suppress=True will suppress all signal that is aligned with the first two principal eigenvectors of the</span>
+<span class="sd">            data covariance matrix.</span>
 <span class="sd">        smooth_mask : :obj:`bool`, default = False</span>
 <span class="sd">            If set to True, the filter mask will be smoothed within the same time-frequency window that was used to</span>
 <span class="sd">            compute the polarization attributes</span>
@@ -2653,6 +2658,12 @@
                 <span class="s2">&quot;at each time-frequency pixel. To do so, recompute the polarization attributes and set &quot;</span>
                 <span class="s2">&quot;dsfacf=1 and dsfact=1.&quot;</span>
             <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">no_of_eigenvectors</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;The parameter no_of_eigenvectors must be set to either 1 or 2&quot;</span>
+            <span class="p">)</span>
+
         <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -2710,9 +2721,9 @@
 
         <span class="c1"># Only keep or suppress data that is aligned with the principal eigenvector</span>
         <span class="k">if</span> <span class="n">suppress</span><span class="p">:</span>
-            <span class="n">data_proj</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">data_proj</span><span class="p">[:,</span> <span class="o">-</span><span class="n">no_of_eigenvectors</span><span class="p">:]</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">data_proj</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">data_proj</span><span class="p">[:,</span> <span class="mi">0</span> <span class="p">:</span> <span class="mi">2</span> <span class="o">-</span> <span class="p">(</span><span class="n">no_of_eigenvectors</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="c1"># Back-projection into original coordinate frame</span>
         <span class="n">data_filt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
@@ -3031,7 +3042,7 @@
   <p>
     
         &copy; Copyright 2023, The TwistPy Developers.<br/>
-      Last updated on May 05, 2023.<br/>
+      Last updated on Jun 27, 2023.<br/>
   </p>
 </footer>
 </main>

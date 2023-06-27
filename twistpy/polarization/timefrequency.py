@@ -2013,6 +2013,7 @@ class TimeFrequencyAnalysis3C:
         log_frequency: bool = False,
         fmin: float = None,
         fmax: float = None,
+        no_of_eigenvectors=1,
         **kwargs,
     ) -> Tuple:
         r"""Filter data based on polarization attributes.
@@ -2044,6 +2045,10 @@ class TimeFrequencyAnalysis3C:
         suppress : :obj:`bool`, default = False
             If set to True the polarization states that fulfill the filtering criterion will be suppressed from the data
             while preserving any underlying signal that is orthogonal to the polarization state.
+        no_of_eigenvectors : :obj:`int`, optional
+            Number of eigenvectors to be isolate or suppress from the signal. For example, no_of_eigenvectors=2 and
+            suppress=True will suppress all signal that is aligned with the first two principal eigenvectors of the
+            data covariance matrix.
         smooth_mask : :obj:`bool`, default = False
             If set to True, the filter mask will be smoothed within the same time-frequency window that was used to
             compute the polarization attributes
@@ -2072,6 +2077,10 @@ class TimeFrequencyAnalysis3C:
                 "at each time-frequency pixel. To do so, recompute the polarization attributes and set "
                 "dsfacf=1 and dsfact=1."
             )
+
+        if no_of_eigenvectors not in [1, 2]:
+            raise ValueError('The parameter no_of_eigenvectors must be set to either 1 or 2')
+
         params = {}
         for k in kwargs:
             if kwargs[k] is not None:
@@ -2129,9 +2138,9 @@ class TimeFrequencyAnalysis3C:
 
         # Only keep or suppress data that is aligned with the principal eigenvector
         if suppress:
-            data_proj[:, 2] = 0
+            data_proj[:, -no_of_eigenvectors:] = 0
         else:
-            data_proj[:, 0:2] = 0
+            data_proj[:, 0:2-(no_of_eigenvectors-1)] = 0
 
         # Back-projection into original coordinate frame
         data_filt = np.einsum(

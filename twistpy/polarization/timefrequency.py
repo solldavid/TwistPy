@@ -2079,7 +2079,9 @@ class TimeFrequencyAnalysis3C:
             )
 
         if no_of_eigenvectors not in [1, 2]:
-            raise ValueError('The parameter no_of_eigenvectors must be set to either 1 or 2')
+            raise ValueError(
+                "The parameter no_of_eigenvectors must be set to either 1 or 2"
+            )
 
         params = {}
         for k in kwargs:
@@ -2140,7 +2142,7 @@ class TimeFrequencyAnalysis3C:
         if suppress:
             data_proj[:, -no_of_eigenvectors:] = 0
         else:
-            data_proj[:, 0:2-(no_of_eigenvectors-1)] = 0
+            data_proj[:, 0 : 2 - (no_of_eigenvectors - 1)] = 0
 
         # Back-projection into original coordinate frame
         data_filt = np.einsum(

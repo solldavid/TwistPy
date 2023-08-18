@@ -856,7 +856,7 @@ class TimeFrequencyAnalysis6C:
                 if wave_type == "P":
                     if self.wave_parameters[wave_type]["lh"] is None:
                         raise ValueError(
-                            f"Wave parameters for '{wave_type}'-waves havee not been computed yet!"
+                            f"Wave parameters for '{wave_type}'-waves have not been computed yet!"
                         )
                     fig, ax = plt.subplots(5, 1, sharex=True)
                     alpha = Normalize(vmin=lh_min, vmax=lh_max)(
@@ -1000,7 +1000,7 @@ class TimeFrequencyAnalysis6C:
                 elif wave_type == "SV":
                     if self.wave_parameters[wave_type]["lh"] is None:
                         raise ValueError(
-                            f"Wave parameters for '{wave_type}'-waves havee not been computed yet!"
+                            f"Wave parameters for '{wave_type}'-waves have not been computed yet!"
                         )
                     fig, ax = plt.subplots(5, 1, sharex=True)
                     alpha = Normalize(vmin=lh_min, vmax=lh_max)(
@@ -1144,7 +1144,7 @@ class TimeFrequencyAnalysis6C:
                 elif wave_type == "R":
                     if self.wave_parameters[wave_type]["lh"] is None:
                         raise ValueError(
-                            f"Wave parameters for '{wave_type}'-waves havee not been computed yet!"
+                            f"Wave parameters for '{wave_type}'-waves have not been computed yet!"
                         )
                     fig, ax = plt.subplots(4, 1, sharex=True)
                     alpha = Normalize(vmin=lh_min, vmax=lh_max)(
@@ -1257,7 +1257,7 @@ class TimeFrequencyAnalysis6C:
                 elif wave_type == "L":
                     if self.wave_parameters[wave_type]["lh"] is None:
                         raise ValueError(
-                            f"Wave parameters for '{wave_type}'-waves havee not been computed yet!"
+                            f"Wave parameters for '{wave_type}'-waves have not been computed yet!"
                         )
                     fig, ax = plt.subplots(3, 1, sharex=True)
                     alpha = Normalize(vmin=lh_min, vmax=lh_max)(
@@ -1353,7 +1353,7 @@ class TimeFrequencyAnalysis6C:
                 elif wave_type == "SH":
                     if self.wave_parameters[wave_type]["lh"] is None:
                         raise ValueError(
-                            f"Wave parameters for '{wave_type}'-waves havee not been computed yet!"
+                            f"Wave parameters for '{wave_type}'-waves have not been computed yet!"
                         )
                     fig, ax = plt.subplots(3, 1, sharex=True)
                     alpha = Normalize(vmin=lh_min, vmax=lh_max)(

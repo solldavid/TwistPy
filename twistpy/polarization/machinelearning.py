@@ -177,7 +177,6 @@ class SupportVectorMachine:
             "r3_imag",
         ]
         for it, w_type in enumerate(wave_types):
-
             if w_type == "Noise":
                 u1_real: np.ndarray = np.random.normal(0.0, 1, size=(6, N))
                 u1_imag: np.ndarray = np.random.normal(0.0, 1, size=(6, N))

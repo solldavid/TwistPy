@@ -93,7 +93,6 @@ class EstimatorConfiguration:
         theta: Tuple[float, float, float] = (0, 90, 1),
         xi: Tuple[float, float, float] = (-90, 90, 1),
     ) -> None:
-
         # Initial sanity checks
         methods = ["ML", "MUSIC", "MVDR", "BARTLETT", "DOT"]
         wtypes_implemented = ["P", "SV", "SH", "L", "R"]

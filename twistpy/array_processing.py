@@ -291,7 +291,7 @@ class BeamformingArray:
             P: np.ndarray = 1 / np.einsum(
                 "sn, nk, sk->s",
                 self.steering_vectors.conj(),
-                pinvh(C, rcond=1e-6),
+                pinvh(C),
                 self.steering_vectors,
                 optimize=True,
             )

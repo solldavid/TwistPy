@@ -134,7 +134,6 @@ class TimeFrequencyAnalysis6C:
         verbose: bool = True,
         timeaxis: "str" = "utc",
     ) -> None:
-
         self.dop = None
         self.traN, self.traE, self.traZ, self.rotN, self.rotE, self.rotZ = (
             traN,
@@ -1813,7 +1812,6 @@ class TimeFrequencyAnalysis3C:
         verbose: bool = True,
         timeaxis: "str" = "utc",
     ) -> None:
-
         self.dop = None
         self.elli = None
         self.inc1 = None

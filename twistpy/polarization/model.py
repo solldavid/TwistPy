@@ -78,7 +78,6 @@ class PolarizationModel6C:
         """
 
         if self.wave_type == "P":
-
             if self.free_surface:
                 theta_rad = np.radians(self.theta)
                 phi_rad = np.radians(self.phi)
@@ -420,7 +419,6 @@ class PolarizationModel3C:
         """
 
         if self.wave_type == "P":
-
             if self.free_surface:
                 theta_rad = np.radians(self.theta)
                 phi_rad = np.radians(self.phi)

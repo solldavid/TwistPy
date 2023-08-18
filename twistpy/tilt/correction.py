@@ -114,7 +114,6 @@ def remove_tilt(
     method: str = "coh",
     trans_coh: Tuple[np.ndarray, np.ndarray] = None,
 ) -> np.ndarray:
-
     r"""
     Remove tilt noise from translational accelerometer recordings.
     See the ``method`` argument for different correction options.

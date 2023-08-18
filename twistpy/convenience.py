@@ -260,3 +260,13 @@ def to_spherical(xyz):
 
 def get_project_root() -> Path:
     return Path(__file__).parent.parent
+
+
+def _centered(arr, newsize):
+    # Return the center newsize portion of the array.
+    newsize = np.asarray(newsize)
+    currsize = np.array(arr.shape)
+    startind = (currsize - newsize) // 2
+    endind = startind + newsize
+    myslice = [slice(startind[k], endind[k]) for k in range(len(endind))]
+    return arr[tuple(myslice)]

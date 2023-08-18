@@ -112,7 +112,6 @@ class TimeDomainAnalysis6C:
         verbose: bool = True,
         timeaxis: str = "utc",
     ) -> None:
-
         self.dop = None
         self.phi_r = None
         self.c_r = None
@@ -731,7 +730,6 @@ class TimeDomainAnalysis3C:
         verbose: bool = True,
         timeaxis: str = "utc",
     ) -> None:
-
         self.dop = None
         self.elli = None
         self.inc1 = None

@@ -20,7 +20,6 @@ def get_data(
     ch_r: str,
     ch_s: str,
 ) -> Tuple[Stream, Stream]:
-
     r"""
     Read in data from two files and do basic pre-processing.
     1. sort the channels

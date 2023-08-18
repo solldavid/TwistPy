@@ -161,6 +161,7 @@ html_context = {
     "github_project": "TwistPy",
     "github_repo": "twistpy",
     "github_version": "master",
+    "default_mode": "light",
 }
 
 

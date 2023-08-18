@@ -6,7 +6,6 @@ from typing import Tuple
 
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.image import NonUniformImage
 from matplotlib.patches import Rectangle
 from obspy import Trace, Stream
 
@@ -313,42 +312,33 @@ class DispersionAnalysis:
         counts_l[np.isnan(counts_l)] = 0
         counts_dop_r[np.isnan(counts_dop_r)] = 0
         counts_dop_l[np.isnan(counts_dop_l)] = 0
+        X, Y = np.meshgrid(
+            self.f, np.linspace(velocity_range[0], velocity_range[1], nbins)
+        )
 
         fig1, ((ax2, ax1, ax5), (ax4, ax3, ax6), (ax7, ax8, ax9)) = plt.subplots(
             3, 3, gridspec_kw={"height_ratios": [3, 1, 1]}, figsize=(15, 10)
         )
-
-        im = NonUniformImage(
-            ax1,
-            interpolation="nearest",
+        ax1.pcolormesh(
+            X,
+            Y,
+            counts_r,
+            vmin=0.005 * np.max(np.max(counts_r)),
+            vmax=0.2 * np.max(np.max(counts_r)),
             cmap="magma",
-            extent=[self.f[-1], self.f[0], velocity_range[0], velocity_range[1]],
         )
-        im.set_data(
-            np.flip(self.f),
-            np.linspace(velocity_range[0], velocity_range[1], nbins),
-            np.flip(counts_r, axis=1),
-        )
-        im.set_clim([0.005 * np.max(np.max(counts_r)), 0.2 * np.max(np.max(counts_r))])
-        ax1.images.append(im)
         ax1.set_ylim([velocity_range[0], velocity_range[1]])
         ax1.set_ylabel("Phase velocity (ms)")
         ax1.set_xlabel("Frequency (Hz)")
         ax1.set_title("Rayleigh")
-
-        im = NonUniformImage(
-            ax2,
-            interpolation="nearest",
+        ax2.pcolormesh(
+            X,
+            Y,
+            counts_l,
+            vmin=0.005 * np.max(np.max(counts_l)),
+            vmax=0.2 * np.max(np.max(counts_l)),
             cmap="magma",
-            extent=[self.f[-1], self.f[0], velocity_range[0], velocity_range[1]],
         )
-        im.set_data(
-            np.flip(self.f),
-            np.linspace(velocity_range[0], velocity_range[1], nbins),
-            np.flip(counts_l, axis=1),
-        )
-        im.set_clim([0.005 * np.max(np.max(counts_l)), 0.5 * np.max(np.max(counts_l))])
-        ax2.images.append(im)
         ax2.set_ylim([velocity_range[0], velocity_range[1]])
         ax2.set_ylabel("Phase velocity (ms)")
         ax2.set_xlabel("Frequency (Hz)")
@@ -380,20 +370,16 @@ class DispersionAnalysis:
             ax4.add_patch(rect_l)
             ax3.add_patch(rect_r)
             ax6.add_patch(rect_re)
+        X, Y = np.meshgrid(self.f, np.linspace(-90, 90, nbins))
 
-        im = NonUniformImage(
-            ax5,
-            interpolation="nearest",
+        ax5.pcolormesh(
+            X,
+            Y,
+            counts_elli,
+            vmin=0.005 * np.max(np.max(counts_elli)),
+            vmax=0.6 * np.max(np.max(counts_elli)),
             cmap="magma",
-            extent=[self.f[-1], self.f[0], 0, 1],
         )
-        im.set_data(
-            np.flip(self.f), np.linspace(-90, 90, nbins), np.flip(counts_elli, axis=1)
-        )
-        im.set_clim(
-            [0.005 * np.max(np.max(counts_elli)), 0.6 * np.max(np.max(counts_elli))]
-        )
-        ax5.images.append(im)
         ax5.set_ylim([-90, 90])
         ax5.set_ylabel("Ellipticity angle (degrees)")
         ax5.set_xlabel("Frequency (Hz)")
@@ -410,52 +396,38 @@ class DispersionAnalysis:
         ax6.set_ylim([0, 100 * 1.2 * np.max([cr_ndec.max(), cl_ndec.max()])])
         ax4.set_ylabel("Detection rate (%)")
 
-        im = NonUniformImage(
-            ax7,
-            interpolation="nearest",
+        X, Y = np.meshgrid(self.f, np.linspace(0, 1, nbins))
+        ax7.pcolormesh(
+            X,
+            Y,
+            counts_dop_l,
+            vmin=0.005 * np.max(np.max(counts_dop_l)),
+            vmax=0.6 * np.max(np.max(counts_dop_l)),
             cmap="magma",
-            extent=[self.f[-1], self.f[0], 0, 1],
         )
-        im.set_data(
-            np.flip(self.f), np.linspace(0, 1, nbins), np.flip(counts_dop_l, axis=1)
-        )
-        im.set_clim(
-            [0.005 * np.max(np.max(counts_dop_l)), 0.6 * np.max(np.max(counts_dop_l))]
-        )
-        ax7.images.append(im)
         ax7.set_ylim([0, 1])
         ax7.set_ylabel("Degree of polarization")
         ax7.set_xlabel("Frequency (Hz)")
 
-        im = NonUniformImage(
-            ax8,
-            interpolation="nearest",
+        ax8.pcolormesh(
+            X,
+            Y,
+            counts_dop_r,
+            vmin=0.005 * np.max(np.max(counts_dop_r)),
+            vmax=0.6 * np.max(np.max(counts_dop_r)),
             cmap="magma",
-            extent=[self.f[-1], self.f[0], 0, 1],
         )
-        im.set_data(
-            np.flip(self.f), np.linspace(0, 1, nbins), np.flip(counts_dop_r, axis=1)
-        )
-        im.set_clim(
-            [0.005 * np.max(np.max(counts_dop_r)), 0.6 * np.max(np.max(counts_dop_r))]
-        )
-        ax8.images.append(im)
         ax8.set_ylim([0, 1])
         ax8.set_xlabel("Frequency (Hz)")
 
-        im = NonUniformImage(
-            ax9,
-            interpolation="nearest",
+        ax9.pcolormesh(
+            X,
+            Y,
+            counts_dop_r,
+            vmin=0.005 * np.max(np.max(counts_dop_r)),
+            vmax=0.6 * np.max(np.max(counts_dop_r)),
             cmap="magma",
-            extent=[self.f[-1], self.f[0], 0, 1],
         )
-        im.set_data(
-            np.flip(self.f), np.linspace(0, 1, nbins), np.flip(counts_dop_r, axis=1)
-        )
-        im.set_clim(
-            [0.005 * np.max(np.max(counts_dop_r)), 0.6 * np.max(np.max(counts_dop_r))]
-        )
-        ax9.images.append(im)
         ax9.set_ylim([0, 1])
         ax7.set_xlim(ax2.get_xlim())
         ax8.set_xlim(ax1.get_xlim())

@@ -1,5 +1,5 @@
 numpy
-scipy~=1.7.3
+scipy~=1.11.1
 obspy~=1.3.0
 pandas~=1.3.5
 matplotlib

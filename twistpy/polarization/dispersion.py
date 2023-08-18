@@ -6,7 +6,6 @@ from typing import Tuple
 
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.image import NonUniformImage
 from matplotlib.patches import Rectangle
 from obspy import Trace, Stream
 
@@ -397,7 +396,7 @@ class DispersionAnalysis:
         ax6.set_ylim([0, 100 * 1.2 * np.max([cr_ndec.max(), cl_ndec.max()])])
         ax4.set_ylabel("Detection rate (%)")
 
-        X, Y = meshgrid(self.f, np.linspace(0, 1, nbins))
+        X, Y = np.meshgrid(self.f, np.linspace(0, 1, nbins))
         ax7.pcolormesh(
             X,
             Y,

@@ -322,7 +322,7 @@ class DispersionAnalysis:
         ax1.pcolormesh(
             X,
             Y,
-            np.flip(counts_r, axis=1),
+            counts_r,
             vmin=0.005 * np.max(np.max(counts_r)),
             vmax=0.2 * np.max(np.max(counts_r)),
             cmap="magma",
@@ -334,7 +334,7 @@ class DispersionAnalysis:
         ax2.pcolormesh(
             X,
             Y,
-            np.flip(counts_l, axis=1),
+            counts_l,
             vmin=0.005 * np.max(np.max(counts_l)),
             vmax=0.2 * np.max(np.max(counts_l)),
             cmap="magma",
@@ -375,7 +375,7 @@ class DispersionAnalysis:
         ax5.pcolormesh(
             X,
             Y,
-            np.flip(counts_elli, axis=1),
+            counts_elli,
             vmin=0.005 * np.max(np.max(counts_elli)),
             vmax=0.6 * np.max(np.max(counts_elli)),
             cmap="magma",
@@ -400,7 +400,7 @@ class DispersionAnalysis:
         ax7.pcolormesh(
             X,
             Y,
-            np.flip(counts_dop_l, axis=1),
+            counts_dop_l,
             vmin=0.005 * np.max(np.max(counts_dop_l)),
             vmax=0.6 * np.max(np.max(counts_dop_l)),
             cmap="magma",
@@ -412,7 +412,7 @@ class DispersionAnalysis:
         ax8.pcolormesh(
             X,
             Y,
-            np.flip(counts_dop_r, axis=1),
+            counts_dop_r,
             vmin=0.005 * np.max(np.max(counts_dop_r)),
             vmax=0.6 * np.max(np.max(counts_dop_r)),
             cmap="magma",
@@ -423,7 +423,7 @@ class DispersionAnalysis:
         ax9.pcolormesh(
             X,
             Y,
-            np.flip(counts_dop_r, axis=1),
+            counts_dop_r,
             vmin=0.005 * np.max(np.max(counts_dop_r)),
             vmax=0.6 * np.max(np.max(counts_dop_r)),
             cmap="magma",

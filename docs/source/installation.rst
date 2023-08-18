@@ -23,10 +23,12 @@ distribution you see fit.
 .. note::
     We have recently moved to Python 3.9 since Python 3.7 reached end of life in June 2023.
     If you still have an older installation, we recommend to first save your old environment.
+
     .. code-block:: bash
         conda create --name twistpy37 --clone twistpy
 
     Then delete the old environment and create a new one with Python 3.9 as described above.
+
     .. code-block:: bash
         conda remove --name twistpy --all
 

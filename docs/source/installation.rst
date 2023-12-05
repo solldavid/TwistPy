@@ -17,8 +17,14 @@ distribution you see fit.
 
 .. code-block:: bash
 
-    conda create -n twistpy python=3.7
+    conda create -n twistpy python=3.9
     conda activate twistpy
+
+.. note::
+    We have recently moved to Python 3.9 since Python 3.7 reached end of life in June 2023.
+    If you still have an older installation, we recommend to first save your old environment
+    (*$conda create --name twistpy37 --clone twistpy*) then delete the old environment
+    (*$conda remove --name twistpy --all*) and create a new one with Python 3.9 as described above.
 
 3. Install the dependencies:
 

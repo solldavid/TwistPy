@@ -1,7 +1,7 @@
 Contact
 -------
 
-TwistPy is being developed and maintained by David Sollberger at ETH Zürich.
+TwistPy is mainly developed and maintained by David Sollberger at ETH Zürich.
 
 .. note::
 

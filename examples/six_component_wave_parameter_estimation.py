@@ -10,7 +10,12 @@ from obspy.core import Trace, Stream
 from scipy.signal import hilbert, convolve
 
 from twistpy.convenience import ricker
-from twistpy.polarization import TimeDomainAnalysis6C, PolarizationModel6C, SupportVectorMachine
+from twistpy.polarization import (
+    TimeDomainAnalysis6C,
+    PolarizationModel6C,
+    SupportVectorMachine,
+    EstimatorConfiguration,
+)
 
 rng = np.random.default_rng(1)
 
@@ -32,11 +37,15 @@ signal3 = np.zeros((N, 6))
 signal4 = np.zeros((N, 6))
 signal5 = np.zeros((N, 6))
 
-dt = 1. / 1000.  # sampling interval
+dt = 1.0 / 1000.0  # sampling interval
 t = np.arange(0, signal1.shape[0]) * dt  # time axis
-wavelet, t_wav, wcenter = ricker(t, 20.0)  # generate a Ricker wavelet with 30 Hz center frequency
-wavelet = wavelet[wcenter - int(len(t) / 2): wcenter + int(len(t) / 2)]
-wavelet_hilb = np.imag(hilbert(wavelet))  # Here we make use of the Hilbert transform to generate a Ricker wavelet
+wavelet, t_wav, wcenter = ricker(
+    t, 20.0
+)  # generate a Ricker wavelet with 30 Hz center frequency
+wavelet = wavelet[wcenter - int(len(t) / 2) : wcenter + int(len(t) / 2)]
+wavelet_hilb = np.imag(
+    hilbert(wavelet)
+)  # Here we make use of the Hilbert transform to generate a Ricker wavelet
 # with a 90 degree phase shift. This is to account for the fact that, for Rayleigh waves, the horizontal components are
 # phase-shifted by 90 degrees with respect to the other components.
 
@@ -48,17 +57,23 @@ wavelet_hilb = np.imag(hilbert(wavelet))  # Here we make use of the Hilbert tran
 # the Love and Rayleigh wave velocities are assumed to be 300 m/s, and the Rayleigh wave ellipticity angle is set to be
 # -45 degrees.
 
-wave1 = PolarizationModel6C(wave_type='P', theta=20., phi=30., vp=1000.,
-                            vs=400.)  # Generate a P-wave polarization model for
+wave1 = PolarizationModel6C(
+    wave_type="P", theta=20.0, phi=30.0, vp=1000.0, vs=400.0
+)  # Generate a P-wave polarization model for
 # a P-wave recorded at the free surface with an inclination of 20 degrees, an azimuth of 30 degrees. The local P- and
 # S-wave velocities are 1000 m/s and 400 m/s
-wave2 = PolarizationModel6C(wave_type='SV', theta=20., phi=30., vp=1000.,
-                            vs=400.)  # Generate an SV-wave polarization model
-wave3 = PolarizationModel6C(wave_type='SH', theta=20., phi=30., vs=400.,
-                            vl=400.)  # Generate an SH-wave polarization model
-wave4 = PolarizationModel6C(wave_type='L', phi=350., vl=300.)  # Generate a Love-wave polarization model
-wave5 = PolarizationModel6C(wave_type='R', phi=30., vr=300.,
-                            xi=-45.)  # Generate a Rayleigh-wave polarization model with a
+wave2 = PolarizationModel6C(
+    wave_type="SV", theta=20.0, phi=30.0, vp=1000.0, vs=400.0
+)  # Generate an SV-wave polarization model
+wave3 = PolarizationModel6C(
+    wave_type="SH", theta=20.0, phi=30.0, vs=400.0, vl=400.0
+)  # Generate an SH-wave polarization model
+wave4 = PolarizationModel6C(
+    wave_type="L", phi=270.0, vl=300.0
+)  # Generate a Love-wave polarization model
+wave5 = PolarizationModel6C(
+    wave_type="R", phi=290.0, vr=300.0, xi=-45.0
+)  # Generate a Rayleigh-wave polarization model with a
 # Rayleigh wave ellipticity angle of -45 degrees.
 
 
@@ -76,33 +91,35 @@ signal5[900, 2:] = np.real(wave5.polarization[2:].T)
 signal5[900, 0:2] = np.imag(wave5.polarization[0:2].T)
 
 for j in range(0, signal1.shape[1]):
-    signal1[:, j] = convolve(signal1[:, j], wavelet, mode='same')
-    signal2[:, j] = convolve(signal2[:, j], wavelet, mode='same')
-    signal3[:, j] = convolve(signal3[:, j], wavelet, mode='same')
-    signal4[:, j] = convolve(signal4[:, j], wavelet, mode='same')
+    signal1[:, j] = convolve(signal1[:, j], wavelet, mode="same")
+    signal2[:, j] = convolve(signal2[:, j], wavelet, mode="same")
+    signal3[:, j] = convolve(signal3[:, j], wavelet, mode="same")
+    signal4[:, j] = convolve(signal4[:, j], wavelet, mode="same")
 
-    if j == 0 or j == 1:  # Special case for horizontal translational components of the Rayleigh wave
-        signal5[:, j] = convolve(signal5[:, j], wavelet_hilb, mode='same')
+    if (
+        j == 0 or j == 1
+    ):  # Special case for horizontal translational components of the Rayleigh wave
+        signal5[:, j] = convolve(signal5[:, j], wavelet_hilb, mode="same")
     else:
-        signal5[:, j] = convolve(signal5[:, j], wavelet, mode='same')
+        signal5[:, j] = convolve(signal5[:, j], wavelet, mode="same")
 
 signal = signal1 + signal2 + signal3 + signal4 + signal5  # sum all signals together
 
 # Plot the data
 plt.figure(figsize=(10, 5))
-plt.plot(t, signal[:, 0], 'k:', label='traN')
-plt.plot(t, signal[:, 1], 'k--', label='traE')
-plt.plot(t, signal[:, 2], 'k', label='traZ')
-plt.plot(t, signal[:, 3], 'r:', label='rotN')
-plt.plot(t, signal[:, 4], 'r--', label='rotE')
-plt.plot(t, signal[:, 5], 'r', label='rotZ')
-plt.text((100 - 120) * dt, 0.7, 'P-wave')
-plt.text((300 - 120) * dt, 0.7, 'SV-wave')
-plt.text((500 - 120) * dt, 0.7, 'SH-wave')
-plt.text((700 - 120) * dt, 0.7, 'Love-wave')
-plt.text((900 - 120) * dt, 0.7, 'Rayleigh-wave')
-plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-plt.xlabel('Time (s)')
+plt.plot(t, signal[:, 0], "k:", label="traN")
+plt.plot(t, signal[:, 1], "k--", label="traE")
+plt.plot(t, signal[:, 2], "k", label="traZ")
+plt.plot(t, signal[:, 3], "r:", label="rotN")
+plt.plot(t, signal[:, 4], "r--", label="rotE")
+plt.plot(t, signal[:, 5], "r", label="rotZ")
+plt.text((100 - 120) * dt, 0.7, "P-wave")
+plt.text((300 - 120) * dt, 0.7, "SV-wave")
+plt.text((500 - 120) * dt, 0.7, "SH-wave")
+plt.text((700 - 120) * dt, 0.7, "Love-wave")
+plt.text((900 - 120) * dt, 0.7, "Rayleigh-wave")
+plt.legend(loc="center left", bbox_to_anchor=(1, 0.5))
+plt.xlabel("Time (s)")
 
 ########################################################################################################################
 # Note that the translational components and the rotational components have different units. The PolarizationModel class
@@ -114,32 +131,35 @@ plt.xlabel('Time (s)')
 # the recorded data is a crucial step when processing real data. Choose a scaling velocity that ensures that the
 # translational and rotational signals have comparable amplitudes.
 
-scaling_velocity = 400.
+scaling_velocity = 400.0
 signal[:, 0:3] /= scaling_velocity  # Apply scaling velocity to the translational data
 
 signal += 0.1 * signal.max().max() * np.random.random((N, 6))
 
 plt.figure(figsize=(10, 5))
-plt.plot(t, signal[:, 0], 'k:', label='traN')
-plt.plot(t, signal[:, 1], 'k--', label='traE')
-plt.plot(t, signal[:, 2], 'k', label='traZ')
-plt.plot(t, signal[:, 3], 'r:', label='rotN')
-plt.plot(t, signal[:, 4], 'r--', label='rotE')
-plt.plot(t, signal[:, 5], 'r', label='rotZ')
-plt.text((100 - 120) * dt, 0.7 / scaling_velocity, 'P-wave')
-plt.text((300 - 120) * dt, 0.7 / scaling_velocity, 'SV-wave')
-plt.text((500 - 120) * dt, 0.7 / scaling_velocity, 'SH-wave')
-plt.text((700 - 120) * dt, 0.7 / scaling_velocity, 'Love-wave')
-plt.text((900 - 120) * dt, 0.7 / scaling_velocity, 'Rayleigh-wave')
-plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-plt.xlabel('Time (s)')
+plt.plot(t, signal[:, 0], "k:", label="traN")
+plt.plot(t, signal[:, 1], "k--", label="traE")
+plt.plot(t, signal[:, 2], "k", label="traZ")
+plt.plot(t, signal[:, 3], "r:", label="rotN")
+plt.plot(t, signal[:, 4], "r--", label="rotE")
+plt.plot(t, signal[:, 5], "r", label="rotZ")
+plt.text((100 - 120) * dt, 0.7 / scaling_velocity, "P-wave")
+plt.text((300 - 120) * dt, 0.7 / scaling_velocity, "SV-wave")
+plt.text((500 - 120) * dt, 0.7 / scaling_velocity, "SH-wave")
+plt.text((700 - 120) * dt, 0.7 / scaling_velocity, "Love-wave")
+plt.text((900 - 120) * dt, 0.7 / scaling_velocity, "Rayleigh-wave")
+plt.legend(loc="center left", bbox_to_anchor=(1, 0.5))
+plt.xlabel("Time (s)")
 
 ########################################################################################################################
 # To make the synthetics accessible to TwistPy, we convert them to an Obspy Stream object.
 
 data = Stream()
 for n in range(signal.shape[1]):
-    trace = Trace(data=signal[:, n], header={"delta": t[1] - t[0], "npts": int(signal.shape[0]), "starttime": 0.})
+    trace = Trace(
+        data=signal[:, n],
+        header={"delta": t[1] - t[0], "npts": int(signal.shape[0]), "starttime": 0.0},
+    )
     data += trace
 
 ########################################################################################################################
@@ -147,7 +167,7 @@ for n in range(signal.shape[1]):
 # model, that allows us to classify the waves. For this, we set up a support vector machine. In our example, we consider
 # wave parameters that are typical for the near surface, so we give the support vector machine a fitting name
 
-svm = SupportVectorMachine(name='love_wave')
+svm = SupportVectorMachine(name="love_wave")
 
 ########################################################################################################################
 # Now we can train the model. For details, please check the example on how to train a
@@ -158,31 +178,58 @@ svm = SupportVectorMachine(name='love_wave')
 # analysis windows with a random polarization. We allow waves to arrive from all directions (azimuth range [0 360]
 # degrees and inclination range [0 90] degrees).
 
-svm.train(wave_types=['R', 'P', 'SV', 'L', 'Noise'],
-          N=5000, scaling_velocity=scaling_velocity, vp=(400, 3000), vp_to_vs=(1.7, 2.4), vl=(100, 3000),
-          vr=(100, 3000), phi=(0, 360), theta=(0, 90), xi=(-90, 90), free_surface=True, C=1, kernel='rbf')
+svm.train(
+    wave_types=["R", "P", "SV", "L", "Noise"],
+    N=5000,
+    scaling_velocity=scaling_velocity,
+    vp=(400, 3000),
+    vp_to_vs=(1.7, 2.4),
+    vl=(100, 3000),
+    vr=(100, 3000),
+    phi=(0, 360),
+    theta=(0, 90),
+    xi=(-90, 90),
+    free_surface=True,
+    C=1,
+    kernel="rbf",
+)
 
 ########################################################################################################################
 # Now that we have trained the model, we can set up our analysis. We will perform 6C polarization analysis in the time
 # domain and use a sliding time window that is 0.05 s long (50 samples) with an overlap between subsequent windows of
 # 50%.
 
-window = {'window_length_seconds': 20. * dt, 'overlap': 1.}
-analysis = TimeDomainAnalysis6C(traN=data[0], traE=data[1], traZ=data[2], rotN=data[3], rotE=data[4], rotZ=data[5],
-                                window=window, scaling_velocity=scaling_velocity, timeaxis='rel')
+window = {"window_length_seconds": 50.0 * dt, "overlap": 1.0}
+analysis = TimeDomainAnalysis6C(
+    traN=data[0],
+    traE=data[1],
+    traZ=data[2],
+    rotN=data[3],
+    rotE=data[4],
+    rotZ=data[5],
+    window=window,
+    scaling_velocity=scaling_velocity,
+    timeaxis="rel",
+)
 
 ########################################################################################################################
 # To classify the waves, we simply do (yielding a classification of the first eigenvector of the covariance matrix):
 
 analysis.classify(svm=svm, eigenvector_to_classify=0)
-classification = analysis.classification['0']
-t_windows = analysis.t_windows  # Positions of the sliding time windows where the classification was performed
+classification = analysis.classification["0"]
+t_windows = (
+    analysis.t_windows
+)  # Positions of the sliding time windows where the classification was performed
 
 #  Wave parameter estimation
-from twistpy.polarization import EstimatorConfiguration
 
-est = EstimatorConfiguration(wave_types=['L', 'R'], method='ML', scaling_velocity=scaling_velocity,
-                             use_ml_classification=True,
-                             svm=svm)
+est = EstimatorConfiguration(
+    wave_types=["L", "R"],
+    method="ML",
+    scaling_velocity=scaling_velocity,
+    use_ml_classification=True,
+    svm=svm,
+)
 analysis.polarization_analysis(estimator_configuration=est)
 analysis.plot(estimator_configuration=est, dop_clip=0.9)
+test = 1

@@ -24,7 +24,7 @@ from twistpy.utils import stransform
 # We start by reading in the data, which has already been corrected for the instrument response and rotated to
 # a ZNE configuration.
 
-data = read('../example_data/S0173a.mseed')
+data = read("../example_data/S0173a.mseed")
 
 ########################################################################################################################
 # Now we specify the parameters of the time-frequency window that we use for polarization analysis. The spectral
@@ -33,13 +33,15 @@ data = read('../example_data/S0173a.mseed')
 # specify a window that is frequency-dependent and extends over a single period in time (1/frequency). In the
 # frequency-direction the window extends over 50 mHz.
 
-window = {'number_of_periods': 1, 'frequency_extent': 0.05}
+window = {"number_of_periods": 5, "frequency_extent": 0.05}
 
 ########################################################################################################################
 # Now we can set up the polarizaiton analysis interface. To compute the S-transform, we use the default value of k=1.
 # (see the example on the S-transform for more information on this parameter).
 
-analysis = TimeFrequencyAnalysis3C(N=data[1], E=data[2], Z=data[0], window=window, timeaxis='utc', k=1)
+analysis = TimeFrequencyAnalysis3C(
+    N=data[1], E=data[2], Z=data[0], window=window, timeaxis="utc", k=1
+)
 
 ########################################################################################################################
 # To estimate polarization attributes, we use:
@@ -51,7 +53,7 @@ analysis.polarization_analysis()
 # azimuth of the major semi-axis of the polarization ellipse and only plot the polarization attributes at time frequency
 # pixels where the signal strength in all three-components exceeds 5 percent of the maximum value:
 
-analysis.plot(major_semi_axis=True, clip=0.05, show=False)
+analysis.plot(major_semi_axis=True, clip=0.00, show=False)
 
 ########################################################################################################################
 # Let us now devise a polarization filter that enhances the S-waves in the signal. For S-waves at close-to-
@@ -61,7 +63,9 @@ analysis.plot(major_semi_axis=True, clip=0.05, show=False)
 # waves with an ellipticity smaller than 0.4). To automatically generate a plot of the filtered data and the filtered
 # polarization attributes by setting plot_filtered_attributes=True.
 
-data_filtered = analysis.filter(elli=[0, 0.4], inc1=[60, 90], plot_filtered_attributes=True)
+data_filtered = analysis.filter(
+    elli=[0, 0.4], inc1=[60, 90], plot_filtered_attributes=True, clip=0.0
+)
 
 ########################################################################################################################
 # Note that P-wave energy is now widely suppressed, while the S-waves are retained. However, there seems to be a
@@ -74,29 +78,49 @@ data_filtered = analysis.filter(elli=[0, 0.4], inc1=[60, 90], plot_filtered_attr
 
 # Compute S-transform of North component for plotting
 N_stran, f = stransform(data[1].data, k=1)
-N_stran_filtered, _ = stransform(data_filtered[0].data, k=1)  # S-transform of filtered data for comparison
+N_stran_filtered, _ = stransform(
+    data_filtered[1].data, k=1
+)  # S-transform of filtered data for comparison
 plt.style.use("ggplot")
 
 # Plot the result
 fig, ax = plt.subplots(2, 2, sharex=True)
-ax[0, 0].plot(analysis.t_pol, data[1].data, 'k')
-ax[0, 0].set_title('N-Component Input Data')
+ax[0, 0].plot(analysis.t_pol, data[1].data, "k")
+ax[0, 0].set_title("N-Component Input Data")
 ax[0, 0].set_ylim([-6e-9, 6e-9])
 ax[0, 0].xaxis_date()
-ax[1, 0].imshow(np.abs(N_stran), origin='lower', aspect='auto',
-                extent=[analysis.t_pol[0], analysis.t_pol[-1], analysis.f_pol[0], analysis.f_pol[-1]])
-ax[1, 0].set_xlabel('Time (UTC)')
-ax[1, 0].set_title('S-transform Input Data')
+ax[1, 0].imshow(
+    np.abs(N_stran),
+    origin="lower",
+    aspect="auto",
+    extent=[
+        analysis.t_pol[0],
+        analysis.t_pol[-1],
+        analysis.f_pol[0],
+        analysis.f_pol[-1],
+    ],
+)
+ax[1, 0].set_xlabel("Time (UTC)")
+ax[1, 0].set_title("S-transform Input Data")
 ax[1, 0].xaxis_date()
 
-ax[0, 1].plot(analysis.t_pol, data_filtered[0].data, 'k')
-ax[0, 1].set_title('N-Component Filtered Data')
+ax[0, 1].plot(analysis.t_pol, data_filtered[1].data, "k")
+ax[0, 1].set_title("N-Component Filtered Data")
 ax[0, 1].set_ylim([-6e-9, 6e-9])
 ax[0, 1].xaxis_date()
 
-ax[1, 1].imshow(np.abs(N_stran_filtered), origin='lower', aspect='auto',
-                extent=[analysis.t_pol[0], analysis.t_pol[-1], analysis.f_pol[0], analysis.f_pol[-1]])
-ax[1, 1].set_xlabel('Time (UTC)')
-ax[1, 1].set_title('S-transform Filtered Data')
+ax[1, 1].imshow(
+    np.abs(N_stran_filtered),
+    origin="lower",
+    aspect="auto",
+    extent=[
+        analysis.t_pol[1],
+        analysis.t_pol[-1],
+        analysis.f_pol[0],
+        analysis.f_pol[-1],
+    ],
+)
+ax[1, 1].set_xlabel("Time (UTC)")
+ax[1, 1].set_title("S-transform Filtered Data")
 ax[1, 1].xaxis_date()
 plt.show()

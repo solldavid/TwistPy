@@ -1,0 +1,30 @@
+# This workflow runs black and flake8 on the PR
+# For more information see: https://github.com/marketplace/actions/python-flake8-lint
+name: TwistPy-lint
+
+on: [ push, pull_request ]
+
+jobs:
+  flake8-lint:
+    runs-on: ubuntu-latest
+    name: lint
+    steps:
+      - name: Check out source repository
+        uses: actions/checkout@v3
+      - name: Set up Python environment
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.8"
+      - name: Run black
+        uses: psf/black@stable
+        with:
+          options: "--diff" 
+          src: "./twistpy"
+      - name: Run flake8
+        uses: py-actions/flake8@v2
+        with:
+          ignore: "E203,W503,W504,W605"
+          exclude: "__init__.py"
+          max-line-length: "120"
+          path: "twistpy"
+          args: "--per-file-ignores=__init__.py:F401,F403,F405"

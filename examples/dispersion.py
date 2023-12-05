@@ -21,14 +21,16 @@ from twistpy.polarization.machinelearning import SupportVectorMachine
 # scaling velocity (see other examples on 6C polarization analysis). After scaling, the translational and rotational
 # components should have comparable amplitudes. This makes the analysis more stable.
 
-data = read('../example_data/6C_noise_data_long.mseed')
-scaling_velocity = 800.
+data = read("../example_data/6C_urban_noise.mseed")
+scaling_velocity = 800.0
 for i, trace in enumerate(data):
     if i < 3:
         trace.differentiate()
         trace.data /= scaling_velocity
     else:
-        trace.data -= np.median(trace.data)  # Ensure that the rotational components have a median of 0
+        trace.data -= np.median(
+            trace.data
+        )  # Ensure that the rotational components have a median of 0
     trace.taper(0.05)
 
 ########################################################################################################################
@@ -36,26 +38,50 @@ for i, trace in enumerate(data):
 # to be able to detect body waves because we want to avoid leakage of body waves into our Love and Rayleigh wave
 # dispersion curves. We choose a velocity range that is typical for the near-surface in the frequency range we are
 # interested in.
-
-svm = SupportVectorMachine(name='dispersion_analysis')
-svm.train(wave_types=['R', 'L', 'P', 'SV', 'Noise'], scaling_velocity=scaling_velocity, phi=(0, 360), vp=(100, 3000),
-          vp_to_vs=(1.7, 2.4), vr=(50, 3000), vl=(50, 3000), xi=(-90, 90), theta=(0, 70))
+svm = SupportVectorMachine(name="dispersion_analysis2")
+svm.train(
+    wave_types=["R", "L", "P", "SV", "Noise"],
+    scaling_velocity=scaling_velocity,
+    phi=(0, 360),
+    vp=(400, 3000),
+    vp_to_vs=(1.7, 2.4),
+    vr=(100, 3000),
+    vl=(100, 3000),
+    xi=(-90, 90),
+    theta=(0, 80),
+    C=100,
+    plot_confusion_matrix=False,
+)
 
 ########################################################################################################################
 # We now have everything we need to extract dispersion curves from our ambient noise data. We specify that the time
-# window for the analysis should stretch over 2 dominant periods at each frequency of interest and we choose
-# non-overlapping windows in this case ('overlap': 0.). We want to extract Love and Rayleigh wave dispersion curves in
-# the frequency range between 1 and 20 Hz. The data is automatically filtered to various frequency bands in the interval
-# 1 to 20 Hz, each frequency band extends over the number of octaves specified by the parameter 'octaves'. Here, we
-# choose quarter octave frequency bands.
+# window for the analysis should stretch over 2 dominant periods at each frequency of interest. Additionally, we specify
+# that neighbouring windows should overlap by half the window width in this case ('overlap': 0.5). We want to extract
+# Love and Rayleigh wave dispersion curves in the frequency range between 1 and 20 Hz. The data is automatically
+# filtered to various frequency bands in the interval 1 to 20 Hz, each frequency band extends over the number of octaves
+# specified by the parameter 'octaves'. Here, we choose quarter octave frequency bands.
 
-window = {'number_of_periods': 2, 'overlap': 0.}
-da = DispersionAnalysis(traN=data[1], traE=data[2], traZ=data[0], rotN=data[4], rotE=data[5], rotZ=data[3],
-                        window=window, scaling_velocity=scaling_velocity, verbose=True, fmin=1., fmax=20., octaves=0.25,
-                        svm=svm)
-
+window = {"number_of_periods": 3, "overlap": 0.5}
+da = DispersionAnalysis(
+    traN=data[1],
+    traE=data[0],
+    traZ=data[2],
+    rotN=data[4],
+    rotE=data[5],
+    rotZ=data[3],
+    window=window,
+    scaling_velocity=scaling_velocity,
+    verbose=True,
+    fmin=1.0,
+    fmax=20.0,
+    octaves=0.25,
+    svm=svm,
+)
 ########################################################################################################################
 # After running the analysis, we can save it to disk (e.g. da.save('dispersion_analysis.pkl')) or simply plot it using
 # the provided plot() method.
-
 da.plot()
+
+########################################################################################################################
+# To plot the back-azimuth at a specific frequency, use the plot_baz() method:
+da.plot_baz(freq=14.0)

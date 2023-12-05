@@ -39,19 +39,29 @@ f_Hz = f / dt  # Convert frequency vector to Hz
 figure, axes = plt.subplots(3, 1, sharex=True)
 # Plot the time domain signal
 axes[0].plot(t, u)
-axes[0].set_ylabel('Signal amplitude u(t)')
-axes[0].set_title('Time domain signal')
+axes[0].set_ylabel("Signal amplitude u(t)")
+axes[0].set_title("Time domain signal")
 
 # Plot the magnitude of the S-transform for k=1
-axes[1].imshow(np.abs(u_stran_k1), origin='lower', extent=[tmin, tmax, f_Hz[0], f_Hz[-1]], aspect='auto')
-axes[1].set_ylabel('Frequency (Hz)')
-axes[1].set_title('S-transform (k=1)')
+axes[1].imshow(
+    np.abs(u_stran_k1),
+    origin="lower",
+    extent=[tmin, tmax, f_Hz[0], f_Hz[-1]],
+    aspect="auto",
+)
+axes[1].set_ylabel("Frequency (Hz)")
+axes[1].set_title("S-transform (k=1)")
 
 # Plot the magnitude of the S-transform for k=2
-axes[2].imshow(np.abs(u_stran_k3), origin='lower', extent=[tmin, tmax, f_Hz[0], f_Hz[-1]], aspect='auto')
-axes[2].set_xlabel('Time (s)')
-axes[2].set_ylabel('Frequency (Hz)')
-axes[2].set_title('S-transform (k=3)')
+axes[2].imshow(
+    np.abs(u_stran_k3),
+    origin="lower",
+    extent=[tmin, tmax, f_Hz[0], f_Hz[-1]],
+    aspect="auto",
+)
+axes[2].set_xlabel("Time (s)")
+axes[2].set_ylabel("Frequency (Hz)")
+axes[2].set_title("S-transform (k=3)")
 
 ########################################################################################################################
 # Note that increasing the value of *k* increases the frequency-resolution. However, this comes at the expense of a
@@ -62,12 +72,12 @@ u_ist_k1 = istransform(u_stran_k1, f)
 u_ist_k3 = istransform(u_stran_k3, f, k=3)
 
 plt.figure()
-plt.plot(t, u, 'k', label='Original signal')
-plt.plot(t, u_ist_k1, 'r--', label='Inverse ST (k=1)')
-plt.plot(t, u_ist_k3, 'g:', label='Inverse ST (k=3)')
+plt.plot(t, u, "k", label="Original signal")
+plt.plot(t, u_ist_k1, "r--", label="Inverse ST (k=1)")
+plt.plot(t, u_ist_k3, "g:", label="Inverse ST (k=3)")
 plt.legend()
-plt.xlabel('Time (s)')
-plt.ylabel('Signal amplitude u(t)')
+plt.xlabel("Time (s)")
+plt.ylabel("Signal amplitude u(t)")
 
 ########################################################################################################################
 # To investigate the effect of time-frequency filtering on the inverse transform,
@@ -75,34 +85,48 @@ plt.ylabel('Signal amplitude u(t)')
 # signal. Here, we try to isolate the 10 Hz signal between 0.4 and 0.6 seconds. We then evaluate the differences between
 # the inverse transform after Schimmel and Gallart and the conventional inverse S-transform.
 
-filter_mask_time = np.asarray([0.4, 0.6], dtype='float')  # Filter signal between 0.4 and 0.6 s
-filter_mask_frequency = np.asarray([5, 15], dtype='float')  # Filter signal between 5 and 15 Hz
+filter_mask_time = np.asarray(
+    [0.4, 0.6], dtype="float"
+)  # Filter signal between 0.4 and 0.6 s
+filter_mask_frequency = np.asarray(
+    [5, 15], dtype="float"
+)  # Filter signal between 5 and 15 Hz
 
-filter_mask_index = [(filter_mask_time / dt).astype('int'),
-                     (filter_mask_frequency / (f_Hz[1] - f_Hz[0])).astype('int')]
+filter_mask_index = [
+    (filter_mask_time / dt).astype("int"),
+    (filter_mask_frequency / (f_Hz[1] - f_Hz[0])).astype("int"),
+]
 filter_mask = np.zeros_like(u_stran_k1)
-filter_mask[filter_mask_index[1][0]:filter_mask_index[1][1],
-filter_mask_index[0][0]:filter_mask_index[0][1]] = 1
+filter_mask[
+    filter_mask_index[1][0] : filter_mask_index[1][1],
+    filter_mask_index[0][0] : filter_mask_index[0][1],
+] = 1
 
-u_filt_schimmel = \
-    istransform(u_stran_k1 * filter_mask, f, k=1)  # Inverse S-transform after Schimmel
-u_filt_conventional = \
-    irfft(np.sum(u_stran_k1 * filter_mask, axis=-1))  # Conventional inverse S-transform
+u_filt_schimmel = istransform(
+    u_stran_k1 * filter_mask, f, k=1
+)  # Inverse S-transform after Schimmel
+u_filt_conventional = irfft(
+    np.sum(u_stran_k1 * filter_mask, axis=-1)
+)  # Conventional inverse S-transform
 
 fig2, axes2 = plt.subplots(3, 1, sharex=True)
-axes2[0].imshow(np.abs(u_stran_k1 * filter_mask),
-                origin='lower', extent=[tmin, tmax, f_Hz[0], f_Hz[-1]], aspect='auto')
-axes2[0].set_ylabel('Frequency (Hz)')
-axes2[0].set_title('Filtered S-transform (k=1)')
+axes2[0].imshow(
+    np.abs(u_stran_k1 * filter_mask),
+    origin="lower",
+    extent=[tmin, tmax, f_Hz[0], f_Hz[-1]],
+    aspect="auto",
+)
+axes2[0].set_ylabel("Frequency (Hz)")
+axes2[0].set_title("Filtered S-transform (k=1)")
 
-axes2[1].plot(t, u_filt_schimmel, 'k')
-axes2[1].set_title('Inverse transform after Schimmel & Gallart (2005)')
-axes2[1].set_ylabel('Signal amplitude u(t)')
+axes2[1].plot(t, u_filt_schimmel, "k")
+axes2[1].set_title("Inverse transform after Schimmel & Gallart (2005)")
+axes2[1].set_ylabel("Signal amplitude u(t)")
 
-axes2[2].plot(t, u_filt_conventional, 'k')
-axes2[2].set_xlabel('Time (s)')
-axes2[2].set_ylabel('Signal amplitude u(t)')
-axes2[2].set_title('Conventional inverse S-transform')
+axes2[2].plot(t, u_filt_conventional, "k")
+axes2[2].set_xlabel("Time (s)")
+axes2[2].set_ylabel("Signal amplitude u(t)")
+axes2[2].set_title("Conventional inverse S-transform")
 
 plt.show()
 

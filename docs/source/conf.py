@@ -5,6 +5,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 import datetime
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
@@ -15,22 +16,23 @@ import sys
 # -- Path setup --------------------------------------------------------------
 from sphinx_gallery.sorting import ExampleTitleSortKey
 
-sys.path.insert(0, os.path.abspath('../..'))
+sys.path.insert(0, os.path.abspath("../.."))
 
 extensions = [
     # 'sphinx.ext.napoleon',
-    'sphinx.ext.autodoc',
-    'sphinx.ext.autosummary',
-    'sphinx.ext.coverage',
-    'sphinx.ext.mathjax',
-    'sphinx.ext.doctest',
-    'sphinx.ext.viewcode',
-    'sphinx.ext.extlinks',
+    "sphinx.ext.autodoc",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.coverage",
+    "sphinx.ext.mathjax",
+    "sphinx.ext.doctest",
+    "sphinx.ext.viewcode",
+    "sphinx.ext.extlinks",
     "sphinx.ext.intersphinx",
-    'matplotlib.sphinxext.plot_directive',
-    'numpydoc',
-    'nbsphinx',
-    'sphinx_gallery.gen_gallery',
+    "matplotlib.sphinxext.plot_directive",
+    "numpydoc",
+    "nbsphinx",
+    "sphinx_gallery.gen_gallery",
+    "sphinx_sitemap",
 ]
 
 intersphinx_mapping = {
@@ -43,45 +45,48 @@ intersphinx_mapping = {
     "obspy": ("https://docs.obspy.org/", None),
 }
 
-exclude_patterns = ['_build', '**.ipynb_checkpoints']
-source_suffix = '.rst'
+exclude_patterns = ["_build", "**.ipynb_checkpoints"]
+source_suffix = ".rst"
 # The encoding of source files.
-master_doc = 'index'
-
+master_doc = "index"
+html_baseurl = "https://twistpy.org"
+sitemap_url_scheme = "{link}"
 # Always show the source code that generates a plot
 plot_include_source = True
-plot_formats = ['png']
+plot_formats = ["png"]
 
 ## Generate autodoc stubs with summaries from code
 autosummary_generate = True
 
 ## Include Python objects as they appear in source files
-autodoc_member_order = 'bysource'
+autodoc_member_order = "bysource"
 
 sphinx_gallery_conf = {
     # path to your examples scripts
-    'examples_dirs': ['../../examples', ],
+    "examples_dirs": [
+        "../../examples",
+    ],
     # path where to save gallery generated examples
-    'gallery_dirs': ['examples'],
-    'filename_pattern': '\.py',
-    'ignore_pattern': '_init_/',
+    "gallery_dirs": ["examples"],
+    "filename_pattern": "\.py",
+    "ignore_pattern": "_init_/",
     # Remove the "Download all examples" button from the top level gallery
-    'download_all_examples': False,
+    "download_all_examples": False,
     # Sort gallery example by file name instead of number of lines (default)
-    'within_subsection_order': ExampleTitleSortKey,
+    "within_subsection_order": ExampleTitleSortKey,
     # directory where function granular galleries are stored
-    'backreferences_dir': 'api/generated/backreferences',
+    "backreferences_dir": "api/generated/backreferences",
     # Modules for which function level galleries are created.
-    'doc_module': 'twistpy',
+    "doc_module": "twistpy",
     # Insert links to documentation of objects in the examples
-    'reference_url': {'twistpy': None},
-    'first_notebook_cell': ("%matplotlib inline"),
-    'run_stale_examples': False,
-    'inspect_global_variables': False,
+    "reference_url": {"twistpy": None},
+    "first_notebook_cell": ("%matplotlib inline"),
+    "run_stale_examples": False,
+    "inspect_global_variables": False,
 }
 
 ## Default flags used by autodoc directives
-autodoc_default_flags = ['members']
+autodoc_default_flags = ["members"]
 
 numpydoc_show_class_members = False
 numpydoc_show_inherited_class_members = True
@@ -96,20 +101,20 @@ html_theme_options = {
 
 # -- Project information -----------------------------------------------------
 year = datetime.date.today().year
-project = 'TwistPy'
-copyright = f'{year}, David Sollberger'
+project = "TwistPy"
+copyright = f"{year}, The TwistPy Developers"
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.1'
+release = "0.0.1"
 
-html_last_updated_fmt = '%b %d, %Y'
-html_title = 'TwistPy'
-html_short_title = 'TwistPy'
-html_logo = '_static/logo_textbelow_oneaxis_adobe.png'
-html_favicon = '_static/twistpy.ico'
-html_static_path = ['_static']
+html_last_updated_fmt = "%b %d, %Y"
+html_title = "TwistPy"
+html_short_title = "TwistPy"
+html_logo = "_static/logo_textbelow_oneaxis_adobe.png"
+html_favicon = "_static/twistpy.ico"
+html_static_path = ["_static"]
 html_extra_path = []
-pygments_style = 'default'
+pygments_style = "default"
 add_function_parentheses = False
 html_show_sourcelink = False
 html_show_sphinx = True
@@ -126,7 +131,7 @@ add_module_names = False
 # ones.
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -143,18 +148,20 @@ html_theme = "sphinx_book_theme"
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ["_static"]
 
 html_context = {
     # Custom variables to enable "Improve this page"" and "Download notebook"
     # links
-    'doc_path': 'docs/source',
-    'galleries': sphinx_gallery_conf['gallery_dirs'],
-    'gallery_dir': dict(zip(sphinx_gallery_conf['gallery_dirs'],
-                            sphinx_gallery_conf['examples_dirs'])),
-    'github_project': 'TwistPy',
-    'github_repo': 'twistpy',
-    'github_version': 'master',
+    "doc_path": "docs/source",
+    "galleries": sphinx_gallery_conf["gallery_dirs"],
+    "gallery_dir": dict(
+        zip(sphinx_gallery_conf["gallery_dirs"], sphinx_gallery_conf["examples_dirs"])
+    ),
+    "github_project": "TwistPy",
+    "github_repo": "twistpy",
+    "github_version": "master",
+    "default_mode": "light",
 }
 
 

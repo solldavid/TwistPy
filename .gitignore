@@ -1,4 +1,23 @@
-/docs/build/
+/docs/build
 /docs/source/api/generated/backreferences/
+/docs/source/api/generated/twistpy*
 /docs/source/examples/
 /docs/source/tutorials/
+/docs/source/_static/
+/example_data/
+
+# OS generated files #
+.*.swp
+*.py[cod]
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.idea/*
+static/*
+db.sqlite3
+.ipynb_checkpoints
+twistpy.egg-info

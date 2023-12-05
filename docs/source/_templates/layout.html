@@ -1,0 +1,18 @@
+{% extends "!layout.html" %}
+{% block footer %}
+{{ super() }}
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MYGG4BF95D"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MYGG4BF95D');
+</script>
+{% endblock %}
+
+
+{% block rootrellink %}
+    <li><a href="https://twistpy.org">Project Homepage</a> &raquo;</li>
+    {{ super() }}
+{% endblock %}

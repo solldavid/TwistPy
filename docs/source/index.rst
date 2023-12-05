@@ -1,13 +1,12 @@
 .. TwistPy documentation master file, created by David Sollberger
 
+Home
+----
+
 .. image:: _static/logo_adobe_title.png
     :alt: TwistPy Logo
 
-
-
-
-
-TwistPy is a small Python package for seismic data processing. It includes routines for single-station
+TwistPy is a small open-source Python package for seismic data processing. It includes routines for single-station
 polarization analysis and filtering, as well as array processing tools.
 
 A special focus lies on innovative techniques to process spatial wavefield gradient data and, in particular,
@@ -18,9 +17,10 @@ Some of the tools available in TwistPy are:
 
 - Three-component polarization analysis and filtering (both time domain and S-transform).
 - Six-component polarization analysis and filtering (both time domain and S-transform).
+- Six-component wave type fingerprinting.
 - Single-station six-component Love- and Rayleigh-wave dispersion and Rayleigh wave ellipticity angle estimation.
+- Dynamic tilt corrections for seismometers using direct rotation measurements.
 - Beamforming (Bartlett, MVDR, and MUSIC algorithm).
-- Rotation and strain estimation from small-aperture arrays.
 - Forward and inverse S-transform (Stockwell transform).
 
 .. toctree::
@@ -33,8 +33,9 @@ Some of the tools available in TwistPy are:
     :hidden:
     :caption: Instructions:
 
-    installation
+    installation.rst
     examples/index.rst
+    contributing.rst
 
 .. toctree::
     :maxdepth: 3
@@ -49,6 +50,8 @@ Some of the tools available in TwistPy are:
     :caption: References:
 
     references.rst
-    acknowledgments.rst
+    contributors.rst
     contact.rst
+    acknowledgments.rst
+
 

@@ -49,7 +49,7 @@ exclude_patterns = ["_build", "**.ipynb_checkpoints"]
 source_suffix = ".rst"
 # The encoding of source files.
 master_doc = "index"
-html_baseurl = "https://twistpy.org"
+html_baseurl = "https://twistpy.org/"
 sitemap_url_scheme = "{link}"
 # Always show the source code that generates a plot
 plot_include_source = True

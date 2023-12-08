@@ -98,8 +98,8 @@ filter_mask_index = [
 ]
 filter_mask = np.zeros_like(u_stran_k1)
 filter_mask[
-    filter_mask_index[1][0] : filter_mask_index[1][1],
-    filter_mask_index[0][0] : filter_mask_index[0][1],
+    filter_mask_index[1][0]: filter_mask_index[1][1],
+    filter_mask_index[0][0]: filter_mask_index[0][1],
 ] = 1
 
 u_filt_schimmel = istransform(

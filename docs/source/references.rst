@@ -31,7 +31,8 @@ TwistPy citation
 ----------------
 If you use TwistPy in your research, please consider citing the most relevant paper of the ones listed above. The code is also available on Zenodo:
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8124030.svg)](https://doi.org/10.5281/zenodo.8124030)
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.8124030.svg
+  :target: https://doi.org/10.5281/zenodo.8124030
 
 It can be cited as:
 

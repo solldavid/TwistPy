@@ -185,7 +185,7 @@ Specify medium and data parameters for the computation of synthetics:
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7ff891f81990>
+    <matplotlib.legend.Legend object at 0x7fe968b2ea10>
 
 
 
@@ -461,11 +461,11 @@ For a polar plot with the azimuth plotted as the polar angle and the inclination
 
  .. code-block:: none
 
-    /Users/Dave/Documents/TwistPy/examples/beamforming.py:234: MatplotlibDeprecationWarning: Auto-removal of grids by pcolor() and pcolormesh() is deprecated since 3.5 and will be removed two minor releases later; please call grid(False) first.
+    /Users/Dave/PycharmProjects/TwistPy/examples/beamforming.py:234: MatplotlibDeprecationWarning: Auto-removal of grids by pcolor() and pcolormesh() is deprecated since 3.5 and will be removed two minor releases later; please call grid(False) first.
       ax_bf_polar[0].pcolormesh(azi_plot, inc_plot, P_MUSIC.squeeze())
-    /Users/Dave/Documents/TwistPy/examples/beamforming.py:237: MatplotlibDeprecationWarning: Auto-removal of grids by pcolor() and pcolormesh() is deprecated since 3.5 and will be removed two minor releases later; please call grid(False) first.
+    /Users/Dave/PycharmProjects/TwistPy/examples/beamforming.py:237: MatplotlibDeprecationWarning: Auto-removal of grids by pcolor() and pcolormesh() is deprecated since 3.5 and will be removed two minor releases later; please call grid(False) first.
       ax_bf_polar[1].pcolormesh(azi_plot, inc_plot, P_MVDR.squeeze())
-    /Users/Dave/Documents/TwistPy/examples/beamforming.py:240: MatplotlibDeprecationWarning: Auto-removal of grids by pcolor() and pcolormesh() is deprecated since 3.5 and will be removed two minor releases later; please call grid(False) first.
+    /Users/Dave/PycharmProjects/TwistPy/examples/beamforming.py:240: MatplotlibDeprecationWarning: Auto-removal of grids by pcolor() and pcolormesh() is deprecated since 3.5 and will be removed two minor releases later; please call grid(False) first.
       ax_bf_polar[2].pcolormesh(azi_plot, inc_plot, P_BARTLETT.squeeze())
 
     Text(0.5, 1.0773428912783753, 'BARTLETT')
@@ -600,7 +600,7 @@ If multiple arrays are available, the beamforming results can be combined (e.g.,
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  15.983 seconds)
+   **Total running time of the script:** ( 0 minutes  13.428 seconds)
 
 
 .. _sphx_glr_download_examples_beamforming.py:

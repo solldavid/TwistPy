@@ -340,6 +340,11 @@ degrees and inclination range [0 90] degrees).
 
 
 
+.. image-sg:: /examples/images/sphx_glr_ml_wave_type_estimation_003.png
+   :alt: ml wave type estimation
+   :srcset: /examples/images/sphx_glr_ml_wave_type_estimation_003.png
+   :class: sphx-glr-single-img
+
 
 .. rst-class:: sphx-glr-script-out
 
@@ -347,8 +352,11 @@ degrees and inclination range [0 90] degrees).
 
  .. code-block:: none
 
-    A trained model already exists with this name and is saved at '/Users/Dave/Documents/TwistPy/twistpy/SVC_models/nearsurface.pkl'
-    Nothing will be done! Please delete the file above if you want to re-train this model.
+    Generating random polarization models for training! 
+
+    Training Support Vector Machine!
+    Training successfully completed. Model score on independent test data is '0.7845'!
+    Model has been saved as '/Users/Dave/PycharmProjects/TwistPy/twistpy/SVC_models/nearsurface.pkl'!'
 
 
 
@@ -457,9 +465,9 @@ Now we plot the results to verify that the wave types are properly classified.
 
 
 
-.. image-sg:: /examples/images/sphx_glr_ml_wave_type_estimation_003.png
+.. image-sg:: /examples/images/sphx_glr_ml_wave_type_estimation_004.png
    :alt: Input signal, Wave type classification
-   :srcset: /examples/images/sphx_glr_ml_wave_type_estimation_003.png
+   :srcset: /examples/images/sphx_glr_ml_wave_type_estimation_004.png
    :class: sphx-glr-single-img
 
 
@@ -517,7 +525,7 @@ before we run the analysis:
  .. code-block:: none
 
 
-    <obspy.core.stream.Stream object at 0x7ff8601fc410>
+    <obspy.core.stream.Stream object at 0x7fe920090f50>
 
 
 
@@ -625,9 +633,9 @@ plot the S-transform of the vertical translational component.
 
 
 
-.. image-sg:: /examples/images/sphx_glr_ml_wave_type_estimation_004.png
+.. image-sg:: /examples/images/sphx_glr_ml_wave_type_estimation_005.png
    :alt: Vertical component input signal, S-transform of vertical component, Wave type classification
-   :srcset: /examples/images/sphx_glr_ml_wave_type_estimation_004.png
+   :srcset: /examples/images/sphx_glr_ml_wave_type_estimation_005.png
    :class: sphx-glr-single-img
 
 
@@ -647,7 +655,7 @@ plot the S-transform of the vertical translational component.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 2 minutes  39.696 seconds)
+   **Total running time of the script:** ( 2 minutes  49.836 seconds)
 
 
 .. _sphx_glr_download_examples_ml_wave_type_estimation.py:

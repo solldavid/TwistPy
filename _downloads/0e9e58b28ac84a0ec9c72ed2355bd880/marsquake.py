@@ -53,7 +53,7 @@ analysis.polarization_analysis()
 # azimuth of the major semi-axis of the polarization ellipse and only plot the polarization attributes at time frequency
 # pixels where the signal strength in all three-components exceeds 5 percent of the maximum value:
 
-analysis.plot(major_semi_axis=True, clip=0.00, show=False)
+analysis.plot(major_semi_axis=True, clip=0.05, show=False)
 
 ########################################################################################################################
 # Let us now devise a polarization filter that enhances the S-waves in the signal. For S-waves at close-to-

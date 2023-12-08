@@ -83,7 +83,7 @@ to be able to detect body waves because we want to avoid leakage of body waves i
 dispersion curves. We choose a velocity range that is typical for the near-surface in the frequency range we are
 interested in.
 
-.. GENERATED FROM PYTHON SOURCE LINES 41-56
+.. GENERATED FROM PYTHON SOURCE LINES 41-55
 
 .. code-block:: default
 
@@ -99,11 +99,15 @@ interested in.
         xi=(-90, 90),
         theta=(0, 80),
         C=100,
-        plot_confusion_matrix=False,
     )
 
 
 
+
+.. image-sg:: /examples/images/sphx_glr_dispersion_001.png
+   :alt: dispersion
+   :srcset: /examples/images/sphx_glr_dispersion_001.png
+   :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
@@ -112,13 +116,18 @@ interested in.
 
  .. code-block:: none
 
-    A trained model already exists with this name and is saved at '/Users/Dave/Documents/TwistPy/twistpy/SVC_models/dispersion_analysis2.pkl'
-    Nothing will be done! Please delete the file above if you want to re-train this model.
+    Generating random polarization models for training! 
+
+    /Users/Dave/PycharmProjects/TwistPy/twistpy/polarization/model.py:217: RuntimeWarning: invalid value encountered in reciprocal
+      * (
+    Training Support Vector Machine!
+    Training successfully completed. Model score on independent test data is '0.9968'!
+    Model has been saved as '/Users/Dave/PycharmProjects/TwistPy/twistpy/SVC_models/dispersion_analysis2.pkl'!'
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 57-63
+.. GENERATED FROM PYTHON SOURCE LINES 56-62
 
 We now have everything we need to extract dispersion curves from our ambient noise data. We specify that the time
 window for the analysis should stretch over 2 dominant periods at each frequency of interest. Additionally, we specify
@@ -127,7 +136,7 @@ Love and Rayleigh wave dispersion curves in the frequency range between 1 and 20
 filtered to various frequency bands in the interval 1 to 20 Hz, each frequency band extends over the number of octaves
 specified by the parameter 'octaves'. Here, we choose quarter octave frequency bands.
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-80
+.. GENERATED FROM PYTHON SOURCE LINES 62-79
 
 .. code-block:: default
 
@@ -180,12 +189,12 @@ specified by the parameter 'octaves'. Here, we choose quarter octave frequency b
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 81-83
+.. GENERATED FROM PYTHON SOURCE LINES 80-82
 
 After running the analysis, we can save it to disk (e.g. da.save('dispersion_analysis.pkl')) or simply plot it using
 the provided plot() method.
 
-.. GENERATED FROM PYTHON SOURCE LINES 83-85
+.. GENERATED FROM PYTHON SOURCE LINES 82-84
 
 .. code-block:: default
 
@@ -194,20 +203,20 @@ the provided plot() method.
 
 
 
-.. image-sg:: /examples/images/sphx_glr_dispersion_001.png
+.. image-sg:: /examples/images/sphx_glr_dispersion_002.png
    :alt: Love, Rayleigh, Rayleigh
-   :srcset: /examples/images/sphx_glr_dispersion_001.png
+   :srcset: /examples/images/sphx_glr_dispersion_002.png
    :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 86-87
+.. GENERATED FROM PYTHON SOURCE LINES 85-86
 
 To plot the back-azimuth at a specific frequency, use the plot_baz() method:
 
-.. GENERATED FROM PYTHON SOURCE LINES 87-88
+.. GENERATED FROM PYTHON SOURCE LINES 86-87
 
 .. code-block:: default
 
@@ -215,9 +224,9 @@ To plot the back-azimuth at a specific frequency, use the plot_baz() method:
 
 
 
-.. image-sg:: /examples/images/sphx_glr_dispersion_002.png
+.. image-sg:: /examples/images/sphx_glr_dispersion_003.png
    :alt: Back-azimuth at   14.14 Hz, Love waves, Rayleigh waves
-   :srcset: /examples/images/sphx_glr_dispersion_002.png
+   :srcset: /examples/images/sphx_glr_dispersion_003.png
    :class: sphx-glr-single-img
 
 
@@ -227,7 +236,7 @@ To plot the back-azimuth at a specific frequency, use the plot_baz() method:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 7 minutes  44.524 seconds)
+   **Total running time of the script:** ( 6 minutes  18.972 seconds)
 
 
 .. _sphx_glr_download_examples_dispersion.py:

@@ -183,7 +183,7 @@ Specify medium and data parameters for the computation of synthetics:
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x17e581a90>
+    <matplotlib.legend.Legend object at 0x188e256a0>
 
 
 
@@ -584,7 +584,7 @@ If multiple arrays are available, the beamforming results can be combined (e.g.,
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  14.313 seconds)
+   **Total running time of the script:** ( 0 minutes  15.063 seconds)
 
 
 .. _sphx_glr_download_examples_beamforming.py:

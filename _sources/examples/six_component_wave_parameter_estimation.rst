@@ -346,7 +346,7 @@ degrees and inclination range [0 90] degrees).
     Generating random polarization models for training! 
 
     Training Support Vector Machine!
-    Training successfully completed. Model score on independent test data is '0.9402'!
+    Training successfully completed. Model score on independent test data is '0.9448'!
     Model has been saved as '/Users/Dave/Documents/TwistPyDocBuilding/TwistPy/twistpy/SVC_models/love_wave.pkl'!'
 
 
@@ -454,7 +454,7 @@ To classify the waves, we simply do (yielding a classification of the first eige
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  13.867 seconds)
+   **Total running time of the script:** ( 0 minutes  13.864 seconds)
 
 
 .. _sphx_glr_download_examples_six_component_wave_parameter_estimation.py:

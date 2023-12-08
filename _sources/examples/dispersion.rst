@@ -223,7 +223,7 @@ To plot the back-azimuth at a specific frequency, use the plot_baz() method:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 5 minutes  50.745 seconds)
+   **Total running time of the script:** ( 6 minutes  18.767 seconds)
 
 
 .. _sphx_glr_download_examples_dispersion.py:

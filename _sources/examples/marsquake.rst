@@ -277,7 +277,7 @@ time-frequency representation (S-transform) of the signal for interpretation. Th
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  40.990 seconds)
+   **Total running time of the script:** ( 1 minutes  5.022 seconds)
 
 
 .. _sphx_glr_download_examples_marsquake.py:

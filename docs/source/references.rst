@@ -43,3 +43,4 @@ Papers using TwistPy
 ---------------------
 - Stähler, S. C. *et al.* (2021) *Seismic detection of the martian core*. Science, 373, 438–448. https://doi.org/10.1126/science.abi7730
 - Ling, O. A. K., Stähler, S. C., Sollberger, D., & Giardini, D. (2023) *Enhancement of Seismic Phase Identification Using Polarization Filtering and Array Analysis*. Bulletin of the Seismological Society of America. https://doi.org/10.1785/0120230135.
+- Duran, C., Khan, A., Kemper, J., Fernandes, I., Mosegaard, K., Tromp, J., Dugue, M., Sollberger, D., Giardini, D. (2025) *Searching the InSight Seismic Data for Mars’s Background‐Free Oscillations*. Seismological Research Letters. https://doi.org/10.1785/0220240167.

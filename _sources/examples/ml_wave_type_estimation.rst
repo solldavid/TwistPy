@@ -349,8 +349,8 @@ degrees and inclination range [0 90] degrees).
     Generating random polarization models for training! 
 
     Training Support Vector Machine!
-    Training successfully completed. Model score on independent test data is '0.7865'!
-    Model has been saved as '/Users/Dave/Documents/TwistPyDocBuilding/TwistPy/twistpy/SVC_models/nearsurface.pkl'!'
+    Training successfully completed. Model score on independent test data is '0.7911666666666667'!
+    Model has been saved as '/Users/Dave/Downloads/TwistPy/twistpy/SVC_models/nearsurface.pkl'!'
 
 
 
@@ -511,7 +511,7 @@ before we run the analysis:
  .. code-block:: none
 
 
-    <obspy.core.stream.Stream object at 0x188d1d520>
+    <obspy.core.stream.Stream object at 0x1814257f0>
 
 
 
@@ -637,7 +637,7 @@ plot the S-transform of the vertical translational component.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 3 minutes  32.848 seconds)
+   **Total running time of the script:** ( 2 minutes  34.769 seconds)
 
 
 .. _sphx_glr_download_examples_ml_wave_type_estimation.py:

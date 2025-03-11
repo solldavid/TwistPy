@@ -287,7 +287,7 @@ where the Rayleigh wave model fits the data with a likelihoood larger than 0.7.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  18.388 seconds)
+   **Total running time of the script:** ( 0 minutes  17.349 seconds)
 
 
 .. _sphx_glr_download_examples_alaska_wave_parameter_estimation.py:

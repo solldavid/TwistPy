@@ -407,21 +407,21 @@ document.write(`
 <h1>twistpy.polarization.TimeDomainAnalysis6C.classify<a class="headerlink" href="#twistpy-polarization-timedomainanalysis6c-classify" title="Permalink to this heading">#</a></h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="twistpy.polarization.TimeDomainAnalysis6C.classify">
-<span class="sig-prename descclassname"><span class="pre">TimeDomainAnalysis6C.</span></span><span class="sig-name descname"><span class="pre">classify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">svm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="twistpy.polarization.SupportVectorMachine.html#twistpy.polarization.SupportVectorMachine" title="twistpy.polarization.machinelearning.SupportVectorMachine"><span class="pre">SupportVectorMachine</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">eigenvector_to_classify</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compute_dop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/twistpy/polarization/time.html#TimeDomainAnalysis6C.classify"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#twistpy.polarization.TimeDomainAnalysis6C.classify" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">TimeDomainAnalysis6C.</span></span><span class="sig-name descname"><span class="pre">classify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">svm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="twistpy.polarization.SupportVectorMachine.html#twistpy.polarization.SupportVectorMachine" title="twistpy.polarization.machinelearning.SupportVectorMachine"><span class="pre">SupportVectorMachine</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">eigenvector_to_classify</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compute_dop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/twistpy/polarization/time.html#TimeDomainAnalysis6C.classify"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#twistpy.polarization.TimeDomainAnalysis6C.classify" title="Permalink to this definition">#</a></dt>
 <dd><p>Classify wave types using a support vector machine</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>svm</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SupportVectorMachine</span></code></span></dt><dd><p>Trained support vector machine used for wave type classification</p>
 </dd>
-<dt><strong>eigenvector_to_classify</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>, optional, default=0</span></dt><dd><p>Integer value identifying the eigenvector that will be classified. The eigenvectors are
+<dt><strong>eigenvector_to_classify</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>, optional, default=0</span></dt><dd><p>Integer value identifying the eigenvector that will be classified. The eigenvectors are
 sorted in descending order of their corresponding eigenvalue</p>
 <div class="line-block">
 <div class="line">If 0: first eigenvector, corresponding to the dominant signal in
 the time window (associated with the largest eigenvalue).</div>
 </div>
 </dd>
-<dt><strong>compute_dop</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, optional, default = True</span></dt><dd><p>Specify whether the degree of polarization is computed.</p>
+<dt><strong>compute_dop</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, optional, default = True</span></dt><dd><p>Specify whether the degree of polarization is computed.</p>
 </dd>
 </dl>
 </dd>
@@ -498,7 +498,7 @@ the time window (associated with the largest eigenvalue).</div>
     
   <p class="copyright">
     
-      © Copyright 2023, The TwistPy Developers.
+      © Copyright 2025, The TwistPy Developers.
       <br/>
     
   </p>
@@ -507,7 +507,7 @@ the time window (associated with the largest eigenvalue).</div>
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Dec 08, 2023.
+  Last updated on Mar 11, 2025.
   <br/>
 </p>
   </div>

@@ -110,8 +110,11 @@ interested in.
 
  .. code-block:: none
 
-    A trained model already exists with this name and is saved at '/Users/Dave/Documents/TwistPyDocBuilding/TwistPy/twistpy/SVC_models/dispersion_analysis2.pkl'
-    Nothing will be done! Please delete the file above if you want to re-train this model.
+    Generating random polarization models for training! 
+
+    Training Support Vector Machine!
+    Training successfully completed. Model score on independent test data is '0.9958'!
+    Model has been saved as '/Users/Dave/Downloads/TwistPy/twistpy/SVC_models/dispersion_analysis2.pkl'!'
 
 
 
@@ -223,7 +226,7 @@ To plot the back-azimuth at a specific frequency, use the plot_baz() method:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 6 minutes  18.767 seconds)
+   **Total running time of the script:** ( 5 minutes  13.034 seconds)
 
 
 .. _sphx_glr_download_examples_dispersion.py:

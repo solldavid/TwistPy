@@ -487,7 +487,7 @@ correction
  .. code-block:: none
 
 
-    <obspy.core.stream.Stream object at 0x1889b7ca0>
+    <obspy.core.stream.Stream object at 0x1813c90a0>
 
 
 
@@ -520,7 +520,7 @@ make two independent streams containing the tilt angle recording
  .. code-block:: none
 
 
-    <obspy.core.stream.Stream object at 0x188afdd60>
+    <obspy.core.stream.Stream object at 0x181894b20>
 
 
 
@@ -625,7 +625,7 @@ frequency domain (coh)
  .. code-block:: none
 
 
-    <obspy.core.stream.Stream object at 0x188b14c70>
+    <obspy.core.stream.Stream object at 0x18204c580>
 
 
 
@@ -707,7 +707,7 @@ middle of the housing
  .. code-block:: none
 
 
-    <obspy.core.stream.Stream object at 0x188f5dd00>
+    <obspy.core.stream.Stream object at 0x1812e7ca0>
 
 
 
@@ -1131,7 +1131,7 @@ Uncomment the following lines in case you want to use latex for type setting
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.744 seconds)
+   **Total running time of the script:** ( 0 minutes  1.826 seconds)
 
 
 .. _sphx_glr_download_examples_tilt.py:
